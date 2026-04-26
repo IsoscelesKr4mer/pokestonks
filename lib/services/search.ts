@@ -165,7 +165,8 @@ export async function searchCardsWithImport(
         cardNumberPartial: tokens.cardNumberPartial,
         cardNumberFull: tokens.cardNumberFull,
         setCode: tokens.setCode,
-        pageSize: 50,
+        // Cap at limit*2 (or 100, whichever is bigger) so sort-by-price has a wide enough field to pick from.
+        pageSize: Math.max(100, limit * 2),
       })
     );
   } catch (e) {
@@ -173,7 +174,7 @@ export async function searchCardsWithImport(
   }
 
   const variantArrays = await Promise.all(
-    pokemonCards.slice(0, limit).map(async (card) => {
+    pokemonCards.map(async (card) => {
       let tcgcsvResult: Awaited<ReturnType<typeof findTcgcsvCardPrice>> = {};
       if (tcgcsvAvailable) {
         try {
@@ -231,20 +232,68 @@ export type SealedResultDto = {
 
 export type CardResultDto = { type: 'card' } & CardVariantHit;
 
+export type SortBy = 'price-desc' | 'price-asc' | 'relevance' | 'released' | 'name';
+
 export type SearchResponse = {
   query: string;
   kind: SearchKind;
+  sortBy: SortBy;
   results: Array<SealedResultDto | CardResultDto>;
   warnings: Warning[];
 };
 
-export async function searchAll(query: string, kind: SearchKind, limit: number): Promise<SearchResponse> {
+type AnyDto = SealedResultDto | CardResultDto;
+
+function sortKey(r: AnyDto, sortBy: SortBy): number | string {
+  switch (sortBy) {
+    case 'price-desc':
+    case 'price-asc':
+      return r.marketCents ?? -1;
+    case 'released':
+      // We don't carry releaseDate on DTOs yet; defer to insertion order.
+      return 0;
+    case 'name':
+      return r.name.toLowerCase();
+    case 'relevance':
+    default:
+      return 0;
+  }
+}
+
+function applySort(rows: AnyDto[], sortBy: SortBy): AnyDto[] {
+  if (sortBy === 'relevance') return rows;
+  const sorted = [...rows];
+  sorted.sort((a, b) => {
+    const ak = sortKey(a, sortBy);
+    const bk = sortKey(b, sortBy);
+    // Push null/missing prices to the end regardless of direction.
+    const aMissing = a.marketCents == null;
+    const bMissing = b.marketCents == null;
+    if ((sortBy === 'price-desc' || sortBy === 'price-asc') && aMissing !== bMissing) {
+      return aMissing ? 1 : -1;
+    }
+    if (typeof ak === 'string' && typeof bk === 'string') {
+      return ak.localeCompare(bk);
+    }
+    if (sortBy === 'price-asc') return (ak as number) - (bk as number);
+    return (bk as number) - (ak as number);
+  });
+  return sorted;
+}
+
+export async function searchAll(
+  query: string,
+  kind: SearchKind,
+  limit: number,
+  sortBy: SortBy = 'price-desc'
+): Promise<SearchResponse> {
   const warnings: Warning[] = [];
   const tasks: Array<Promise<unknown>> = [];
 
   let sealed: SealedResult[] = [];
   let cards: { results: CardVariantHit[]; warnings: Warning[] } = { results: [], warnings: [] };
 
+  // Each source fetches up to `limit` so combined we have enough to sort and slice.
   if (kind === 'sealed' || kind === 'all') {
     tasks.push(
       searchSealedWithImport(query, limit)
@@ -283,13 +332,19 @@ export async function searchAll(query: string, kind: SearchKind, limit: number):
   }));
   const cardDtos: CardResultDto[] = cards.results.map((c) => ({ type: 'card' as const, ...c }));
 
-  const interleaved: Array<SealedResultDto | CardResultDto> = [];
-  let i = 0;
-  while (interleaved.length < limit && (i < sealedDtos.length || i < cardDtos.length)) {
-    if (i < sealedDtos.length) interleaved.push(sealedDtos[i]);
-    if (interleaved.length < limit && i < cardDtos.length) interleaved.push(cardDtos[i]);
-    i++;
+  let combined: AnyDto[];
+  if (sortBy === 'relevance') {
+    // Original interleave behavior: alternate sealed/card by rank.
+    combined = [];
+    let i = 0;
+    while (combined.length < limit && (i < sealedDtos.length || i < cardDtos.length)) {
+      if (i < sealedDtos.length) combined.push(sealedDtos[i]);
+      if (combined.length < limit && i < cardDtos.length) combined.push(cardDtos[i]);
+      i++;
+    }
+  } else {
+    combined = applySort([...sealedDtos, ...cardDtos], sortBy).slice(0, limit);
   }
 
-  return { query, kind, results: interleaved, warnings };
+  return { query, kind, sortBy, results: combined, warnings };
 }

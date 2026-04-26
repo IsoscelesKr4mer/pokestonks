@@ -5,7 +5,12 @@ import groupsFixture from '../../tests/fixtures/tcgcsv-groups.json';
 import productsFixture from '../../tests/fixtures/tcgcsv-sv151-products.json';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { __resetGroupCacheForTests, fetchSinglePrice, getGroups, searchSealed } from './tcgcsv';
+import { __resetGroupCacheForTests, __resetPerGroupCachesForTests, fetchSinglePrice, getGroups, searchSealed } from './tcgcsv';
+
+function resetAllCaches() {
+  __resetGroupCacheForTests();
+  __resetPerGroupCachesForTests();
+}
 
 const sv151PricesCsv = readFileSync(
   join(__dirname, '..', '..', 'tests', 'fixtures', 'tcgcsv-sv151-prices.csv'),
@@ -13,7 +18,7 @@ const sv151PricesCsv = readFileSync(
 );
 
 describe('tcgcsv.getGroups', () => {
-  beforeEach(() => __resetGroupCacheForTests());
+  beforeEach(() => resetAllCaches());
 
   it('fetches groups from TCGCSV on first call', async () => {
     let hits = 0;
@@ -62,7 +67,7 @@ describe('tcgcsv.getGroups', () => {
 });
 
 describe('tcgcsv.searchSealed', () => {
-  beforeEach(() => __resetGroupCacheForTests());
+  beforeEach(() => resetAllCaches());
 
   function mockApi() {
     server.use(
@@ -122,7 +127,7 @@ describe('tcgcsv.searchSealed', () => {
 });
 
 describe('tcgcsv.fetchSinglePrice', () => {
-  beforeEach(() => __resetGroupCacheForTests());
+  beforeEach(() => resetAllCaches());
 
   it('returns the market price in cents for a known product', async () => {
     server.use(

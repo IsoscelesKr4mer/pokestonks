@@ -84,23 +84,43 @@ export type SealedSearchHit = {
   groupId: number;
 };
 
-export async function fetchProducts(groupId: number): Promise<TcgcsvProduct[]> {
+// Per-group caches with 5-minute TTL. TCGCSV updates daily, so 5 minutes is
+// safe and lets repeated card lookups within one search hit memory.
+const PER_GROUP_TTL_MS = 5 * 60 * 1000;
+const productsCache = new Map<number, { fetchedAt: number; data: TcgcsvProduct[] }>();
+const pricesCache = new Map<number, { fetchedAt: number; data: TcgcsvPriceRow[] }>();
+
+export function __resetPerGroupCachesForTests() {
+  productsCache.clear();
+  pricesCache.clear();
+}
+
+export async function fetchProducts(groupId: number, now: number = Date.now()): Promise<TcgcsvProduct[]> {
+  const cached = productsCache.get(groupId);
+  if (cached && now - cached.fetchedAt < PER_GROUP_TTL_MS) {
+    return cached.data;
+  }
   const res = await fetch(`${TCGCSV_BASE}/${groupId}/products`, {
     headers: { Accept: 'application/json', 'User-Agent': USER_AGENT },
   });
   if (!res.ok) throw new Error(`tcgcsv products ${groupId} ${res.status}`);
   const body = (await res.json()) as { results: TcgcsvProduct[] };
+  productsCache.set(groupId, { fetchedAt: now, data: body.results });
   return body.results;
 }
 
-export async function fetchPrices(groupId: number): Promise<TcgcsvPriceRow[]> {
+export async function fetchPrices(groupId: number, now: number = Date.now()): Promise<TcgcsvPriceRow[]> {
+  const cached = pricesCache.get(groupId);
+  if (cached && now - cached.fetchedAt < PER_GROUP_TTL_MS) {
+    return cached.data;
+  }
   const res = await fetch(`${TCGCSV_BASE}/${groupId}/prices`, {
     headers: { Accept: 'text/csv', 'User-Agent': USER_AGENT },
   });
   if (!res.ok) throw new Error(`tcgcsv prices ${groupId} ${res.status}`);
   const csv = await res.text();
   const parsed = Papa.parse<Record<string, string>>(csv, { header: true, skipEmptyLines: true });
-  return parsed.data
+  const rows = parsed.data
     .filter((r) => r.productId)
     .map((r) => ({
       productId: Number(r.productId),
@@ -109,6 +129,8 @@ export async function fetchPrices(groupId: number): Promise<TcgcsvPriceRow[]> {
       highPrice: r.highPrice ? Number(r.highPrice) : null,
       subTypeName: r.subTypeName ?? 'Normal',
     }));
+  pricesCache.set(groupId, { fetchedAt: now, data: rows });
+  return rows;
 }
 
 function classifySealedType(name: string): string | null {

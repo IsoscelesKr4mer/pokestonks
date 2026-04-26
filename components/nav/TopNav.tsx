@@ -10,17 +10,12 @@ export function TopNav() {
         </Link>
         <nav className="flex items-center gap-1 text-sm">
           <Link href="/" className="px-3 py-1.5 rounded-md hover:bg-muted">Dashboard</Link>
+          <Link href="/catalog" className="px-3 py-1.5 rounded-md hover:bg-muted">Search</Link>
           <Link href="/holdings" className="px-3 py-1.5 rounded-md hover:bg-muted">Holdings</Link>
           <Link href="/sales" className="px-3 py-1.5 rounded-md hover:bg-muted">Sales</Link>
           <Link href="/settings" className="px-3 py-1.5 rounded-md hover:bg-muted">Settings</Link>
         </nav>
         <div className="flex items-center gap-2">
-          <Link
-            href="/catalog"
-            className="inline-flex items-center rounded-md bg-foreground px-3 py-1.5 text-sm text-background hover:bg-foreground/90"
-          >
-            + Add
-          </Link>
           <SignOutButton />
         </div>
       </div>

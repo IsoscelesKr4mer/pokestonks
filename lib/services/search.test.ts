@@ -20,7 +20,12 @@ vi.mock('@/lib/db/upserts/catalogItems', () => ({
 
 import { tokenizeQuery } from './search';
 import { searchSealedWithImport, searchCardsWithImport } from './search';
-import { __resetGroupCacheForTests } from './tcgcsv';
+import { __resetGroupCacheForTests, __resetPerGroupCachesForTests } from './tcgcsv';
+
+function resetAllCaches() {
+  __resetGroupCacheForTests();
+  __resetPerGroupCachesForTests();
+}
 
 describe('tokenizeQuery', () => {
   it('classifies a card_number_full token', () => {
@@ -73,7 +78,7 @@ describe('tokenizeQuery', () => {
 });
 
 describe('searchSealedWithImport', () => {
-  beforeEach(() => __resetGroupCacheForTests());
+  beforeEach(() => resetAllCaches());
 
   function mockApi() {
     server.use(
@@ -104,7 +109,7 @@ describe('searchSealedWithImport', () => {
 });
 
 describe('searchCardsWithImport', () => {
-  beforeEach(() => __resetGroupCacheForTests());
+  beforeEach(() => resetAllCaches());
 
   function mockApi() {
     server.use(
