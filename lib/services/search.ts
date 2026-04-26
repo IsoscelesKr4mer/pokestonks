@@ -1,6 +1,11 @@
-import { searchSealed, getGroups, fetchProducts, fetchPrices, type SealedSearchHit, type TcgcsvProduct, type TcgcsvPriceRow } from './tcgcsv';
+import pLimit from 'p-limit';
+import { searchSealed, type SealedSearchHit } from './tcgcsv';
 import { searchCards, type PokemonTcgCard } from './pokemontcg';
 import { upsertSealed, upsertCard } from '@/lib/db/upserts/catalogItems';
+
+// Cap concurrent DB upserts so a 250-card set search doesn't exhaust the
+// connection pool or hit a function timeout.
+const UPSERT_LIMIT = pLimit(10);
 
 export type Tokens = {
   text: string[];
@@ -104,32 +109,39 @@ async function emitVariant(args: {
   card: PokemonTcgCard;
   variant: string;
   marketCents: number | null;
-}): Promise<CardVariantHit> {
+}): Promise<CardVariantHit | null> {
   const { card, variant, marketCents } = args;
-  const id = await upsertCard({
-    kind: 'card',
-    name: card.name,
-    setName: card.setName,
-    setCode: card.setCode,
-    pokemonTcgCardId: card.cardId,
-    tcgplayerSkuId: null,
-    cardNumber: card.number,
-    rarity: card.rarity,
-    variant,
-    imageUrl: card.imageUrl,
-    releaseDate: card.releaseDate,
-  });
-  return {
-    catalogItemId: id,
-    name: card.name,
-    cardNumber: card.number,
-    setName: card.setName,
-    setCode: card.setCode,
-    rarity: card.rarity,
-    variant,
-    imageUrl: card.imageUrl,
-    marketCents,
-  };
+  try {
+    const id = await UPSERT_LIMIT(() =>
+      upsertCard({
+        kind: 'card',
+        name: card.name,
+        setName: card.setName,
+        setCode: card.setCode,
+        pokemonTcgCardId: card.cardId,
+        tcgplayerSkuId: null,
+        cardNumber: card.number,
+        rarity: card.rarity,
+        variant,
+        imageUrl: card.imageUrl,
+        releaseDate: card.releaseDate,
+      })
+    );
+    return {
+      catalogItemId: id,
+      name: card.name,
+      cardNumber: card.number,
+      setName: card.setName,
+      setCode: card.setCode,
+      rarity: card.rarity,
+      variant,
+      imageUrl: card.imageUrl,
+      marketCents,
+    };
+  } catch (err) {
+    console.error('[search.emitVariant] upsert failed', { card: card.cardId, variant, err });
+    return null;
+  }
 }
 
 export async function searchCardsWithImport(
@@ -164,7 +176,7 @@ export async function searchCardsWithImport(
   const variantArrays = await Promise.all(
     pokemonCards.map(async (card) => {
       const variantKeys = Object.keys(card.pricesByVariant);
-      const out: CardVariantHit[] = [];
+      const out: Array<CardVariantHit | null> = [];
       if (variantKeys.length === 0) {
         // No TCGplayer data yet (brand new sets). Emit a single 'normal' row
         // so the card still surfaces; rarity-rank fallback drives sort.
@@ -186,7 +198,8 @@ export async function searchCardsWithImport(
     })
   );
 
-  return { results: variantArrays.flat(), warnings };
+  const flat = variantArrays.flat().filter((v): v is CardVariantHit => v !== null);
+  return { results: flat, warnings };
 }
 
 export type SearchKind = 'all' | 'sealed' | 'card';
