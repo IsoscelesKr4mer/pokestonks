@@ -55,6 +55,10 @@ Thumbs.db
 # brainstorming companion (transient session data, not source)
 .superpowers/
 
+# playwright
+test-results/
+playwright-report/
+
 # screenshots / scratch
 *.png
 *.jpg
