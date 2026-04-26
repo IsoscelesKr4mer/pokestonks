@@ -78,6 +78,7 @@ export async function upsertCard(input: CardUpsertInput): Promise<number> {
         name: sql`excluded.name`,
         setName: sql`excluded.set_name`,
         pokemonTcgCardId: sql`COALESCE(${schema.catalogItems.pokemonTcgCardId}, excluded.pokemon_tcg_card_id)`,
+        // prefer incoming: SKU IDs can rotate; imageUrl is preserved once downloaded
         tcgplayerSkuId: sql`COALESCE(excluded.tcgplayer_sku_id, ${schema.catalogItems.tcgplayerSkuId})`,
         rarity: sql`COALESCE(excluded.rarity, ${schema.catalogItems.rarity})`,
         imageUrl: sql`COALESCE(${schema.catalogItems.imageUrl}, excluded.image_url)`,

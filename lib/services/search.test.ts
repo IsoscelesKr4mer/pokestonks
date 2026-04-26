@@ -96,6 +96,7 @@ describe('searchSealedWithImport', () => {
     const hits = await searchSealedWithImport('151 etb', 10);
     expect(hits.length).toBeGreaterThan(0);
     expect(hits[0].catalogItemId).toBeDefined();
+    expect(hits[0].catalogItemId).toBe(hits[0].tcgplayerProductId);
     expect(hits[0].name).toMatch(/Elite Trainer Box/i);
   });
 });
