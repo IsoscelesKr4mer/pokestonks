@@ -20,6 +20,10 @@ export const catalogItems = pgTable(
     imageUrl: text('image_url'),
     imageStoragePath: text('image_storage_path'),
     releaseDate: date('release_date'),
+    // New for DB-first search: latest TCGCSV/Pokémon TCG market price written
+    // by the upstream-import path so local search can read it without a join.
+    lastMarketCents: integer('last_market_cents'),
+    lastMarketAt: timestamp('last_market_at', { withTimezone: true }),
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   },
   (t) => ({
