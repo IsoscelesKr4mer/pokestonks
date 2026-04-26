@@ -1,11 +1,11 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 import { SearchResultRow, type ResultRow } from './SearchResultRow';
 
-type SortBy = 'price-desc' | 'price-asc' | 'relevance' | 'name';
+type SortBy = 'price-desc' | 'price-asc' | 'rarity-desc' | 'relevance' | 'name';
 
 type SearchResponse = {
   query: string;
@@ -24,9 +24,12 @@ const KINDS: Array<{ key: 'all' | 'sealed' | 'card'; label: string }> = [
 const SORTS: Array<{ key: SortBy; label: string }> = [
   { key: 'price-desc', label: 'Price (high to low)' },
   { key: 'price-asc', label: 'Price (low to high)' },
+  { key: 'rarity-desc', label: 'Rarity (highest first)' },
   { key: 'name', label: 'Name (A-Z)' },
   { key: 'relevance', label: 'Best match' },
 ];
+
+const ALL_RARITIES = '__all__';
 
 const PAGE_SIZE = 24;
 
@@ -35,6 +38,7 @@ export function SearchBox() {
   const [debounced, setDebounced] = useState('');
   const [kind, setKind] = useState<'all' | 'sealed' | 'card'>('all');
   const [sortBy, setSortBy] = useState<SortBy>('price-desc');
+  const [rarity, setRarity] = useState<string>(ALL_RARITIES);
   const [shown, setShown] = useState(PAGE_SIZE);
 
   useEffect(() => {
@@ -42,10 +46,16 @@ export function SearchBox() {
     return () => clearTimeout(t);
   }, [q]);
 
-  // Reset visible count whenever inputs change.
+  // Reset visible count whenever inputs/filters change.
   useEffect(() => {
     setShown(PAGE_SIZE);
-  }, [debounced, kind, sortBy]);
+  }, [debounced, kind, sortBy, rarity]);
+
+  // Reset rarity filter whenever the underlying query changes — old options
+  // may no longer apply to the new result set.
+  useEffect(() => {
+    setRarity(ALL_RARITIES);
+  }, [debounced, kind]);
 
   const enabled = debounced.length > 0;
   const { data, isFetching, error } = useQuery<SearchResponse>({
@@ -60,8 +70,24 @@ export function SearchBox() {
     staleTime: 60_000,
   });
 
-  const visible = data ? data.results.slice(0, shown) : [];
-  const hasMore = data ? data.results.length > shown : false;
+  // Build the rarity dropdown from rarities present in the current result set.
+  const rarityOptions = useMemo(() => {
+    if (!data) return [] as string[];
+    const seen = new Set<string>();
+    for (const r of data.results) {
+      if (r.type === 'card' && r.rarity) seen.add(r.rarity);
+    }
+    return Array.from(seen).sort();
+  }, [data]);
+
+  const filteredResults = useMemo(() => {
+    if (!data) return [] as ResultRow[];
+    if (rarity === ALL_RARITIES) return data.results;
+    return data.results.filter((r) => r.type === 'card' && r.rarity === rarity);
+  }, [data, rarity]);
+
+  const visible = filteredResults.slice(0, shown);
+  const hasMore = filteredResults.length > shown;
 
   return (
     <div className="space-y-4">
@@ -73,7 +99,7 @@ export function SearchBox() {
       />
 
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <div className="flex gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           {KINDS.map((k) => (
             <button
               key={k.key}
@@ -86,6 +112,21 @@ export function SearchBox() {
               {k.label}
             </button>
           ))}
+          {rarityOptions.length > 0 && kind !== 'sealed' && (
+            <select
+              value={rarity}
+              onChange={(e) => setRarity(e.target.value)}
+              className="rounded-full border bg-background px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              aria-label="Filter by rarity"
+            >
+              <option value={ALL_RARITIES}>All rarities</option>
+              {rarityOptions.map((r) => (
+                <option key={r} value={r}>
+                  {r}
+                </option>
+              ))}
+            </select>
+          )}
         </div>
         <select
           value={sortBy}
@@ -127,7 +168,7 @@ export function SearchBox() {
         </p>
       )}
 
-      {data && data.results.length === 0 && enabled && !isFetching && (
+      {data && filteredResults.length === 0 && enabled && !isFetching && (
         <p className="text-sm text-muted-foreground">No matches.</p>
       )}
 
@@ -140,7 +181,8 @@ export function SearchBox() {
           </div>
           <div className="flex items-center justify-between text-xs text-muted-foreground">
             <span>
-              Showing {visible.length} of {data!.results.length}
+              Showing {visible.length} of {filteredResults.length}
+              {rarity !== ALL_RARITIES && data ? ` (filtered from ${data.results.length})` : ''}
             </span>
             {hasMore && (
               <button

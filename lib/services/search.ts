@@ -77,37 +77,27 @@ function withTimeout<T>(p: Promise<T>): Promise<T> {
   ]);
 }
 
-async function findTcgcsvCardPrice(args: {
-  setCode: string | null;
-  cardNumber: string;
-}): Promise<{ normal?: TcgcsvPriceRow; reverseHolo?: TcgcsvPriceRow; productId?: number }> {
-  if (!args.setCode) return {};
-  const groups = await getGroups();
-  const group = groups.find((g) => (g.abbreviation ?? '').toLowerCase() === args.setCode);
-  if (!group) return {};
-  let products: TcgcsvProduct[];
-  try {
-    products = await fetchProducts(group.groupId);
-  } catch {
-    return {};
+// Map Pokémon TCG API tcgplayer.prices keys to our internal variant strings.
+// Anything we don't explicitly know about flows through as-is (snake-cased).
+function normalizeVariantKey(key: string): string {
+  switch (key) {
+    case 'normal':
+      return 'normal';
+    case 'holofoil':
+      return 'holo';
+    case 'reverseHolofoil':
+      return 'reverse_holo';
+    case '1stEditionHolofoil':
+      return '1st_edition_holo';
+    case '1stEdition':
+      return '1st_edition';
+    case 'unlimitedHolofoil':
+      return 'unlimited_holo';
+    case 'unlimited':
+      return 'unlimited';
+    default:
+      return key.replace(/[A-Z]/g, (c) => `_${c.toLowerCase()}`);
   }
-  const product = products.find((p) => {
-    const num = (p.extendedData ?? []).find((d) => d.name === 'Number')?.value;
-    return num?.startsWith(`${args.cardNumber}/`);
-  });
-  if (!product) return {};
-  let priceRows: TcgcsvPriceRow[];
-  try {
-    priceRows = await fetchPrices(group.groupId);
-  } catch {
-    return { productId: product.productId };
-  }
-  const rows = priceRows.filter((r) => r.productId === product.productId);
-  return {
-    normal: rows.find((r) => r.subTypeName === 'Normal'),
-    reverseHolo: rows.find((r) => /Reverse Holofoil/i.test(r.subTypeName)),
-    productId: product.productId,
-  };
 }
 
 async function emitVariant(args: {
@@ -149,14 +139,6 @@ export async function searchCardsWithImport(
   const tokens = tokenizeQuery(query);
   const warnings: Warning[] = [];
 
-  let tcgcsvAvailable = true;
-  try {
-    await withTimeout(getGroups());
-  } catch (e) {
-    tcgcsvAvailable = false;
-    warnings.push({ source: 'tcgcsv', message: (e as Error).message });
-  }
-
   let pokemonCards: PokemonTcgCard[] = [];
   try {
     pokemonCards = await withTimeout(
@@ -175,42 +157,30 @@ export async function searchCardsWithImport(
     warnings.push({ source: 'pokemontcg', message: (e as Error).message });
   }
 
+  // Use Pokémon TCG API's embedded TCGplayer prices directly. TCGCSV's group
+  // abbreviations don't match Pokémon TCG API set IDs (e.g. CRI vs me2pt5), so
+  // per-card TCGCSV lookup almost never matched. The embedded prices update
+  // less frequently but cover the full catalog when TCGplayer has data.
   const variantArrays = await Promise.all(
     pokemonCards.map(async (card) => {
-      let tcgcsvResult: Awaited<ReturnType<typeof findTcgcsvCardPrice>> = {};
-      if (tcgcsvAvailable) {
-        try {
-          tcgcsvResult = await withTimeout(
-            findTcgcsvCardPrice({ setCode: card.setCode, cardNumber: card.number })
-          );
-        } catch (e) {
-          if (!warnings.find((w) => w.source === 'tcgcsv')) {
-            warnings.push({ source: 'tcgcsv', message: (e as Error).message });
-          }
-        }
-      }
+      const variantKeys = Object.keys(card.pricesByVariant);
       const out: CardVariantHit[] = [];
-      out.push(
-        await emitVariant({
-          card,
-          variant: 'normal',
-          marketCents:
-            tcgcsvResult.normal?.marketPrice != null
-              ? Math.round(tcgcsvResult.normal.marketPrice * 100)
-              : null,
-        })
-      );
-      if (tcgcsvResult.reverseHolo) {
+      if (variantKeys.length === 0) {
+        // No TCGplayer data yet (brand new sets). Emit a single 'normal' row
+        // so the card still surfaces; rarity-rank fallback drives sort.
         out.push(
-          await emitVariant({
-            card,
-            variant: 'reverse_holo',
-            marketCents:
-              tcgcsvResult.reverseHolo.marketPrice != null
-                ? Math.round(tcgcsvResult.reverseHolo.marketPrice * 100)
-                : null,
-          })
+          await emitVariant({ card, variant: 'normal', marketCents: null })
         );
+      } else {
+        for (const key of variantKeys) {
+          out.push(
+            await emitVariant({
+              card,
+              variant: normalizeVariantKey(key),
+              marketCents: card.pricesByVariant[key],
+            })
+          );
+        }
       }
       return out;
     })
@@ -234,7 +204,7 @@ export type SealedResultDto = {
 
 export type CardResultDto = { type: 'card' } & CardVariantHit;
 
-export type SortBy = 'price-desc' | 'price-asc' | 'relevance' | 'released' | 'name';
+export type SortBy = 'price-desc' | 'price-asc' | 'rarity-desc' | 'relevance' | 'released' | 'name';
 
 // When prices are missing (e.g. brand new sets that TCGplayer hasn't indexed),
 // fall back to rarity to keep the sort meaningful. Sealed gets a mid rank so
@@ -274,6 +244,15 @@ function applySort(rows: AnyDto[], sortBy: SortBy): AnyDto[] {
       return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
     }
     if (sortBy === 'released') return 0;
+    if (sortBy === 'rarity-desc') {
+      const rDiff = rarityRank(b) - rarityRank(a);
+      if (rDiff !== 0) return rDiff;
+      // Within same rarity, higher price first.
+      const aPrice = a.marketCents ?? -1;
+      const bPrice = b.marketCents ?? -1;
+      if (aPrice !== bPrice) return bPrice - aPrice;
+      return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
+    }
     // price-desc / price-asc: priced items first, then by price, then rarity tiebreak.
     const aHasPrice = a.marketCents != null;
     const bHasPrice = b.marketCents != null;

@@ -130,48 +130,51 @@ describe('searchCardsWithImport', () => {
     );
   }
 
-  it('returns one flat row per (card, variant) with normal always present', async () => {
+  it('emits one row per Pokémon TCG API price variant', async () => {
     mockApi();
     const { results, warnings } = await searchCardsWithImport('charizard 199', 20);
     expect(warnings).toEqual([]);
-    // sv3pt5-199 has Normal + Reverse Holofoil in fixture, sv3pt5-200 has neither (no matching TCGCSV product).
-    // Expected rows: 199-normal, 199-reverse_holo, 200-normal = 3.
+    // sv3pt5-199 fixture has tcgplayer.prices for holofoil + reverseHolofoil = 2 rows.
+    // sv3pt5-200 fixture has no tcgplayer.prices = 1 'normal' row with null price.
     expect(results).toHaveLength(3);
-    const card199Normal = results.find((r) => r.cardNumber === '199' && r.variant === 'normal');
-    expect(card199Normal).toBeDefined();
-    expect(card199Normal!.setCode).toBe('sv3pt5');
-    expect(card199Normal!.imageUrl).toContain('199_hires.png');
+    const holo199 = results.find((r) => r.cardNumber === '199' && r.variant === 'holo');
+    const reverse199 = results.find((r) => r.cardNumber === '199' && r.variant === 'reverse_holo');
+    const normal200 = results.find((r) => r.cardNumber === '200' && r.variant === 'normal');
+    expect(holo199?.marketCents).toBe(110000);
+    expect(reverse199?.marketCents).toBe(11000);
+    expect(normal200?.marketCents).toBeNull();
   });
 
-  it('emits a reverse_holo row when TCGCSV reports a Reverse Holofoil SKU at the same productId', async () => {
-    mockApi();
-    const { results } = await searchCardsWithImport('charizard 199', 20);
-    const reverse = results.find((r) => r.cardNumber === '199' && r.variant === 'reverse_holo');
-    expect(reverse).toBeDefined();
-    expect(reverse!.marketCents).not.toBeNull();
-  });
-
-  it('falls back to pokemontcg-only when tcgcsv times out', async () => {
+  it('emits a single normal row with null price when no TCGplayer data exists', async () => {
     server.use(
-      http.get('https://api.pokemontcg.io/v2/cards', () => HttpResponse.json(charizardFixture)),
-      http.get('https://tcgcsv.com/tcgplayer/3/groups', () => new HttpResponse(null, { status: 503 }))
+      http.get('https://api.pokemontcg.io/v2/cards', () =>
+        HttpResponse.json({
+          data: [
+            {
+              id: 'me2pt5-1',
+              name: "Erika's Oddish",
+              rarity: 'Common',
+              number: '1',
+              set: { id: 'me2pt5', name: 'Ascended Heroes', releaseDate: '2026/01/30' },
+              images: { large: 'https://example/ah/1.png' },
+            },
+          ],
+        })
+      )
     );
-    const { results, warnings } = await searchCardsWithImport('charizard', 20);
-    // 2 cards × 1 normal each = 2 rows when TCGCSV is down.
-    expect(results.length).toBe(2);
-    expect(results.every((r) => r.variant === 'normal')).toBe(true);
-    expect(results.every((r) => r.marketCents === null)).toBe(true);
-    expect(warnings.find((w) => w.source === 'tcgcsv')).toBeDefined();
+    const { results } = await searchCardsWithImport('ascended', 20);
+    expect(results).toHaveLength(1);
+    expect(results[0].variant).toBe('normal');
+    expect(results[0].marketCents).toBeNull();
   });
 
-  it('returns empty + warning when both sources fail', async () => {
+  it('returns empty + warning when pokemontcg fails', async () => {
     server.use(
-      http.get('https://api.pokemontcg.io/v2/cards', () => new HttpResponse(null, { status: 503 })),
-      http.get('https://tcgcsv.com/tcgplayer/3/groups', () => new HttpResponse(null, { status: 503 }))
+      http.get('https://api.pokemontcg.io/v2/cards', () => new HttpResponse(null, { status: 503 }))
     );
     const { results, warnings } = await searchCardsWithImport('charizard', 20);
     expect(results).toEqual([]);
-    expect(warnings.length).toBe(2);
+    expect(warnings.find((w) => w.source === 'pokemontcg')).toBeDefined();
   });
 });
 

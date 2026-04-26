@@ -10,6 +10,9 @@ export type PokemonTcgCard = {
   setCode: string | null;    // 'sv3pt5'
   releaseDate: string | null;// 'YYYY-MM-DD'
   imageUrl: string | null;   // images.large
+  // Map from tcgplayer variant key ('normal', 'holofoil', 'reverseHolofoil', etc.)
+  // to the market price in cents. Empty when TCGplayer has no data for this card.
+  pricesByVariant: Record<string, number | null>;
 };
 
 type RawCard = {
@@ -19,6 +22,9 @@ type RawCard = {
   number: string;
   set: { id: string; name: string; releaseDate?: string };
   images: { small?: string; large?: string };
+  tcgplayer?: {
+    prices?: Record<string, { market?: number | null } | null>;
+  };
 };
 
 export async function searchCards(args: {
@@ -65,14 +71,23 @@ export async function searchCards(args: {
   if (res.status === 404) return [];
   if (!res.ok) throw new Error(`pokemontcg cards ${res.status}`);
   const body = (await res.json()) as { data: RawCard[] };
-  return body.data.map((c) => ({
-    cardId: c.id,
-    name: c.name,
-    rarity: c.rarity ?? null,
-    number: c.number,
-    setName: c.set.name ?? null,
-    setCode: c.set.id ?? null,
-    releaseDate: c.set.releaseDate ? c.set.releaseDate.replaceAll('/', '-') : null,
-    imageUrl: c.images.large ?? c.images.small ?? null,
-  }));
+  return body.data.map((c) => {
+    const rawPrices = c.tcgplayer?.prices ?? {};
+    const pricesByVariant: Record<string, number | null> = {};
+    for (const [variant, p] of Object.entries(rawPrices)) {
+      const market = p?.market;
+      pricesByVariant[variant] = market != null ? Math.round(market * 100) : null;
+    }
+    return {
+      cardId: c.id,
+      name: c.name,
+      rarity: c.rarity ?? null,
+      number: c.number,
+      setName: c.set.name ?? null,
+      setCode: c.set.id ?? null,
+      releaseDate: c.set.releaseDate ? c.set.releaseDate.replaceAll('/', '-') : null,
+      imageUrl: c.images.large ?? c.images.small ?? null,
+      pricesByVariant,
+    };
+  });
 }
