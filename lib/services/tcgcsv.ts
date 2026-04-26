@@ -1,8 +1,10 @@
 import Papa from 'papaparse';
+import pLimit from 'p-limit';
 
 export const POKEMON_CATEGORY_ID = 3;
 const TCGCSV_BASE = `https://tcgcsv.com/tcgplayer/${POKEMON_CATEGORY_ID}`;
 const GROUP_CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+const GROUP_FANOUT_LIMIT = pLimit(10);
 
 export type TcgcsvGroup = {
   groupId: number;
@@ -141,33 +143,35 @@ export async function searchSealed(query: string, limit: number): Promise<Sealed
 
   const results: SealedSearchHit[] = [];
   await Promise.all(
-    groupsToFetch.map(async (g) => {
-      const [products, prices] = await Promise.all([fetchProducts(g.groupId), fetchPrices(g.groupId)]);
-      const priceByProduct = new Map<number, TcgcsvPriceRow>();
-      for (const p of prices) {
-        const existing = priceByProduct.get(p.productId);
-        if (!existing || (existing.subTypeName !== 'Normal' && p.subTypeName === 'Normal')) {
-          priceByProduct.set(p.productId, p);
+    groupsToFetch.map((g) =>
+      GROUP_FANOUT_LIMIT(async () => {
+        const [products, prices] = await Promise.all([fetchProducts(g.groupId), fetchPrices(g.groupId)]);
+        const priceByProduct = new Map<number, TcgcsvPriceRow>();
+        for (const p of prices) {
+          const existing = priceByProduct.get(p.productId);
+          if (!existing || (existing.subTypeName !== 'Normal' && p.subTypeName === 'Normal')) {
+            priceByProduct.set(p.productId, p);
+          }
         }
-      }
-      for (const product of products) {
-        if (SINGLES_REJECT.test(product.name)) continue;
-        const productType = classifySealedType(product.name);
-        if (!productType) continue;
-        const price = priceByProduct.get(product.productId);
-        results.push({
-          tcgplayerProductId: product.productId,
-          name: product.name,
-          setName: g.name,
-          setCode: g.abbreviation ? g.abbreviation.toLowerCase() : null,
-          productType,
-          imageUrl: product.imageUrl,
-          marketCents: price?.marketPrice != null ? Math.round(price.marketPrice * 100) : null,
-          releaseDate: g.publishedOn ? g.publishedOn.slice(0, 10) : null,
-          groupId: g.groupId,
-        });
-      }
-    })
+        for (const product of products) {
+          if (SINGLES_REJECT.test(product.name)) continue;
+          const productType = classifySealedType(product.name);
+          if (!productType) continue;
+          const price = priceByProduct.get(product.productId);
+          results.push({
+            tcgplayerProductId: product.productId,
+            name: product.name,
+            setName: g.name,
+            setCode: g.abbreviation ? g.abbreviation.toLowerCase() : null,
+            productType,
+            imageUrl: product.imageUrl,
+            marketCents: price?.marketPrice != null ? Math.round(price.marketPrice * 100) : null,
+            releaseDate: g.publishedOn ? g.publishedOn.slice(0, 10) : null,
+            groupId: g.groupId,
+          });
+        }
+      })
+    )
   );
 
   return results
