@@ -1,0 +1,155 @@
+import 'server-only';
+import { and, or, eq, ilike, type SQL } from 'drizzle-orm';
+import { db, schema } from '@/lib/db/client';
+import {
+  applySort,
+  type AnyDto,
+  type CardResultDto,
+  type SealedResultDto,
+  type SearchKind,
+  type SortBy,
+  type Tokens,
+  type Warning,
+} from './search';
+import { getImageUrl } from '@/lib/utils/images';
+
+type LocalRow = {
+  id: number;
+  kind: string;
+  name: string;
+  setName: string | null;
+  setCode: string | null;
+  productType: string | null;
+  cardNumber: string | null;
+  rarity: string | null;
+  variant: string | null;
+  imageUrl: string | null;
+  imageStoragePath: string | null;
+  lastMarketCents: number | null;
+  lastMarketAt: Date | null;
+};
+
+function buildConditions(tokens: Tokens, kind: SearchKind): SQL | undefined {
+  const clauses: SQL[] = [];
+
+  for (const t of tokens.text) {
+    const pattern = `%${t}%`;
+    clauses.push(
+      or(ilike(schema.catalogItems.name, pattern), ilike(schema.catalogItems.setName, pattern))!
+    );
+  }
+
+  if (tokens.cardNumberFull) {
+    const head = tokens.cardNumberFull.split('/')[0];
+    clauses.push(
+      or(
+        eq(schema.catalogItems.cardNumber, tokens.cardNumberFull),
+        ilike(schema.catalogItems.cardNumber, `${head}/%`)
+      )!
+    );
+  } else if (tokens.cardNumberPartial) {
+    const n = tokens.cardNumberPartial;
+    clauses.push(
+      or(
+        eq(schema.catalogItems.cardNumber, n),
+        ilike(schema.catalogItems.cardNumber, `${n}/%`)
+      )!
+    );
+  }
+
+  if (tokens.setCode) {
+    clauses.push(eq(schema.catalogItems.setCode, tokens.setCode));
+  }
+
+  if (kind === 'sealed') clauses.push(eq(schema.catalogItems.kind, 'sealed'));
+  else if (kind === 'card') clauses.push(eq(schema.catalogItems.kind, 'card'));
+
+  if (clauses.length === 0) return undefined;
+  return and(...clauses);
+}
+
+// Exported with the __ prefix so unit tests can exercise the row-to-DTO
+// mapping without standing up a real database. Not part of the public API.
+export function __rowToDto(row: LocalRow): AnyDto | null {
+  const lastMarketAt = row.lastMarketAt?.toISOString() ?? null;
+  const imageUrl = getImageUrl({
+    imageStoragePath: row.imageStoragePath,
+    imageUrl: row.imageUrl,
+  });
+  if (row.kind === 'sealed') {
+    return {
+      type: 'sealed',
+      catalogItemId: row.id,
+      name: row.name,
+      setName: row.setName,
+      setCode: row.setCode,
+      productType: row.productType,
+      imageUrl,
+      marketCents: row.lastMarketCents,
+      lastMarketAt,
+    } satisfies SealedResultDto;
+  }
+  if (row.kind === 'card' && row.cardNumber !== null && row.variant !== null) {
+    return {
+      type: 'card',
+      catalogItemId: row.id,
+      name: row.name,
+      cardNumber: row.cardNumber,
+      setName: row.setName,
+      setCode: row.setCode,
+      rarity: row.rarity,
+      variant: row.variant,
+      imageUrl,
+      imageStoragePath: row.imageStoragePath,
+      marketCents: row.lastMarketCents,
+      lastMarketAt,
+    } satisfies CardResultDto;
+  }
+  return null;
+}
+
+export async function searchLocalCatalog(
+  tokens: Tokens,
+  kind: SearchKind,
+  limit: number,
+  sortBy: SortBy
+): Promise<{ sealed: SealedResultDto[]; cards: CardResultDto[]; warnings: Warning[] }> {
+  const conditions = buildConditions(tokens, kind);
+  if (!conditions) {
+    return { sealed: [], cards: [], warnings: [] };
+  }
+
+  // Pull a generous superset (limit * 2, capped at 1000) so we can sort
+  // in-memory and still leave headroom even after dropping rows the user
+  // can't render (e.g., card rows missing variant/cardNumber).
+  const fetchCap = Math.min(1000, Math.max(limit * 2, limit));
+  const rows = (await db
+    .select({
+      id: schema.catalogItems.id,
+      kind: schema.catalogItems.kind,
+      name: schema.catalogItems.name,
+      setName: schema.catalogItems.setName,
+      setCode: schema.catalogItems.setCode,
+      productType: schema.catalogItems.productType,
+      cardNumber: schema.catalogItems.cardNumber,
+      rarity: schema.catalogItems.rarity,
+      variant: schema.catalogItems.variant,
+      imageUrl: schema.catalogItems.imageUrl,
+      imageStoragePath: schema.catalogItems.imageStoragePath,
+      lastMarketCents: schema.catalogItems.lastMarketCents,
+      lastMarketAt: schema.catalogItems.lastMarketAt,
+    })
+    .from(schema.catalogItems)
+    .where(conditions)
+    .limit(fetchCap)) as LocalRow[];
+
+  const dtos = rows.map(__rowToDto).filter((d): d is AnyDto => d !== null);
+  const sorted = applySort(dtos, sortBy).slice(0, limit);
+  const sealed: SealedResultDto[] = [];
+  const cards: CardResultDto[] = [];
+  for (const d of sorted) {
+    if (d.type === 'sealed') sealed.push(d);
+    else cards.push(d);
+  }
+  return { sealed, cards, warnings: [] };
+}
