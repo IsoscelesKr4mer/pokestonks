@@ -68,9 +68,15 @@ const SEALED_PATTERNS: Array<{ pattern: RegExp; productType: string }> = [
   { pattern: /\bElite Trainer Box\b/i, productType: 'Elite Trainer Box' },
   { pattern: /\bBooster Box\b/i, productType: 'Booster Box' },
   { pattern: /\bBooster Bundle\b/i, productType: 'Booster Bundle' },
+  { pattern: /\bBooster Pack\b/i, productType: 'Booster Pack' },
   { pattern: /\bPremium Collection\b/i, productType: 'Premium Collection' },
   { pattern: /\bBuild & Battle\b/i, productType: 'Build & Battle' },
   { pattern: /\bCollection Box\b/i, productType: 'Collection Box' },
+  // Mega Evolution-era special boxes ("Ascended Heroes Mega Meganium ex Box",
+  // "Mega ex Boxes Case", etc.). Came after the original SEALED_PATTERNS list
+  // and weren't covered, so they used to get dropped by classifySealedType.
+  { pattern: /\bex Box(?:es)?\b/i, productType: 'ex Box' },
+  { pattern: /\bPin Collection\b/i, productType: 'Pin Collection' },
   { pattern: /\bCollection\b/i, productType: 'Collection' },
   { pattern: /\bTin\b/i, productType: 'Tin' },
   { pattern: /\bBlister\b/i, productType: 'Blister' },
