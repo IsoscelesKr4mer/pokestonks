@@ -53,9 +53,9 @@ export async function searchCards(args: {
   cardNumberFull?: string | null;
   setCode?: string | null;
   pageSize?: number;
-  // Cap the number of upstream pages to fetch. Pokémon TCG API max pageSize
-  // is 250, so maxPages=2 covers any set up to 500 cards (no real Pokémon
-  // set is that large yet).
+  // Cap the number of upstream pages to fetch. Pokémon TCG API doesn't
+  // guarantee disjoint pagination when orderBy ties, so fetching extra
+  // pages and deduping by cardId fills in cards the earlier pages missed.
   maxPages?: number;
 }): Promise<PokemonTcgCard[]> {
   const apiKey = process.env.POKEMONTCG_API_KEY;
@@ -85,7 +85,7 @@ export async function searchCards(args: {
   if (parts.length === 0) return [];
 
   const pageSize = args.pageSize ?? 50;
-  const maxPages = args.maxPages ?? 2;
+  const maxPages = args.maxPages ?? 3;
   const headers: Record<string, string> = { Accept: 'application/json', 'User-Agent': USER_AGENT };
   if (apiKey) headers['X-Api-Key'] = apiKey;
   const baseQuery = parts.join(' ');
@@ -96,11 +96,16 @@ export async function searchCards(args: {
   // than exists), filter() drops it.
   const pagePromises: Array<Promise<PokemonTcgCard[]>> = [];
   for (let page = 1; page <= maxPages; page++) {
+    // No explicit orderBy: Pokémon TCG API's natural order returns cards in
+    // numeric card-number sequence per set (1, 2, ..., 295), and the order
+    // is stable across calls so parallel pagination produces disjoint pages.
+    // Adding orderBy=-set.releaseDate,number caused `number` to be treated as
+    // a string ("1", "10", "100", ...), which buried the SIRs at the back of
+    // big sets and made parallel pages return overlapping results.
     const params = new URLSearchParams({
       q: baseQuery,
       pageSize: String(pageSize),
       page: String(page),
-      orderBy: '-set.releaseDate,number',
     });
     pagePromises.push(
       (async () => {
@@ -118,5 +123,15 @@ export async function searchCards(args: {
     );
   }
   const pages = await Promise.all(pagePromises);
-  return pages.flat();
+  // Pokémon TCG API doesn't guarantee disjoint paging when orderBy ties
+  // (different pages may return some of the same cards). Dedupe by cardId
+  // so downstream bulk upserts don't trip the partial unique index.
+  const seen = new Set<string>();
+  const out: PokemonTcgCard[] = [];
+  for (const card of pages.flat()) {
+    if (seen.has(card.cardId)) continue;
+    seen.add(card.cardId);
+    out.push(card);
+  }
+  return out;
 }

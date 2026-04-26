@@ -97,7 +97,10 @@ export type CardVariantHit = {
   marketCents: number | null;
 };
 
-const TIMEOUT_MS = 5000;
+// Vercel Hobby has a 10s function budget. Pokémon TCG API parallel pagination
+// for a 295-card set legitimately takes 4-5s; bulk upsert + framework adds
+// another ~1s. Anything under 8s here leaves headroom for cold start.
+const TIMEOUT_MS = 8000;
 
 function withTimeout<T>(p: Promise<T>): Promise<T> {
   return Promise.race([
