@@ -1,0 +1,34 @@
+{
+  "totalItems": 3,
+  "success": true,
+  "errors": [],
+  "results": [
+    {
+      "groupId": 23237,
+      "name": "Scarlet & Violet 151",
+      "abbreviation": "SV3PT5",
+      "isSupplemental": false,
+      "publishedOn": "2023-09-22T00:00:00",
+      "modifiedOn": "2024-01-04T20:24:13.503",
+      "categoryId": 3
+    },
+    {
+      "groupId": 23244,
+      "name": "Paldean Fates",
+      "abbreviation": "SV4PT5",
+      "isSupplemental": false,
+      "publishedOn": "2024-01-26T00:00:00",
+      "modifiedOn": "2024-02-01T15:00:00",
+      "categoryId": 3
+    },
+    {
+      "groupId": 1234,
+      "name": "Some Older Set",
+      "abbreviation": "OLD",
+      "isSupplemental": false,
+      "publishedOn": "2018-01-01T00:00:00",
+      "modifiedOn": "2018-02-01T00:00:00",
+      "categoryId": 3
+    }
+  ]
+}
