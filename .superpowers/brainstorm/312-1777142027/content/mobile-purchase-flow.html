@@ -1,0 +1,144 @@
+<h2>Mobile log-purchase flow</h2>
+<p class="subtitle">The vending-machine moment. Three screens, two taps + a number, done. Phone in one hand, card in the other.</p>
+
+<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; max-width: 900px; margin: 0 auto;">
+
+  <!-- Screen 1: Quick search/recents -->
+  <div style="background: #1a1a1a; border-radius: 24px; padding: 6px; box-shadow: 0 8px 32px rgba(0,0,0,0.15);">
+    <div style="background: white; border-radius: 18px; overflow: hidden; aspect-ratio: 0.48;">
+      <div style="background: white; padding: 12px; border-bottom: 1px solid #f0f0f0;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div style="font-size: 16px; color: #888;">←</div>
+          <div style="font-size: 14px; font-weight: 600;">Add purchase</div>
+        </div>
+        <div style="margin-top: 12px; background: #f3f4f6; border-radius: 10px; padding: 10px 12px; display: flex; align-items: center; gap: 8px;">
+          <span style="color: #888; font-size: 12px;">🔍</span>
+          <span style="font-size: 12px; color: #888;">Search products...</span>
+        </div>
+      </div>
+      <div style="padding: 12px;">
+        <div style="font-size: 9px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px;">Recent (this week)</div>
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;">
+          <div style="background: linear-gradient(135deg, #fb923c, #f59e0b); aspect-ratio: 0.72; border-radius: 6px; position: relative;">
+            <div style="position: absolute; bottom: 4px; left: 4px; right: 4px; background: rgba(0,0,0,0.7); color: white; font-size: 7px; padding: 2px 4px; border-radius: 2px; line-height: 1.2;">SV151 ETB</div>
+          </div>
+          <div style="background: linear-gradient(135deg, #ec4899, #f43f5e); aspect-ratio: 0.72; border-radius: 6px; position: relative;">
+            <div style="position: absolute; bottom: 4px; left: 4px; right: 4px; background: rgba(0,0,0,0.7); color: white; font-size: 7px; padding: 2px 4px; border-radius: 2px; line-height: 1.2;">Prismatic ETB</div>
+          </div>
+          <div style="background: linear-gradient(135deg, #a855f7, #6366f1); aspect-ratio: 0.72; border-radius: 6px; position: relative;">
+            <div style="position: absolute; bottom: 4px; left: 4px; right: 4px; background: rgba(0,0,0,0.7); color: white; font-size: 7px; padding: 2px 4px; border-radius: 2px; line-height: 1.2;">Surging Sparks BB</div>
+          </div>
+          <div style="background: linear-gradient(135deg, #06b6d4, #3b82f6); aspect-ratio: 0.72; border-radius: 6px; position: relative;">
+            <div style="position: absolute; bottom: 4px; left: 4px; right: 4px; background: rgba(0,0,0,0.7); color: white; font-size: 7px; padding: 2px 4px; border-radius: 2px; line-height: 1.2;">Twilight BBd</div>
+          </div>
+          <div style="background: linear-gradient(135deg, #ef4444, #f97316); aspect-ratio: 0.72; border-radius: 6px; position: relative;">
+            <div style="position: absolute; bottom: 4px; left: 4px; right: 4px; background: rgba(0,0,0,0.7); color: white; font-size: 7px; padding: 2px 4px; border-radius: 2px; line-height: 1.2;">Paldean Fates ETB</div>
+          </div>
+          <div style="background: linear-gradient(135deg, #10b981, #14b8a6); aspect-ratio: 0.72; border-radius: 6px; position: relative;">
+            <div style="position: absolute; bottom: 4px; left: 4px; right: 4px; background: rgba(0,0,0,0.7); color: white; font-size: 7px; padding: 2px 4px; border-radius: 2px; line-height: 1.2;">SV151 BB</div>
+          </div>
+        </div>
+        <div style="font-size: 9px; color: #888; text-transform: uppercase; letter-spacing: 0.5px; margin: 14px 0 8px;">Common sources</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+          <span style="font-size: 10px; background: #fef3c7; color: #92400e; padding: 4px 8px; border-radius: 12px;">Walmart vending</span>
+          <span style="font-size: 10px; background: #dbeafe; color: #1e40af; padding: 4px 8px; border-radius: 12px;">Target</span>
+          <span style="font-size: 10px; background: #fce7f3; color: #9f1239; padding: 4px 8px; border-radius: 12px;">Costco</span>
+        </div>
+      </div>
+    </div>
+    <div style="text-align: center; margin-top: 12px; font-size: 12px; color: #666;">
+      <strong>1.</strong> Tap a recent product
+    </div>
+  </div>
+
+  <!-- Screen 2: Quick form -->
+  <div style="background: #1a1a1a; border-radius: 24px; padding: 6px; box-shadow: 0 8px 32px rgba(0,0,0,0.15);">
+    <div style="background: white; border-radius: 18px; overflow: hidden; aspect-ratio: 0.48;">
+      <div style="background: white; padding: 12px; border-bottom: 1px solid #f0f0f0;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div style="font-size: 16px; color: #888;">←</div>
+          <div style="font-size: 14px; font-weight: 600;">SV151 ETB</div>
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 12px;">
+          <div style="width: 56px; height: 72px; background: linear-gradient(135deg, #fb923c, #f59e0b); border-radius: 6px;"></div>
+          <div style="flex: 1;">
+            <div style="font-size: 10px; color: #888;">Scarlet & Violet 151</div>
+            <div style="font-size: 11px; font-weight: 600; margin-top: 2px;">Elite Trainer Box</div>
+            <div style="font-size: 10px; color: #16a34a; margin-top: 4px;">Market: $49.95</div>
+          </div>
+        </div>
+      </div>
+      <div style="padding: 12px; display: flex; flex-direction: column; gap: 10px;">
+        <div>
+          <div style="font-size: 9px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Quantity</div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="width: 28px; height: 28px; border: 1px solid #ddd; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px;">−</div>
+            <div style="flex: 1; text-align: center; font-size: 16px; font-weight: 600;">1</div>
+            <div style="width: 28px; height: 28px; border: 1px solid #ddd; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px;">+</div>
+          </div>
+        </div>
+        <div>
+          <div style="font-size: 9px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Cost (with tax)</div>
+          <div style="border: 1px solid #ddd; border-radius: 6px; padding: 8px 10px; font-size: 14px; font-weight: 600;">$49.99</div>
+        </div>
+        <div>
+          <div style="font-size: 9px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Source</div>
+          <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+            <span style="font-size: 9px; background: #1a1a1a; color: white; padding: 4px 8px; border-radius: 12px; font-weight: 600;">Walmart vending</span>
+            <span style="font-size: 9px; background: #f3f4f6; color: #555; padding: 4px 8px; border-radius: 12px;">Target</span>
+            <span style="font-size: 9px; background: #f3f4f6; color: #555; padding: 4px 8px; border-radius: 12px;">Costco</span>
+            <span style="font-size: 9px; background: #f3f4f6; color: #555; padding: 4px 8px; border-radius: 12px;">+ other</span>
+          </div>
+        </div>
+        <div>
+          <div style="font-size: 9px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Date</div>
+          <div style="border: 1px solid #ddd; border-radius: 6px; padding: 6px 10px; font-size: 12px;">Today</div>
+        </div>
+        <div style="background: #16a34a; color: white; text-align: center; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 600; margin-top: 4px;">
+          Add purchase
+        </div>
+      </div>
+    </div>
+    <div style="text-align: center; margin-top: 12px; font-size: 12px; color: #666;">
+      <strong>2.</strong> Confirm qty / cost / source
+    </div>
+  </div>
+
+  <!-- Screen 3: Confirmation back to dashboard -->
+  <div style="background: #1a1a1a; border-radius: 24px; padding: 6px; box-shadow: 0 8px 32px rgba(0,0,0,0.15);">
+    <div style="background: white; border-radius: 18px; overflow: hidden; aspect-ratio: 0.48;">
+      <div style="background: #f0fdf4; padding: 14px 12px; border-bottom: 1px solid #dcfce7;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div style="width: 22px; height: 22px; background: #16a34a; border-radius: 50%; color: white; font-size: 12px; display: flex; align-items: center; justify-content: center;">✓</div>
+          <div>
+            <div style="font-size: 11px; font-weight: 600;">Added 1× SV151 ETB</div>
+            <div style="font-size: 9px; color: #555;">$49.99 · Walmart vending</div>
+          </div>
+        </div>
+      </div>
+      <div style="padding: 12px;">
+        <div style="font-size: 9px; color: #888; text-transform: uppercase;">Portfolio</div>
+        <div style="font-size: 18px; font-weight: 700; margin-top: 2px;">$8,470.50</div>
+        <div style="font-size: 10px; color: #16a34a; margin-top: 1px;">+$1,247.30 (+17.2%)</div>
+        <div style="font-size: 9px; color: #888; text-transform: uppercase; margin-top: 14px; margin-bottom: 6px;">This Holding</div>
+        <div style="display: flex; gap: 10px; padding: 8px; background: #fafafa; border-radius: 8px;">
+          <div style="width: 36px; height: 48px; background: linear-gradient(135deg, #fb923c, #f59e0b); border-radius: 4px;"></div>
+          <div style="flex: 1;">
+            <div style="font-size: 11px; font-weight: 600;">SV151 ETB</div>
+            <div style="font-size: 9px; color: #555;">5 owned · cost $39.99 avg</div>
+            <div style="font-size: 9px; color: #16a34a; margin-top: 2px;">Value $249.75 · +25%</div>
+          </div>
+        </div>
+        <div style="text-align: center; margin-top: 14px; padding: 10px; border: 1px dashed #ddd; border-radius: 8px; font-size: 11px; color: #888;">
+          + Add another
+        </div>
+      </div>
+    </div>
+    <div style="text-align: center; margin-top: 12px; font-size: 12px; color: #666;">
+      <strong>3.</strong> Toast + dashboard refresh
+    </div>
+  </div>
+
+</div>
+
+<p style="text-align: center; margin-top: 28px; color: #555; font-size: 13px; max-width: 600px; margin-left: auto; margin-right: auto;">Total interaction at the vending machine: <strong>~5 seconds</strong>. Tap recent → confirm cost → submit. The recent-products row + chip-style sources are the speed unlocks.</p>

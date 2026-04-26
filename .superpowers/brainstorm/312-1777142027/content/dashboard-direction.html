@@ -1,0 +1,136 @@
+<h2>Dashboard visual direction</h2>
+<p class="subtitle">When you open the app and land on your portfolio, which feels right? These are rough — final polish comes later.</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="grid" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 0; background: #fafafa;">
+      <div style="padding: 12px; border-bottom: 1px solid #eee; background: white;">
+        <div style="font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px;">Portfolio Value</div>
+        <div style="font-size: 22px; font-weight: 700; margin-top: 2px;">$8,420.51</div>
+        <div style="font-size: 12px; color: #16a34a; margin-top: 2px;">+$1,247.30 (+17.4%) all-time</div>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; padding: 10px;">
+        <div style="background: linear-gradient(135deg, #fb923c, #f59e0b); aspect-ratio: 0.72; border-radius: 4px; position: relative; overflow: hidden;">
+          <div style="position: absolute; bottom: 4px; left: 4px; right: 4px; background: rgba(0,0,0,0.6); color: white; font-size: 8px; padding: 2px 4px; border-radius: 2px;">+24%</div>
+        </div>
+        <div style="background: linear-gradient(135deg, #a855f7, #6366f1); aspect-ratio: 0.72; border-radius: 4px; position: relative;">
+          <div style="position: absolute; bottom: 4px; left: 4px; right: 4px; background: rgba(0,0,0,0.6); color: white; font-size: 8px; padding: 2px 4px; border-radius: 2px;">+18%</div>
+        </div>
+        <div style="background: linear-gradient(135deg, #ef4444, #f97316); aspect-ratio: 0.72; border-radius: 4px; position: relative;">
+          <div style="position: absolute; bottom: 4px; left: 4px; right: 4px; background: rgba(0,0,0,0.6); color: white; font-size: 8px; padding: 2px 4px; border-radius: 2px;">+12%</div>
+        </div>
+        <div style="background: linear-gradient(135deg, #06b6d4, #3b82f6); aspect-ratio: 0.72; border-radius: 4px; position: relative;">
+          <div style="position: absolute; bottom: 4px; left: 4px; right: 4px; background: rgba(0,0,0,0.6); color: white; font-size: 8px; padding: 2px 4px; border-radius: 2px;">+8%</div>
+        </div>
+        <div style="background: linear-gradient(135deg, #10b981, #14b8a6); aspect-ratio: 0.72; border-radius: 4px; position: relative;">
+          <div style="position: absolute; bottom: 4px; left: 4px; right: 4px; background: rgba(0,0,0,0.6); color: white; font-size: 8px; padding: 2px 4px; border-radius: 2px;">-3%</div>
+        </div>
+        <div style="background: linear-gradient(135deg, #ec4899, #f43f5e); aspect-ratio: 0.72; border-radius: 4px; position: relative;">
+          <div style="position: absolute; bottom: 4px; left: 4px; right: 4px; background: rgba(0,0,0,0.6); color: white; font-size: 8px; padding: 2px 4px; border-radius: 2px;">+31%</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A · Visual Grid (Collectr-like)</h3>
+      <p>Product images dominate. Stat banner up top, then a tile per holding with the % change overlaid. Browse-first — built for "show me my collection" energy.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="list" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 0; background: white;">
+      <div style="padding: 12px; border-bottom: 1px solid #eee;">
+        <div style="font-size: 11px; color: #888; text-transform: uppercase; letter-spacing: 0.5px;">Portfolio Value</div>
+        <div style="font-size: 22px; font-weight: 700; margin-top: 2px;">$8,420.51</div>
+        <div style="font-size: 12px; color: #16a34a; margin-top: 2px;">+$1,247.30 (+17.4%) all-time</div>
+      </div>
+      <div style="font-size: 10px; color: #aaa; padding: 6px 12px; background: #fafafa; display: grid; grid-template-columns: 1fr 50px 60px 60px; gap: 8px; align-items: center; border-bottom: 1px solid #eee;">
+        <div>HOLDING</div>
+        <div style="text-align: right;">QTY</div>
+        <div style="text-align: right;">VALUE</div>
+        <div style="text-align: right;">P&L</div>
+      </div>
+      <div style="font-size: 10px; padding: 8px 12px; display: grid; grid-template-columns: 1fr 50px 60px 60px; gap: 8px; align-items: center; border-bottom: 1px solid #f3f3f3;">
+        <div style="display: flex; gap: 6px; align-items: center;"><div style="width: 18px; height: 24px; background: linear-gradient(135deg, #fb923c, #f59e0b); border-radius: 2px;"></div><div><div style="font-weight: 600;">SV151 ETB</div><div style="color: #888; font-size: 8px;">cost $39.99</div></div></div>
+        <div style="text-align: right; color: #555;">4</div>
+        <div style="text-align: right; font-weight: 600;">$199</div>
+        <div style="text-align: right; color: #16a34a;">+24%</div>
+      </div>
+      <div style="font-size: 10px; padding: 8px 12px; display: grid; grid-template-columns: 1fr 50px 60px 60px; gap: 8px; align-items: center; border-bottom: 1px solid #f3f3f3;">
+        <div style="display: flex; gap: 6px; align-items: center;"><div style="width: 18px; height: 24px; background: linear-gradient(135deg, #a855f7, #6366f1); border-radius: 2px;"></div><div><div style="font-weight: 600;">Surging Sparks BB</div><div style="color: #888; font-size: 8px;">cost $159</div></div></div>
+        <div style="text-align: right; color: #555;">2</div>
+        <div style="text-align: right; font-weight: 600;">$378</div>
+        <div style="text-align: right; color: #16a34a;">+18%</div>
+      </div>
+      <div style="font-size: 10px; padding: 8px 12px; display: grid; grid-template-columns: 1fr 50px 60px 60px; gap: 8px; align-items: center; border-bottom: 1px solid #f3f3f3;">
+        <div style="display: flex; gap: 6px; align-items: center;"><div style="width: 18px; height: 24px; background: linear-gradient(135deg, #ef4444, #f97316); border-radius: 2px;"></div><div><div style="font-weight: 600;">Paldean Fates ETB</div><div style="color: #888; font-size: 8px;">cost $49.99</div></div></div>
+        <div style="text-align: right; color: #555;">3</div>
+        <div style="text-align: right; font-weight: 600;">$168</div>
+        <div style="text-align: right; color: #16a34a;">+12%</div>
+      </div>
+      <div style="font-size: 10px; padding: 8px 12px; display: grid; grid-template-columns: 1fr 50px 60px 60px; gap: 8px; align-items: center; border-bottom: 1px solid #f3f3f3;">
+        <div style="display: flex; gap: 6px; align-items: center;"><div style="width: 18px; height: 24px; background: linear-gradient(135deg, #06b6d4, #3b82f6); border-radius: 2px;"></div><div><div style="font-weight: 600;">Twilight Masquerade BBd</div><div style="color: #888; font-size: 8px;">cost $24.99</div></div></div>
+        <div style="text-align: right; color: #555;">5</div>
+        <div style="text-align: right; font-weight: 600;">$135</div>
+        <div style="text-align: right; color: #16a34a;">+8%</div>
+      </div>
+      <div style="font-size: 10px; padding: 8px 12px; display: grid; grid-template-columns: 1fr 50px 60px 60px; gap: 8px; align-items: center;">
+        <div style="display: flex; gap: 6px; align-items: center;"><div style="width: 18px; height: 24px; background: linear-gradient(135deg, #10b981, #14b8a6); border-radius: 2px;"></div><div><div style="font-weight: 600;">Charizard ex 199 RH</div><div style="color: #888; font-size: 8px;">cost $42</div></div></div>
+        <div style="text-align: right; color: #555;">1</div>
+        <div style="text-align: right; font-weight: 600;">$41</div>
+        <div style="text-align: right; color: #dc2626;">-3%</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B · Tight List (Robinhood-like)</h3>
+      <p>Numbers first. Small thumbnails, dense data per row. Built for "what's my P&L right now" — fast scanning, sortable columns, scales to hundreds of holdings without scrolling forever.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="hub" onclick="toggleSelect(this)">
+    <div class="card-image" style="padding: 0; background: #fafafa;">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 8px;">
+        <div style="background: white; border-radius: 4px; padding: 8px; grid-column: 1 / 3;">
+          <div style="font-size: 9px; color: #888; text-transform: uppercase;">Portfolio Value</div>
+          <div style="font-size: 20px; font-weight: 700;">$8,420.51</div>
+          <svg viewBox="0 0 200 30" style="width: 100%; height: 22px; margin-top: 4px;"><polyline points="0,25 20,22 40,18 60,20 80,15 100,12 120,14 140,8 160,10 180,5 200,3" fill="none" stroke="#16a34a" stroke-width="1.5"/></svg>
+        </div>
+        <div style="background: white; border-radius: 4px; padding: 8px;">
+          <div style="font-size: 8px; color: #888; text-transform: uppercase;">Unrealized</div>
+          <div style="font-size: 13px; font-weight: 700; color: #16a34a;">+$1,247</div>
+          <div style="font-size: 9px; color: #888;">+17.4%</div>
+        </div>
+        <div style="background: white; border-radius: 4px; padding: 8px;">
+          <div style="font-size: 8px; color: #888; text-transform: uppercase;">Realized YTD</div>
+          <div style="font-size: 13px; font-weight: 700; color: #16a34a;">+$284</div>
+          <div style="font-size: 9px; color: #888;">3 sales</div>
+        </div>
+        <div style="background: white; border-radius: 4px; padding: 8px; grid-column: 1 / 3;">
+          <div style="font-size: 9px; color: #888; text-transform: uppercase; margin-bottom: 4px;">Top Movers</div>
+          <div style="display: flex; gap: 6px; align-items: center; font-size: 10px; padding: 3px 0;">
+            <div style="width: 14px; height: 18px; background: linear-gradient(135deg, #ec4899, #f43f5e); border-radius: 2px;"></div>
+            <div style="flex: 1;">Prismatic Evolutions</div>
+            <div style="color: #16a34a; font-weight: 600;">+31%</div>
+          </div>
+          <div style="display: flex; gap: 6px; align-items: center; font-size: 10px; padding: 3px 0;">
+            <div style="width: 14px; height: 18px; background: linear-gradient(135deg, #fb923c, #f59e0b); border-radius: 2px;"></div>
+            <div style="flex: 1;">SV151 ETB</div>
+            <div style="color: #16a34a; font-weight: 600;">+24%</div>
+          </div>
+          <div style="display: flex; gap: 6px; align-items: center; font-size: 10px; padding: 3px 0;">
+            <div style="width: 14px; height: 18px; background: linear-gradient(135deg, #10b981, #14b8a6); border-radius: 2px;"></div>
+            <div style="flex: 1;">Charizard ex 199 RH</div>
+            <div style="color: #dc2626; font-weight: 600;">-3%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C · Hub (Mint-like)</h3>
+      <p>Multi-card layout. Big stat plus sparkline, side cards for unrealized vs realized, "top movers" widget. More dashboard-y — designed for quick "how am I doing?" on phone or desktop. Full holdings list lives one tap away.</p>
+    </div>
+  </div>
+
+</div>
+
+<p style="text-align: center; margin-top: 24px; color: #888; font-size: 13px;">Click a card to pick. You can also tell me "B but with the sparkline from C" or anything in between.</p>
