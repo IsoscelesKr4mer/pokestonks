@@ -25,7 +25,7 @@ describe('pokemontcg.searchCards', () => {
 
   it('returns empty array on 404', async () => {
     server.use(
-      http.get('https://api.pokemontcg.io/v2/cards', () => HttpResponse.json({ data: [] }))
+      http.get('https://api.pokemontcg.io/v2/cards', () => new HttpResponse(null, { status: 404 }))
     );
     const results = await searchCards({ text: ['nonsense'] });
     expect(results).toEqual([]);
