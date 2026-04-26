@@ -26,6 +26,7 @@ export const catalogItems = pgTable(
     kindSetCodeIdx: index('catalog_items_kind_set_code_idx').on(t.kind, t.setCode),
     nameSearchIdx: index('catalog_items_name_search_idx').using('gin', sql`to_tsvector('english', ${t.name})`),
     cardNumberIdx: index('catalog_items_card_number_idx').on(t.cardNumber).where(sql`${t.kind} = 'card'`),
+    // NULLS NOT DISTINCT applied via migration 0002; drizzle-orm 0.45 can't express it on partial indexes
     cardUniqueIdx: uniqueIndex('catalog_items_card_unique_idx')
       .on(t.setCode, t.cardNumber, t.variant)
       .where(sql`${t.kind} = 'card'`),
