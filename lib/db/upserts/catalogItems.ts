@@ -50,7 +50,7 @@ export async function upsertSealed(input: SealedUpsertInput): Promise<UpsertResu
       imageUrl: input.imageUrl,
       releaseDate: input.releaseDate,
       lastMarketCents: input.lastMarketCents,
-      lastMarketAt: sql`NOW()`,
+      lastMarketAt: input.lastMarketCents !== null ? sql`NOW()` : null,
     })
     .onConflictDoUpdate({
       target: schema.catalogItems.tcgplayerProductId,
@@ -62,7 +62,7 @@ export async function upsertSealed(input: SealedUpsertInput): Promise<UpsertResu
         imageUrl: sql`COALESCE(${schema.catalogItems.imageUrl}, excluded.image_url)`,
         releaseDate: sql`excluded.release_date`,
         lastMarketCents: sql`excluded.last_market_cents`,
-        lastMarketAt: sql`NOW()`,
+        lastMarketAt: sql`CASE WHEN excluded.last_market_cents IS NOT NULL THEN NOW() ELSE ${schema.catalogItems.lastMarketAt} END`,
       },
     })
     .returning({
@@ -97,7 +97,7 @@ export async function bulkUpsertCards(inputs: CardUpsertInput[]): Promise<Upsert
     imageUrl: input.imageUrl,
     releaseDate: input.releaseDate,
     lastMarketCents: input.lastMarketCents,
-    lastMarketAt: sql`NOW()`,
+    lastMarketAt: input.lastMarketCents !== null ? sql`NOW()` : null,
   }));
   const rows = await db
     .insert(schema.catalogItems)
@@ -115,7 +115,7 @@ export async function bulkUpsertCards(inputs: CardUpsertInput[]): Promise<Upsert
         imageUrl: sql`COALESCE(${schema.catalogItems.imageUrl}, excluded.image_url)`,
         releaseDate: sql`excluded.release_date`,
         lastMarketCents: sql`excluded.last_market_cents`,
-        lastMarketAt: sql`NOW()`,
+        lastMarketAt: sql`CASE WHEN excluded.last_market_cents IS NOT NULL THEN NOW() ELSE ${schema.catalogItems.lastMarketAt} END`,
       },
     })
     .returning({
