@@ -176,11 +176,27 @@ function classifySealedType(name: string): string | null {
   return null;
 }
 
+// Common shorthand for sealed product types. "etb" is what users type;
+// product names contain "Elite Trainer Box" verbatim. Expanding here lets the
+// AND filter still work for "151 etb" without the user typing the full phrase.
+const SEALED_ABBREVIATIONS: Record<string, string[]> = {
+  etb: ['elite', 'trainer', 'box'],
+  bb: ['booster', 'box'],
+  uvc: ['ultra', 'violet', 'collection'],
+};
+
 function tokenize(q: string): string[] {
-  return q
-    .toLowerCase()
-    .split(/\s+/)
-    .filter((t) => t.length > 0);
+  const out: string[] = [];
+  for (const raw of q.toLowerCase().split(/\s+/)) {
+    if (!raw) continue;
+    const expansion = SEALED_ABBREVIATIONS[raw];
+    if (expansion) {
+      out.push(...expansion);
+    } else {
+      out.push(raw);
+    }
+  }
+  return out;
 }
 
 function score(name: string, setName: string, tokens: string[]): number {
@@ -192,6 +208,11 @@ function score(name: string, setName: string, tokens: string[]): number {
     else if (haystack.includes(t)) s += 3;
   }
   return s;
+}
+
+function matchesAllTokens(name: string, setName: string, tokens: string[]): boolean {
+  const haystack = `${name} ${setName}`.toLowerCase();
+  return tokens.every((t) => haystack.includes(t));
 }
 
 export async function searchSealed(query: string, limit: number): Promise<SealedSearchHit[]> {
@@ -239,9 +260,12 @@ export async function searchSealed(query: string, limit: number): Promise<Sealed
     )
   );
 
+  // Require every text token to appear (AND), not just contribute to a score.
+  // "ascended heroes ex box" should only match products whose name+set contain
+  // all four words, otherwise an ETB scores 30 and pollutes the results.
   return results
+    .filter((r) => matchesAllTokens(r.name, r.setName, tokens))
     .map((r) => ({ r, s: score(r.name, r.setName, tokens) }))
-    .filter(({ s }) => s > 0)
     .sort((a, b) => b.s - a.s)
     .slice(0, limit)
     .map(({ r }) => r);

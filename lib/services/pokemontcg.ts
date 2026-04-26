@@ -27,12 +27,36 @@ type RawCard = {
   };
 };
 
+function mapRawCard(c: RawCard): PokemonTcgCard {
+  const rawPrices = c.tcgplayer?.prices ?? {};
+  const pricesByVariant: Record<string, number | null> = {};
+  for (const [variant, p] of Object.entries(rawPrices)) {
+    const market = p?.market;
+    pricesByVariant[variant] = market != null ? Math.round(market * 100) : null;
+  }
+  return {
+    cardId: c.id,
+    name: c.name,
+    rarity: c.rarity ?? null,
+    number: c.number,
+    setName: c.set.name ?? null,
+    setCode: c.set.id ?? null,
+    releaseDate: c.set.releaseDate ? c.set.releaseDate.replaceAll('/', '-') : null,
+    imageUrl: c.images.large ?? c.images.small ?? null,
+    pricesByVariant,
+  };
+}
+
 export async function searchCards(args: {
   text?: string[];
   cardNumberPartial?: string | null;
   cardNumberFull?: string | null;
   setCode?: string | null;
   pageSize?: number;
+  // Cap the number of upstream pages to fetch. Pokémon TCG API max pageSize
+  // is 250, so maxPages=2 covers any set up to 500 cards (no real Pokémon
+  // set is that large yet).
+  maxPages?: number;
 }): Promise<PokemonTcgCard[]> {
   const apiKey = process.env.POKEMONTCG_API_KEY;
   const parts: string[] = [];
@@ -59,35 +83,31 @@ export async function searchCards(args: {
     parts.push(`set.id:${args.setCode}`);
   }
   if (parts.length === 0) return [];
-  const params = new URLSearchParams({
-    q: parts.join(' '),
-    pageSize: String(args.pageSize ?? 50),
-    orderBy: '-set.releaseDate,number',
-  });
+
+  const pageSize = args.pageSize ?? 50;
+  const maxPages = args.maxPages ?? 2;
   const headers: Record<string, string> = { Accept: 'application/json', 'User-Agent': USER_AGENT };
   if (apiKey) headers['X-Api-Key'] = apiKey;
+  const baseQuery = parts.join(' ');
 
-  const res = await fetch(`${POKEMONTCG_BASE}/cards?${params.toString()}`, { headers });
-  if (res.status === 404) return [];
-  if (!res.ok) throw new Error(`pokemontcg cards ${res.status}`);
-  const body = (await res.json()) as { data: RawCard[] };
-  return body.data.map((c) => {
-    const rawPrices = c.tcgplayer?.prices ?? {};
-    const pricesByVariant: Record<string, number | null> = {};
-    for (const [variant, p] of Object.entries(rawPrices)) {
-      const market = p?.market;
-      pricesByVariant[variant] = market != null ? Math.round(market * 100) : null;
-    }
-    return {
-      cardId: c.id,
-      name: c.name,
-      rarity: c.rarity ?? null,
-      number: c.number,
-      setName: c.set.name ?? null,
-      setCode: c.set.id ?? null,
-      releaseDate: c.set.releaseDate ? c.set.releaseDate.replaceAll('/', '-') : null,
-      imageUrl: c.images.large ?? c.images.small ?? null,
-      pricesByVariant,
-    };
-  });
+  const all: PokemonTcgCard[] = [];
+  for (let page = 1; page <= maxPages; page++) {
+    const params = new URLSearchParams({
+      q: baseQuery,
+      pageSize: String(pageSize),
+      page: String(page),
+      orderBy: '-set.releaseDate,number',
+    });
+    const res = await fetch(`${POKEMONTCG_BASE}/cards?${params.toString()}`, { headers });
+    if (res.status === 404) break;
+    if (!res.ok) throw new Error(`pokemontcg cards ${res.status}`);
+    const body = (await res.json()) as { data: RawCard[]; totalCount?: number };
+    const mapped = body.data.map(mapRawCard);
+    all.push(...mapped);
+    // Stop early if upstream returned fewer than pageSize (last page) or we've
+    // already pulled everything totalCount says exists.
+    if (mapped.length < pageSize) break;
+    if (typeof body.totalCount === 'number' && all.length >= body.totalCount) break;
+  }
+  return all;
 }
