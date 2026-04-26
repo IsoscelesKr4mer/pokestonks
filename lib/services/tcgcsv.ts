@@ -49,19 +49,30 @@ export function findGroupBySetName(setName: string, groups: TcgcsvGroup[]): Tcgc
   return candidates[0];
 }
 
+// In-flight promise dedup. Without this, 295 concurrent search-time callers
+// each trigger their own network round-trip before the first one populates
+// the cache (thundering herd).
+let groupFetchInflight: Promise<TcgcsvGroup[]> | null = null;
+
 export async function getGroups(now: number = Date.now()): Promise<TcgcsvGroup[]> {
   if (groupCache && now - groupCache.fetchedAt < GROUP_CACHE_TTL_MS) {
     return groupCache.groups;
   }
-  const res = await fetch(`${TCGCSV_BASE}/groups`, {
-    headers: { Accept: 'application/json', 'User-Agent': USER_AGENT },
-  });
-  if (!res.ok) {
-    throw new Error(`TCGCSV groups fetch failed: ${res.status}`);
-  }
-  const body = (await res.json()) as { results: TcgcsvGroup[] };
-  groupCache = { fetchedAt: now, groups: body.results };
-  return body.results;
+  if (groupFetchInflight) return groupFetchInflight;
+  groupFetchInflight = (async () => {
+    try {
+      const res = await fetch(`${TCGCSV_BASE}/groups`, {
+        headers: { Accept: 'application/json', 'User-Agent': USER_AGENT },
+      });
+      if (!res.ok) throw new Error(`TCGCSV groups fetch failed: ${res.status}`);
+      const body = (await res.json()) as { results: TcgcsvGroup[] };
+      groupCache = { fetchedAt: now, groups: body.results };
+      return body.results;
+    } finally {
+      groupFetchInflight = null;
+    }
+  })();
+  return groupFetchInflight;
 }
 
 const SEALED_PATTERNS: Array<{ pattern: RegExp; productType: string }> = [
@@ -119,10 +130,16 @@ export type SealedSearchHit = {
 const PER_GROUP_TTL_MS = 5 * 60 * 1000;
 const productsCache = new Map<number, { fetchedAt: number; data: TcgcsvProduct[] }>();
 const pricesCache = new Map<number, { fetchedAt: number; data: TcgcsvPriceRow[] }>();
+// In-flight dedup so 295 concurrent search-time callers don't all hit the
+// network before any of them have populated the cache.
+const productsInflight = new Map<number, Promise<TcgcsvProduct[]>>();
+const pricesInflight = new Map<number, Promise<TcgcsvPriceRow[]>>();
 
 export function __resetPerGroupCachesForTests() {
   productsCache.clear();
   pricesCache.clear();
+  productsInflight.clear();
+  pricesInflight.clear();
 }
 
 export async function fetchProducts(groupId: number, now: number = Date.now()): Promise<TcgcsvProduct[]> {
@@ -130,13 +147,23 @@ export async function fetchProducts(groupId: number, now: number = Date.now()): 
   if (cached && now - cached.fetchedAt < PER_GROUP_TTL_MS) {
     return cached.data;
   }
-  const res = await fetch(`${TCGCSV_BASE}/${groupId}/products`, {
-    headers: { Accept: 'application/json', 'User-Agent': USER_AGENT },
-  });
-  if (!res.ok) throw new Error(`tcgcsv products ${groupId} ${res.status}`);
-  const body = (await res.json()) as { results: TcgcsvProduct[] };
-  productsCache.set(groupId, { fetchedAt: now, data: body.results });
-  return body.results;
+  const existing = productsInflight.get(groupId);
+  if (existing) return existing;
+  const promise = (async () => {
+    try {
+      const res = await fetch(`${TCGCSV_BASE}/${groupId}/products`, {
+        headers: { Accept: 'application/json', 'User-Agent': USER_AGENT },
+      });
+      if (!res.ok) throw new Error(`tcgcsv products ${groupId} ${res.status}`);
+      const body = (await res.json()) as { results: TcgcsvProduct[] };
+      productsCache.set(groupId, { fetchedAt: now, data: body.results });
+      return body.results;
+    } finally {
+      productsInflight.delete(groupId);
+    }
+  })();
+  productsInflight.set(groupId, promise);
+  return promise;
 }
 
 type RawPriceRow = {
@@ -154,25 +181,35 @@ export async function fetchPrices(groupId: number, now: number = Date.now()): Pr
   if (cached && now - cached.fetchedAt < PER_GROUP_TTL_MS) {
     return cached.data;
   }
+  const existing = pricesInflight.get(groupId);
+  if (existing) return existing;
   // TCGCSV serves /prices as JSON (despite the project name). Earlier code
   // tried to parse it as CSV via Papa, which silently produced empty rows
   // and made every sealed price come back null.
-  const res = await fetch(`${TCGCSV_BASE}/${groupId}/prices`, {
-    headers: { Accept: 'application/json', 'User-Agent': USER_AGENT },
-  });
-  if (!res.ok) throw new Error(`tcgcsv prices ${groupId} ${res.status}`);
-  const body = (await res.json()) as { results: RawPriceRow[] };
-  const rows = (body.results ?? [])
-    .filter((r) => r.productId != null)
-    .map<TcgcsvPriceRow>((r) => ({
-      productId: Number(r.productId),
-      marketPrice: r.marketPrice != null ? Number(r.marketPrice) : null,
-      lowPrice: r.lowPrice != null ? Number(r.lowPrice) : null,
-      highPrice: r.highPrice != null ? Number(r.highPrice) : null,
-      subTypeName: r.subTypeName ?? 'Normal',
-    }));
-  pricesCache.set(groupId, { fetchedAt: now, data: rows });
-  return rows;
+  const promise = (async () => {
+    try {
+      const res = await fetch(`${TCGCSV_BASE}/${groupId}/prices`, {
+        headers: { Accept: 'application/json', 'User-Agent': USER_AGENT },
+      });
+      if (!res.ok) throw new Error(`tcgcsv prices ${groupId} ${res.status}`);
+      const body = (await res.json()) as { results: RawPriceRow[] };
+      const rows = (body.results ?? [])
+        .filter((r) => r.productId != null)
+        .map<TcgcsvPriceRow>((r) => ({
+          productId: Number(r.productId),
+          marketPrice: r.marketPrice != null ? Number(r.marketPrice) : null,
+          lowPrice: r.lowPrice != null ? Number(r.lowPrice) : null,
+          highPrice: r.highPrice != null ? Number(r.highPrice) : null,
+          subTypeName: r.subTypeName ?? 'Normal',
+        }));
+      pricesCache.set(groupId, { fetchedAt: now, data: rows });
+      return rows;
+    } finally {
+      pricesInflight.delete(groupId);
+    }
+  })();
+  pricesInflight.set(groupId, promise);
+  return promise;
 }
 
 function classifySealedType(name: string): string | null {
