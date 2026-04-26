@@ -25,7 +25,15 @@ export async function GET(request: NextRequest) {
   //    fetched + cached prices — sub-second response when we hit.
   const tokens = tokenizeQuery(trimmed);
   const local = await searchLocalCatalog(tokens, kind, limit, sortBy);
-  if (local.sealed.length + local.cards.length > 0) {
+  const localCount = local.sealed.length + local.cards.length;
+  // Trust local only if at least one row has a populated price. A query that
+  // matches existing rows but with null prices everywhere means the rows were
+  // imported before prices were stored (legacy data) — fall through to
+  // upstream once to populate them, then subsequent searches stay local.
+  const localHasAnyPrice =
+    local.sealed.some((r) => r.marketCents !== null) ||
+    local.cards.some((r) => r.marketCents !== null);
+  if (localCount > 0 && localHasAnyPrice) {
     // searchLocalCatalog already sorted+sliced, but the partition by kind
     // breaks the global sort order. Re-merge and re-sort across both lists.
     const merged = applySort([...local.sealed, ...local.cards], sortBy).slice(0, limit);
@@ -44,7 +52,7 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  // 2) Nothing in local. Fall back to the upstream-import path.
+  // 2) Nothing usable in local. Fall back to the upstream-import path.
   const upstream = await searchAll(trimmed, kind, limit, sortBy);
   return NextResponse.json(
     { ...upstream, source: 'upstream' },
