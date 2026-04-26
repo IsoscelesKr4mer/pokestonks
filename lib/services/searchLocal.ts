@@ -29,31 +29,39 @@ type LocalRow = {
   lastMarketAt: Date | null;
 };
 
+// Drizzle's or() returns SQL | undefined when its args might be undefined.
+// We always pass concrete expressions, so wrap to narrow the type.
+function orRequired(...args: SQL[]): SQL {
+  const result = or(...args);
+  if (!result) throw new Error('orRequired called with no expressions');
+  return result;
+}
+
 function buildConditions(tokens: Tokens, kind: SearchKind): SQL | undefined {
   const clauses: SQL[] = [];
 
   for (const t of tokens.text) {
     const pattern = `%${t}%`;
     clauses.push(
-      or(ilike(schema.catalogItems.name, pattern), ilike(schema.catalogItems.setName, pattern))!
+      orRequired(ilike(schema.catalogItems.name, pattern), ilike(schema.catalogItems.setName, pattern))
     );
   }
 
   if (tokens.cardNumberFull) {
     const head = tokens.cardNumberFull.split('/')[0];
     clauses.push(
-      or(
+      orRequired(
         eq(schema.catalogItems.cardNumber, tokens.cardNumberFull),
         ilike(schema.catalogItems.cardNumber, `${head}/%`)
-      )!
+      )
     );
   } else if (tokens.cardNumberPartial) {
     const n = tokens.cardNumberPartial;
     clauses.push(
-      or(
+      orRequired(
         eq(schema.catalogItems.cardNumber, n),
         ilike(schema.catalogItems.cardNumber, `${n}/%`)
-      )!
+      )
     );
   }
 
@@ -122,7 +130,7 @@ export async function searchLocalCatalog(
   // Pull a generous superset (limit * 2, capped at 1000) so we can sort
   // in-memory and still leave headroom even after dropping rows the user
   // can't render (e.g., card rows missing variant/cardNumber).
-  const fetchCap = Math.min(1000, Math.max(limit * 2, limit));
+  const fetchCap = Math.min(1000, limit * 2);
   const rows = (await db
     .select({
       id: schema.catalogItems.id,
