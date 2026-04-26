@@ -30,14 +30,24 @@ export async function searchCards(args: {
 }): Promise<PokemonTcgCard[]> {
   const apiKey = process.env.POKEMONTCG_API_KEY;
   const parts: string[] = [];
+  // Each text token can match either the card name OR the set name. This lets
+  // queries like "pikachu ascended heroes" return Pikachu cards in the Ascended
+  // Heroes set (Collectr-style behavior).
   for (const t of args.text ?? []) {
-    parts.push(`name:*${t}*`);
+    parts.push(`(name:*${t}* OR set.name:*${t}*)`);
   }
-  if (args.cardNumberFull) {
-    const [n] = args.cardNumberFull.split('/');
-    parts.push(`number:${n}`);
-  } else if (args.cardNumberPartial) {
-    parts.push(`number:${args.cardNumberPartial}`);
+  // Pokémon TCG API stores `number` as the printed string. Sets with totals <100
+  // print "74" not "074", so try both forms when the user typed "074/088".
+  const numberFromQuery = args.cardNumberFull
+    ? args.cardNumberFull.split('/')[0]
+    : args.cardNumberPartial ?? null;
+  if (numberFromQuery) {
+    const stripped = numberFromQuery.replace(/^0+/, '') || '0';
+    if (stripped !== numberFromQuery) {
+      parts.push(`(number:${numberFromQuery} OR number:${stripped})`);
+    } else {
+      parts.push(`number:${numberFromQuery}`);
+    }
   }
   if (args.setCode) {
     parts.push(`set.id:${args.setCode}`);

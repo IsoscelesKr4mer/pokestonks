@@ -5,7 +5,7 @@ import charizardFixture from '../../tests/fixtures/pokemontcg-charizard.json';
 import { searchCards } from './pokemontcg';
 
 describe('pokemontcg.searchCards', () => {
-  it('builds q=name:* number:* from text+number tokens', async () => {
+  it('builds q with name OR set.name + number from text+number tokens', async () => {
     let lastUrl = '';
     server.use(
       http.get('https://api.pokemontcg.io/v2/cards', ({ request }) => {
@@ -14,13 +14,26 @@ describe('pokemontcg.searchCards', () => {
       })
     );
     const results = await searchCards({ text: ['charizard'], cardNumberPartial: '199' });
-    expect(lastUrl).toContain('q=');
-    expect(decodeURIComponent(lastUrl)).toContain('name:*charizard*');
-    expect(decodeURIComponent(lastUrl)).toContain('number:199');
+    const decoded = decodeURIComponent(lastUrl).replaceAll('+', ' ');
+    expect(decoded).toContain('(name:*charizard* OR set.name:*charizard*)');
+    expect(decoded).toContain('number:199');
     expect(results).toHaveLength(2);
     expect(results[0].cardId).toBe('sv3pt5-199');
     expect(results[0].imageUrl).toBe('https://images.pokemontcg.io/sv3pt5/199_hires.png');
     expect(results[0].setCode).toBe('sv3pt5');
+  });
+
+  it('strips leading zeros from card number and queries both forms', async () => {
+    let lastUrl = '';
+    server.use(
+      http.get('https://api.pokemontcg.io/v2/cards', ({ request }) => {
+        lastUrl = request.url;
+        return HttpResponse.json({ data: [] });
+      })
+    );
+    await searchCards({ cardNumberFull: '074/088' });
+    const decoded = decodeURIComponent(lastUrl).replaceAll('+', ' ');
+    expect(decoded).toContain('(number:074 OR number:74)');
   });
 
   it('returns empty array on 404', async () => {
