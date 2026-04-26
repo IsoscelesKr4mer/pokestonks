@@ -4,15 +4,20 @@ import { useQuery } from '@tanstack/react-query';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
 import { SearchResultRow, type ResultRow } from './SearchResultRow';
+import { RefreshButton } from './RefreshButton';
+import { formatRelativeTime } from '@/lib/utils/time';
 
 type SortBy = 'price-desc' | 'price-asc' | 'rarity-desc' | 'relevance' | 'name';
+
+type ResultRowWithMeta = ResultRow & { lastMarketAt?: string | null };
 
 type SearchResponse = {
   query: string;
   kind: 'all' | 'sealed' | 'card';
   sortBy: SortBy;
-  results: ResultRow[];
+  results: ResultRowWithMeta[];
   warnings: Array<{ source: string; message: string }>;
+  source?: 'local' | 'upstream' | 'refresh';
 };
 
 const KINDS: Array<{ key: 'all' | 'sealed' | 'card'; label: string }> = [
@@ -30,7 +35,6 @@ const SORTS: Array<{ key: SortBy; label: string }> = [
 ];
 
 const ALL_RARITIES = '__all__';
-
 const PAGE_SIZE = 24;
 
 export function SearchBox() {
@@ -46,13 +50,10 @@ export function SearchBox() {
     return () => clearTimeout(t);
   }, [q]);
 
-  // Reset visible count whenever inputs/filters change.
   useEffect(() => {
     setShown(PAGE_SIZE);
   }, [debounced, kind, sortBy, rarity]);
 
-  // Reset rarity filter whenever the underlying query changes — old options
-  // may no longer apply to the new result set.
   useEffect(() => {
     setRarity(ALL_RARITIES);
   }, [debounced, kind]);
@@ -67,12 +68,9 @@ export function SearchBox() {
       return res.json();
     },
     enabled,
-    // Match the API's Cache-Control max-age. Within 5 minutes the
-    // in-memory query cache short-circuits the network entirely.
     staleTime: 5 * 60 * 1000,
   });
 
-  // Build the rarity dropdown from rarities present in the current result set.
   const rarityOptions = useMemo(() => {
     if (!data) return [] as string[];
     const seen = new Set<string>();
@@ -83,7 +81,7 @@ export function SearchBox() {
   }, [data]);
 
   const filteredResults = useMemo(() => {
-    if (!data) return [] as ResultRow[];
+    if (!data) return [] as ResultRowWithMeta[];
     if (rarity === ALL_RARITIES) return data.results;
     return data.results.filter((r) => r.type === 'card' && r.rarity === rarity);
   }, [data, rarity]);
@@ -91,10 +89,23 @@ export function SearchBox() {
   const visible = filteredResults.slice(0, shown);
   const hasMore = filteredResults.length > shown;
 
-  // Trigger background image caching for the IDs the user is currently
-  // looking at. After the first fetch the catalog row's image_storage_path
-  // gets populated and subsequent searches return a Supabase Storage URL,
-  // which is much faster than re-pulling from images.pokemontcg.io.
+  // "Updated" caption: oldest lastMarketAt among visible results = worst-case freshness.
+  const oldestUpdated = useMemo(() => {
+    if (visible.length === 0) return null;
+    let oldest: Date | null = null;
+    let anyMissing = false;
+    for (const r of visible) {
+      const ts = r.lastMarketAt;
+      if (!ts) {
+        anyMissing = true;
+        continue;
+      }
+      const d = new Date(ts);
+      if (!oldest || d < oldest) oldest = d;
+    }
+    return anyMissing ? null : oldest;
+  }, [visible]);
+
   useEffect(() => {
     if (visible.length === 0) return;
     const ids = visible
@@ -106,9 +117,7 @@ export function SearchBox() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ids }),
-    }).catch(() => {
-      /* best-effort: ignore failures */
-    });
+    }).catch(() => {});
   }, [visible]);
 
   return (
@@ -150,18 +159,26 @@ export function SearchBox() {
             </select>
           )}
         </div>
-        <select
-          value={sortBy}
-          onChange={(e) => setSortBy(e.target.value as SortBy)}
-          className="rounded-md border bg-background px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-          aria-label="Sort results"
-        >
-          {SORTS.map((s) => (
-            <option key={s.key} value={s.key}>
-              {s.label}
-            </option>
-          ))}
-        </select>
+        <div className="flex items-center gap-2">
+          <RefreshButton
+            query={debounced}
+            kind={kind}
+            sortBy={sortBy}
+            disabled={!enabled}
+          />
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value as SortBy)}
+            className="rounded-md border bg-background px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+            aria-label="Sort results"
+          >
+            {SORTS.map((s) => (
+              <option key={s.key} value={s.key}>
+                {s.label}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       {!enabled && (
@@ -201,10 +218,12 @@ export function SearchBox() {
               <SearchResultRow key={`${row.type}-${row.catalogItemId}-${i}`} row={row} />
             ))}
           </div>
-          <div className="flex items-center justify-between text-xs text-muted-foreground">
+          <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
             <span>
               Showing {visible.length} of {filteredResults.length}
               {rarity !== ALL_RARITIES && data ? ` (filtered from ${data.results.length})` : ''}
+              <span className="mx-2 text-muted-foreground/50">·</span>
+              {formatRelativeTime(oldestUpdated)}
             </span>
             {hasMore && (
               <button
