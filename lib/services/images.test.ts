@@ -61,9 +61,10 @@ describe('images.downloadIfMissing', () => {
     );
     await downloadIfMissing(42);
     expect(uploads).toHaveLength(1);
-    expect(uploads[0].path).toBe('catalog/42.webp');
+    expect(uploads[0].path).toBe('42.webp');
     expect(uploads[0].size).toBeGreaterThan(0);
     expect(uploads[0].size).toBeLessThan(samplePng.byteLength); // webp at q85 should be smaller for a flat color
+    expect(dbCalls.filter((c) => c.kind === 'update')).toHaveLength(1);
   });
 
   it('shares a single in-flight promise for concurrent calls', async () => {

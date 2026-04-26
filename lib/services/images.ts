@@ -29,16 +29,22 @@ async function doDownload(catalogItemId: number): Promise<void> {
 
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 10_000);
-    const res = await fetch(row.imageUrl, { signal: controller.signal });
-    clearTimeout(timer);
+    let res: Response;
+    try {
+      res = await fetch(row.imageUrl, { signal: controller.signal });
+    } finally {
+      clearTimeout(timer);
+    }
     if (!res.ok) return;
 
     const upstream = Buffer.from(await res.arrayBuffer());
     const webp = await sharp(upstream).resize({ width: 800, withoutEnlargement: true }).webp({ quality: 85 }).toBuffer();
 
+    const objectKey = `${catalogItemId}.webp`;
+    const imageStoragePath = `catalog/${objectKey}`;
+
     const supabase = createAdminClient();
-    const path = `catalog/${catalogItemId}.webp`;
-    const { error } = await supabase.storage.from('catalog').upload(path, webp, {
+    const { error } = await supabase.storage.from('catalog').upload(objectKey, webp, {
       contentType: 'image/webp',
       upsert: true,
     });
@@ -49,7 +55,7 @@ async function doDownload(catalogItemId: number): Promise<void> {
 
     await db
       .update(schema.catalogItems)
-      .set({ imageStoragePath: path })
+      .set({ imageStoragePath })
       .where(eq(schema.catalogItems.id, catalogItemId));
   } catch (err) {
     console.error('[images.downloadIfMissing] failed', { catalogItemId, err });
