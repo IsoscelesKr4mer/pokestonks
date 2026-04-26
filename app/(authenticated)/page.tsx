@@ -26,7 +26,7 @@ export default async function DashboardPage() {
           <p className="text-sm text-muted-foreground">
             Add your first sealed product or card to start tracking your portfolio.
           </p>
-          <Link href="/onboarding" className={buttonVariants({ variant: 'default', size: 'lg' })}>
+          <Link href="/catalog" className={buttonVariants({ variant: 'default', size: 'lg' })}>
             Add your first product
           </Link>
         </CardContent>
