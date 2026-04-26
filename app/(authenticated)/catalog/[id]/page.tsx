@@ -4,9 +4,9 @@ import { eq } from 'drizzle-orm';
 import { db, schema } from '@/lib/db/client';
 import { getImageUrl } from '@/lib/utils/images';
 import { downloadIfMissing } from '@/lib/services/images';
-import { getOrRefreshLatestPrice } from '@/lib/services/prices';
 import { buttonVariants } from '@/components/ui/button';
 import { PriceLabel } from '@/components/catalog/PriceLabel';
+import { formatRelativeTime } from '@/lib/utils/time';
 
 const VARIANT_LABEL: Record<string, string> = {
   normal: 'Normal',
@@ -14,7 +14,16 @@ const VARIANT_LABEL: Record<string, string> = {
   holo: 'Holo',
   illustration_rare: 'Illustration Rare',
   special_illustration_rare: 'Special Illustration Rare',
+  '1st_edition': '1st Edition',
+  '1st_edition_holo': '1st Edition Holo',
+  unlimited: 'Unlimited',
+  unlimited_holo: 'Unlimited Holo',
 };
+
+function variantLabel(v: string | null): string | null {
+  if (!v) return null;
+  return VARIANT_LABEL[v] ?? v;
+}
 
 export default async function CatalogItemPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -30,16 +39,8 @@ export default async function CatalogItemPage({ params }: { params: Promise<{ id
     void downloadIfMissing(item.id);
   }
 
-  const latestPrice = await getOrRefreshLatestPrice({
-    id: item.id,
-    kind: item.kind,
-    setCode: item.setCode,
-    cardNumber: item.cardNumber,
-    tcgplayerProductId: item.tcgplayerProductId ?? null,
-  });
-
   const imageUrl = getImageUrl({ imageStoragePath: item.imageStoragePath, imageUrl: item.imageUrl });
-  const subtitle = item.kind === 'sealed' ? item.productType : VARIANT_LABEL[item.variant ?? 'normal'] ?? item.variant;
+  const isCard = item.kind === 'card';
 
   return (
     <div className="mx-auto w-full max-w-3xl px-6 py-8 space-y-6">
@@ -54,24 +55,34 @@ export default async function CatalogItemPage({ params }: { params: Promise<{ id
         </div>
 
         <div className="space-y-4">
-          <div>
+          <div className="space-y-1">
             <h1 className="text-2xl font-semibold tracking-tight">{item.name}</h1>
-            <p className="text-sm text-muted-foreground">{subtitle ?? '—'}</p>
-            <p className="text-sm text-muted-foreground">{item.setName ?? '—'}</p>
-            {item.cardNumber && <p className="text-sm text-muted-foreground">#{item.cardNumber}</p>}
+            {item.setName && (
+              <p className="text-sm text-muted-foreground">
+                Pokémon · <span className="text-foreground/80">{item.setName}</span>
+              </p>
+            )}
+            {isCard ? (
+              <p className="text-sm text-muted-foreground">
+                {item.rarity ?? 'Card'}
+                {item.cardNumber && <span> · {item.cardNumber}</span>}
+                {item.variant && <span> · {variantLabel(item.variant)}</span>}
+              </p>
+            ) : (
+              item.productType && (
+                <p className="text-sm text-muted-foreground">{item.productType} · Sealed</p>
+              )
+            )}
           </div>
 
           <div className="space-y-1">
             <p className="text-xs uppercase tracking-wide text-muted-foreground">Latest market price</p>
-            <p className="text-2xl font-semibold">
-              <PriceLabel cents={latestPrice?.marketCents ?? null} />
+            <p className="text-3xl font-semibold tracking-tight">
+              <PriceLabel cents={item.lastMarketCents ?? null} />
             </p>
-            {latestPrice && (
-              <p className="text-xs text-muted-foreground">
-                as of {latestPrice.snapshotDate}
-                {latestPrice.isStale && ' · Stale'}
-              </p>
-            )}
+            <p className="text-xs text-muted-foreground">
+              {formatRelativeTime(item.lastMarketAt ?? null)}
+            </p>
           </div>
 
           <Link
