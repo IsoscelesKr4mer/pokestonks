@@ -1,0 +1,48 @@
+{
+  "data": [
+    {
+      "id": "sv3pt5-199",
+      "name": "Charizard ex",
+      "supertype": "Pokémon",
+      "subtypes": ["Stage 2", "ex"],
+      "rarity": "Special Illustration Rare",
+      "number": "199",
+      "set": {
+        "id": "sv3pt5",
+        "name": "Scarlet & Violet 151",
+        "ptcgoCode": "MEW",
+        "printedTotal": 165,
+        "total": 207,
+        "releaseDate": "2023/09/22"
+      },
+      "images": {
+        "small": "https://images.pokemontcg.io/sv3pt5/199.png",
+        "large": "https://images.pokemontcg.io/sv3pt5/199_hires.png"
+      }
+    },
+    {
+      "id": "sv3pt5-200",
+      "name": "Charizard ex",
+      "supertype": "Pokémon",
+      "subtypes": ["Stage 2", "ex"],
+      "rarity": "Special Illustration Rare",
+      "number": "200",
+      "set": {
+        "id": "sv3pt5",
+        "name": "Scarlet & Violet 151",
+        "ptcgoCode": "MEW",
+        "printedTotal": 165,
+        "total": 207,
+        "releaseDate": "2023/09/22"
+      },
+      "images": {
+        "small": "https://images.pokemontcg.io/sv3pt5/200.png",
+        "large": "https://images.pokemontcg.io/sv3pt5/200_hires.png"
+      }
+    }
+  ],
+  "page": 1,
+  "pageSize": 50,
+  "count": 2,
+  "totalCount": 2
+}
