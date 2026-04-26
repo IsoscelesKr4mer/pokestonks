@@ -1,4 +1,4 @@
-import { pgTable, bigserial, text, integer, date, timestamp, bigint, index } from 'drizzle-orm/pg-core';
+import { pgTable, bigserial, text, integer, date, timestamp, bigint, index, uniqueIndex } from 'drizzle-orm/pg-core';
 import { sql } from 'drizzle-orm';
 
 export const catalogItems = pgTable(
@@ -26,6 +26,9 @@ export const catalogItems = pgTable(
     kindSetCodeIdx: index('catalog_items_kind_set_code_idx').on(t.kind, t.setCode),
     nameSearchIdx: index('catalog_items_name_search_idx').using('gin', sql`to_tsvector('english', ${t.name})`),
     cardNumberIdx: index('catalog_items_card_number_idx').on(t.cardNumber).where(sql`${t.kind} = 'card'`),
+    cardUniqueIdx: uniqueIndex('catalog_items_card_unique_idx')
+      .on(t.setCode, t.cardNumber, t.variant)
+      .where(sql`${t.kind} = 'card'`),
   })
 );
 
