@@ -27,7 +27,9 @@ export type CardUpsertInput = {
   releaseDate: string | null;
 };
 
-export async function upsertSealed(input: SealedUpsertInput): Promise<number> {
+export type UpsertResult = { id: number; imageStoragePath: string | null };
+
+export async function upsertSealed(input: SealedUpsertInput): Promise<UpsertResult> {
   const rows = await db
     .insert(schema.catalogItems)
     .values({
@@ -51,11 +53,11 @@ export async function upsertSealed(input: SealedUpsertInput): Promise<number> {
         releaseDate: sql`excluded.release_date`,
       },
     })
-    .returning({ id: schema.catalogItems.id });
-  return rows[0].id;
+    .returning({ id: schema.catalogItems.id, imageStoragePath: schema.catalogItems.imageStoragePath });
+  return rows[0];
 }
 
-export async function upsertCard(input: CardUpsertInput): Promise<number> {
+export async function upsertCard(input: CardUpsertInput): Promise<UpsertResult> {
   const rows = await db
     .insert(schema.catalogItems)
     .values({
@@ -85,6 +87,6 @@ export async function upsertCard(input: CardUpsertInput): Promise<number> {
         releaseDate: sql`excluded.release_date`,
       },
     })
-    .returning({ id: schema.catalogItems.id });
-  return rows[0].id;
+    .returning({ id: schema.catalogItems.id, imageStoragePath: schema.catalogItems.imageStoragePath });
+  return rows[0];
 }

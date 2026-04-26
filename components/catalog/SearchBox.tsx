@@ -89,6 +89,26 @@ export function SearchBox() {
   const visible = filteredResults.slice(0, shown);
   const hasMore = filteredResults.length > shown;
 
+  // Trigger background image caching for the IDs the user is currently
+  // looking at. After the first fetch the catalog row's image_storage_path
+  // gets populated and subsequent searches return a Supabase Storage URL,
+  // which is much faster than re-pulling from images.pokemontcg.io.
+  useEffect(() => {
+    if (visible.length === 0) return;
+    const ids = visible
+      .filter((r) => !('imageStoragePath' in r) || !(r as { imageStoragePath?: string | null }).imageStoragePath)
+      .map((r) => r.catalogItemId)
+      .slice(0, 24);
+    if (ids.length === 0) return;
+    fetch('/api/cache-images', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ids }),
+    }).catch(() => {
+      /* best-effort: ignore failures */
+    });
+  }, [visible]);
+
   return (
     <div className="space-y-4">
       <Input

@@ -60,7 +60,7 @@ export function SearchResultRow({ row }: { row: ResultRow }) {
       >
         {row.imageUrl ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={row.imageUrl} alt={row.name} className="size-full object-contain" />
+          <img src={row.imageUrl} alt={row.name} loading="lazy" className="size-full object-contain" />
         ) : (
           <div className="size-full bg-muted" />
         )}

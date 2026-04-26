@@ -9,8 +9,11 @@ import sv151PricesFixture from '../../tests/fixtures/tcgcsv-sv151-prices.json';
 
 let cardUpsertCounter = 0;
 vi.mock('@/lib/db/upserts/catalogItems', () => ({
-  upsertSealed: vi.fn(async (i: { tcgplayerProductId: number }) => i.tcgplayerProductId),
-  upsertCard: vi.fn(async () => ++cardUpsertCounter),
+  upsertSealed: vi.fn(async (i: { tcgplayerProductId: number }) => ({
+    id: i.tcgplayerProductId,
+    imageStoragePath: null,
+  })),
+  upsertCard: vi.fn(async () => ({ id: ++cardUpsertCounter, imageStoragePath: null })),
 }));
 
 import { tokenizeQuery } from './search';

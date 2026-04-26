@@ -11,6 +11,7 @@ import {
 } from './tcgcsv';
 import { searchCards, type PokemonTcgCard } from './pokemontcg';
 import { upsertSealed, upsertCard } from '@/lib/db/upserts/catalogItems';
+import { getImageUrl } from '@/lib/utils/images';
 
 // Cap concurrent DB upserts so a 250-card set search doesn't exhaust the
 // connection pool or hit a function timeout.
@@ -46,23 +47,38 @@ export function tokenizeQuery(q: string): Tokens {
 
 export type Warning = { source: 'tcgcsv' | 'pokemontcg'; message: string };
 
-export type SealedResult = SealedSearchHit & { catalogItemId: number };
+export type SealedResult = SealedSearchHit & {
+  catalogItemId: number;
+  imageStoragePath: string | null;
+};
 
 export async function searchSealedWithImport(query: string, limit: number): Promise<SealedResult[]> {
   const hits = await searchSealed(query, limit);
   const results = await Promise.all(
     hits.map(async (h) => {
-      const id = await upsertSealed({
-        kind: 'sealed',
-        name: h.name,
-        setName: h.setName,
-        setCode: h.setCode,
-        tcgplayerProductId: h.tcgplayerProductId,
-        productType: h.productType,
+      const upserted = await UPSERT_LIMIT(() =>
+        upsertSealed({
+          kind: 'sealed',
+          name: h.name,
+          setName: h.setName,
+          setCode: h.setCode,
+          tcgplayerProductId: h.tcgplayerProductId,
+          productType: h.productType,
+          imageUrl: h.imageUrl,
+          releaseDate: h.releaseDate,
+        })
+      );
+      // Use the cached storage URL when one exists (faster than upstream).
+      const resolvedImageUrl = getImageUrl({
+        imageStoragePath: upserted.imageStoragePath,
         imageUrl: h.imageUrl,
-        releaseDate: h.releaseDate,
       });
-      return { ...h, catalogItemId: id };
+      return {
+        ...h,
+        catalogItemId: upserted.id,
+        imageUrl: resolvedImageUrl,
+        imageStoragePath: upserted.imageStoragePath,
+      };
     })
   );
   return results;
@@ -77,6 +93,7 @@ export type CardVariantHit = {
   rarity: string | null;
   variant: string;
   imageUrl: string | null;
+  imageStoragePath: string | null;
   marketCents: number | null;
 };
 
@@ -177,7 +194,7 @@ async function emitVariant(args: {
 }): Promise<CardVariantHit | null> {
   const { card, variant, marketCents } = args;
   try {
-    const id = await UPSERT_LIMIT(() =>
+    const upserted = await UPSERT_LIMIT(() =>
       upsertCard({
         kind: 'card',
         name: card.name,
@@ -192,15 +209,20 @@ async function emitVariant(args: {
         releaseDate: card.releaseDate,
       })
     );
+    const resolvedImageUrl = getImageUrl({
+      imageStoragePath: upserted.imageStoragePath,
+      imageUrl: card.imageUrl,
+    });
     return {
-      catalogItemId: id,
+      catalogItemId: upserted.id,
       name: card.name,
       cardNumber: card.number,
       setName: card.setName,
       setCode: card.setCode,
       rarity: card.rarity,
       variant,
-      imageUrl: card.imageUrl,
+      imageUrl: resolvedImageUrl,
+      imageStoragePath: upserted.imageStoragePath,
       marketCents,
     };
   } catch (err) {
