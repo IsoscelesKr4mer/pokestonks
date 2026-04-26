@@ -11,6 +11,9 @@ export type SealedUpsertInput = {
   productType: string;
   imageUrl: string | null;
   releaseDate: string | null;
+  // Latest market price (cents) for this product. Written to catalog_items
+  // so the DB-first search can read it without a join with market_prices.
+  lastMarketCents: number | null;
 };
 
 export type CardUpsertInput = {
@@ -25,9 +28,14 @@ export type CardUpsertInput = {
   variant: string;
   imageUrl: string | null;
   releaseDate: string | null;
+  lastMarketCents: number | null;
 };
 
-export type UpsertResult = { id: number; imageStoragePath: string | null };
+export type UpsertResult = {
+  id: number;
+  imageStoragePath: string | null;
+  lastMarketAt: Date | null;
+};
 
 export async function upsertSealed(input: SealedUpsertInput): Promise<UpsertResult> {
   const rows = await db
@@ -41,6 +49,8 @@ export async function upsertSealed(input: SealedUpsertInput): Promise<UpsertResu
       productType: input.productType,
       imageUrl: input.imageUrl,
       releaseDate: input.releaseDate,
+      lastMarketCents: input.lastMarketCents,
+      lastMarketAt: sql`NOW()`,
     })
     .onConflictDoUpdate({
       target: schema.catalogItems.tcgplayerProductId,
@@ -51,9 +61,15 @@ export async function upsertSealed(input: SealedUpsertInput): Promise<UpsertResu
         productType: sql`excluded.product_type`,
         imageUrl: sql`COALESCE(${schema.catalogItems.imageUrl}, excluded.image_url)`,
         releaseDate: sql`excluded.release_date`,
+        lastMarketCents: sql`excluded.last_market_cents`,
+        lastMarketAt: sql`NOW()`,
       },
     })
-    .returning({ id: schema.catalogItems.id, imageStoragePath: schema.catalogItems.imageStoragePath });
+    .returning({
+      id: schema.catalogItems.id,
+      imageStoragePath: schema.catalogItems.imageStoragePath,
+      lastMarketAt: schema.catalogItems.lastMarketAt,
+    });
   return rows[0];
 }
 
@@ -69,7 +85,7 @@ export async function upsertCard(input: CardUpsertInput): Promise<UpsertResult> 
 export async function bulkUpsertCards(inputs: CardUpsertInput[]): Promise<UpsertResult[]> {
   if (inputs.length === 0) return [];
   const values = inputs.map((input) => ({
-    kind: 'card',
+    kind: 'card' as const,
     name: input.name,
     setName: input.setName,
     setCode: input.setCode,
@@ -80,6 +96,8 @@ export async function bulkUpsertCards(inputs: CardUpsertInput[]): Promise<Upsert
     variant: input.variant,
     imageUrl: input.imageUrl,
     releaseDate: input.releaseDate,
+    lastMarketCents: input.lastMarketCents,
+    lastMarketAt: sql`NOW()`,
   }));
   const rows = await db
     .insert(schema.catalogItems)
@@ -96,8 +114,14 @@ export async function bulkUpsertCards(inputs: CardUpsertInput[]): Promise<Upsert
         rarity: sql`COALESCE(excluded.rarity, ${schema.catalogItems.rarity})`,
         imageUrl: sql`COALESCE(${schema.catalogItems.imageUrl}, excluded.image_url)`,
         releaseDate: sql`excluded.release_date`,
+        lastMarketCents: sql`excluded.last_market_cents`,
+        lastMarketAt: sql`NOW()`,
       },
     })
-    .returning({ id: schema.catalogItems.id, imageStoragePath: schema.catalogItems.imageStoragePath });
+    .returning({
+      id: schema.catalogItems.id,
+      imageStoragePath: schema.catalogItems.imageStoragePath,
+      lastMarketAt: schema.catalogItems.lastMarketAt,
+    });
   return rows;
 }
