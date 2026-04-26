@@ -6,6 +6,7 @@ import { join } from 'node:path';
 import { __resetInflightForTests, downloadIfMissing } from './images';
 
 const samplePng = readFileSync(join(__dirname, '..', '..', 'tests', 'fixtures', 'sample-card.png'));
+const samplePngArrayBuffer = samplePng.buffer.slice(samplePng.byteOffset, samplePng.byteOffset + samplePng.byteLength) as ArrayBuffer;
 
 const dbCalls: Array<{ kind: string; payload: unknown }> = [];
 vi.mock('@/lib/db/client', () => ({
@@ -56,7 +57,7 @@ describe('images.downloadIfMissing', () => {
   it('downloads upstream, re-encodes to webp, uploads, updates db', async () => {
     server.use(
       http.get('https://images.pokemontcg.io/sv3pt5/199_hires.png', () =>
-        HttpResponse.arrayBuffer(samplePng, { headers: { 'Content-Type': 'image/png' } })
+        HttpResponse.arrayBuffer(samplePngArrayBuffer, { headers: { 'Content-Type': 'image/png' } })
       )
     );
     await downloadIfMissing(42);
@@ -72,7 +73,7 @@ describe('images.downloadIfMissing', () => {
     server.use(
       http.get('https://images.pokemontcg.io/sv3pt5/199_hires.png', () => {
         upstreamHits++;
-        return HttpResponse.arrayBuffer(samplePng, { headers: { 'Content-Type': 'image/png' } });
+        return HttpResponse.arrayBuffer(samplePngArrayBuffer, { headers: { 'Content-Type': 'image/png' } });
       })
     );
     await Promise.all([downloadIfMissing(42), downloadIfMissing(42), downloadIfMissing(42)]);
