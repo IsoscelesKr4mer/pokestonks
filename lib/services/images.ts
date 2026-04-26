@@ -5,6 +5,7 @@ import { db, schema } from '@/lib/db/client';
 import { createAdminClient } from '@/lib/supabase/admin';
 
 const inflight = new Map<number, Promise<void>>();
+const USER_AGENT = 'pokestonks/0.1 (+https://github.com/IsoscelesKr4mer/pokestonks)';
 
 export function __resetInflightForTests() {
   inflight.clear();
@@ -31,7 +32,10 @@ async function doDownload(catalogItemId: number): Promise<void> {
     const timer = setTimeout(() => controller.abort(), 10_000);
     let res: Response;
     try {
-      res = await fetch(row.imageUrl, { signal: controller.signal });
+      res = await fetch(row.imageUrl, {
+        signal: controller.signal,
+        headers: { 'User-Agent': USER_AGENT },
+      });
     } finally {
       clearTimeout(timer);
     }

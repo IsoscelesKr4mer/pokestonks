@@ -1,4 +1,5 @@
 const POKEMONTCG_BASE = 'https://api.pokemontcg.io/v2';
+const USER_AGENT = 'pokestonks/0.1 (+https://github.com/IsoscelesKr4mer/pokestonks)';
 
 export type PokemonTcgCard = {
   cardId: string;            // 'sv3pt5-199'
@@ -47,7 +48,7 @@ export async function searchCards(args: {
     pageSize: String(args.pageSize ?? 50),
     orderBy: '-set.releaseDate,number',
   });
-  const headers: Record<string, string> = { Accept: 'application/json' };
+  const headers: Record<string, string> = { Accept: 'application/json', 'User-Agent': USER_AGENT };
   if (apiKey) headers['X-Api-Key'] = apiKey;
 
   const res = await fetch(`${POKEMONTCG_BASE}/cards?${params.toString()}`, { headers });

@@ -5,6 +5,9 @@ export const POKEMON_CATEGORY_ID = 3;
 const TCGCSV_BASE = `https://tcgcsv.com/tcgplayer/${POKEMON_CATEGORY_ID}`;
 const GROUP_CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 const GROUP_FANOUT_LIMIT = pLimit(10);
+// TCGCSV's edge rejects requests without a User-Agent (returns 401). Node's fetch
+// sends none by default; identify ourselves explicitly.
+const USER_AGENT = 'pokestonks/0.1 (+https://github.com/IsoscelesKr4mer/pokestonks)';
 
 export type TcgcsvGroup = {
   groupId: number;
@@ -27,7 +30,7 @@ export async function getGroups(now: number = Date.now()): Promise<TcgcsvGroup[]
     return groupCache.groups;
   }
   const res = await fetch(`${TCGCSV_BASE}/groups`, {
-    headers: { Accept: 'application/json' },
+    headers: { Accept: 'application/json', 'User-Agent': USER_AGENT },
   });
   if (!res.ok) {
     throw new Error(`TCGCSV groups fetch failed: ${res.status}`);
@@ -82,14 +85,18 @@ export type SealedSearchHit = {
 };
 
 export async function fetchProducts(groupId: number): Promise<TcgcsvProduct[]> {
-  const res = await fetch(`${TCGCSV_BASE}/${groupId}/products`, { headers: { Accept: 'application/json' } });
+  const res = await fetch(`${TCGCSV_BASE}/${groupId}/products`, {
+    headers: { Accept: 'application/json', 'User-Agent': USER_AGENT },
+  });
   if (!res.ok) throw new Error(`tcgcsv products ${groupId} ${res.status}`);
   const body = (await res.json()) as { results: TcgcsvProduct[] };
   return body.results;
 }
 
 export async function fetchPrices(groupId: number): Promise<TcgcsvPriceRow[]> {
-  const res = await fetch(`${TCGCSV_BASE}/${groupId}/prices`, { headers: { Accept: 'text/csv' } });
+  const res = await fetch(`${TCGCSV_BASE}/${groupId}/prices`, {
+    headers: { Accept: 'text/csv', 'User-Agent': USER_AGENT },
+  });
   if (!res.ok) throw new Error(`tcgcsv prices ${groupId} ${res.status}`);
   const csv = await res.text();
   const parsed = Papa.parse<Record<string, string>>(csv, { header: true, skipEmptyLines: true });
