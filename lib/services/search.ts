@@ -1,5 +1,14 @@
 import pLimit from 'p-limit';
-import { searchSealed, type SealedSearchHit } from './tcgcsv';
+import {
+  searchSealed,
+  getGroups,
+  fetchProducts,
+  fetchPrices,
+  findGroupBySetName,
+  type SealedSearchHit,
+  type TcgcsvProduct,
+  type TcgcsvPriceRow,
+} from './tcgcsv';
 import { searchCards, type PokemonTcgCard } from './pokemontcg';
 import { upsertSealed, upsertCard } from '@/lib/db/upserts/catalogItems';
 
@@ -84,7 +93,7 @@ function withTimeout<T>(p: Promise<T>): Promise<T> {
 
 // Map Pokémon TCG API tcgplayer.prices keys to our internal variant strings.
 // Anything we don't explicitly know about flows through as-is (snake-cased).
-function normalizeVariantKey(key: string): string {
+function normalizePokeTcgVariantKey(key: string): string {
   switch (key) {
     case 'normal':
       return 'normal';
@@ -103,6 +112,62 @@ function normalizeVariantKey(key: string): string {
     default:
       return key.replace(/[A-Z]/g, (c) => `_${c.toLowerCase()}`);
   }
+}
+
+// TCGCSV uses subTypeName strings ("Normal", "Holofoil", "Reverse Holofoil",
+// "1st Edition Holofoil", etc.). Map to the same internal variants as above
+// so prices from either source can merge.
+function normalizeTcgcsvSubType(subType: string): string {
+  const s = subType.trim().toLowerCase();
+  if (s === 'normal') return 'normal';
+  if (s === 'holofoil' || s === 'holo') return 'holo';
+  if (s.includes('reverse')) return 'reverse_holo';
+  if (s.includes('1st edition') && s.includes('holo')) return '1st_edition_holo';
+  if (s.includes('1st edition')) return '1st_edition';
+  if (s.includes('unlimited') && s.includes('holo')) return 'unlimited_holo';
+  if (s.includes('unlimited')) return 'unlimited';
+  return s.replace(/\s+/g, '_');
+}
+
+// Look up a card on TCGCSV by its Pokémon TCG API set name + card number.
+// Returns prices keyed by our internal variant strings, in cents.
+async function findTcgcsvCardPrices(args: {
+  setName: string | null;
+  cardNumber: string;
+}): Promise<Record<string, number | null>> {
+  if (!args.setName) return {};
+  let groups;
+  try {
+    groups = await getGroups();
+  } catch {
+    return {};
+  }
+  const group = findGroupBySetName(args.setName, groups);
+  if (!group) return {};
+  let products: TcgcsvProduct[];
+  try {
+    products = await fetchProducts(group.groupId);
+  } catch {
+    return {};
+  }
+  const product = products.find((p) => {
+    const num = (p.extendedData ?? []).find((d) => d.name === 'Number')?.value;
+    return num?.startsWith(`${args.cardNumber}/`);
+  });
+  if (!product) return {};
+  let priceRows: TcgcsvPriceRow[];
+  try {
+    priceRows = await fetchPrices(group.groupId);
+  } catch {
+    return {};
+  }
+  const out: Record<string, number | null> = {};
+  for (const r of priceRows) {
+    if (r.productId !== product.productId) continue;
+    const variant = normalizeTcgcsvSubType(r.subTypeName);
+    out[variant] = r.marketPrice != null ? Math.round(r.marketPrice * 100) : null;
+  }
+  return out;
 }
 
 async function emitVariant(args: {
@@ -169,27 +234,46 @@ export async function searchCardsWithImport(
     warnings.push({ source: 'pokemontcg', message: (e as Error).message });
   }
 
-  // Use Pokémon TCG API's embedded TCGplayer prices directly. TCGCSV's group
-  // abbreviations don't match Pokémon TCG API set IDs (e.g. CRI vs me2pt5), so
-  // per-card TCGCSV lookup almost never matched. The embedded prices update
-  // less frequently but cover the full catalog when TCGplayer has data.
+  // Merge prices from two sources (TCGCSV preferred for freshness, Pokémon
+  // TCG API embedded as fallback). TCGCSV is matched by set name (case-
+  // insensitive substring + prefix-stripping) since group abbreviations
+  // don't line up with Pokémon TCG API set IDs.
   const variantArrays = await Promise.all(
     pokemonCards.map(async (card) => {
-      const variantKeys = Object.keys(card.pricesByVariant);
+      let tcgcsvPrices: Record<string, number | null> = {};
+      try {
+        tcgcsvPrices = await withTimeout(
+          findTcgcsvCardPrices({ setName: card.setName, cardNumber: card.number })
+        );
+      } catch (e) {
+        if (!warnings.find((w) => w.source === 'tcgcsv')) {
+          warnings.push({ source: 'tcgcsv', message: (e as Error).message });
+        }
+      }
+
+      const merged: Record<string, number | null> = {};
+      // Seed with Pokémon TCG API's embedded prices (already in cents).
+      for (const [k, v] of Object.entries(card.pricesByVariant)) {
+        merged[normalizePokeTcgVariantKey(k)] = v;
+      }
+      // Overlay with TCGCSV (preferred when available).
+      for (const [k, v] of Object.entries(tcgcsvPrices)) {
+        if (v != null) merged[k] = v;
+      }
+
+      const variantKeys = Object.keys(merged);
       const out: Array<CardVariantHit | null> = [];
       if (variantKeys.length === 0) {
-        // No TCGplayer data yet (brand new sets). Emit a single 'normal' row
-        // so the card still surfaces; rarity-rank fallback drives sort.
-        out.push(
-          await emitVariant({ card, variant: 'normal', marketCents: null })
-        );
+        // No data anywhere yet. Emit a single 'normal' row so the card still
+        // surfaces; rarity-rank fallback drives sort.
+        out.push(await emitVariant({ card, variant: 'normal', marketCents: null }));
       } else {
         for (const key of variantKeys) {
           out.push(
             await emitVariant({
               card,
-              variant: normalizeVariantKey(key),
-              marketCents: card.pricesByVariant[key],
+              variant: key,
+              marketCents: merged[key],
             })
           );
         }

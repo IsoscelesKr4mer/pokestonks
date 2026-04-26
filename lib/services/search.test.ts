@@ -121,18 +121,22 @@ describe('searchCardsWithImport', () => {
     );
   }
 
-  it('emits one row per Pokémon TCG API price variant', async () => {
+  it('emits one row per merged variant (Pokémon TCG API + TCGCSV)', async () => {
     mockApi();
     const { results, warnings } = await searchCardsWithImport('charizard 199', 20);
     expect(warnings).toEqual([]);
-    // sv3pt5-199 fixture has tcgplayer.prices for holofoil + reverseHolofoil = 2 rows.
-    // sv3pt5-200 fixture has no tcgplayer.prices = 1 'normal' row with null price.
-    expect(results).toHaveLength(3);
+    // sv3pt5-199 merges pokémon-TCG embedded prices (holofoil, reverseHolofoil)
+    // with TCGCSV prices for product 490000 (Normal, Reverse Holofoil).
+    // Final variants: holo (pokeTcg), reverse_holo (tcgcsv overrides pokeTcg), normal (tcgcsv).
+    // sv3pt5-200 has no upstream price data anywhere -> 1 'normal' row with null price.
+    expect(results).toHaveLength(4);
     const holo199 = results.find((r) => r.cardNumber === '199' && r.variant === 'holo');
     const reverse199 = results.find((r) => r.cardNumber === '199' && r.variant === 'reverse_holo');
+    const normal199 = results.find((r) => r.cardNumber === '199' && r.variant === 'normal');
     const normal200 = results.find((r) => r.cardNumber === '200' && r.variant === 'normal');
     expect(holo199?.marketCents).toBe(110000);
-    expect(reverse199?.marketCents).toBe(11000);
+    expect(reverse199?.marketCents).toBe(110000); // TCGCSV's $1100 wins over pokéTcg's $110
+    expect(normal199?.marketCents).toBe(18900); // from TCGCSV only
     expect(normal200?.marketCents).toBeNull();
   });
 

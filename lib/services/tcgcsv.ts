@@ -25,6 +25,30 @@ export function __resetGroupCacheForTests() {
   groupCache = null;
 }
 
+// Strip common TCGCSV name prefixes like "SV: ", "ME01: ", "POP: " so the
+// remainder can match a Pokémon TCG API set name.
+function stripGroupPrefix(name: string): string {
+  return name.replace(/^[A-Z]{1,4}\d*:\s*/i, '');
+}
+
+export function findGroupBySetName(setName: string, groups: TcgcsvGroup[]): TcgcsvGroup | null {
+  const target = setName.toLowerCase().trim();
+  if (!target) return null;
+  // 1) exact match
+  let m = groups.find((g) => g.name.toLowerCase() === target);
+  if (m) return m;
+  // 2) stripped-prefix exact match (handles "SV: Scarlet & Violet 151" -> "Scarlet & Violet 151")
+  m = groups.find((g) => stripGroupPrefix(g.name).toLowerCase() === target);
+  if (m) return m;
+  // 3) substring match, pick the shortest (most specific/main set)
+  const candidates = groups.filter(
+    (g) => g.name.toLowerCase().includes(target) || target.includes(g.name.toLowerCase())
+  );
+  if (candidates.length === 0) return null;
+  candidates.sort((a, b) => a.name.length - b.name.length);
+  return candidates[0];
+}
+
 export async function getGroups(now: number = Date.now()): Promise<TcgcsvGroup[]> {
   if (groupCache && now - groupCache.fetchedAt < GROUP_CACHE_TTL_MS) {
     return groupCache.groups;
