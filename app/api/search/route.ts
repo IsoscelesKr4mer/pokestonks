@@ -18,6 +18,11 @@ export async function GET(request: NextRequest) {
   const { q, kind, limit, sortBy } = parsed.data;
   const result = await searchAll(q.trim(), kind, limit, sortBy);
   return NextResponse.json(result, {
-    headers: { 'Cache-Control': 'private, max-age=60' },
+    // Browser caches the response for 5 minutes (instant on F5), then serves
+    // stale for another 30 minutes while quietly fetching fresh in the
+    // background. Search data isn't strictly time-sensitive at this scale,
+    // and the upstream-fetch path is slow enough that a half-hour SWR window
+    // is the difference between "instant" and "5 second wait" on every reload.
+    headers: { 'Cache-Control': 'private, max-age=300, stale-while-revalidate=1800' },
   });
 }

@@ -67,7 +67,9 @@ export function SearchBox() {
       return res.json();
     },
     enabled,
-    staleTime: 60_000,
+    // Match the API's Cache-Control max-age. Within 5 minutes the
+    // in-memory query cache short-circuits the network entirely.
+    staleTime: 5 * 60 * 1000,
   });
 
   // Build the rarity dropdown from rarities present in the current result set.
