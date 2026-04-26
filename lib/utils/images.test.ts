@@ -26,4 +26,10 @@ describe('getImageUrl', () => {
   it('treats undefined fields the same as null', () => {
     expect(getImageUrl({}, ENV_URL)).toBe('/placeholder.svg');
   });
+
+  it('strips a leading slash from image_storage_path', () => {
+    expect(
+      getImageUrl({ imageStoragePath: '/catalog/42.webp' }, ENV_URL)
+    ).toBe('https://abc.supabase.co/storage/v1/object/public/catalog/42.webp');
+  });
 });
