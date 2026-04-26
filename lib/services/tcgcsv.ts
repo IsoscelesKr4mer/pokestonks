@@ -1,3 +1,5 @@
+import Papa from 'papaparse';
+
 export const POKEMON_CATEGORY_ID = 3;
 const TCGCSV_BASE = `https://tcgcsv.com/tcgplayer/${POKEMON_CATEGORY_ID}`;
 const GROUP_CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
@@ -31,5 +33,148 @@ export async function getGroups(now: number = Date.now()): Promise<TcgcsvGroup[]
   const body = (await res.json()) as { results: TcgcsvGroup[] };
   groupCache = { fetchedAt: now, groups: body.results };
   return body.results;
+}
+
+const SEALED_PATTERNS: Array<{ pattern: RegExp; productType: string }> = [
+  { pattern: /\bElite Trainer Box\b/i, productType: 'Elite Trainer Box' },
+  { pattern: /\bBooster Box\b/i, productType: 'Booster Box' },
+  { pattern: /\bBooster Bundle\b/i, productType: 'Booster Bundle' },
+  { pattern: /\bPremium Collection\b/i, productType: 'Premium Collection' },
+  { pattern: /\bBuild & Battle\b/i, productType: 'Build & Battle' },
+  { pattern: /\bCollection Box\b/i, productType: 'Collection Box' },
+  { pattern: /\bCollection\b/i, productType: 'Collection' },
+  { pattern: /\bTin\b/i, productType: 'Tin' },
+  { pattern: /\bBlister\b/i, productType: 'Blister' },
+];
+
+const SINGLES_REJECT = /\b(Single Card|Promo Card|Code Card)\b|\b\d+\/\d+\b/i;
+
+export type TcgcsvProduct = {
+  productId: number;
+  name: string;
+  cleanName: string;
+  imageUrl: string | null;
+  groupId: number;
+  modifiedOn: string;
+  extendedData?: Array<{ name: string; value: string }>;
+};
+
+export type TcgcsvPriceRow = {
+  productId: number;
+  marketPrice: number | null;
+  lowPrice: number | null;
+  highPrice: number | null;
+  subTypeName: string;
+};
+
+export type SealedSearchHit = {
+  tcgplayerProductId: number;
+  name: string;
+  setName: string;
+  setCode: string | null;
+  productType: string;
+  imageUrl: string | null;
+  marketCents: number | null;
+  releaseDate: string | null;
+  groupId: number;
+};
+
+async function fetchProducts(groupId: number): Promise<TcgcsvProduct[]> {
+  const res = await fetch(`${TCGCSV_BASE}/${groupId}/products`, { headers: { Accept: 'application/json' } });
+  if (!res.ok) throw new Error(`tcgcsv products ${groupId} ${res.status}`);
+  const body = (await res.json()) as { results: TcgcsvProduct[] };
+  return body.results;
+}
+
+async function fetchPrices(groupId: number): Promise<TcgcsvPriceRow[]> {
+  const res = await fetch(`${TCGCSV_BASE}/${groupId}/prices`, { headers: { Accept: 'text/csv' } });
+  if (!res.ok) throw new Error(`tcgcsv prices ${groupId} ${res.status}`);
+  const csv = await res.text();
+  const parsed = Papa.parse<Record<string, string>>(csv, { header: true, skipEmptyLines: true });
+  return parsed.data
+    .filter((r) => r.productId)
+    .map((r) => ({
+      productId: Number(r.productId),
+      marketPrice: r.marketPrice ? Number(r.marketPrice) : null,
+      lowPrice: r.lowPrice ? Number(r.lowPrice) : null,
+      highPrice: r.highPrice ? Number(r.highPrice) : null,
+      subTypeName: r.subTypeName ?? 'Normal',
+    }));
+}
+
+function classifySealedType(name: string): string | null {
+  for (const { pattern, productType } of SEALED_PATTERNS) {
+    if (pattern.test(name)) return productType;
+  }
+  return null;
+}
+
+function tokenize(q: string): string[] {
+  return q
+    .toLowerCase()
+    .split(/\s+/)
+    .filter((t) => t.length > 0);
+}
+
+function score(name: string, setName: string, tokens: string[]): number {
+  const haystack = `${name} ${setName}`.toLowerCase();
+  let s = 0;
+  for (const t of tokens) {
+    const re = new RegExp(`\\b${t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i');
+    if (re.test(haystack)) s += 10;
+    else if (haystack.includes(t)) s += 3;
+  }
+  return s;
+}
+
+export async function searchSealed(query: string, limit: number): Promise<SealedSearchHit[]> {
+  const tokens = tokenize(query);
+  if (tokens.length === 0) return [];
+  const groups = await getGroups();
+  // Filter groups whose name shares any token (broad -- narrows hot-path fetches).
+  const candidateGroups = groups.filter((g) => {
+    const lower = g.name.toLowerCase();
+    return tokens.some((t) => lower.includes(t));
+  });
+  // If no group name matches, scan all groups (rare, e.g. user types "ETB").
+  const groupsToFetch = candidateGroups.length > 0 ? candidateGroups : groups;
+
+  const results: SealedSearchHit[] = [];
+  await Promise.all(
+    groupsToFetch.map(async (g) => {
+      const [products, prices] = await Promise.all([fetchProducts(g.groupId), fetchPrices(g.groupId)]);
+      const priceByProduct = new Map<number, TcgcsvPriceRow>();
+      for (const p of prices) {
+        const existing = priceByProduct.get(p.productId);
+        if (!existing || (existing.subTypeName !== 'Normal' && p.subTypeName === 'Normal')) {
+          priceByProduct.set(p.productId, p);
+        }
+      }
+      for (const product of products) {
+        if (SINGLES_REJECT.test(product.name)) continue;
+        const productType = classifySealedType(product.name);
+        if (!productType) continue;
+        const price = priceByProduct.get(product.productId);
+        results.push({
+          tcgplayerProductId: product.productId,
+          name: product.name,
+          setName: g.name,
+          setCode: g.abbreviation ? g.abbreviation.toLowerCase() : null,
+          productType,
+          imageUrl: product.imageUrl,
+          marketCents: price?.marketPrice != null ? Math.round(price.marketPrice * 100) : null,
+          releaseDate: g.publishedOn ? g.publishedOn.slice(0, 10) : null,
+          groupId: g.groupId,
+        });
+      }
+    })
+  );
+
+  return results
+    .map((r) => ({ r, s: score(r.name, r.setName, tokens) }))
+    .filter(({ s }) => s > 0)
+    .sort((a, b) => b.s - a.s)
+    .slice(0, limit)
+    .map(({ r }) => r);
 }
 

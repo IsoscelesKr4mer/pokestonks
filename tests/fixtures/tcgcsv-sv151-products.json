@@ -1,0 +1,62 @@
+{
+  "totalItems": 4,
+  "success": true,
+  "errors": [],
+  "results": [
+    {
+      "productId": 480000,
+      "name": "Scarlet & Violet 151 Elite Trainer Box",
+      "cleanName": "Scarlet & Violet 151 Elite Trainer Box",
+      "imageUrl": "https://tcgplayer-cdn.tcgplayer.com/product/480000_200w.jpg",
+      "categoryId": 3,
+      "groupId": 23237,
+      "url": "https://www.tcgplayer.com/product/480000",
+      "modifiedOn": "2024-01-04T20:24:13.503",
+      "imageCount": 1,
+      "presale": false,
+      "extendedData": []
+    },
+    {
+      "productId": 480001,
+      "name": "Scarlet & Violet 151 Booster Box",
+      "cleanName": "Scarlet & Violet 151 Booster Box",
+      "imageUrl": "https://tcgplayer-cdn.tcgplayer.com/product/480001_200w.jpg",
+      "categoryId": 3,
+      "groupId": 23237,
+      "url": "https://www.tcgplayer.com/product/480001",
+      "modifiedOn": "2024-01-04T20:24:13.503",
+      "imageCount": 1,
+      "presale": false,
+      "extendedData": []
+    },
+    {
+      "productId": 480002,
+      "name": "Scarlet & Violet 151 Booster Bundle",
+      "cleanName": "Scarlet & Violet 151 Booster Bundle",
+      "imageUrl": "https://tcgplayer-cdn.tcgplayer.com/product/480002_200w.jpg",
+      "categoryId": 3,
+      "groupId": 23237,
+      "url": "https://www.tcgplayer.com/product/480002",
+      "modifiedOn": "2024-01-04T20:24:13.503",
+      "imageCount": 1,
+      "presale": false,
+      "extendedData": []
+    },
+    {
+      "productId": 490000,
+      "name": "Charizard ex - 199/091",
+      "cleanName": "Charizard ex 199 091",
+      "imageUrl": "https://tcgplayer-cdn.tcgplayer.com/product/490000_200w.jpg",
+      "categoryId": 3,
+      "groupId": 23237,
+      "url": "https://www.tcgplayer.com/product/490000",
+      "modifiedOn": "2024-01-04T20:24:13.503",
+      "imageCount": 1,
+      "presale": false,
+      "extendedData": [
+        { "name": "Number", "displayName": "Number", "value": "199/091" },
+        { "name": "Rarity", "displayName": "Rarity", "value": "Special Illustration Rare" }
+      ]
+    }
+  ]
+}

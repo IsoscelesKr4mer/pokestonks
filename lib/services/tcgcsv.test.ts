@@ -2,7 +2,15 @@ import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { http, HttpResponse } from 'msw';
 import { server } from '../../tests/msw/server';
 import groupsFixture from '../../tests/fixtures/tcgcsv-groups.json';
-import { __resetGroupCacheForTests, getGroups } from './tcgcsv';
+import productsFixture from '../../tests/fixtures/tcgcsv-sv151-products.json';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { __resetGroupCacheForTests, getGroups, searchSealed } from './tcgcsv';
+
+const sv151PricesCsv = readFileSync(
+  join(__dirname, '..', '..', 'tests', 'fixtures', 'tcgcsv-sv151-prices.csv'),
+  'utf8'
+);
 
 describe('tcgcsv.getGroups', () => {
   beforeEach(() => __resetGroupCacheForTests());
@@ -50,5 +58,65 @@ describe('tcgcsv.getGroups', () => {
     await getGroups();
     expect(hits).toBe(2);
     vi.useRealTimers();
+  });
+});
+
+describe('tcgcsv.searchSealed', () => {
+  beforeEach(() => __resetGroupCacheForTests());
+
+  function mockApi() {
+    server.use(
+      http.get('https://tcgcsv.com/tcgplayer/3/groups', () => HttpResponse.json(groupsFixture)),
+      http.get('https://tcgcsv.com/tcgplayer/3/23237/products', () => HttpResponse.json(productsFixture)),
+      http.get('https://tcgcsv.com/tcgplayer/3/23237/prices', () =>
+        new HttpResponse(sv151PricesCsv, { headers: { 'Content-Type': 'text/csv' } })
+      ),
+      http.get('https://tcgcsv.com/tcgplayer/3/23244/products', () =>
+        HttpResponse.json({ totalItems: 0, success: true, errors: [], results: [] })
+      ),
+      http.get('https://tcgcsv.com/tcgplayer/3/23244/prices', () =>
+        new HttpResponse('productId,lowPrice,midPrice,highPrice,marketPrice,directLowPrice,subTypeName\n', {
+          headers: { 'Content-Type': 'text/csv' },
+        })
+      ),
+      http.get('https://tcgcsv.com/tcgplayer/3/1234/products', () =>
+        HttpResponse.json({ totalItems: 0, success: true, errors: [], results: [] })
+      ),
+      http.get('https://tcgcsv.com/tcgplayer/3/1234/prices', () =>
+        new HttpResponse('productId,lowPrice,midPrice,highPrice,marketPrice,directLowPrice,subTypeName\n', {
+          headers: { 'Content-Type': 'text/csv' },
+        })
+      )
+    );
+  }
+
+  it('returns SV151 ETB for "151 etb" query', async () => {
+    mockApi();
+    const results = await searchSealed('151 etb', 10);
+    expect(results.length).toBeGreaterThan(0);
+    expect(results[0].name).toMatch(/Elite Trainer Box/i);
+    expect(results[0].setName).toBe('Scarlet & Violet 151');
+    expect(results[0].marketCents).toBe(7450);
+  });
+
+  it('excludes singles like "Charizard ex - 199/091"', async () => {
+    mockApi();
+    const results = await searchSealed('charizard', 10);
+    expect(results.find((r) => /199/.test(r.name))).toBeUndefined();
+  });
+
+  it('classifies productType from name', async () => {
+    mockApi();
+    const all = await searchSealed('151', 10);
+    const types = new Set(all.map((r) => r.productType));
+    expect(types.has('Elite Trainer Box')).toBe(true);
+    expect(types.has('Booster Box')).toBe(true);
+    expect(types.has('Booster Bundle')).toBe(true);
+  });
+
+  it('returns empty for nonsense query', async () => {
+    mockApi();
+    const results = await searchSealed('zzzzzzzz', 10);
+    expect(results).toEqual([]);
   });
 });
