@@ -165,8 +165,10 @@ export async function searchCardsWithImport(
         cardNumberPartial: tokens.cardNumberPartial,
         cardNumberFull: tokens.cardNumberFull,
         setCode: tokens.setCode,
-        // Cap at limit*2 (or 100, whichever is bigger) so sort-by-price has a wide enough field to pick from.
-        pageSize: Math.max(100, limit * 2),
+        // 250 is the Pokémon TCG API max. Set queries (e.g. "ascended heroes")
+        // can return ~300 cards; we cover most sets in a single page and let
+        // sort-by-price work on the full field.
+        pageSize: 250,
       })
     );
   } catch (e) {
@@ -234,6 +236,26 @@ export type CardResultDto = { type: 'card' } & CardVariantHit;
 
 export type SortBy = 'price-desc' | 'price-asc' | 'relevance' | 'released' | 'name';
 
+// When prices are missing (e.g. brand new sets that TCGplayer hasn't indexed),
+// fall back to rarity to keep the sort meaningful. Sealed gets a mid rank so
+// it interleaves between rare singles and common singles.
+function rarityRank(r: SealedResultDto | CardResultDto): number {
+  if (r.type === 'sealed') return 3;
+  const rarity = r.rarity?.toLowerCase() ?? '';
+  if (rarity.includes('special illustration')) return 12;
+  if (rarity.includes('hyper rare') || rarity.includes('rare secret')) return 11;
+  if (rarity.includes('illustration rare')) return 10;
+  if (rarity.includes('ultra')) return 9;
+  if (rarity.includes('alt art') || rarity.includes('full art')) return 8;
+  if (rarity.includes('double rare')) return 7;
+  if (rarity.includes('holo rare') || rarity.includes('rare holo')) return 6;
+  if (rarity.includes('holo')) return 5;
+  if (rarity === 'rare') return 4;
+  if (rarity === 'uncommon') return 2;
+  if (rarity === 'common') return 1;
+  return 0;
+}
+
 export type SearchResponse = {
   query: string;
   kind: SearchKind;
@@ -244,39 +266,27 @@ export type SearchResponse = {
 
 type AnyDto = SealedResultDto | CardResultDto;
 
-function sortKey(r: AnyDto, sortBy: SortBy): number | string {
-  switch (sortBy) {
-    case 'price-desc':
-    case 'price-asc':
-      return r.marketCents ?? -1;
-    case 'released':
-      // We don't carry releaseDate on DTOs yet; defer to insertion order.
-      return 0;
-    case 'name':
-      return r.name.toLowerCase();
-    case 'relevance':
-    default:
-      return 0;
-  }
-}
-
 function applySort(rows: AnyDto[], sortBy: SortBy): AnyDto[] {
   if (sortBy === 'relevance') return rows;
   const sorted = [...rows];
   sorted.sort((a, b) => {
-    const ak = sortKey(a, sortBy);
-    const bk = sortKey(b, sortBy);
-    // Push null/missing prices to the end regardless of direction.
-    const aMissing = a.marketCents == null;
-    const bMissing = b.marketCents == null;
-    if ((sortBy === 'price-desc' || sortBy === 'price-asc') && aMissing !== bMissing) {
-      return aMissing ? 1 : -1;
+    if (sortBy === 'name') {
+      return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
     }
-    if (typeof ak === 'string' && typeof bk === 'string') {
-      return ak.localeCompare(bk);
+    if (sortBy === 'released') return 0;
+    // price-desc / price-asc: priced items first, then by price, then rarity tiebreak.
+    const aHasPrice = a.marketCents != null;
+    const bHasPrice = b.marketCents != null;
+    if (aHasPrice !== bHasPrice) return aHasPrice ? -1 : 1;
+    if (aHasPrice && bHasPrice && a.marketCents !== b.marketCents) {
+      return sortBy === 'price-asc'
+        ? (a.marketCents as number) - (b.marketCents as number)
+        : (b.marketCents as number) - (a.marketCents as number);
     }
-    if (sortBy === 'price-asc') return (ak as number) - (bk as number);
-    return (bk as number) - (ak as number);
+    // Tied (or both missing): fall back to rarity rank desc, then name asc.
+    const rDiff = rarityRank(b) - rarityRank(a);
+    if (rDiff !== 0) return rDiff;
+    return a.name.toLowerCase().localeCompare(b.name.toLowerCase());
   });
   return sorted;
 }

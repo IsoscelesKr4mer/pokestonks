@@ -51,7 +51,7 @@ export function SearchBox() {
   const { data, isFetching, error } = useQuery<SearchResponse>({
     queryKey: ['search', debounced, kind, sortBy],
     queryFn: async () => {
-      const url = `/api/search?q=${encodeURIComponent(debounced)}&kind=${kind}&sortBy=${sortBy}&limit=100`;
+      const url = `/api/search?q=${encodeURIComponent(debounced)}&kind=${kind}&sortBy=${sortBy}&limit=250`;
       const res = await fetch(url);
       if (!res.ok) throw new Error(`search failed: ${res.status}`);
       return res.json();
