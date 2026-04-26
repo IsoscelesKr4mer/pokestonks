@@ -1,4 +1,4 @@
-import { searchSealed, getGroups, type SealedSearchHit, type TcgcsvProduct, type TcgcsvPriceRow } from './tcgcsv';
+import { searchSealed, getGroups, fetchProducts, fetchPrices, type SealedSearchHit, type TcgcsvProduct, type TcgcsvPriceRow } from './tcgcsv';
 import { upsertSealed } from '@/lib/db/upserts/catalogItems';
 
 export type SealedResult = SealedSearchHit & { catalogItemId: number };
@@ -34,6 +34,7 @@ export type CardVariantResult = {
 };
 
 export type CardResult = {
+  name: string;
   cardNumber: string;
   setName: string | null;
   setCode: string | null;
@@ -63,32 +64,24 @@ async function findTcgcsvCardPrice(args: {
   const groups = await getGroups();
   const group = groups.find((g) => (g.abbreviation ?? '').toLowerCase() === args.setCode);
   if (!group) return {};
-  const productsRes = await fetch(`https://tcgcsv.com/tcgplayer/3/${group.groupId}/products`, {
-    headers: { Accept: 'application/json' },
-  });
-  if (!productsRes.ok) return {};
-  const productsBody = (await productsRes.json()) as { results: TcgcsvProduct[] };
-  const product = productsBody.results.find((p) => {
+  let products: TcgcsvProduct[];
+  try {
+    products = await fetchProducts(group.groupId);
+  } catch {
+    return {};
+  }
+  const product = products.find((p) => {
     const num = (p.extendedData ?? []).find((d) => d.name === 'Number')?.value;
     return num?.startsWith(`${args.cardNumber}/`);
   });
   if (!product) return {};
-  const pricesRes = await fetch(`https://tcgcsv.com/tcgplayer/3/${group.groupId}/prices`, {
-    headers: { Accept: 'text/csv' },
-  });
-  if (!pricesRes.ok) return { productId: product.productId };
-  const csv = await pricesRes.text();
-  const Papa = (await import('papaparse')).default;
-  const parsed = Papa.parse<Record<string, string>>(csv, { header: true, skipEmptyLines: true });
-  const rows = parsed.data
-    .filter((r) => Number(r.productId) === product.productId)
-    .map((r) => ({
-      productId: Number(r.productId),
-      marketPrice: r.marketPrice ? Number(r.marketPrice) : null,
-      lowPrice: r.lowPrice ? Number(r.lowPrice) : null,
-      highPrice: r.highPrice ? Number(r.highPrice) : null,
-      subTypeName: r.subTypeName ?? 'Normal',
-    } as TcgcsvPriceRow));
+  let priceRows: TcgcsvPriceRow[];
+  try {
+    priceRows = await fetchPrices(group.groupId);
+  } catch {
+    return { productId: product.productId };
+  }
+  const rows = priceRows.filter((r) => r.productId === product.productId);
   return {
     normal: rows.find((r) => r.subTypeName === 'Normal'),
     reverseHolo: rows.find((r) => /Reverse Holofoil/i.test(r.subTypeName)),
@@ -190,6 +183,7 @@ export async function searchCardsWithImport(
         });
       }
       return {
+        name: card.name,
         cardNumber: card.number,
         setName: card.setName,
         setCode: card.setCode,

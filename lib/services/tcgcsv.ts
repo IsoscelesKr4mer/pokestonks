@@ -81,14 +81,14 @@ export type SealedSearchHit = {
   groupId: number;
 };
 
-async function fetchProducts(groupId: number): Promise<TcgcsvProduct[]> {
+export async function fetchProducts(groupId: number): Promise<TcgcsvProduct[]> {
   const res = await fetch(`${TCGCSV_BASE}/${groupId}/products`, { headers: { Accept: 'application/json' } });
   if (!res.ok) throw new Error(`tcgcsv products ${groupId} ${res.status}`);
   const body = (await res.json()) as { results: TcgcsvProduct[] };
   return body.results;
 }
 
-async function fetchPrices(groupId: number): Promise<TcgcsvPriceRow[]> {
+export async function fetchPrices(groupId: number): Promise<TcgcsvPriceRow[]> {
   const res = await fetch(`${TCGCSV_BASE}/${groupId}/prices`, { headers: { Accept: 'text/csv' } });
   if (!res.ok) throw new Error(`tcgcsv prices ${groupId} ${res.status}`);
   const csv = await res.text();
