@@ -50,6 +50,7 @@ export type Warning = { source: 'tcgcsv' | 'pokemontcg'; message: string };
 export type SealedResult = SealedSearchHit & {
   catalogItemId: number;
   imageStoragePath: string | null;
+  lastMarketAt: string | null;
 };
 
 export async function searchSealedWithImport(query: string, limit: number): Promise<SealedResult[]> {
@@ -66,6 +67,7 @@ export async function searchSealedWithImport(query: string, limit: number): Prom
           productType: h.productType,
           imageUrl: h.imageUrl,
           releaseDate: h.releaseDate,
+          lastMarketCents: h.marketCents,
         })
       );
       // Use the cached storage URL when one exists (faster than upstream).
@@ -78,6 +80,7 @@ export async function searchSealedWithImport(query: string, limit: number): Prom
         catalogItemId: upserted.id,
         imageUrl: resolvedImageUrl,
         imageStoragePath: upserted.imageStoragePath,
+        lastMarketAt: upserted.lastMarketAt?.toISOString() ?? null,
       };
     })
   );
@@ -95,6 +98,7 @@ export type CardVariantHit = {
   imageUrl: string | null;
   imageStoragePath: string | null;
   marketCents: number | null;
+  lastMarketAt: string | null;
 };
 
 // Vercel Hobby has a 10s function budget. Pokémon TCG API parallel pagination
@@ -209,6 +213,7 @@ function pendingToInput(p: PendingVariant): CardUpsertInput {
     variant: p.variant,
     imageUrl: p.card.imageUrl,
     releaseDate: p.card.releaseDate,
+    lastMarketCents: p.marketCents,
   };
 }
 
@@ -304,6 +309,7 @@ export async function searchCardsWithImport(
       imageUrl: getImageUrl({ imageStoragePath: upserted.imageStoragePath, imageUrl: p.card.imageUrl }),
       imageStoragePath: upserted.imageStoragePath,
       marketCents: p.marketCents,
+      lastMarketAt: upserted.lastMarketAt?.toISOString() ?? null,
     };
   });
 
@@ -321,9 +327,10 @@ export type SealedResultDto = {
   productType: string | null;
   imageUrl: string | null;
   marketCents: number | null;
+  lastMarketAt: string | null;
 };
 
-export type CardResultDto = { type: 'card' } & CardVariantHit;
+export type CardResultDto = { type: 'card' } & CardVariantHit & { lastMarketAt: string | null };
 
 export type SortBy = 'price-desc' | 'price-asc' | 'rarity-desc' | 'relevance' | 'released' | 'name';
 
@@ -355,9 +362,9 @@ export type SearchResponse = {
   warnings: Warning[];
 };
 
-type AnyDto = SealedResultDto | CardResultDto;
+export type AnyDto = SealedResultDto | CardResultDto;
 
-function applySort(rows: AnyDto[], sortBy: SortBy): AnyDto[] {
+export function applySort(rows: AnyDto[], sortBy: SortBy): AnyDto[] {
   if (sortBy === 'relevance') return rows;
   const sorted = [...rows];
   sorted.sort((a, b) => {
@@ -439,6 +446,7 @@ export async function searchAll(
     productType: s.productType,
     imageUrl: s.imageUrl,
     marketCents: s.marketCents,
+    lastMarketAt: s.lastMarketAt,
   }));
   const cardDtos: CardResultDto[] = cards.results.map((c) => ({ type: 'card' as const, ...c }));
 

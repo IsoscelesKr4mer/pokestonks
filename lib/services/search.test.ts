@@ -12,10 +12,19 @@ vi.mock('@/lib/db/upserts/catalogItems', () => ({
   upsertSealed: vi.fn(async (i: { tcgplayerProductId: number }) => ({
     id: i.tcgplayerProductId,
     imageStoragePath: null,
+    lastMarketAt: new Date('2026-04-26T00:00:00Z'),
   })),
-  upsertCard: vi.fn(async () => ({ id: ++cardUpsertCounter, imageStoragePath: null })),
+  upsertCard: vi.fn(async () => ({
+    id: ++cardUpsertCounter,
+    imageStoragePath: null,
+    lastMarketAt: new Date('2026-04-26T00:00:00Z'),
+  })),
   bulkUpsertCards: vi.fn(async (inputs: unknown[]) =>
-    inputs.map(() => ({ id: ++cardUpsertCounter, imageStoragePath: null }))
+    inputs.map(() => ({
+      id: ++cardUpsertCounter,
+      imageStoragePath: null,
+      lastMarketAt: new Date('2026-04-26T00:00:00Z'),
+    }))
   ),
 }));
 
