@@ -4,13 +4,8 @@ import { server } from '../../tests/msw/server';
 import groupsFixture from '../../tests/fixtures/tcgcsv-groups.json';
 import productsFixture from '../../tests/fixtures/tcgcsv-sv151-products.json';
 import charizardFixture from '../../tests/fixtures/pokemontcg-charizard.json';
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
 
-const sv151PricesCsv = readFileSync(
-  join(__dirname, '..', '..', 'tests', 'fixtures', 'tcgcsv-sv151-prices.csv'),
-  'utf8'
-);
+import sv151PricesFixture from '../../tests/fixtures/tcgcsv-sv151-prices.json';
 
 let cardUpsertCounter = 0;
 vi.mock('@/lib/db/upserts/catalogItems', () => ({
@@ -85,15 +80,13 @@ describe('searchSealedWithImport', () => {
       http.get('https://tcgcsv.com/tcgplayer/3/groups', () => HttpResponse.json(groupsFixture)),
       http.get('https://tcgcsv.com/tcgplayer/3/23237/products', () => HttpResponse.json(productsFixture)),
       http.get('https://tcgcsv.com/tcgplayer/3/23237/prices', () =>
-        new HttpResponse(sv151PricesCsv, { headers: { 'Content-Type': 'text/csv' } })
+        HttpResponse.json(sv151PricesFixture)
       ),
       http.get('https://tcgcsv.com/tcgplayer/3/:groupId/products', () =>
         HttpResponse.json({ totalItems: 0, success: true, errors: [], results: [] })
       ),
       http.get('https://tcgcsv.com/tcgplayer/3/:groupId/prices', () =>
-        new HttpResponse('productId,lowPrice,midPrice,highPrice,marketPrice,directLowPrice,subTypeName\n', {
-          headers: { 'Content-Type': 'text/csv' },
-        })
+        HttpResponse.json({ success: true, errors: [], results: [] })
       )
     );
   }
@@ -117,15 +110,13 @@ describe('searchCardsWithImport', () => {
       http.get('https://tcgcsv.com/tcgplayer/3/groups', () => HttpResponse.json(groupsFixture)),
       http.get('https://tcgcsv.com/tcgplayer/3/23237/products', () => HttpResponse.json(productsFixture)),
       http.get('https://tcgcsv.com/tcgplayer/3/23237/prices', () =>
-        new HttpResponse(sv151PricesCsv, { headers: { 'Content-Type': 'text/csv' } })
+        HttpResponse.json(sv151PricesFixture)
       ),
       http.get('https://tcgcsv.com/tcgplayer/3/:groupId/products', () =>
         HttpResponse.json({ totalItems: 0, success: true, errors: [], results: [] })
       ),
       http.get('https://tcgcsv.com/tcgplayer/3/:groupId/prices', () =>
-        new HttpResponse('productId,lowPrice,midPrice,highPrice,marketPrice,directLowPrice,subTypeName\n', {
-          headers: { 'Content-Type': 'text/csv' },
-        })
+        HttpResponse.json({ success: true, errors: [], results: [] })
       )
     );
   }
@@ -187,15 +178,13 @@ describe('searchAll', () => {
       http.get('https://tcgcsv.com/tcgplayer/3/groups', () => HttpResponse.json(groupsFixture)),
       http.get('https://tcgcsv.com/tcgplayer/3/23237/products', () => HttpResponse.json(productsFixture)),
       http.get('https://tcgcsv.com/tcgplayer/3/23237/prices', () =>
-        new HttpResponse(sv151PricesCsv, { headers: { 'Content-Type': 'text/csv' } })
+        HttpResponse.json(sv151PricesFixture)
       ),
       http.get('https://tcgcsv.com/tcgplayer/3/:groupId/products', () =>
         HttpResponse.json({ totalItems: 0, success: true, errors: [], results: [] })
       ),
       http.get('https://tcgcsv.com/tcgplayer/3/:groupId/prices', () =>
-        new HttpResponse('productId,lowPrice,midPrice,highPrice,marketPrice,directLowPrice,subTypeName\n', {
-          headers: { 'Content-Type': 'text/csv' },
-        })
+        HttpResponse.json({ success: true, errors: [], results: [] })
       )
     );
     const { results, warnings } = await searchAll('charizard 199', 'all', 20);

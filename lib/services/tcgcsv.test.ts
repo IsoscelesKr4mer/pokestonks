@@ -3,8 +3,6 @@ import { http, HttpResponse } from 'msw';
 import { server } from '../../tests/msw/server';
 import groupsFixture from '../../tests/fixtures/tcgcsv-groups.json';
 import productsFixture from '../../tests/fixtures/tcgcsv-sv151-products.json';
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
 import { __resetGroupCacheForTests, __resetPerGroupCachesForTests, fetchSinglePrice, getGroups, searchSealed } from './tcgcsv';
 
 function resetAllCaches() {
@@ -12,10 +10,7 @@ function resetAllCaches() {
   __resetPerGroupCachesForTests();
 }
 
-const sv151PricesCsv = readFileSync(
-  join(__dirname, '..', '..', 'tests', 'fixtures', 'tcgcsv-sv151-prices.csv'),
-  'utf8'
-);
+import sv151PricesFixture from '../../tests/fixtures/tcgcsv-sv151-prices.json';
 
 describe('tcgcsv.getGroups', () => {
   beforeEach(() => resetAllCaches());
@@ -74,23 +69,19 @@ describe('tcgcsv.searchSealed', () => {
       http.get('https://tcgcsv.com/tcgplayer/3/groups', () => HttpResponse.json(groupsFixture)),
       http.get('https://tcgcsv.com/tcgplayer/3/23237/products', () => HttpResponse.json(productsFixture)),
       http.get('https://tcgcsv.com/tcgplayer/3/23237/prices', () =>
-        new HttpResponse(sv151PricesCsv, { headers: { 'Content-Type': 'text/csv' } })
+        HttpResponse.json(sv151PricesFixture)
       ),
       http.get('https://tcgcsv.com/tcgplayer/3/23244/products', () =>
         HttpResponse.json({ totalItems: 0, success: true, errors: [], results: [] })
       ),
       http.get('https://tcgcsv.com/tcgplayer/3/23244/prices', () =>
-        new HttpResponse('productId,lowPrice,midPrice,highPrice,marketPrice,directLowPrice,subTypeName\n', {
-          headers: { 'Content-Type': 'text/csv' },
-        })
+        HttpResponse.json({ success: true, errors: [], results: [] })
       ),
       http.get('https://tcgcsv.com/tcgplayer/3/1234/products', () =>
         HttpResponse.json({ totalItems: 0, success: true, errors: [], results: [] })
       ),
       http.get('https://tcgcsv.com/tcgplayer/3/1234/prices', () =>
-        new HttpResponse('productId,lowPrice,midPrice,highPrice,marketPrice,directLowPrice,subTypeName\n', {
-          headers: { 'Content-Type': 'text/csv' },
-        })
+        HttpResponse.json({ success: true, errors: [], results: [] })
       )
     );
   }
@@ -132,7 +123,7 @@ describe('tcgcsv.fetchSinglePrice', () => {
   it('returns the market price in cents for a known product', async () => {
     server.use(
       http.get('https://tcgcsv.com/tcgplayer/3/23237/prices', () =>
-        new HttpResponse(sv151PricesCsv, { headers: { 'Content-Type': 'text/csv' } })
+        HttpResponse.json(sv151PricesFixture)
       )
     );
     const price = await fetchSinglePrice({ groupId: 23237, productId: 480001, subType: 'Normal' });
@@ -144,7 +135,7 @@ describe('tcgcsv.fetchSinglePrice', () => {
   it('returns null when productId is not in the prices CSV', async () => {
     server.use(
       http.get('https://tcgcsv.com/tcgplayer/3/23237/prices', () =>
-        new HttpResponse(sv151PricesCsv, { headers: { 'Content-Type': 'text/csv' } })
+        HttpResponse.json(sv151PricesFixture)
       )
     );
     const price = await fetchSinglePrice({ groupId: 23237, productId: 99999, subType: 'Normal' });

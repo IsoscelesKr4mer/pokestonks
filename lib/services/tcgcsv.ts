@@ -109,24 +109,36 @@ export async function fetchProducts(groupId: number, now: number = Date.now()): 
   return body.results;
 }
 
+type RawPriceRow = {
+  productId: number;
+  lowPrice: number | null;
+  midPrice?: number | null;
+  highPrice: number | null;
+  marketPrice: number | null;
+  directLowPrice?: number | null;
+  subTypeName?: string | null;
+};
+
 export async function fetchPrices(groupId: number, now: number = Date.now()): Promise<TcgcsvPriceRow[]> {
   const cached = pricesCache.get(groupId);
   if (cached && now - cached.fetchedAt < PER_GROUP_TTL_MS) {
     return cached.data;
   }
+  // TCGCSV serves /prices as JSON (despite the project name). Earlier code
+  // tried to parse it as CSV via Papa, which silently produced empty rows
+  // and made every sealed price come back null.
   const res = await fetch(`${TCGCSV_BASE}/${groupId}/prices`, {
-    headers: { Accept: 'text/csv', 'User-Agent': USER_AGENT },
+    headers: { Accept: 'application/json', 'User-Agent': USER_AGENT },
   });
   if (!res.ok) throw new Error(`tcgcsv prices ${groupId} ${res.status}`);
-  const csv = await res.text();
-  const parsed = Papa.parse<Record<string, string>>(csv, { header: true, skipEmptyLines: true });
-  const rows = parsed.data
-    .filter((r) => r.productId)
-    .map((r) => ({
+  const body = (await res.json()) as { results: RawPriceRow[] };
+  const rows = (body.results ?? [])
+    .filter((r) => r.productId != null)
+    .map<TcgcsvPriceRow>((r) => ({
       productId: Number(r.productId),
-      marketPrice: r.marketPrice ? Number(r.marketPrice) : null,
-      lowPrice: r.lowPrice ? Number(r.lowPrice) : null,
-      highPrice: r.highPrice ? Number(r.highPrice) : null,
+      marketPrice: r.marketPrice != null ? Number(r.marketPrice) : null,
+      lowPrice: r.lowPrice != null ? Number(r.lowPrice) : null,
+      highPrice: r.highPrice != null ? Number(r.highPrice) : null,
       subTypeName: r.subTypeName ?? 'Normal',
     }));
   pricesCache.set(groupId, { fetchedAt: now, data: rows });
