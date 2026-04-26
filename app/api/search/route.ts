@@ -5,7 +5,7 @@ import { searchAll } from '@/lib/services/search';
 const querySchema = z.object({
   q: z.string().min(1).max(200),
   kind: z.enum(['all', 'sealed', 'card']).default('all'),
-  limit: z.coerce.number().int().min(1).max(300).default(60),
+  limit: z.coerce.number().int().min(1).max(600).default(60),
   sortBy: z.enum(['price-desc', 'price-asc', 'rarity-desc', 'relevance', 'released', 'name']).default('price-desc'),
 });
 
