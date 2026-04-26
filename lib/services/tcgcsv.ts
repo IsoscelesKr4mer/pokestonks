@@ -182,3 +182,28 @@ export async function searchSealed(query: string, limit: number): Promise<Sealed
     .map(({ r }) => r);
 }
 
+export type SinglePriceResult = {
+  marketCents: number | null;
+  lowCents: number | null;
+  highCents: number | null;
+  subTypeName: string;
+};
+
+export async function fetchSinglePrice(args: {
+  groupId: number;
+  productId: number;
+  subType?: string;
+}): Promise<SinglePriceResult | null> {
+  const rows = await fetchPrices(args.groupId);
+  const candidates = rows.filter((r) => r.productId === args.productId);
+  if (candidates.length === 0) return null;
+  const preferred =
+    candidates.find((r) => r.subTypeName === (args.subType ?? 'Normal')) ?? candidates[0];
+  return {
+    marketCents: preferred.marketPrice != null ? Math.round(preferred.marketPrice * 100) : null,
+    lowCents: preferred.lowPrice != null ? Math.round(preferred.lowPrice * 100) : null,
+    highCents: preferred.highPrice != null ? Math.round(preferred.highPrice * 100) : null,
+    subTypeName: preferred.subTypeName,
+  };
+}
+

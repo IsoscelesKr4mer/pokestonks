@@ -5,7 +5,7 @@ import groupsFixture from '../../tests/fixtures/tcgcsv-groups.json';
 import productsFixture from '../../tests/fixtures/tcgcsv-sv151-products.json';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { __resetGroupCacheForTests, getGroups, searchSealed } from './tcgcsv';
+import { __resetGroupCacheForTests, fetchSinglePrice, getGroups, searchSealed } from './tcgcsv';
 
 const sv151PricesCsv = readFileSync(
   join(__dirname, '..', '..', 'tests', 'fixtures', 'tcgcsv-sv151-prices.csv'),
@@ -118,5 +118,38 @@ describe('tcgcsv.searchSealed', () => {
     mockApi();
     const results = await searchSealed('zzzzzzzz', 10);
     expect(results).toEqual([]);
+  });
+});
+
+describe('tcgcsv.fetchSinglePrice', () => {
+  beforeEach(() => __resetGroupCacheForTests());
+
+  it('returns the market price in cents for a known product', async () => {
+    server.use(
+      http.get('https://tcgcsv.com/tcgplayer/3/23237/prices', () =>
+        new HttpResponse(sv151PricesCsv, { headers: { 'Content-Type': 'text/csv' } })
+      )
+    );
+    const price = await fetchSinglePrice({ groupId: 23237, productId: 480001, subType: 'Normal' });
+    expect(price?.marketCents).toBe(18999);
+    expect(price?.lowCents).toBe(15999);
+    expect(price?.highCents).toBe(21999);
+  });
+
+  it('returns null when productId is not in the prices CSV', async () => {
+    server.use(
+      http.get('https://tcgcsv.com/tcgplayer/3/23237/prices', () =>
+        new HttpResponse(sv151PricesCsv, { headers: { 'Content-Type': 'text/csv' } })
+      )
+    );
+    const price = await fetchSinglePrice({ groupId: 23237, productId: 99999, subType: 'Normal' });
+    expect(price).toBeNull();
+  });
+
+  it('throws on 5xx', async () => {
+    server.use(
+      http.get('https://tcgcsv.com/tcgplayer/3/23237/prices', () => new HttpResponse(null, { status: 502 }))
+    );
+    await expect(fetchSinglePrice({ groupId: 23237, productId: 1 })).rejects.toThrow();
   });
 });
