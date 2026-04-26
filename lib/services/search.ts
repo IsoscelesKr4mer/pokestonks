@@ -1,5 +1,36 @@
 import { searchSealed, getGroups, fetchProducts, fetchPrices, type SealedSearchHit, type TcgcsvProduct, type TcgcsvPriceRow } from './tcgcsv';
-import { upsertSealed } from '@/lib/db/upserts/catalogItems';
+import { searchCards, type PokemonTcgCard } from './pokemontcg';
+import { upsertSealed, upsertCard } from '@/lib/db/upserts/catalogItems';
+
+export type Tokens = {
+  text: string[];
+  cardNumberFull: string | null;
+  cardNumberPartial: string | null;
+  setCode: string | null;
+};
+
+const RE_CARD_FULL = /^\d+\/\d+$/;
+const RE_CARD_PARTIAL = /^\d{1,3}$/;
+const RE_SET_CODE = /^[a-z]{2,4}\d+(?:pt\d+)?$/i;
+
+export function tokenizeQuery(q: string): Tokens {
+  const tokens = q.toLowerCase().trim().split(/\s+/).filter(Boolean);
+  const out: Tokens = { text: [], cardNumberFull: null, cardNumberPartial: null, setCode: null };
+  for (const t of tokens) {
+    if (RE_CARD_FULL.test(t)) {
+      out.cardNumberFull = t;
+    } else if (RE_CARD_PARTIAL.test(t)) {
+      out.cardNumberPartial = t;
+    } else if (RE_SET_CODE.test(t)) {
+      out.setCode = t;
+    } else {
+      out.text.push(t);
+    }
+  }
+  return out;
+}
+
+export type Warning = { source: 'tcgcsv' | 'pokemontcg'; message: string };
 
 export type SealedResult = SealedSearchHit & { catalogItemId: number };
 
@@ -23,27 +54,17 @@ export async function searchSealedWithImport(query: string, limit: number): Prom
   return results;
 }
 
-import { searchCards, type PokemonTcgCard } from './pokemontcg';
-import { upsertCard } from '@/lib/db/upserts/catalogItems';
-
-export type CardVariantResult = {
+export type CardVariantHit = {
   catalogItemId: number;
-  variant: string;
-  marketCents: number | null;
-  tcgplayerSkuId: number | null;
-};
-
-export type CardResult = {
   name: string;
   cardNumber: string;
   setName: string | null;
   setCode: string | null;
   rarity: string | null;
+  variant: string;
   imageUrl: string | null;
-  variants: CardVariantResult[];
+  marketCents: number | null;
 };
-
-export type Warning = { source: 'tcgcsv' | 'pokemontcg'; message: string };
 
 const TIMEOUT_MS = 5000;
 
@@ -89,15 +110,45 @@ async function findTcgcsvCardPrice(args: {
   };
 }
 
+async function emitVariant(args: {
+  card: PokemonTcgCard;
+  variant: string;
+  marketCents: number | null;
+}): Promise<CardVariantHit> {
+  const { card, variant, marketCents } = args;
+  const id = await upsertCard({
+    kind: 'card',
+    name: card.name,
+    setName: card.setName,
+    setCode: card.setCode,
+    pokemonTcgCardId: card.cardId,
+    tcgplayerSkuId: null,
+    cardNumber: card.number,
+    rarity: card.rarity,
+    variant,
+    imageUrl: card.imageUrl,
+    releaseDate: card.releaseDate,
+  });
+  return {
+    catalogItemId: id,
+    name: card.name,
+    cardNumber: card.number,
+    setName: card.setName,
+    setCode: card.setCode,
+    rarity: card.rarity,
+    variant,
+    imageUrl: card.imageUrl,
+    marketCents,
+  };
+}
+
 export async function searchCardsWithImport(
   query: string,
   limit: number
-): Promise<{ results: CardResult[]; warnings: Warning[] }> {
+): Promise<{ results: CardVariantHit[]; warnings: Warning[] }> {
   const tokens = tokenizeQuery(query);
   const warnings: Warning[] = [];
 
-  // Probe tcgcsv groups early so we always collect a warning if it's down,
-  // even if pokemontcg also fails and we end up with no cards to enrich.
   let tcgcsvAvailable = true;
   try {
     await withTimeout(getGroups());
@@ -121,7 +172,7 @@ export async function searchCardsWithImport(
     warnings.push({ source: 'pokemontcg', message: (e as Error).message });
   }
 
-  const enriched = await Promise.all(
+  const variantArrays = await Promise.all(
     pokemonCards.slice(0, limit).map(async (card) => {
       let tcgcsvResult: Awaited<ReturnType<typeof findTcgcsvCardPrice>> = {};
       if (tcgcsvAvailable) {
@@ -135,78 +186,35 @@ export async function searchCardsWithImport(
           }
         }
       }
-      const variants: CardVariantResult[] = [];
-      const normalCatalogId = await upsertCard({
-        kind: 'card',
-        name: card.name,
-        setName: card.setName,
-        setCode: card.setCode,
-        pokemonTcgCardId: card.cardId,
-        tcgplayerSkuId: null,
-        cardNumber: card.number,
-        rarity: card.rarity,
-        variant: 'normal',
-        imageUrl: card.imageUrl,
-        releaseDate: card.releaseDate,
-      });
-      variants.push({
-        catalogItemId: normalCatalogId,
-        variant: 'normal',
-        marketCents:
-          tcgcsvResult.normal?.marketPrice != null
-            ? Math.round(tcgcsvResult.normal.marketPrice * 100)
-            : null,
-        tcgplayerSkuId: null,
-      });
-      if (tcgcsvResult.reverseHolo) {
-        const reverseId = await upsertCard({
-          kind: 'card',
-          name: card.name,
-          setName: card.setName,
-          setCode: card.setCode,
-          pokemonTcgCardId: card.cardId,
-          tcgplayerSkuId: null,
-          cardNumber: card.number,
-          rarity: card.rarity,
-          variant: 'reverse_holo',
-          imageUrl: card.imageUrl,
-          releaseDate: card.releaseDate,
-        });
-        variants.push({
-          catalogItemId: reverseId,
-          variant: 'reverse_holo',
+      const out: CardVariantHit[] = [];
+      out.push(
+        await emitVariant({
+          card,
+          variant: 'normal',
           marketCents:
-            tcgcsvResult.reverseHolo.marketPrice != null
-              ? Math.round(tcgcsvResult.reverseHolo.marketPrice * 100)
+            tcgcsvResult.normal?.marketPrice != null
+              ? Math.round(tcgcsvResult.normal.marketPrice * 100)
               : null,
-          tcgplayerSkuId: null,
-        });
+        })
+      );
+      if (tcgcsvResult.reverseHolo) {
+        out.push(
+          await emitVariant({
+            card,
+            variant: 'reverse_holo',
+            marketCents:
+              tcgcsvResult.reverseHolo.marketPrice != null
+                ? Math.round(tcgcsvResult.reverseHolo.marketPrice * 100)
+                : null,
+          })
+        );
       }
-      return {
-        name: card.name,
-        cardNumber: card.number,
-        setName: card.setName,
-        setCode: card.setCode,
-        rarity: card.rarity,
-        imageUrl: card.imageUrl,
-        variants,
-      } satisfies CardResult;
+      return out;
     })
   );
 
-  return { results: enriched, warnings };
+  return { results: variantArrays.flat(), warnings };
 }
-
-export type Tokens = {
-  text: string[];
-  cardNumberFull: string | null;
-  cardNumberPartial: string | null;
-  setCode: string | null;
-};
-
-const RE_CARD_FULL = /^\d+\/\d+$/;
-const RE_CARD_PARTIAL = /^\d{1,3}$/;
-const RE_SET_CODE = /^[a-z]{2,4}\d+(?:pt\d+)?$/i;
 
 export type SearchKind = 'all' | 'sealed' | 'card';
 
@@ -221,7 +229,7 @@ export type SealedResultDto = {
   marketCents: number | null;
 };
 
-export type CardResultDto = { type: 'card' } & CardResult;
+export type CardResultDto = { type: 'card' } & CardVariantHit;
 
 export type SearchResponse = {
   query: string;
@@ -235,7 +243,7 @@ export async function searchAll(query: string, kind: SearchKind, limit: number):
   const tasks: Array<Promise<unknown>> = [];
 
   let sealed: SealedResult[] = [];
-  let cards: { results: CardResult[]; warnings: Warning[] } = { results: [], warnings: [] };
+  let cards: { results: CardVariantHit[]; warnings: Warning[] } = { results: [], warnings: [] };
 
   if (kind === 'sealed' || kind === 'all') {
     tasks.push(
@@ -275,7 +283,6 @@ export async function searchAll(query: string, kind: SearchKind, limit: number):
   }));
   const cardDtos: CardResultDto[] = cards.results.map((c) => ({ type: 'card' as const, ...c }));
 
-  // Simple interleave: alternate sealed/card up to limit.
   const interleaved: Array<SealedResultDto | CardResultDto> = [];
   let i = 0;
   while (interleaved.length < limit && (i < sealedDtos.length || i < cardDtos.length)) {
@@ -285,21 +292,4 @@ export async function searchAll(query: string, kind: SearchKind, limit: number):
   }
 
   return { query, kind, results: interleaved, warnings };
-}
-
-export function tokenizeQuery(q: string): Tokens {
-  const tokens = q.toLowerCase().trim().split(/\s+/).filter(Boolean);
-  const out: Tokens = { text: [], cardNumberFull: null, cardNumberPartial: null, setCode: null };
-  for (const t of tokens) {
-    if (RE_CARD_FULL.test(t)) {
-      out.cardNumberFull = t;
-    } else if (RE_CARD_PARTIAL.test(t)) {
-      out.cardNumberPartial = t;
-    } else if (RE_SET_CODE.test(t)) {
-      out.setCode = t;
-    } else {
-      out.text.push(t);
-    }
-  }
-  return out;
 }

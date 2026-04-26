@@ -71,9 +71,9 @@ export function SearchBox() {
       )}
 
       {enabled && isFetching && (
-        <div className="space-y-2">
-          {[0, 1, 2].map((i) => (
-            <Skeleton key={i} className="h-20 w-full" />
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+          {[0, 1, 2, 3].map((i) => (
+            <Skeleton key={i} className="aspect-[3/4] w-full" />
           ))}
         </div>
       )}
@@ -95,9 +95,9 @@ export function SearchBox() {
       )}
 
       {data && data.results.length > 0 && (
-        <div className="space-y-2">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
           {data.results.map((row, i) => (
-            <SearchResultRow key={i} row={row} />
+            <SearchResultRow key={`${row.type}-${row.catalogItemId}-${i}`} row={row} />
           ))}
         </div>
       )}

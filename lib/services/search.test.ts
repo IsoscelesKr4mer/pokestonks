@@ -12,9 +12,10 @@ const sv151PricesCsv = readFileSync(
   'utf8'
 );
 
+let cardUpsertCounter = 0;
 vi.mock('@/lib/db/upserts/catalogItems', () => ({
-  upsertSealed: vi.fn(async (i: { tcgplayerProductId: number }) => i.tcgplayerProductId), // id == productId for tests
-  upsertCard: vi.fn(async () => 1),
+  upsertSealed: vi.fn(async (i: { tcgplayerProductId: number }) => i.tcgplayerProductId),
+  upsertCard: vi.fn(async () => ++cardUpsertCounter),
 }));
 
 import { tokenizeQuery } from './search';
@@ -124,27 +125,25 @@ describe('searchCardsWithImport', () => {
     );
   }
 
-  it('returns one row per print with at least a normal variant', async () => {
+  it('returns one flat row per (card, variant) with normal always present', async () => {
     mockApi();
     const { results, warnings } = await searchCardsWithImport('charizard 199', 20);
     expect(warnings).toEqual([]);
-    expect(results).toHaveLength(2); // sv3pt5-199 and sv3pt5-200
-    const r0 = results[0];
-    expect(r0.cardNumber).toBe('199');
-    expect(r0.setCode).toBe('sv3pt5');
-    expect(r0.imageUrl).toContain('199_hires.png');
-    expect(r0.variants.length).toBeGreaterThanOrEqual(1);
-    expect(r0.variants[0].variant).toBe('normal');
+    // sv3pt5-199 has Normal + Reverse Holofoil in fixture, sv3pt5-200 has neither (no matching TCGCSV product).
+    // Expected rows: 199-normal, 199-reverse_holo, 200-normal = 3.
+    expect(results).toHaveLength(3);
+    const card199Normal = results.find((r) => r.cardNumber === '199' && r.variant === 'normal');
+    expect(card199Normal).toBeDefined();
+    expect(card199Normal!.setCode).toBe('sv3pt5');
+    expect(card199Normal!.imageUrl).toContain('199_hires.png');
   });
 
-  it('attaches reverse_holo variant when TCGCSV reports a Reverse Holofoil SKU at the same productId', async () => {
-    // The fixture has productId 490000 with Reverse Holofoil row in CSV.
+  it('emits a reverse_holo row when TCGCSV reports a Reverse Holofoil SKU at the same productId', async () => {
     mockApi();
     const { results } = await searchCardsWithImport('charizard 199', 20);
-    const charizard199 = results.find((r) => r.cardNumber === '199');
-    expect(charizard199).toBeDefined();
-    const variants = charizard199!.variants.map((v) => v.variant);
-    expect(variants).toContain('reverse_holo');
+    const reverse = results.find((r) => r.cardNumber === '199' && r.variant === 'reverse_holo');
+    expect(reverse).toBeDefined();
+    expect(reverse!.marketCents).not.toBeNull();
   });
 
   it('falls back to pokemontcg-only when tcgcsv times out', async () => {
@@ -153,9 +152,10 @@ describe('searchCardsWithImport', () => {
       http.get('https://tcgcsv.com/tcgplayer/3/groups', () => new HttpResponse(null, { status: 503 }))
     );
     const { results, warnings } = await searchCardsWithImport('charizard', 20);
+    // 2 cards × 1 normal each = 2 rows when TCGCSV is down.
     expect(results.length).toBe(2);
-    expect(results[0].variants[0].variant).toBe('normal');
-    expect(results[0].variants[0].marketCents).toBeNull();
+    expect(results.every((r) => r.variant === 'normal')).toBe(true);
+    expect(results.every((r) => r.marketCents === null)).toBe(true);
     expect(warnings.find((w) => w.source === 'tcgcsv')).toBeDefined();
   });
 

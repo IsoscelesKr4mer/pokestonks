@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { PriceLabel } from './PriceLabel';
+import { QuickAddButton } from './QuickAddButton';
 
 type SealedResult = {
   type: 'sealed';
@@ -14,17 +15,15 @@ type SealedResult = {
 
 type CardResult = {
   type: 'card';
+  catalogItemId: number;
   name: string;
   cardNumber: string;
   setName: string | null;
   setCode: string | null;
   rarity: string | null;
+  variant: string;
   imageUrl: string | null;
-  variants: Array<{
-    catalogItemId: number;
-    variant: string;
-    marketCents: number | null;
-  }>;
+  marketCents: number | null;
 };
 
 export type ResultRow = SealedResult | CardResult;
@@ -44,58 +43,39 @@ function variantLabel(v: string): string {
 }
 
 export function SearchResultRow({ row }: { row: ResultRow }) {
-  if (row.type === 'sealed') {
-    return (
-      <Link
-        href={`/catalog/${row.catalogItemId}`}
-        className="flex items-center gap-4 rounded-lg border p-3 hover:bg-muted/50"
-      >
-        <div className="size-16 shrink-0 overflow-hidden rounded-md bg-muted">
-          {row.imageUrl && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={row.imageUrl} alt="" className="size-full object-cover" />
-          )}
-        </div>
-        <div className="min-w-0 flex-1">
-          <div className="truncate font-medium">{row.name}</div>
-          <div className="text-xs text-muted-foreground">
-            {row.setName ?? '—'} · {row.productType ?? 'Sealed'}
-          </div>
-        </div>
-        <PriceLabel cents={row.marketCents} className="text-sm font-medium" />
-      </Link>
-    );
-  }
+  const aspectClass = row.type === 'sealed' ? 'aspect-square' : 'aspect-[5/7]';
+  const detailHref = `/catalog/${row.catalogItemId}`;
+  const subtitle = row.setName ?? '—';
+  const meta =
+    row.type === 'sealed'
+      ? row.productType ?? 'Sealed'
+      : `${row.rarity ?? ''}${row.rarity && row.cardNumber ? ' · ' : ''}${row.cardNumber ? `#${row.cardNumber}` : ''}`;
+  const variantBadge = row.type === 'card' ? variantLabel(row.variant) : 'Sealed';
 
   return (
-    <div className="rounded-lg border p-3">
-      <div className="flex items-center gap-4">
-        <div className="size-16 shrink-0 overflow-hidden rounded-md bg-muted">
-          {row.imageUrl && (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={row.imageUrl} alt="" className="size-full object-cover" />
-          )}
-        </div>
-        <div className="min-w-0 flex-1">
-          <div className="truncate font-medium">
-            {row.name} · {row.cardNumber} {row.rarity ? `· ${row.rarity}` : ''}
-          </div>
-          <div className="text-xs text-muted-foreground">{row.setName ?? '—'}</div>
-        </div>
+    <div className="group relative flex flex-col rounded-lg border bg-card p-3">
+      <Link
+        href={detailHref}
+        className={`relative ${aspectClass} w-full overflow-hidden rounded-md bg-muted`}
+      >
+        {row.imageUrl ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={row.imageUrl} alt={row.name} className="size-full object-contain" />
+        ) : (
+          <div className="size-full bg-muted" />
+        )}
+      </Link>
+      <div className="mt-3 flex-1 space-y-1">
+        <Link href={detailHref} className="block">
+          <div className="line-clamp-2 text-sm font-semibold leading-tight">{row.name}</div>
+        </Link>
+        <div className="text-xs text-muted-foreground">{subtitle}</div>
+        <div className="text-xs text-muted-foreground">{meta || ' '}</div>
+        <div className="text-xs text-muted-foreground">{variantBadge}</div>
       </div>
-      <div className="mt-2 flex flex-wrap gap-2">
-        {row.variants.map((v) => (
-          <Link
-            key={v.catalogItemId}
-            href={`/catalog/${v.catalogItemId}`}
-            className="inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs hover:bg-muted/50"
-          >
-            <span>{variantLabel(v.variant)}</span>
-            <span className="text-muted-foreground">
-              <PriceLabel cents={v.marketCents} />
-            </span>
-          </Link>
-        ))}
+      <div className="mt-3 flex items-center justify-between gap-2">
+        <PriceLabel cents={row.marketCents} className="text-sm font-semibold tabular-nums" />
+        <QuickAddButton catalogItemId={row.catalogItemId} fallbackCents={row.marketCents} />
       </div>
     </div>
   );
