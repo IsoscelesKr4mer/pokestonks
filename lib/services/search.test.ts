@@ -1,5 +1,24 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { http, HttpResponse } from 'msw';
+import { server } from '../../tests/msw/server';
+import groupsFixture from '../../tests/fixtures/tcgcsv-groups.json';
+import productsFixture from '../../tests/fixtures/tcgcsv-sv151-products.json';
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+
+const sv151PricesCsv = readFileSync(
+  join(__dirname, '..', '..', 'tests', 'fixtures', 'tcgcsv-sv151-prices.csv'),
+  'utf8'
+);
+
+vi.mock('@/lib/db/upserts/catalogItems', () => ({
+  upsertSealed: vi.fn(async (i: { tcgplayerProductId: number }) => i.tcgplayerProductId), // id == productId for tests
+  upsertCard: vi.fn(async () => 1),
+}));
+
 import { tokenizeQuery } from './search';
+import { searchSealedWithImport } from './search';
+import { __resetGroupCacheForTests } from './tcgcsv';
 
 describe('tokenizeQuery', () => {
   it('classifies a card_number_full token', () => {
@@ -48,5 +67,35 @@ describe('tokenizeQuery', () => {
       cardNumberPartial: null,
       setCode: null,
     });
+  });
+});
+
+describe('searchSealedWithImport', () => {
+  beforeEach(() => __resetGroupCacheForTests());
+
+  function mockApi() {
+    server.use(
+      http.get('https://tcgcsv.com/tcgplayer/3/groups', () => HttpResponse.json(groupsFixture)),
+      http.get('https://tcgcsv.com/tcgplayer/3/23237/products', () => HttpResponse.json(productsFixture)),
+      http.get('https://tcgcsv.com/tcgplayer/3/23237/prices', () =>
+        new HttpResponse(sv151PricesCsv, { headers: { 'Content-Type': 'text/csv' } })
+      ),
+      http.get('https://tcgcsv.com/tcgplayer/3/:groupId/products', () =>
+        HttpResponse.json({ totalItems: 0, success: true, errors: [], results: [] })
+      ),
+      http.get('https://tcgcsv.com/tcgplayer/3/:groupId/prices', () =>
+        new HttpResponse('productId,lowPrice,midPrice,highPrice,marketPrice,directLowPrice,subTypeName\n', {
+          headers: { 'Content-Type': 'text/csv' },
+        })
+      )
+    );
+  }
+
+  it('returns sealed search hits with catalogItemId populated', async () => {
+    mockApi();
+    const hits = await searchSealedWithImport('151 etb', 10);
+    expect(hits.length).toBeGreaterThan(0);
+    expect(hits[0].catalogItemId).toBeDefined();
+    expect(hits[0].name).toMatch(/Elite Trainer Box/i);
   });
 });

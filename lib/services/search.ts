@@ -1,3 +1,28 @@
+import { searchSealed, type SealedSearchHit } from './tcgcsv';
+import { upsertSealed } from '@/lib/db/upserts/catalogItems';
+
+export type SealedResult = SealedSearchHit & { catalogItemId: number };
+
+export async function searchSealedWithImport(query: string, limit: number): Promise<SealedResult[]> {
+  const hits = await searchSealed(query, limit);
+  const results = await Promise.all(
+    hits.map(async (h) => {
+      const id = await upsertSealed({
+        kind: 'sealed',
+        name: h.name,
+        setName: h.setName,
+        setCode: h.setCode,
+        tcgplayerProductId: h.tcgplayerProductId,
+        productType: h.productType,
+        imageUrl: h.imageUrl,
+        releaseDate: h.releaseDate,
+      });
+      return { ...h, catalogItemId: id };
+    })
+  );
+  return results;
+}
+
 export type Tokens = {
   text: string[];
   cardNumberFull: string | null;
