@@ -14,6 +14,9 @@ vi.mock('@/lib/db/upserts/catalogItems', () => ({
     imageStoragePath: null,
   })),
   upsertCard: vi.fn(async () => ({ id: ++cardUpsertCounter, imageStoragePath: null })),
+  bulkUpsertCards: vi.fn(async (inputs: unknown[]) =>
+    inputs.map(() => ({ id: ++cardUpsertCounter, imageStoragePath: null }))
+  ),
 }));
 
 import { tokenizeQuery } from './search';
@@ -109,7 +112,11 @@ describe('searchCardsWithImport', () => {
 
   function mockApi() {
     server.use(
-      http.get('https://api.pokemontcg.io/v2/cards', () => HttpResponse.json(charizardFixture)),
+      http.get('https://api.pokemontcg.io/v2/cards', ({ request }) => {
+        const page = new URL(request.url).searchParams.get('page');
+        if (page && page !== '1') return HttpResponse.json({ data: [] });
+        return HttpResponse.json(charizardFixture);
+      }),
       http.get('https://tcgcsv.com/tcgplayer/3/groups', () => HttpResponse.json(groupsFixture)),
       http.get('https://tcgcsv.com/tcgplayer/3/23237/products', () => HttpResponse.json(productsFixture)),
       http.get('https://tcgcsv.com/tcgplayer/3/23237/prices', () =>
@@ -145,8 +152,10 @@ describe('searchCardsWithImport', () => {
 
   it('emits a single normal row with null price when no TCGplayer data exists', async () => {
     server.use(
-      http.get('https://api.pokemontcg.io/v2/cards', () =>
-        HttpResponse.json({
+      http.get('https://api.pokemontcg.io/v2/cards', ({ request }) => {
+        const page = new URL(request.url).searchParams.get('page');
+        if (page && page !== '1') return HttpResponse.json({ data: [] });
+        return HttpResponse.json({
           data: [
             {
               id: 'me2pt5-1',
@@ -157,8 +166,8 @@ describe('searchCardsWithImport', () => {
               images: { large: 'https://example/ah/1.png' },
             },
           ],
-        })
-      )
+        });
+      })
     );
     const { results } = await searchCardsWithImport('ascended', 20);
     expect(results).toHaveLength(1);
@@ -181,7 +190,11 @@ import { searchAll } from './search';
 describe('searchAll', () => {
   it('returns interleaved sealed + card results', async () => {
     server.use(
-      http.get('https://api.pokemontcg.io/v2/cards', () => HttpResponse.json(charizardFixture)),
+      http.get('https://api.pokemontcg.io/v2/cards', ({ request }) => {
+        const page = new URL(request.url).searchParams.get('page');
+        if (page && page !== '1') return HttpResponse.json({ data: [] });
+        return HttpResponse.json(charizardFixture);
+      }),
       http.get('https://tcgcsv.com/tcgplayer/3/groups', () => HttpResponse.json(groupsFixture)),
       http.get('https://tcgcsv.com/tcgplayer/3/23237/products', () => HttpResponse.json(productsFixture)),
       http.get('https://tcgcsv.com/tcgplayer/3/23237/prices', () =>

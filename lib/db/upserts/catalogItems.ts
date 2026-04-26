@@ -58,21 +58,32 @@ export async function upsertSealed(input: SealedUpsertInput): Promise<UpsertResu
 }
 
 export async function upsertCard(input: CardUpsertInput): Promise<UpsertResult> {
+  const rows = await bulkUpsertCards([input]);
+  return rows[0];
+}
+
+// Bulk variant of upsertCard. Inserts up to ~500 rows in a single statement.
+// PostgreSQL's RETURNING preserves input order, so the returned array maps 1:1
+// onto `inputs`. The caller can index by position to attach catalogItemIds back
+// to its in-memory hits.
+export async function bulkUpsertCards(inputs: CardUpsertInput[]): Promise<UpsertResult[]> {
+  if (inputs.length === 0) return [];
+  const values = inputs.map((input) => ({
+    kind: 'card',
+    name: input.name,
+    setName: input.setName,
+    setCode: input.setCode,
+    pokemonTcgCardId: input.pokemonTcgCardId,
+    tcgplayerSkuId: input.tcgplayerSkuId,
+    cardNumber: input.cardNumber,
+    rarity: input.rarity,
+    variant: input.variant,
+    imageUrl: input.imageUrl,
+    releaseDate: input.releaseDate,
+  }));
   const rows = await db
     .insert(schema.catalogItems)
-    .values({
-      kind: 'card',
-      name: input.name,
-      setName: input.setName,
-      setCode: input.setCode,
-      pokemonTcgCardId: input.pokemonTcgCardId,
-      tcgplayerSkuId: input.tcgplayerSkuId,
-      cardNumber: input.cardNumber,
-      rarity: input.rarity,
-      variant: input.variant,
-      imageUrl: input.imageUrl,
-      releaseDate: input.releaseDate,
-    })
+    .values(values)
     .onConflictDoUpdate({
       target: [schema.catalogItems.setCode, schema.catalogItems.cardNumber, schema.catalogItems.variant],
       targetWhere: sql`kind = 'card'`,
@@ -88,5 +99,5 @@ export async function upsertCard(input: CardUpsertInput): Promise<UpsertResult> 
       },
     })
     .returning({ id: schema.catalogItems.id, imageStoragePath: schema.catalogItems.imageStoragePath });
-  return rows[0];
+  return rows;
 }

@@ -10,7 +10,7 @@ import {
   type TcgcsvPriceRow,
 } from './tcgcsv';
 import { searchCards, type PokemonTcgCard } from './pokemontcg';
-import { upsertSealed, upsertCard } from '@/lib/db/upserts/catalogItems';
+import { upsertSealed, bulkUpsertCards, type CardUpsertInput } from '@/lib/db/upserts/catalogItems';
 import { getImageUrl } from '@/lib/utils/images';
 
 // Cap concurrent DB upserts so a 250-card set search doesn't exhaust the
@@ -187,48 +187,26 @@ async function findTcgcsvCardPrices(args: {
   return out;
 }
 
-async function emitVariant(args: {
+type PendingVariant = {
   card: PokemonTcgCard;
   variant: string;
   marketCents: number | null;
-}): Promise<CardVariantHit | null> {
-  const { card, variant, marketCents } = args;
-  try {
-    const upserted = await UPSERT_LIMIT(() =>
-      upsertCard({
-        kind: 'card',
-        name: card.name,
-        setName: card.setName,
-        setCode: card.setCode,
-        pokemonTcgCardId: card.cardId,
-        tcgplayerSkuId: null,
-        cardNumber: card.number,
-        rarity: card.rarity,
-        variant,
-        imageUrl: card.imageUrl,
-        releaseDate: card.releaseDate,
-      })
-    );
-    const resolvedImageUrl = getImageUrl({
-      imageStoragePath: upserted.imageStoragePath,
-      imageUrl: card.imageUrl,
-    });
-    return {
-      catalogItemId: upserted.id,
-      name: card.name,
-      cardNumber: card.number,
-      setName: card.setName,
-      setCode: card.setCode,
-      rarity: card.rarity,
-      variant,
-      imageUrl: resolvedImageUrl,
-      imageStoragePath: upserted.imageStoragePath,
-      marketCents,
-    };
-  } catch (err) {
-    console.error('[search.emitVariant] upsert failed', { card: card.cardId, variant, err });
-    return null;
-  }
+};
+
+function pendingToInput(p: PendingVariant): CardUpsertInput {
+  return {
+    kind: 'card',
+    name: p.card.name,
+    setName: p.card.setName,
+    setCode: p.card.setCode,
+    pokemonTcgCardId: p.card.cardId,
+    tcgplayerSkuId: null,
+    cardNumber: p.card.number,
+    rarity: p.card.rarity,
+    variant: p.variant,
+    imageUrl: p.card.imageUrl,
+    releaseDate: p.card.releaseDate,
+  };
 }
 
 export async function searchCardsWithImport(
@@ -260,7 +238,9 @@ export async function searchCardsWithImport(
   // TCG API embedded as fallback). TCGCSV is matched by set name (case-
   // insensitive substring + prefix-stripping) since group abbreviations
   // don't line up with Pokémon TCG API set IDs.
-  const variantArrays = await Promise.all(
+  // Step 1: fetch TCGCSV prices for every card, then build a flat list of
+  // (card, variant, marketCents) we'll need to upsert.
+  const perCardPrices = await Promise.all(
     pokemonCards.map(async (card) => {
       let tcgcsvPrices: Record<string, number | null> = {};
       try {
@@ -272,40 +252,59 @@ export async function searchCardsWithImport(
           warnings.push({ source: 'tcgcsv', message: (e as Error).message });
         }
       }
-
       const merged: Record<string, number | null> = {};
-      // Seed with Pokémon TCG API's embedded prices (already in cents).
       for (const [k, v] of Object.entries(card.pricesByVariant)) {
         merged[normalizePokeTcgVariantKey(k)] = v;
       }
-      // Overlay with TCGCSV (preferred when available).
       for (const [k, v] of Object.entries(tcgcsvPrices)) {
         if (v != null) merged[k] = v;
       }
-
-      const variantKeys = Object.keys(merged);
-      const out: Array<CardVariantHit | null> = [];
-      if (variantKeys.length === 0) {
-        // No data anywhere yet. Emit a single 'normal' row so the card still
-        // surfaces; rarity-rank fallback drives sort.
-        out.push(await emitVariant({ card, variant: 'normal', marketCents: null }));
-      } else {
-        for (const key of variantKeys) {
-          out.push(
-            await emitVariant({
-              card,
-              variant: key,
-              marketCents: merged[key],
-            })
-          );
-        }
-      }
-      return out;
+      return { card, merged };
     })
   );
 
-  const flat = variantArrays.flat().filter((v): v is CardVariantHit => v !== null);
-  return { results: flat, warnings };
+  const pending: PendingVariant[] = [];
+  for (const { card, merged } of perCardPrices) {
+    const variantKeys = Object.keys(merged);
+    if (variantKeys.length === 0) {
+      // No data anywhere yet. Emit a single 'normal' row so the card still
+      // surfaces; rarity-rank fallback drives sort.
+      pending.push({ card, variant: 'normal', marketCents: null });
+    } else {
+      for (const key of variantKeys) {
+        pending.push({ card, variant: key, marketCents: merged[key] });
+      }
+    }
+  }
+
+  // Step 2: bulk-upsert all variants in a single SQL statement instead of
+  // N round trips. PostgreSQL preserves RETURNING order, so we can zip the
+  // upsert results back onto `pending` by index.
+  let upsertResults: Awaited<ReturnType<typeof bulkUpsertCards>> = [];
+  try {
+    upsertResults = await bulkUpsertCards(pending.map(pendingToInput));
+  } catch (err) {
+    console.error('[searchCardsWithImport] bulk upsert failed', err);
+    return { results: [], warnings };
+  }
+
+  const results: CardVariantHit[] = pending.map((p, i) => {
+    const upserted = upsertResults[i];
+    return {
+      catalogItemId: upserted.id,
+      name: p.card.name,
+      cardNumber: p.card.number,
+      setName: p.card.setName,
+      setCode: p.card.setCode,
+      rarity: p.card.rarity,
+      variant: p.variant,
+      imageUrl: getImageUrl({ imageStoragePath: upserted.imageStoragePath, imageUrl: p.card.imageUrl }),
+      imageStoragePath: upserted.imageStoragePath,
+      marketCents: p.marketCents,
+    };
+  });
+
+  return { results, warnings };
 }
 
 export type SearchKind = 'all' | 'sealed' | 'card';

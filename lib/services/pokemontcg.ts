@@ -90,7 +90,11 @@ export async function searchCards(args: {
   if (apiKey) headers['X-Api-Key'] = apiKey;
   const baseQuery = parts.join(' ');
 
-  const all: PokemonTcgCard[] = [];
+  // Fetch all pages in parallel. Each page is ~3s on the upstream side, so
+  // sequential pagination doubles the wait. Pages don't overlap, so we can
+  // safely concatenate. If a later page returns empty (we asked for more
+  // than exists), filter() drops it.
+  const pagePromises: Array<Promise<PokemonTcgCard[]>> = [];
   for (let page = 1; page <= maxPages; page++) {
     const params = new URLSearchParams({
       q: baseQuery,
@@ -98,16 +102,21 @@ export async function searchCards(args: {
       page: String(page),
       orderBy: '-set.releaseDate,number',
     });
-    const res = await fetch(`${POKEMONTCG_BASE}/cards?${params.toString()}`, { headers });
-    if (res.status === 404) break;
-    if (!res.ok) throw new Error(`pokemontcg cards ${res.status}`);
-    const body = (await res.json()) as { data: RawCard[]; totalCount?: number };
-    const mapped = body.data.map(mapRawCard);
-    all.push(...mapped);
-    // Stop early if upstream returned fewer than pageSize (last page) or we've
-    // already pulled everything totalCount says exists.
-    if (mapped.length < pageSize) break;
-    if (typeof body.totalCount === 'number' && all.length >= body.totalCount) break;
+    pagePromises.push(
+      (async () => {
+        const res = await fetch(`${POKEMONTCG_BASE}/cards?${params.toString()}`, { headers });
+        if (res.status === 404) return [];
+        if (!res.ok) {
+          // Page 1 errors fail loud so the caller can warn the user.
+          if (page === 1) throw new Error(`pokemontcg cards ${res.status}`);
+          // Later pages fail soft: we already have page 1, don't lose it.
+          return [];
+        }
+        const body = (await res.json()) as { data: RawCard[] };
+        return body.data.map(mapRawCard);
+      })()
+    );
   }
-  return all;
+  const pages = await Promise.all(pagePromises);
+  return pages.flat();
 }

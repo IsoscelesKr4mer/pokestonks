@@ -10,6 +10,9 @@ describe('pokemontcg.searchCards', () => {
     server.use(
       http.get('https://api.pokemontcg.io/v2/cards', ({ request }) => {
         lastUrl = request.url;
+        const page = new URL(request.url).searchParams.get('page');
+        // Only return data on page 1 so the parallel-page fetch doesn't dupe.
+        if (page && page !== '1') return HttpResponse.json({ data: [] });
         return HttpResponse.json(charizardFixture);
       })
     );
