@@ -68,3 +68,4 @@ playwright-report/
 !public/**/*.jpeg
 !components/**/*.png
 !app/**/*.png
+!tests/fixtures/*.png
