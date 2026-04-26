@@ -1,5 +1,5 @@
-const TCGCSV_BASE = 'https://tcgcsv.com/tcgplayer/3';
-const POKEMON_CATEGORY_ID = 3;
+export const POKEMON_CATEGORY_ID = 3;
+const TCGCSV_BASE = `https://tcgcsv.com/tcgplayer/${POKEMON_CATEGORY_ID}`;
 const GROUP_CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 
 export type TcgcsvGroup = {
@@ -33,4 +33,3 @@ export async function getGroups(now: number = Date.now()): Promise<TcgcsvGroup[]
   return body.results;
 }
 
-export const __test = { POKEMON_CATEGORY_ID };
