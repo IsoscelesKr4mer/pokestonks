@@ -208,6 +208,85 @@ const RE_CARD_FULL = /^\d+\/\d+$/;
 const RE_CARD_PARTIAL = /^\d{1,3}$/;
 const RE_SET_CODE = /^[a-z]{2,4}\d+(?:pt\d+)?$/i;
 
+export type SearchKind = 'all' | 'sealed' | 'card';
+
+export type SealedResultDto = {
+  type: 'sealed';
+  catalogItemId: number;
+  name: string;
+  setName: string | null;
+  setCode: string | null;
+  productType: string | null;
+  imageUrl: string | null;
+  marketCents: number | null;
+};
+
+export type CardResultDto = { type: 'card' } & CardResult;
+
+export type SearchResponse = {
+  query: string;
+  kind: SearchKind;
+  results: Array<SealedResultDto | CardResultDto>;
+  warnings: Warning[];
+};
+
+export async function searchAll(query: string, kind: SearchKind, limit: number): Promise<SearchResponse> {
+  const warnings: Warning[] = [];
+  const tasks: Array<Promise<unknown>> = [];
+
+  let sealed: SealedResult[] = [];
+  let cards: { results: CardResult[]; warnings: Warning[] } = { results: [], warnings: [] };
+
+  if (kind === 'sealed' || kind === 'all') {
+    tasks.push(
+      searchSealedWithImport(query, limit)
+        .then((r) => {
+          sealed = r;
+        })
+        .catch((e: Error) => {
+          warnings.push({ source: 'tcgcsv', message: e.message });
+        })
+    );
+  }
+  if (kind === 'card' || kind === 'all') {
+    tasks.push(
+      searchCardsWithImport(query, limit)
+        .then((r) => {
+          cards = r;
+          warnings.push(...r.warnings);
+        })
+        .catch((e: Error) => {
+          warnings.push({ source: 'pokemontcg', message: e.message });
+        })
+    );
+  }
+
+  await Promise.all(tasks);
+
+  const sealedDtos: SealedResultDto[] = sealed.map((s) => ({
+    type: 'sealed',
+    catalogItemId: s.catalogItemId,
+    name: s.name,
+    setName: s.setName,
+    setCode: s.setCode,
+    productType: s.productType,
+    imageUrl: s.imageUrl,
+    marketCents: s.marketCents,
+  }));
+  const cardDtos: CardResultDto[] = cards.results.map((c) => ({ type: 'card' as const, ...c }));
+
+  // Simple interleave: alternate sealed/card up to limit.
+  const interleaved: Array<SealedResultDto | CardResultDto> = [];
+  let i = 0;
+  while (interleaved.length < limit && (i < sealedDtos.length || i < cardDtos.length)) {
+    if (i < sealedDtos.length) interleaved.push(sealedDtos[i]);
+    if (interleaved.length < limit && i < cardDtos.length) interleaved.push(cardDtos[i]);
+    i++;
+  }
+
+  return { query, kind, results: interleaved, warnings };
+}
+
 export function tokenizeQuery(q: string): Tokens {
   const tokens = q.toLowerCase().trim().split(/\s+/).filter(Boolean);
   const out: Tokens = { text: [], cardNumberFull: null, cardNumberPartial: null, setCode: null };

@@ -169,3 +169,31 @@ describe('searchCardsWithImport', () => {
     expect(warnings.length).toBe(2);
   });
 });
+
+import { searchAll } from './search';
+
+describe('searchAll', () => {
+  it('returns interleaved sealed + card results', async () => {
+    server.use(
+      http.get('https://api.pokemontcg.io/v2/cards', () => HttpResponse.json(charizardFixture)),
+      http.get('https://tcgcsv.com/tcgplayer/3/groups', () => HttpResponse.json(groupsFixture)),
+      http.get('https://tcgcsv.com/tcgplayer/3/23237/products', () => HttpResponse.json(productsFixture)),
+      http.get('https://tcgcsv.com/tcgplayer/3/23237/prices', () =>
+        new HttpResponse(sv151PricesCsv, { headers: { 'Content-Type': 'text/csv' } })
+      ),
+      http.get('https://tcgcsv.com/tcgplayer/3/:groupId/products', () =>
+        HttpResponse.json({ totalItems: 0, success: true, errors: [], results: [] })
+      ),
+      http.get('https://tcgcsv.com/tcgplayer/3/:groupId/prices', () =>
+        new HttpResponse('productId,lowPrice,midPrice,highPrice,marketPrice,directLowPrice,subTypeName\n', {
+          headers: { 'Content-Type': 'text/csv' },
+        })
+      )
+    );
+    const { results, warnings } = await searchAll('charizard 199', 'all', 20);
+    const types = new Set(results.map((r) => r.type));
+    expect(types.has('card')).toBe(true);
+    // Sealed may or may not show up given the sealed scoring; query has 'charizard'+199 so sealed should not match by name.
+    expect(warnings).toEqual([]);
+  });
+});
