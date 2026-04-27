@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 
 export function SourceChipPicker({
@@ -19,6 +19,12 @@ export function SourceChipPicker({
   const [otherText, setOtherText] = useState(
     () => (value != null && !suggestions.includes(value) ? value : '')
   );
+
+  useEffect(() => {
+    const isOther = value != null && !suggestions.includes(value);
+    setOtherActive(isOther);
+    setOtherText(isOther && value ? value : '');
+  }, [value, suggestions]);
 
   return (
     <div className="space-y-2">

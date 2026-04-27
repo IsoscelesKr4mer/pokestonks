@@ -52,4 +52,27 @@ describe('<SourceChipPicker>', () => {
     // onChange fires per keystroke (controlled input in parent).
     expect(onChange).toHaveBeenLastCalledWith('Sam Club');
   });
+
+  it('syncs Other panel when parent changes value externally', () => {
+    const { rerender } = render(
+      <SourceChipPicker
+        value="Sam Club"
+        onChange={() => {}}
+        suggestions={['Walmart vending', 'Target']}
+      />
+    );
+    // Other input is open with the typed value (Sam Club isn't in suggestions).
+    expect(screen.getByDisplayValue('Sam Club')).toBeInTheDocument();
+    // Parent changes value to a known suggestion.
+    rerender(
+      <SourceChipPicker
+        value="Target"
+        onChange={() => {}}
+        suggestions={['Walmart vending', 'Target']}
+      />
+    );
+    // Other input should be hidden; Target chip should be active.
+    expect(screen.queryByDisplayValue('Sam Club')).not.toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Target' })).toHaveAttribute('aria-pressed', 'true');
+  });
 });
