@@ -1,0 +1,2 @@
+ALTER TABLE "purchases" ADD COLUMN "deleted_at" timestamp with time zone;--> statement-breakpoint
+CREATE INDEX "purchases_user_catalog_open_idx" ON "purchases" USING btree ("user_id","catalog_item_id") WHERE "purchases"."deleted_at" IS NULL;

@@ -21,10 +21,14 @@ export const purchases = pgTable(
     source: text('source'),
     location: text('location'),
     notes: text('notes'),
+    deletedAt: timestamp('deleted_at', { withTimezone: true }),
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   },
   (t) => ({
     userCatalogIdx: index('purchases_user_catalog_idx').on(t.userId, t.catalogItemId),
+    userCatalogOpenIdx: index('purchases_user_catalog_open_idx')
+      .on(t.userId, t.catalogItemId)
+      .where(sql`${t.deletedAt} IS NULL`),
     quantityCheck: check('purchases_quantity_positive', sql`${t.quantity} > 0`),
     costCheck: check('purchases_cost_nonneg', sql`${t.costCents} >= 0`),
   })
