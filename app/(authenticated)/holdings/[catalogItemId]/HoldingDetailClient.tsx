@@ -82,6 +82,13 @@ export function HoldingDetailClient({
     setRipOpen(true);
   };
 
+  // Build a map of source_purchase_id -> ripped_units for sealed lots.
+  // Used to gate the "Rip pack" menu item per lot.
+  const rippedUnitsByLot = new Map<number, number>();
+  for (const r of detail.rips) {
+    rippedUnitsByLot.set(r.sourcePurchaseId, (rippedUnitsByLot.get(r.sourcePurchaseId) ?? 0) + 1);
+  }
+
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between gap-4 border-b pb-6">
@@ -131,6 +138,9 @@ export function HoldingDetailClient({
                 certNumber: lot.certNumber,
                 sourceRipId: lot.sourceRipId,
               };
+              const ripped = rippedUnitsByLot.get(lot.id) ?? 0;
+              const qtyRemaining = lot.quantity - ripped;
+              const canRip = isSealed && qtyRemaining > 0;
               return (
                 <LotRow
                   key={lot.id}
@@ -138,7 +148,7 @@ export function HoldingDetailClient({
                   catalogItem={catalogItem}
                   sourceRip={sourceRip}
                   sourcePack={sourcePack}
-                  onRip={isSealed ? openRip : undefined}
+                  onRip={canRip ? openRip : undefined}
                 />
               );
             })}
