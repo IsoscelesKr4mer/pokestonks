@@ -8,12 +8,51 @@ const json = <T,>(res: Response) =>
     return b as T;
   });
 
+export type RipDetailDto = {
+  rip: {
+    id: number;
+    userId: string;
+    sourcePurchaseId: number;
+    ripDate: string;
+    packCostCents: number;
+    realizedLossCents: number;
+    notes: string | null;
+    createdAt: string;
+  };
+  sourcePurchase: {
+    id: number;
+    catalogItemId: number;
+    quantity: number;
+    costCents: number;
+    purchaseDate: string;
+  } | null;
+  sourceCatalogItem: {
+    id: number;
+    name: string;
+    imageUrl: string | null;
+    setName: string | null;
+  } | null;
+  keptPurchases: Array<{
+    purchase: {
+      id: number;
+      catalogItemId: number;
+      costCents: number;
+      condition: string | null;
+    };
+    catalogItem: {
+      id: number;
+      name: string;
+      imageUrl: string | null;
+    } | null;
+  }>;
+};
+
 export function useRip(id: number | null) {
   return useQuery({
     queryKey: ['rip', id],
     queryFn: async () => {
       const res = await fetch(`/api/rips/${id}`);
-      return json<unknown>(res);
+      return json<RipDetailDto>(res);
     },
     enabled: id != null && Number.isFinite(id),
   });

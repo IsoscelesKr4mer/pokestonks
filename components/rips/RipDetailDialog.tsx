@@ -7,28 +7,12 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { useRip, useDeleteRip } from '@/lib/query/hooks/useRips';
+import { useRip, useDeleteRip, type RipDetailDto } from '@/lib/query/hooks/useRips';
 
 function formatCents(cents: number): string {
   const dollars = cents / 100;
   return `$${Math.abs(dollars).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
-
-type RipDetailResponse = {
-  rip: {
-    id: number;
-    ripDate: string;
-    packCostCents: number;
-    realizedLossCents: number;
-    notes: string | null;
-  };
-  sourcePurchase: { id: number; catalogItemId: number } | null;
-  sourceCatalogItem: { id: number; name: string; imageUrl: string | null } | null;
-  keptPurchases: Array<{
-    purchase: { id: number; catalogItemId: number; costCents: number };
-    catalogItem: { id: number; name: string; imageUrl: string | null } | null;
-  }>;
-};
 
 export function RipDetailDialog({
   open,
@@ -41,7 +25,7 @@ export function RipDetailDialog({
 }) {
   const { data, isLoading } = useRip(ripId);
   const undoMutation = useDeleteRip();
-  const detail = data as RipDetailResponse | undefined;
+  const detail: RipDetailDto | undefined = data;
 
   const handleUndo = async () => {
     if (!detail) return;
