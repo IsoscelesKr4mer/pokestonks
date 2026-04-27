@@ -5927,3 +5927,4 @@ The plan stays focused on purchases + ripping. The dashboard tile is a small sli
 **2. Inline Execution** — Execute tasks in this session using executing-plans, batch execution with checkpoints for review. Lower context overhead between tasks but slower because each task waits for review.
 
 Which approach?
+TODO Plan 6 polish: scripts/migrate-rls.ts has no idempotency tracking, re-runs fail. Add a _rls_migrations meta table.
