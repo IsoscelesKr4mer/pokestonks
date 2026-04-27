@@ -1,6 +1,7 @@
 import { pgTable, bigserial, uuid, bigint, date, integer, text, boolean, numeric, timestamp, index, check } from 'drizzle-orm/pg-core';
 import { sql } from 'drizzle-orm';
 import { catalogItems } from './catalogItems';
+import { rips } from './rips';
 
 export const purchases = pgTable(
   'purchases',
@@ -22,6 +23,7 @@ export const purchases = pgTable(
     location: text('location'),
     notes: text('notes'),
     deletedAt: timestamp('deleted_at', { withTimezone: true }),
+    sourceRipId: bigint('source_rip_id', { mode: 'number' }).references(() => rips.id),
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   },
   (t) => ({
@@ -29,6 +31,9 @@ export const purchases = pgTable(
     userCatalogOpenIdx: index('purchases_user_catalog_open_idx')
       .on(t.userId, t.catalogItemId)
       .where(sql`${t.deletedAt} IS NULL`),
+    sourceRipIdx: index('purchases_source_rip_idx')
+      .on(t.sourceRipId)
+      .where(sql`${t.sourceRipId} IS NOT NULL`),
     quantityCheck: check('purchases_quantity_positive', sql`${t.quantity} > 0`),
     costCheck: check('purchases_cost_nonneg', sql`${t.costCents} >= 0`),
   })
