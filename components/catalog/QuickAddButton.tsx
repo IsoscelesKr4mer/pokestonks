@@ -2,27 +2,17 @@
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
-export function QuickAddButton({
-  catalogItemId,
-  fallbackCents,
-}: {
-  catalogItemId: number;
-  fallbackCents: number | null;
-}) {
+export function QuickAddButton({ catalogItemId }: { catalogItemId: number }) {
   const { mutate, isPending } = useMutation({
     mutationFn: async () => {
       const res = await fetch('/api/purchases', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          catalogItemId,
-          quantity: 1,
-          costCents: fallbackCents,
-        }),
+        body: JSON.stringify({ catalogItemId, quantity: 1 }),
       });
       if (!res.ok) {
         const body = await res.json().catch(() => ({}));
-        throw new Error(body.error ?? `add failed: ${res.status}`);
+        throw new Error((body as { error?: string }).error ?? `add failed: ${res.status}`);
       }
       return res.json();
     },

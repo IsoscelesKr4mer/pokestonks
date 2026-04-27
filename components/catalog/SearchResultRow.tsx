@@ -75,7 +75,7 @@ export function SearchResultRow({ row }: { row: ResultRow }) {
       </div>
       <div className="mt-3 flex items-center justify-between gap-2">
         <PriceLabel cents={row.marketCents} className="text-sm font-semibold tabular-nums" />
-        <QuickAddButton catalogItemId={row.catalogItemId} fallbackCents={row.marketCents} />
+        <QuickAddButton catalogItemId={row.catalogItemId} />
       </div>
     </div>
   );
