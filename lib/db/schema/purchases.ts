@@ -1,7 +1,19 @@
-import { pgTable, bigserial, uuid, bigint, date, integer, text, boolean, numeric, timestamp, index, check } from 'drizzle-orm/pg-core';
+import {
+  pgTable,
+  bigserial,
+  uuid,
+  bigint,
+  date,
+  integer,
+  text,
+  boolean,
+  numeric,
+  timestamp,
+  index,
+  check,
+} from 'drizzle-orm/pg-core';
 import { sql } from 'drizzle-orm';
 import { catalogItems } from './catalogItems';
-import { rips } from './rips';
 
 export const purchases = pgTable(
   'purchases',
@@ -23,7 +35,7 @@ export const purchases = pgTable(
     location: text('location'),
     notes: text('notes'),
     deletedAt: timestamp('deleted_at', { withTimezone: true }),
-    sourceRipId: bigint('source_rip_id', { mode: 'number' }).references(() => rips.id),
+    sourceRipId: bigint('source_rip_id', { mode: 'number' }),
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   },
   (t) => ({
