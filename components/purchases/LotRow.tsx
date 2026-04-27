@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { MoreHorizontal } from 'lucide-react';
-import { useDeletePurchase } from '@/lib/query/hooks/usePurchases';
+import { useDeletePurchase, DeletePurchaseError } from '@/lib/query/hooks/usePurchases';
 import { EditPurchaseDialog, type EditableLot } from './EditPurchaseDialog';
 import type { PurchaseFormCatalogItem } from './PurchaseForm';
 
@@ -30,6 +30,20 @@ export function LotRow({ lot, catalogItem, sourcePack, sourceRip, onRip }: LotRo
     try {
       await del.mutateAsync(lot.id);
     } catch (err) {
+      if (err instanceof DeletePurchaseError) {
+        if (err.ripIds && err.ripIds.length > 0) {
+          alert(
+            `${err.message}. Undo rip #${err.ripIds.join(', #')} on the source pack first.`
+          );
+          return;
+        }
+        if (err.linkedSaleIds && err.linkedSaleIds.length > 0) {
+          alert(
+            `${err.message}. Reverse sale #${err.linkedSaleIds.join(', #')} first (Plan 5).`
+          );
+          return;
+        }
+      }
       const message = err instanceof Error ? err.message : 'delete failed';
       alert(message);
     }

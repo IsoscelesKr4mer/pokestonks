@@ -69,13 +69,32 @@ export function useUpdatePurchase() {
   });
 }
 
+export class DeletePurchaseError extends Error {
+  ripIds?: number[];
+  linkedSaleIds?: number[];
+  constructor(message: string, opts: { ripIds?: number[]; linkedSaleIds?: number[] } = {}) {
+    super(message);
+    this.name = 'DeletePurchaseError';
+    this.ripIds = opts.ripIds;
+    this.linkedSaleIds = opts.linkedSaleIds;
+  }
+}
+
 export function useDeletePurchase() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async (id: number) => {
       const res = await fetch(`/api/purchases/${id}`, { method: 'DELETE' });
       if (res.status === 204) return { id };
-      return json<{ error: string }>(res);
+      const body = (await res.json().catch(() => ({}))) as {
+        error?: string;
+        ripIds?: number[];
+        linkedSaleIds?: number[];
+      };
+      throw new DeletePurchaseError(body.error ?? `delete failed: ${res.status}`, {
+        ripIds: body.ripIds,
+        linkedSaleIds: body.linkedSaleIds,
+      });
     },
     onSuccess: () => invalidateAfterPurchaseMutation(qc),
   });
