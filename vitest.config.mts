@@ -5,12 +5,9 @@ import { resolve } from 'node:path';
 export default defineConfig({
   plugins: [react()],
   test: {
+    // Default to node. Component tests opt into happy-dom via the per-file
+    // `// @vitest-environment happy-dom` directive (see Plan 3 task spec).
     environment: 'node',
-    environmentMatchGlobs: [
-      // Component tests run in happy-dom; everything else stays in node.
-      ['**/*.test.tsx', 'happy-dom'],
-      ['components/**/*.test.ts', 'happy-dom'],
-    ],
     globals: true,
     setupFiles: ['./tests/setup.ts'],
     exclude: ['node_modules', 'tests/e2e/**', '.next'],
