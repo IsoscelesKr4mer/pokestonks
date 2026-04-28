@@ -24,6 +24,7 @@ export type HoldingDetailDto = {
     kind: 'sealed' | 'card';
     name: string;
     setName: string | null;
+    setCode: string | null;
     productType: string | null;
     cardNumber: string | null;
     rarity: string | null;
@@ -32,6 +33,7 @@ export type HoldingDetailDto = {
     imageStoragePath: string | null;
     lastMarketCents: number | null;
     msrpCents: number | null;
+    packCount: number | null;
   };
   holding: Holding;
   lots: Array<{
@@ -54,6 +56,8 @@ export type HoldingDetailDto = {
     };
     sourceRip: { id: number; ripDate: string; sourcePurchaseId: number } | null;
     sourcePack: { catalogItemId: number; name: string } | null;
+    sourceDecomposition: { id: number; decomposeDate: string; sourcePurchaseId: number } | null;
+    sourceContainer: { catalogItemId: number; name: string } | null;
   }>;
   rips: Array<{
     id: number;
@@ -61,6 +65,16 @@ export type HoldingDetailDto = {
     packCostCents: number;
     realizedLossCents: number;
     keptCardCount: number;
+    sourcePurchaseId: number;
+    notes: string | null;
+  }>;
+  decompositions: Array<{
+    id: number;
+    decomposeDate: string;
+    sourceCostCents: number;
+    packCount: number;
+    perPackCostCents: number;
+    roundingResidualCents: number;
     sourcePurchaseId: number;
     notes: string | null;
   }>;

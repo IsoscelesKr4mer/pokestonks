@@ -4,7 +4,12 @@ import { createClient } from '@/lib/supabase/server';
 import { db, schema } from '@/lib/db/client';
 import { getImageUrl } from '@/lib/utils/images';
 import { HoldingDetailClient } from './HoldingDetailClient';
-import { aggregateHoldings, type RawPurchaseRow, type RawRipRow } from '@/lib/services/holdings';
+import {
+  aggregateHoldings,
+  type RawPurchaseRow,
+  type RawRipRow,
+  type RawDecompositionRow,
+} from '@/lib/services/holdings';
 import type { HoldingDetailDto } from '@/lib/query/hooks/useHoldings';
 
 export default async function HoldingDetailPage({
@@ -53,6 +58,31 @@ export default async function HoldingDetailPage({
     : [];
   const sourcePackCatalogById = new Map(sourcePackCatalogs.map((c) => [c.id, c]));
 
+  // Provenance for pack-child lots (decomposition source).
+  const sourceDecompositionIds = lots
+    .map((l) => l.sourceDecompositionId)
+    .filter((v): v is number => v != null);
+  const sourceDecompositions = sourceDecompositionIds.length
+    ? await db.query.boxDecompositions.findMany({
+        where: inArray(schema.boxDecompositions.id, sourceDecompositionIds),
+      })
+    : [];
+  const decompById = new Map(sourceDecompositions.map((d) => [d.id, d]));
+  const sourceContainerPurchaseIds = sourceDecompositions.map((d) => d.sourcePurchaseId);
+  const sourceContainerPurchases = sourceContainerPurchaseIds.length
+    ? await db.query.purchases.findMany({
+        where: inArray(schema.purchases.id, sourceContainerPurchaseIds),
+      })
+    : [];
+  const sourceContainerByPurchaseId = new Map(sourceContainerPurchases.map((p) => [p.id, p]));
+  const sourceContainerCatalogIds = sourceContainerPurchases.map((p) => p.catalogItemId);
+  const sourceContainerCatalogs = sourceContainerCatalogIds.length
+    ? await db.query.catalogItems.findMany({
+        where: inArray(schema.catalogItems.id, sourceContainerCatalogIds),
+      })
+    : [];
+  const sourceContainerCatalogById = new Map(sourceContainerCatalogs.map((c) => [c.id, c]));
+
   // Rips for sealed.
   const lotIds = lots.map((l) => l.id);
   const ripsForSealed =
@@ -71,6 +101,14 @@ export default async function HoldingDetailPage({
     acc.set(p.sourceRipId!, (acc.get(p.sourceRipId!) ?? 0) + 1);
     return acc;
   }, new Map());
+
+  // Decompositions for sealed.
+  const decompositionsForSealed =
+    item.kind === 'sealed' && lotIds.length
+      ? await db.query.boxDecompositions.findMany({
+          where: inArray(schema.boxDecompositions.sourcePurchaseId, lotIds),
+        })
+      : [];
 
   // Rollup.
   const rawPurchases: RawPurchaseRow[] = lots.map((l) => ({
@@ -94,7 +132,11 @@ export default async function HoldingDetailPage({
     id: r.id,
     source_purchase_id: r.sourcePurchaseId,
   }));
-  const [holding] = aggregateHoldings(rawPurchases, rawRips, []);
+  const rawDecompositions: RawDecompositionRow[] = decompositionsForSealed.map((d) => ({
+    id: d.id,
+    source_purchase_id: d.sourcePurchaseId,
+  }));
+  const [holding] = aggregateHoldings(rawPurchases, rawRips, rawDecompositions);
 
   const initial: HoldingDetailDto = {
     item: {
@@ -102,6 +144,7 @@ export default async function HoldingDetailPage({
       kind: item.kind as 'sealed' | 'card',
       name: item.name,
       setName: item.setName,
+      setCode: item.setCode,
       productType: item.productType,
       cardNumber: item.cardNumber,
       rarity: item.rarity,
@@ -110,6 +153,7 @@ export default async function HoldingDetailPage({
       imageStoragePath: item.imageStoragePath,
       lastMarketCents: item.lastMarketCents,
       msrpCents: item.msrpCents,
+      packCount: item.packCount,
     },
     holding: holding ?? {
       catalogItemId: item.id,
@@ -130,6 +174,15 @@ export default async function HoldingDetailPage({
         : null;
       const sourcePackCatalog = sourcePackPurchase
         ? sourcePackCatalogById.get(sourcePackPurchase.catalogItemId) ?? null
+        : null;
+      const decomp = l.sourceDecompositionId != null
+        ? decompById.get(l.sourceDecompositionId) ?? null
+        : null;
+      const container = decomp
+        ? sourceContainerByPurchaseId.get(decomp.sourcePurchaseId) ?? null
+        : null;
+      const containerCatalog = container
+        ? sourceContainerCatalogById.get(container.catalogItemId) ?? null
         : null;
       return {
         lot: {
@@ -155,6 +208,12 @@ export default async function HoldingDetailPage({
         sourcePack: sourcePackCatalog
           ? { catalogItemId: sourcePackCatalog.id, name: sourcePackCatalog.name }
           : null,
+        sourceDecomposition: decomp
+          ? { id: decomp.id, decomposeDate: decomp.decomposeDate, sourcePurchaseId: decomp.sourcePurchaseId }
+          : null,
+        sourceContainer: containerCatalog
+          ? { catalogItemId: containerCatalog.id, name: containerCatalog.name }
+          : null,
       };
     }),
     rips:
@@ -167,6 +226,19 @@ export default async function HoldingDetailPage({
             keptCardCount: keptCountByRipId.get(r.id) ?? 0,
             sourcePurchaseId: r.sourcePurchaseId,
             notes: r.notes,
+          }))
+        : [],
+    decompositions:
+      item.kind === 'sealed'
+        ? decompositionsForSealed.map((d) => ({
+            id: d.id,
+            decomposeDate: d.decomposeDate,
+            sourceCostCents: d.sourceCostCents,
+            packCount: d.packCount,
+            perPackCostCents: d.perPackCostCents,
+            roundingResidualCents: d.roundingResidualCents,
+            sourcePurchaseId: d.sourcePurchaseId,
+            notes: d.notes,
           }))
         : [],
   };

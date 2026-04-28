@@ -2,7 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { eq, and, isNull, asc, inArray } from 'drizzle-orm';
 import { createClient } from '@/lib/supabase/server';
 import { db, schema } from '@/lib/db/client';
-import { aggregateHoldings, type RawPurchaseRow, type RawRipRow } from '@/lib/services/holdings';
+import {
+  aggregateHoldings,
+  type RawPurchaseRow,
+  type RawRipRow,
+  type RawDecompositionRow,
+} from '@/lib/services/holdings';
 
 export async function GET(
   _req: NextRequest,
@@ -66,6 +71,34 @@ export async function GET(
       : [];
   const sourcePackCatalogById = new Map(sourcePackCatalogItems.map((c) => [c.id, c]));
 
+  // For provenance display on pack-child lots: source decomposition + source container catalog item.
+  const sourceDecompositionIds = lots
+    .map((l) => l.sourceDecompositionId)
+    .filter((v): v is number => v != null);
+  const sourceDecompositions =
+    sourceDecompositionIds.length > 0
+      ? await db.query.boxDecompositions.findMany({
+          where: inArray(schema.boxDecompositions.id, sourceDecompositionIds),
+        })
+      : [];
+  const decompById = new Map(sourceDecompositions.map((d) => [d.id, d]));
+  const sourceContainerPurchaseIds = sourceDecompositions.map((d) => d.sourcePurchaseId);
+  const sourceContainerPurchases =
+    sourceContainerPurchaseIds.length > 0
+      ? await db.query.purchases.findMany({
+          where: inArray(schema.purchases.id, sourceContainerPurchaseIds),
+        })
+      : [];
+  const sourceContainerByPurchaseId = new Map(sourceContainerPurchases.map((p) => [p.id, p]));
+  const sourceContainerCatalogIds = sourceContainerPurchases.map((p) => p.catalogItemId);
+  const sourceContainerCatalogs =
+    sourceContainerCatalogIds.length > 0
+      ? await db.query.catalogItems.findMany({
+          where: inArray(schema.catalogItems.id, sourceContainerCatalogIds),
+        })
+      : [];
+  const sourceContainerCatalogById = new Map(sourceContainerCatalogs.map((c) => [c.id, c]));
+
   // For sealed: rips for these lots, with kept_card_count.
   const lotIds = lots.map((l) => l.id);
   const ripsForSealed =
@@ -88,6 +121,14 @@ export async function GET(
     acc.set(p.sourceRipId!, (acc.get(p.sourceRipId!) ?? 0) + 1);
     return acc;
   }, new Map());
+
+  // For sealed: decompositions sourced from these lots.
+  const decompositionsForSealed =
+    item.kind === 'sealed' && lotIds.length > 0
+      ? await db.query.boxDecompositions.findMany({
+          where: inArray(schema.boxDecompositions.sourcePurchaseId, lotIds),
+        })
+      : [];
 
   // Compute the per-item rollup using the same aggregation as the list endpoint.
   // We need a synthetic RawPurchaseRow shape to reuse aggregateHoldings.
@@ -112,18 +153,38 @@ export async function GET(
     id: r.id,
     source_purchase_id: r.sourcePurchaseId,
   }));
-  const [holding] = aggregateHoldings(rawPurchases, rawRips, []);
+  const rawDecompositions: RawDecompositionRow[] = decompositionsForSealed.map((d) => ({
+    id: d.id,
+    source_purchase_id: d.sourcePurchaseId,
+  }));
+  const [holding] = aggregateHoldings(rawPurchases, rawRips, rawDecompositions);
 
   // Annotate lots with provenance for the UI.
   const lotsWithProvenance = lots.map((l) => {
-    if (l.sourceRipId == null) return { lot: l, sourceRip: null, sourcePack: null };
-    const rip = ripById.get(l.sourceRipId) ?? null;
+    const rip = l.sourceRipId != null ? ripById.get(l.sourceRipId) ?? null : null;
     const pack = rip ? sourcePackByPurchaseId.get(rip.sourcePurchaseId) ?? null : null;
     const packCatalog = pack ? sourcePackCatalogById.get(pack.catalogItemId) ?? null : null;
+
+    const decomp = l.sourceDecompositionId != null
+      ? decompById.get(l.sourceDecompositionId) ?? null
+      : null;
+    const container = decomp
+      ? sourceContainerByPurchaseId.get(decomp.sourcePurchaseId) ?? null
+      : null;
+    const containerCatalog = container
+      ? sourceContainerCatalogById.get(container.catalogItemId) ?? null
+      : null;
+
     return {
       lot: l,
       sourceRip: rip ? { id: rip.id, ripDate: rip.ripDate, sourcePurchaseId: rip.sourcePurchaseId } : null,
       sourcePack: packCatalog ? { catalogItemId: packCatalog.id, name: packCatalog.name } : null,
+      sourceDecomposition: decomp
+        ? { id: decomp.id, decomposeDate: decomp.decomposeDate, sourcePurchaseId: decomp.sourcePurchaseId }
+        : null,
+      sourceContainer: containerCatalog
+        ? { catalogItemId: containerCatalog.id, name: containerCatalog.name }
+        : null,
     };
   });
 
@@ -141,12 +202,28 @@ export async function GET(
         }))
       : [];
 
+  // Decomposition rows summary (only meaningful for sealed).
+  const decompositionsSummary =
+    item.kind === 'sealed'
+      ? decompositionsForSealed.map((d) => ({
+          id: d.id,
+          decomposeDate: d.decomposeDate,
+          sourceCostCents: d.sourceCostCents,
+          packCount: d.packCount,
+          perPackCostCents: d.perPackCostCents,
+          roundingResidualCents: d.roundingResidualCents,
+          sourcePurchaseId: d.sourcePurchaseId,
+          notes: d.notes,
+        }))
+      : [];
+
   return NextResponse.json({
     item: {
       id: item.id,
       kind: item.kind,
       name: item.name,
       setName: item.setName,
+      setCode: item.setCode,
       productType: item.productType,
       cardNumber: item.cardNumber,
       rarity: item.rarity,
@@ -155,6 +232,7 @@ export async function GET(
       imageStoragePath: item.imageStoragePath,
       lastMarketCents: item.lastMarketCents,
       msrpCents: item.msrpCents,
+      packCount: item.packCount,
     },
     holding: holding ?? {
       catalogItemId: item.id,
@@ -170,5 +248,6 @@ export async function GET(
     },
     lots: lotsWithProvenance,
     rips: ripsSummary,
+    decompositions: decompositionsSummary,
   });
 }
