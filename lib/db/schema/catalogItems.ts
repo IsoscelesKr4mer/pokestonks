@@ -24,6 +24,7 @@ export const catalogItems = pgTable(
     // by the upstream-import path so local search can read it without a join.
     lastMarketCents: integer('last_market_cents'),
     lastMarketAt: timestamp('last_market_at', { withTimezone: true }),
+    packCount: integer('pack_count'),
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   },
   (t) => ({
