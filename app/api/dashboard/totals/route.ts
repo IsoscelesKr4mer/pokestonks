@@ -1,5 +1,12 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
+import {
+  aggregateHoldings,
+  type RawPurchaseRow,
+  type RawRipRow,
+  type RawDecompositionRow,
+} from '@/lib/services/holdings';
+import { computePortfolioPnL } from '@/lib/services/pnl';
 
 export async function GET() {
   const supabase = await createClient();
@@ -12,7 +19,9 @@ export async function GET() {
 
   const { data: purchases, error: pErr } = await supabase
     .from('purchases')
-    .select('cost_cents, quantity')
+    .select(
+      'id, catalog_item_id, quantity, cost_cents, deleted_at, created_at, catalog_item:catalog_items(kind, name, set_name, product_type, image_url, image_storage_path, last_market_cents, last_market_at)'
+    )
     .is('deleted_at', null);
   if (pErr) {
     return NextResponse.json({ error: pErr.message }, { status: 500 });
@@ -20,20 +29,30 @@ export async function GET() {
 
   const { data: rips, error: rErr } = await supabase
     .from('rips')
-    .select('realized_loss_cents');
+    .select('id, source_purchase_id, realized_loss_cents');
   if (rErr) {
     return NextResponse.json({ error: rErr.message }, { status: 500 });
   }
 
-  const totalInvestedCents = (purchases ?? []).reduce(
-    (acc, p) => acc + (p.cost_cents as number) * (p.quantity as number),
-    0
-  );
-  const totalRipLossCents = (rips ?? []).reduce(
-    (acc, r) => acc + (r.realized_loss_cents as number),
-    0
-  );
-  const lotCount = purchases?.length ?? 0;
+  const { data: decompositions, error: dErr } = await supabase
+    .from('box_decompositions')
+    .select('id, source_purchase_id');
+  if (dErr) {
+    return NextResponse.json({ error: dErr.message }, { status: 500 });
+  }
 
-  return NextResponse.json({ totalInvestedCents, totalRipLossCents, lotCount });
+  const holdings = aggregateHoldings(
+    (purchases ?? []) as unknown as RawPurchaseRow[],
+    (rips ?? []) as RawRipRow[],
+    (decompositions ?? []) as RawDecompositionRow[]
+  );
+
+  const realizedRipLossCents = (rips ?? []).reduce(
+    (acc, r) => acc + ((r as { realized_loss_cents: number }).realized_loss_cents ?? 0),
+    0
+  );
+  const lotCount = (purchases ?? []).length;
+
+  const result = computePortfolioPnL(holdings, realizedRipLossCents, lotCount);
+  return NextResponse.json(result);
 }
