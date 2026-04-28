@@ -8,6 +8,7 @@ import {
   type RawRipRow,
   type RawDecompositionRow,
 } from '@/lib/services/holdings';
+import { computeHoldingPnL } from '@/lib/services/pnl';
 
 export async function GET(
   _req: NextRequest,
@@ -158,7 +159,9 @@ export async function GET(
     id: d.id,
     source_purchase_id: d.sourcePurchaseId,
   }));
-  const [holding] = aggregateHoldings(rawPurchases, rawRips, rawDecompositions);
+  const [holdingRaw] = aggregateHoldings(rawPurchases, rawRips, rawDecompositions);
+  const now = new Date();
+  const holding = holdingRaw ? computeHoldingPnL(holdingRaw, now) : null;
 
   // Annotate lots with provenance for the UI.
   const lotsWithProvenance = lots.map((l) => {
@@ -248,6 +251,11 @@ export async function GET(
       lastMarketAt: item.lastMarketAt instanceof Date ? item.lastMarketAt.toISOString() : item.lastMarketAt,
       qtyHeld: 0,
       totalInvestedCents: 0,
+      currentValueCents: null,
+      pnlCents: null,
+      pnlPct: null,
+      priced: false,
+      stale: false,
     },
     lots: lotsWithProvenance,
     rips: ripsSummary,

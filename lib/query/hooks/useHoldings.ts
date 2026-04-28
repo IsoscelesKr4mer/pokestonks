@@ -1,6 +1,5 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
-import type { Holding } from '@/lib/services/holdings';
 import type { HoldingPnL } from '@/lib/services/pnl';
 
 const json = <T,>(res: Response) =>
@@ -37,7 +36,7 @@ export type HoldingDetailDto = {
     msrpCents: number | null;
     packCount: number | null;
   };
-  holding: Holding;
+  holding: HoldingPnL;
   lots: Array<{
     lot: {
       id: number;

@@ -10,6 +10,7 @@ import {
   type RawRipRow,
   type RawDecompositionRow,
 } from '@/lib/services/holdings';
+import { computeHoldingPnL } from '@/lib/services/pnl';
 import type { HoldingDetailDto } from '@/lib/query/hooks/useHoldings';
 
 export default async function HoldingDetailPage({
@@ -137,7 +138,9 @@ export default async function HoldingDetailPage({
     id: d.id,
     source_purchase_id: d.sourcePurchaseId,
   }));
-  const [holding] = aggregateHoldings(rawPurchases, rawRips, rawDecompositions);
+  const [holdingRaw] = aggregateHoldings(rawPurchases, rawRips, rawDecompositions);
+  const now = new Date();
+  const holding = holdingRaw ? computeHoldingPnL(holdingRaw, now) : null;
 
   const initial: HoldingDetailDto = {
     item: {
@@ -169,6 +172,11 @@ export default async function HoldingDetailPage({
       lastMarketAt: item.lastMarketAt instanceof Date ? item.lastMarketAt.toISOString() : item.lastMarketAt,
       qtyHeld: 0,
       totalInvestedCents: 0,
+      currentValueCents: null,
+      pnlCents: null,
+      pnlPct: null,
+      priced: false,
+      stale: false,
     },
     lots: lots.map((l) => {
       const sourceRip = l.sourceRipId != null ? ripById.get(l.sourceRipId) ?? null : null;
