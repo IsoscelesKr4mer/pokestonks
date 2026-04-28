@@ -157,6 +157,23 @@ export async function DELETE(
     );
   }
 
+  const { data: decomps, error: decompsErr } = await supabase
+    .from('box_decompositions')
+    .select('id')
+    .eq('source_purchase_id', numericId);
+  if (decompsErr) {
+    return NextResponse.json({ error: decompsErr.message }, { status: 500 });
+  }
+  if (decomps && decomps.length > 0) {
+    return NextResponse.json(
+      {
+        error: 'purchase has been decomposed',
+        decompositionIds: decomps.map((d) => d.id),
+      },
+      { status: 409 }
+    );
+  }
+
   const { error: updateErr } = await supabase
     .from('purchases')
     .update({ deleted_at: new Date().toISOString() })
