@@ -95,7 +95,7 @@ export function RipDetailDialog({
                   : detail.rip.realizedLossCents < 0
                     ? '+'
                     : ''}
-                {formatCents(detail.rip.realizedLossCents)}
+                {formatCents(Math.abs(detail.rip.realizedLossCents))}
               </span>
             </div>
 
