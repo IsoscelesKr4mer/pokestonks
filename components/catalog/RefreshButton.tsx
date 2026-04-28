@@ -24,10 +24,14 @@ export function RefreshButton({
       }
       return res.json();
     },
-    onSuccess: () => {
-      // Drop the cached search response so the next render picks up the
-      // freshly-written rows from local.
-      qc.invalidateQueries({ queryKey: ['search', query, kind, sortBy] });
+    onSuccess: (data) => {
+      // Seed the cache with the freshly-fetched response. invalidateQueries
+      // would trigger a refetch via fetch(), and the GET response sets
+      // Cache-Control: max-age=300 — the browser HTTP cache would then serve
+      // the stale entry, masking the refresh. The POST response already has
+      // the same { query, kind, sortBy, results, warnings } shape, so we
+      // write it straight into TanStack's cache.
+      qc.setQueryData(['search', query, kind, sortBy], data);
       toast.success('Refreshed');
     },
     onError: (err: Error) => {

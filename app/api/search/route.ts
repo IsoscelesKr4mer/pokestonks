@@ -26,14 +26,20 @@ export async function GET(request: NextRequest) {
   const tokens = tokenizeQuery(trimmed);
   const local = await searchLocalCatalog(tokens, kind, limit, sortBy);
   const localCount = local.sealed.length + local.cards.length;
-  // Trust local only if at least one row has a populated price. A query that
-  // matches existing rows but with null prices everywhere means the rows were
-  // imported before prices were stored (legacy data) — fall through to
-  // upstream once to populate them, then subsequent searches stay local.
+  // Trust local only when (a) at least one row has a populated price, AND
+  // (b) the query has a narrowing token (setCode or card-number) so we can
+  // be confident the local rows aren't an arbitrary slice of past lazy
+  // imports. For pure-text queries like "pikachu" the local catalog only
+  // covers sets that were imported by previous searches, so falling through
+  // to upstream is the only way to get the full result set.
   const localHasAnyPrice =
     local.sealed.some((r) => r.marketCents !== null) ||
     local.cards.some((r) => r.marketCents !== null);
-  if (localCount > 0 && localHasAnyPrice) {
+  const hasNarrowingToken =
+    tokens.setCode !== null ||
+    tokens.cardNumberFull !== null ||
+    tokens.cardNumberPartial !== null;
+  if (localCount > 0 && localHasAnyPrice && hasNarrowingToken) {
     // searchLocalCatalog already sorted+sliced, but the partition by kind
     // breaks the global sort order. Re-merge and re-sort across both lists.
     const merged = applySort([...local.sealed, ...local.cards], sortBy).slice(0, limit);
