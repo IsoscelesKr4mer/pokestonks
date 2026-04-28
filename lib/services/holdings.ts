@@ -10,6 +10,7 @@ export type RawCatalogItem = {
   set_name: string | null;
   product_type: string | null;
   last_market_cents: number | null;
+  last_market_at: string | null;
   image_url: string | null;
   image_storage_path: string | null;
 };
@@ -43,6 +44,7 @@ export type Holding = {
   imageUrl: string | null;
   imageStoragePath: string | null;
   lastMarketCents: number | null;
+  lastMarketAt: string | null;
   qtyHeld: number;
   totalInvestedCents: number;
 };
@@ -107,6 +109,7 @@ export function aggregateHoldings(
           imageUrl: p.catalog_item.image_url,
           imageStoragePath: p.catalog_item.image_storage_path,
           lastMarketCents: p.catalog_item.last_market_cents,
+          lastMarketAt: p.catalog_item.last_market_at,
           qtyHeld: remaining,
           totalInvestedCents: p.cost_cents * remaining,
         },

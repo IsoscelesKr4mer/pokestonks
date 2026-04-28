@@ -14,7 +14,7 @@ export async function GET() {
   const { data: purchases, error: pErr } = await supabase
     .from('purchases')
     .select(
-      'id, catalog_item_id, quantity, cost_cents, deleted_at, created_at, catalog_item:catalog_items(kind, name, set_name, product_type, image_url, image_storage_path, last_market_cents)'
+      'id, catalog_item_id, quantity, cost_cents, deleted_at, created_at, catalog_item:catalog_items(kind, name, set_name, product_type, image_url, image_storage_path, last_market_cents, last_market_at)'
     )
     .is('deleted_at', null);
   if (pErr) {

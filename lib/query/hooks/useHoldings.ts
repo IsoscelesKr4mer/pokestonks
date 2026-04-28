@@ -32,6 +32,7 @@ export type HoldingDetailDto = {
     imageUrl: string | null;
     imageStoragePath: string | null;
     lastMarketCents: number | null;
+    lastMarketAt: string | null;
     msrpCents: number | null;
     packCount: number | null;
   };

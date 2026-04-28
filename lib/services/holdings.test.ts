@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { aggregateHoldings, type RawPurchaseRow, type RawRipRow, type RawDecompositionRow } from './holdings';
 
-const sealed = { kind: 'sealed' as const, name: 'ETB', set_name: 'SV151', product_type: 'ETB', last_market_cents: 6000, image_url: null, image_storage_path: null };
-const card = { kind: 'card' as const, name: 'Pikachu ex', set_name: 'AH', product_type: null, last_market_cents: 117087, image_url: null, image_storage_path: null };
+const sealed = { kind: 'sealed' as const, name: 'ETB', set_name: 'SV151', product_type: 'ETB', last_market_cents: 6000, last_market_at: '2026-04-25T00:00:00Z', image_url: null, image_storage_path: null };
+const card = { kind: 'card' as const, name: 'Pikachu ex', set_name: 'AH', product_type: null, last_market_cents: 117087, last_market_at: '2026-04-25T00:00:00Z', image_url: null, image_storage_path: null };
 
 function makePurchase(overrides: Partial<RawPurchaseRow>): RawPurchaseRow {
   return {
@@ -109,5 +109,28 @@ describe('aggregateHoldings', () => {
     const decompositions: RawDecompositionRow[] = [{ id: 999, source_purchase_id: 99999 }];
     const result = aggregateHoldings(purchases, [], decompositions);
     expect(result[0].qtyHeld).toBe(1);
+  });
+
+  it('passes lastMarketAt through to the holding', () => {
+    const purchases = [
+      makePurchase({
+        id: 1,
+        catalog_item: { ...sealed, last_market_at: '2026-04-27T12:00:00Z' },
+      }),
+    ];
+    const result = aggregateHoldings(purchases, [], []);
+    expect(result[0].lastMarketAt).toBe('2026-04-27T12:00:00Z');
+  });
+
+  it('passes null lastMarketAt through when source is null', () => {
+    const purchases = [
+      makePurchase({
+        id: 1,
+        catalog_item: { ...sealed, last_market_cents: null, last_market_at: null },
+      }),
+    ];
+    const result = aggregateHoldings(purchases, [], []);
+    expect(result[0].lastMarketCents).toBeNull();
+    expect(result[0].lastMarketAt).toBeNull();
   });
 });

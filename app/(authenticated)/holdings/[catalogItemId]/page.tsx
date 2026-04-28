@@ -126,6 +126,7 @@ export default async function HoldingDetailPage({
       image_url: item.imageUrl,
       image_storage_path: item.imageStoragePath,
       last_market_cents: item.lastMarketCents,
+      last_market_at: item.lastMarketAt instanceof Date ? item.lastMarketAt.toISOString() : item.lastMarketAt,
     },
   }));
   const rawRips: RawRipRow[] = ripsForSealed.map((r) => ({
@@ -152,6 +153,7 @@ export default async function HoldingDetailPage({
       imageUrl: getImageUrl({ imageStoragePath: item.imageStoragePath, imageUrl: item.imageUrl }),
       imageStoragePath: item.imageStoragePath,
       lastMarketCents: item.lastMarketCents,
+      lastMarketAt: item.lastMarketAt instanceof Date ? item.lastMarketAt.toISOString() : item.lastMarketAt,
       msrpCents: item.msrpCents,
       packCount: item.packCount,
     },
