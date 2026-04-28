@@ -1,6 +1,7 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
 import type { Holding } from '@/lib/services/holdings';
+import type { HoldingPnL } from '@/lib/services/pnl';
 
 const json = <T,>(res: Response) =>
   res.json().then((b) => {
@@ -13,7 +14,7 @@ export function useHoldings() {
     queryKey: ['holdings'],
     queryFn: async () => {
       const res = await fetch('/api/holdings');
-      return json<{ holdings: Holding[] }>(res);
+      return json<{ holdings: HoldingPnL[] }>(res);
     },
   });
 }

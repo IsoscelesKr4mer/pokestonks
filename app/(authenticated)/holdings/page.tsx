@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { HoldingsGrid } from './HoldingsGrid';
 import { aggregateHoldings, type RawPurchaseRow, type RawRipRow, type RawDecompositionRow } from '@/lib/services/holdings';
+import { computeHoldingPnL } from '@/lib/services/pnl';
 
 export default async function HoldingsPage() {
   const supabase = await createClient();
@@ -28,11 +29,13 @@ export default async function HoldingsPage() {
     (rips ?? []) as RawRipRow[],
     (decompositions ?? []) as RawDecompositionRow[]
   );
+  const now = new Date();
+  const holdingsPnL = holdings.map((h) => computeHoldingPnL(h, now));
 
   return (
     <div className="mx-auto w-full max-w-7xl px-6 py-8">
       <h1 className="mb-6 text-2xl font-semibold tracking-tight">Holdings</h1>
-      <HoldingsGrid initialHoldings={holdings} />
+      <HoldingsGrid initialHoldings={holdingsPnL} />
     </div>
   );
 }

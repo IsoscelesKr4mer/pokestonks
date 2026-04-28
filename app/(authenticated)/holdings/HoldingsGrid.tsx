@@ -2,10 +2,10 @@
 import Link from 'next/link';
 import { useHoldings } from '@/lib/query/hooks/useHoldings';
 import { getImageUrl } from '@/lib/utils/images';
-import type { Holding } from '@/lib/services/holdings';
+import type { HoldingPnL } from '@/lib/services/pnl';
 import { formatCents } from '@/lib/utils/format';
 
-export function HoldingsGrid({ initialHoldings }: { initialHoldings: Holding[] }) {
+export function HoldingsGrid({ initialHoldings }: { initialHoldings: HoldingPnL[] }) {
   const { data } = useHoldings();
   const holdings = data?.holdings ?? initialHoldings;
 

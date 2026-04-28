@@ -1,6 +1,12 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
-import { aggregateHoldings, type RawPurchaseRow, type RawRipRow, type RawDecompositionRow } from '@/lib/services/holdings';
+import {
+  aggregateHoldings,
+  type RawPurchaseRow,
+  type RawRipRow,
+  type RawDecompositionRow,
+} from '@/lib/services/holdings';
+import { computeHoldingPnL } from '@/lib/services/pnl';
 
 export async function GET() {
   const supabase = await createClient();
@@ -41,5 +47,8 @@ export async function GET() {
     (decompositions ?? []) as RawDecompositionRow[]
   );
 
-  return NextResponse.json({ holdings });
+  const now = new Date();
+  const holdingsPnL = holdings.map((h) => computeHoldingPnL(h, now));
+
+  return NextResponse.json({ holdings: holdingsPnL });
 }
