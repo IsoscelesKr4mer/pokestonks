@@ -25,6 +25,7 @@ export type PurchaseFormCatalogItem = {
   imageUrl: string | null;
   msrpCents: number | null;
   lastMarketCents: number | null;
+  packCount: number | null;
 };
 
 export type PurchaseFormValues = {

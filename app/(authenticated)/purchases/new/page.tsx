@@ -52,6 +52,7 @@ export default async function NewPurchasePage({
     imageUrl: getImageUrl({ imageStoragePath: item.imageStoragePath, imageUrl: item.imageUrl }),
     msrpCents: item.msrpCents,
     lastMarketCents: item.lastMarketCents,
+    packCount: item.packCount ?? null,
   };
 
   return (

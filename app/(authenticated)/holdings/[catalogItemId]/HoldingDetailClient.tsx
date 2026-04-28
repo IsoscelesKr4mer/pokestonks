@@ -57,6 +57,7 @@ export function HoldingDetailClient({
     imageUrl: detail.item.imageUrl,
     msrpCents: detail.item.msrpCents,
     lastMarketCents: detail.item.lastMarketCents,
+    packCount: null,
   };
 
   const handleQuickAdd = async () => {

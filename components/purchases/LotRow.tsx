@@ -16,11 +16,24 @@ export type LotRowProps = {
   catalogItem: PurchaseFormCatalogItem;
   sourcePack?: { catalogItemId: number; name: string } | null;
   sourceRip?: { id: number; ripDate: string } | null;
+  sourceContainer?: { catalogItemId: number; name: string } | null;
+  sourceDecomposition?: { id: number; decomposeDate: string } | null;
   /** Optional rip action; only rendered for sealed lots when caller passes a handler. */
   onRip?: (lot: EditableLot) => void;
+  /** Optional open-box action; only rendered for sealed multi-pack lots when caller passes a handler. */
+  onOpenBox?: (lot: EditableLot) => void;
 };
 
-export function LotRow({ lot, catalogItem, sourcePack, sourceRip, onRip }: LotRowProps) {
+export function LotRow({
+  lot,
+  catalogItem,
+  sourcePack,
+  sourceRip,
+  sourceContainer,
+  sourceDecomposition,
+  onRip,
+  onOpenBox,
+}: LotRowProps) {
   const [editOpen, setEditOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const del = useDeletePurchase();
@@ -84,6 +97,18 @@ export function LotRow({ lot, catalogItem, sourcePack, sourceRip, onRip }: LotRo
               · ripped {sourceRip.ripDate}
             </div>
           )}
+          {sourceDecomposition && sourceContainer && (
+            <div className="text-xs text-muted-foreground">
+              From:{' '}
+              <Link
+                href={`/holdings/${sourceContainer.catalogItemId}`}
+                className="underline hover:text-foreground"
+              >
+                {sourceContainer.name}
+              </Link>{' '}
+              · opened {sourceDecomposition.decomposeDate}
+            </div>
+          )}
           {lot.isGraded && (
             <div className="text-xs text-muted-foreground">
               Graded · {lot.gradingCompany} {lot.grade}
@@ -130,6 +155,22 @@ export function LotRow({ lot, catalogItem, sourcePack, sourceRip, onRip }: LotRo
                   Rip pack
                 </button>
               )}
+              {onOpenBox &&
+                catalogItem.kind === 'sealed' &&
+                catalogItem.packCount != null &&
+                catalogItem.packCount > 1 && (
+                  <button
+                    type="button"
+                    role="menuitem"
+                    onClick={() => {
+                      setMenuOpen(false);
+                      onOpenBox(lot);
+                    }}
+                    className="block w-full rounded-sm px-2 py-1.5 text-left hover:bg-muted"
+                  >
+                    Open box
+                  </button>
+                )}
               <button
                 type="button"
                 role="menuitem"

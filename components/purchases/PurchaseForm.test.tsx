@@ -21,6 +21,7 @@ const sealed: PurchaseFormCatalogItem = {
   imageUrl: null,
   msrpCents: 5000,
   lastMarketCents: 6000,
+  packCount: null,
 };
 
 const card: PurchaseFormCatalogItem = {
@@ -35,6 +36,7 @@ const card: PurchaseFormCatalogItem = {
   imageUrl: null,
   msrpCents: null,
   lastMarketCents: 117087,
+  packCount: null,
 };
 
 describe('<PurchaseForm>', () => {
