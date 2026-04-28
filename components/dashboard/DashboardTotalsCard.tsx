@@ -58,6 +58,15 @@ export function DashboardTotalsCard() {
             <PnLDisplay pnlCents={data.realizedRipPnLCents} pnlPct={null} showPct={false} />
           </Stat>
         </div>
+        {nothingPriced && (
+          <div className="text-xs text-muted-foreground">
+            Refresh prices on the{' '}
+            <Link href="/catalog" className="underline">
+              catalog page
+            </Link>
+            .
+          </div>
+        )}
         <div className="text-xs text-muted-foreground">
           {data.lotCount} lot{data.lotCount === 1 ? '' : 's'} · {data.pricedCount} priced · {data.unpricedCount} unpriced
           {data.staleCount > 0 ? ` · ${data.staleCount} stale` : ''}
