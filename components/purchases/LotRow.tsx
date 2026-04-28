@@ -37,6 +37,12 @@ export function LotRow({ lot, catalogItem, sourcePack, sourceRip, onRip }: LotRo
           );
           return;
         }
+        if (err.decompositionIds && err.decompositionIds.length > 0) {
+          alert(
+            `${err.message}. Undo the decomposition (#${err.decompositionIds.join(', #')}) first.`
+          );
+          return;
+        }
         if (err.linkedSaleIds && err.linkedSaleIds.length > 0) {
           alert(
             `${err.message}. Reverse sale #${err.linkedSaleIds.join(', #')} first (Plan 5).`

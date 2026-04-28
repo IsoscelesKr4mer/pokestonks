@@ -72,11 +72,16 @@ export function useUpdatePurchase() {
 export class DeletePurchaseError extends Error {
   ripIds?: number[];
   linkedSaleIds?: number[];
-  constructor(message: string, opts: { ripIds?: number[]; linkedSaleIds?: number[] } = {}) {
+  decompositionIds?: number[];
+  constructor(
+    message: string,
+    opts: { ripIds?: number[]; linkedSaleIds?: number[]; decompositionIds?: number[] } = {}
+  ) {
     super(message);
     this.name = 'DeletePurchaseError';
     this.ripIds = opts.ripIds;
     this.linkedSaleIds = opts.linkedSaleIds;
+    this.decompositionIds = opts.decompositionIds;
   }
 }
 
@@ -90,10 +95,12 @@ export function useDeletePurchase() {
         error?: string;
         ripIds?: number[];
         linkedSaleIds?: number[];
+        decompositionIds?: number[];
       };
       throw new DeletePurchaseError(body.error ?? `delete failed: ${res.status}`, {
         ripIds: body.ripIds,
         linkedSaleIds: body.linkedSaleIds,
+        decompositionIds: body.decompositionIds,
       });
     },
     onSuccess: () => invalidateAfterPurchaseMutation(qc),
