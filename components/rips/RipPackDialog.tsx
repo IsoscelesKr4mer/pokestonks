@@ -17,6 +17,8 @@ export type RipPackSourceLot = {
   name: string;
   imageUrl: string | null;
   packCostCents: number;
+  setName: string | null;
+  setCode: string | null;
 };
 
 export type RipKeptDraft = {

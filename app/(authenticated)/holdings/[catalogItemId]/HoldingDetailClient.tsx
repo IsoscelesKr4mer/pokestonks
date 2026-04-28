@@ -16,10 +16,11 @@ function formatCents(cents: number): string {
   return `$${dollars.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
 
-async function defaultCardSearch(q: string): Promise<CardSearchHit[]> {
+async function searchCardsInSet(q: string, setName: string | null): Promise<CardSearchHit[]> {
   if (!q.trim()) return [];
-  const url = `/api/search?q=${encodeURIComponent(q)}&kind=cards`;
-  const res = await fetch(url);
+  const params = new URLSearchParams({ q, kind: 'card' });
+  if (setName) params.set('setName', setName);
+  const res = await fetch(`/api/search?${params.toString()}`);
   if (!res.ok) return [];
   const body = (await res.json()) as { results?: Array<{ catalogItemId?: number; name: string; imageUrl?: string | null }> };
   return (body.results ?? [])
@@ -84,6 +85,8 @@ export function HoldingDetailClient({
       name: detail.item.name,
       imageUrl: detail.item.imageUrl,
       packCostCents: lot.costCents,
+      setName: detail.item.setName,
+      setCode: detail.item.setCode,
     });
     setRipOpen(true);
   };
@@ -241,7 +244,7 @@ export function HoldingDetailClient({
           open={ripOpen}
           onOpenChange={setRipOpen}
           pack={ripPack}
-          searchCard={defaultCardSearch}
+          searchCard={(q) => searchCardsInSet(q, ripPack.setName)}
         />
       )}
 

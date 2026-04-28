@@ -37,7 +37,16 @@ function orRequired(...args: SQL[]): SQL {
   return result;
 }
 
-function buildConditions(tokens: Tokens, kind: SearchKind): SQL | undefined {
+export type LocalSearchFilters = {
+  setName: string | null;
+  setCode: string | null;
+};
+
+function buildConditions(
+  tokens: Tokens,
+  kind: SearchKind,
+  filters: LocalSearchFilters
+): SQL | undefined {
   const clauses: SQL[] = [];
 
   for (const t of tokens.text) {
@@ -67,6 +76,13 @@ function buildConditions(tokens: Tokens, kind: SearchKind): SQL | undefined {
 
   if (tokens.setCode) {
     clauses.push(eq(schema.catalogItems.setCode, tokens.setCode));
+  }
+
+  if (filters.setName) {
+    clauses.push(ilike(schema.catalogItems.setName, filters.setName));
+  }
+  if (filters.setCode) {
+    clauses.push(ilike(schema.catalogItems.setCode, filters.setCode));
   }
 
   if (kind === 'sealed') clauses.push(eq(schema.catalogItems.kind, 'sealed'));
@@ -120,9 +136,10 @@ export async function searchLocalCatalog(
   tokens: Tokens,
   kind: SearchKind,
   limit: number,
-  sortBy: SortBy
+  sortBy: SortBy,
+  filters: LocalSearchFilters = { setName: null, setCode: null }
 ): Promise<{ sealed: SealedResultDto[]; cards: CardResultDto[]; warnings: Warning[] }> {
-  const conditions = buildConditions(tokens, kind);
+  const conditions = buildConditions(tokens, kind, filters);
   if (!conditions) {
     return { sealed: [], cards: [], warnings: [] };
   }

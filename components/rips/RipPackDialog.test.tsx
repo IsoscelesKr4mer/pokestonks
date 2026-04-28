@@ -16,6 +16,8 @@ const pack = {
   name: 'SV151 Booster Pack',
   imageUrl: null,
   packCostCents: 500,
+  setName: null,
+  setCode: null,
 };
 
 describe('<RipPackDialog> — bulk-loss math', () => {

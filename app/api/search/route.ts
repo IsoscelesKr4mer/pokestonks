@@ -10,6 +10,8 @@ const querySchema = z.object({
   sortBy: z
     .enum(['price-desc', 'price-asc', 'rarity-desc', 'relevance', 'released', 'name'])
     .default('price-desc'),
+  setName: z.string().min(1).max(120).optional(),
+  setCode: z.string().min(1).max(20).optional(),
 });
 
 export async function GET(request: NextRequest) {
@@ -18,13 +20,15 @@ export async function GET(request: NextRequest) {
   if (!parsed.success) {
     return NextResponse.json({ error: parsed.error.message }, { status: 400 });
   }
-  const { q, kind, limit, sortBy } = parsed.data;
+  const { q, kind, limit, sortBy, setName, setCode } = parsed.data;
   const trimmed = q.trim();
+  const filters = { setName: setName ?? null, setCode: setCode ?? null };
+  const hasFilter = filters.setName !== null || filters.setCode !== null;
 
   // 1) Try local first. catalog_items already has every result we've ever
   //    fetched + cached prices — sub-second response when we hit.
   const tokens = tokenizeQuery(trimmed);
-  const local = await searchLocalCatalog(tokens, kind, limit, sortBy);
+  const local = await searchLocalCatalog(tokens, kind, limit, sortBy, filters);
   const localCount = local.sealed.length + local.cards.length;
   // Trust local only when (a) at least one row has a populated price, AND
   // (b) the query has a narrowing token (setCode or card-number) so we can
@@ -38,8 +42,12 @@ export async function GET(request: NextRequest) {
   const hasNarrowingToken =
     tokens.setCode !== null ||
     tokens.cardNumberFull !== null ||
-    tokens.cardNumberPartial !== null;
-  if (localCount > 0 && localHasAnyPrice && hasNarrowingToken) {
+    tokens.cardNumberPartial !== null ||
+    hasFilter;
+  // When the caller passed an explicit set filter, trust local even with no
+  // priced rows. The set-scoped slice is intentional and complete on the
+  // server side; falling through to upstream would just re-fetch the same set.
+  if (localCount > 0 && (localHasAnyPrice || hasFilter) && hasNarrowingToken) {
     // searchLocalCatalog already sorted+sliced, but the partition by kind
     // breaks the global sort order. Re-merge and re-sort across both lists.
     const merged = applySort([...local.sealed, ...local.cards], sortBy).slice(0, limit);
@@ -60,8 +68,19 @@ export async function GET(request: NextRequest) {
 
   // 2) Nothing usable in local. Fall back to the upstream-import path.
   const upstream = await searchAll(trimmed, kind, limit, sortBy);
+  const filteredResults = hasFilter
+    ? upstream.results.filter((r) => {
+        if (filters.setName && r.setName?.toLowerCase() !== filters.setName.toLowerCase()) {
+          return false;
+        }
+        if (filters.setCode && r.setCode?.toLowerCase() !== filters.setCode.toLowerCase()) {
+          return false;
+        }
+        return true;
+      })
+    : upstream.results;
   return NextResponse.json(
-    { ...upstream, source: 'upstream' },
+    { ...upstream, results: filteredResults, source: 'upstream' },
     {
       headers: { 'Cache-Control': 'private, max-age=300, stale-while-revalidate=1800' },
     }
