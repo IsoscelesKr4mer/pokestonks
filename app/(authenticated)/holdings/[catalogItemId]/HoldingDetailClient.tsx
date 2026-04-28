@@ -4,6 +4,8 @@ import { Plus } from 'lucide-react';
 import { LotRow } from '@/components/purchases/LotRow';
 import { RipRow } from '@/components/rips/RipRow';
 import { RipPackDialog, type RipPackSourceLot, type CardSearchHit } from '@/components/rips/RipPackDialog';
+import { OpenBoxDialog, type OpenBoxSourceLot } from '@/components/decompositions/OpenBoxDialog';
+import { DecompositionRow } from '@/components/decompositions/DecompositionRow';
 import { useHolding, type HoldingDetailDto } from '@/lib/query/hooks/useHoldings';
 import { useCreatePurchase } from '@/lib/query/hooks/usePurchases';
 import type { PurchaseFormCatalogItem } from '@/components/purchases/PurchaseForm';
@@ -43,6 +45,9 @@ export function HoldingDetailClient({
   const [ripOpen, setRipOpen] = useState(false);
   const [ripPack, setRipPack] = useState<RipPackSourceLot | null>(null);
 
+  const [openBoxOpen, setOpenBoxOpen] = useState(false);
+  const [openBoxSource, setOpenBoxSource] = useState<OpenBoxSourceLot | null>(null);
+
   const isSealed = detail.item.kind === 'sealed';
 
   const catalogItem: PurchaseFormCatalogItem = {
@@ -57,7 +62,7 @@ export function HoldingDetailClient({
     imageUrl: detail.item.imageUrl,
     msrpCents: detail.item.msrpCents,
     lastMarketCents: detail.item.lastMarketCents,
-    packCount: null,
+    packCount: detail.item.packCount,
   };
 
   const handleQuickAdd = async () => {
@@ -81,6 +86,27 @@ export function HoldingDetailClient({
       packCostCents: lot.costCents,
     });
     setRipOpen(true);
+  };
+
+  const openOpenBox = (lot: EditableLot) => {
+    if (
+      detail.item.packCount == null ||
+      detail.item.packCount <= 1
+    ) {
+      return; // not decomposable; the menu item shouldn't have been visible
+    }
+    setOpenBoxSource({
+      purchaseId: lot.id,
+      catalogItemId: detail.item.id,
+      name: detail.item.name,
+      productType: detail.item.productType ?? 'Sealed',
+      imageUrl: detail.item.imageUrl,
+      packCount: detail.item.packCount,
+      sourceCostCents: lot.costCents,
+      setCode: detail.item.setCode,
+      setName: detail.item.setName,
+    });
+    setOpenBoxOpen(true);
   };
 
   // Build a map of source_purchase_id -> ripped_units for sealed lots.
@@ -122,7 +148,7 @@ export function HoldingDetailClient({
           <p className="text-sm text-muted-foreground">No lots.</p>
         ) : (
           <div>
-            {detail.lots.map(({ lot, sourceRip, sourcePack }) => {
+            {detail.lots.map(({ lot, sourceRip, sourcePack, sourceDecomposition, sourceContainer }) => {
               const editableLot: EditableLot = {
                 id: lot.id,
                 catalogItemId: lot.catalogItemId,
@@ -142,6 +168,11 @@ export function HoldingDetailClient({
               const ripped = rippedUnitsByLot.get(lot.id) ?? 0;
               const qtyRemaining = lot.quantity - ripped;
               const canRip = isSealed && qtyRemaining > 0;
+              const canOpenBox =
+                isSealed &&
+                detail.item.packCount != null &&
+                detail.item.packCount > 1 &&
+                qtyRemaining > 0;
               return (
                 <LotRow
                   key={lot.id}
@@ -149,7 +180,10 @@ export function HoldingDetailClient({
                   catalogItem={catalogItem}
                   sourceRip={sourceRip}
                   sourcePack={sourcePack}
+                  sourceDecomposition={sourceDecomposition}
+                  sourceContainer={sourceContainer}
                   onRip={canRip ? openRip : undefined}
+                  onOpenBox={canOpenBox ? openOpenBox : undefined}
                 />
               );
             })}
@@ -177,12 +211,45 @@ export function HoldingDetailClient({
         </section>
       )}
 
+      {isSealed && detail.decompositions.length > 0 && (
+        <section className="space-y-2">
+          <h2 className="text-xs uppercase tracking-wide text-muted-foreground">
+            Decomposition history
+          </h2>
+          <div>
+            {detail.decompositions.map((d) => (
+              <DecompositionRow
+                key={d.id}
+                decomposition={{
+                  id: d.id,
+                  decomposeDate: d.decomposeDate,
+                  packCount: d.packCount,
+                  perPackCostCents: d.perPackCostCents,
+                  roundingResidualCents: d.roundingResidualCents,
+                  sourcePurchaseId: d.sourcePurchaseId,
+                }}
+                packCatalogItem={{ id: detail.item.id, name: 'Booster Pack' }}
+                affectedCatalogItemIds={[detail.item.id]}
+              />
+            ))}
+          </div>
+        </section>
+      )}
+
       {ripPack && (
         <RipPackDialog
           open={ripOpen}
           onOpenChange={setRipOpen}
           pack={ripPack}
           searchCard={defaultCardSearch}
+        />
+      )}
+
+      {openBoxSource && (
+        <OpenBoxDialog
+          open={openBoxOpen}
+          onOpenChange={setOpenBoxOpen}
+          source={openBoxSource}
         />
       )}
     </div>
