@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { buttonVariants } from '@/components/ui/button';
 import { DashboardTotalsCard } from '@/components/dashboard/DashboardTotalsCard';
+import { DashboardPerformersWrapper } from '@/components/dashboard/DashboardPerformersWrapper';
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -26,7 +27,10 @@ export default async function DashboardPage() {
       </div>
 
       {hasLots ? (
-        <DashboardTotalsCard />
+        <>
+          <DashboardTotalsCard />
+          <DashboardPerformersWrapper />
+        </>
       ) : (
         <Card>
           <CardHeader>
