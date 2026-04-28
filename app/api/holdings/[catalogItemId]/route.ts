@@ -245,6 +245,7 @@ export async function GET(
       imageUrl: item.imageUrl,
       imageStoragePath: item.imageStoragePath,
       lastMarketCents: item.lastMarketCents,
+      lastMarketAt: item.lastMarketAt instanceof Date ? item.lastMarketAt.toISOString() : item.lastMarketAt,
       qtyHeld: 0,
       totalInvestedCents: 0,
     },
