@@ -75,6 +75,21 @@ export async function getGroups(now: number = Date.now()): Promise<TcgcsvGroup[]
   return groupFetchInflight;
 }
 
+export const PACK_COUNT_BY_PRODUCT_TYPE: Record<string, number | null> = {
+  'Booster Box': 36,
+  'Booster Bundle': 6,
+  'Elite Trainer Box': 9,
+  'Build & Battle': 4,
+  'Premium Collection': 6,
+  'ex Box': 6,
+  'Tin': 3,
+  'Pin Collection': 3,
+  'Collection Box': 4,
+  'Collection': 4,
+  'Blister': 3,
+  'Booster Pack': 1,
+};
+
 const SEALED_PATTERNS: Array<{ pattern: RegExp; productType: string }> = [
   { pattern: /\bElite Trainer Box\b/i, productType: 'Elite Trainer Box' },
   { pattern: /\bBooster Box\b/i, productType: 'Booster Box' },
@@ -119,6 +134,7 @@ export type SealedSearchHit = {
   setName: string;
   setCode: string | null;
   productType: string;
+  packCount: number | null;
   imageUrl: string | null;
   marketCents: number | null;
   releaseDate: string | null;
@@ -293,6 +309,7 @@ export async function searchSealed(query: string, limit: number): Promise<Sealed
             setName: g.name,
             setCode: g.abbreviation ? g.abbreviation.toLowerCase() : null,
             productType,
+            packCount: PACK_COUNT_BY_PRODUCT_TYPE[productType] ?? null,
             imageUrl: product.imageUrl,
             marketCents: price?.marketPrice != null ? Math.round(price.marketPrice * 100) : null,
             releaseDate: g.publishedOn ? g.publishedOn.slice(0, 10) : null,

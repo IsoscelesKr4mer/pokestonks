@@ -9,6 +9,7 @@ export type SealedUpsertInput = {
   setCode: string | null;
   tcgplayerProductId: number;
   productType: string;
+  packCount: number | null;
   imageUrl: string | null;
   releaseDate: string | null;
   // Latest market price (cents) for this product. Written to catalog_items
@@ -47,6 +48,7 @@ export async function upsertSealed(input: SealedUpsertInput): Promise<UpsertResu
       setCode: input.setCode,
       tcgplayerProductId: input.tcgplayerProductId,
       productType: input.productType,
+      packCount: input.packCount,
       imageUrl: input.imageUrl,
       releaseDate: input.releaseDate,
       lastMarketCents: input.lastMarketCents,
@@ -59,6 +61,7 @@ export async function upsertSealed(input: SealedUpsertInput): Promise<UpsertResu
         setName: sql`excluded.set_name`,
         setCode: sql`excluded.set_code`,
         productType: sql`excluded.product_type`,
+        packCount: sql`excluded.pack_count`,
         imageUrl: sql`COALESCE(${schema.catalogItems.imageUrl}, excluded.image_url)`,
         releaseDate: sql`excluded.release_date`,
         lastMarketCents: sql`excluded.last_market_cents`,

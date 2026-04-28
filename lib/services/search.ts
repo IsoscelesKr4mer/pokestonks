@@ -65,6 +65,7 @@ export async function searchSealedWithImport(query: string, limit: number): Prom
           setCode: h.setCode,
           tcgplayerProductId: h.tcgplayerProductId,
           productType: h.productType,
+          packCount: h.packCount,
           imageUrl: h.imageUrl,
           releaseDate: h.releaseDate,
           lastMarketCents: h.marketCents,
