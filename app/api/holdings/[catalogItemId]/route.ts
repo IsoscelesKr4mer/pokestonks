@@ -112,7 +112,7 @@ export async function GET(
     id: r.id,
     source_purchase_id: r.sourcePurchaseId,
   }));
-  const [holding] = aggregateHoldings(rawPurchases, rawRips);
+  const [holding] = aggregateHoldings(rawPurchases, rawRips, []);
 
   // Annotate lots with provenance for the UI.
   const lotsWithProvenance = lots.map((l) => {

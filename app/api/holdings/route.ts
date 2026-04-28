@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
-import { aggregateHoldings, type RawPurchaseRow, type RawRipRow } from '@/lib/services/holdings';
+import { aggregateHoldings, type RawPurchaseRow, type RawRipRow, type RawDecompositionRow } from '@/lib/services/holdings';
 
 export async function GET() {
   const supabase = await createClient();
@@ -28,9 +28,17 @@ export async function GET() {
     return NextResponse.json({ error: rErr.message }, { status: 500 });
   }
 
+  const { data: decompositions, error: dErr } = await supabase
+    .from('box_decompositions')
+    .select('id, source_purchase_id');
+  if (dErr) {
+    return NextResponse.json({ error: dErr.message }, { status: 500 });
+  }
+
   const holdings = aggregateHoldings(
     (purchases ?? []) as unknown as RawPurchaseRow[],
-    (rips ?? []) as RawRipRow[]
+    (rips ?? []) as RawRipRow[],
+    (decompositions ?? []) as RawDecompositionRow[]
   );
 
   return NextResponse.json({ holdings });

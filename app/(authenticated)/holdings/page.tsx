@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { HoldingsGrid } from './HoldingsGrid';
-import { aggregateHoldings, type RawPurchaseRow, type RawRipRow } from '@/lib/services/holdings';
+import { aggregateHoldings, type RawPurchaseRow, type RawRipRow, type RawDecompositionRow } from '@/lib/services/holdings';
 
 export default async function HoldingsPage() {
   const supabase = await createClient();
@@ -19,9 +19,14 @@ export default async function HoldingsPage() {
 
   const { data: rips } = await supabase.from('rips').select('id, source_purchase_id');
 
+  const { data: decompositions } = await supabase
+    .from('box_decompositions')
+    .select('id, source_purchase_id');
+
   const holdings = aggregateHoldings(
     (purchases ?? []) as unknown as RawPurchaseRow[],
-    (rips ?? []) as RawRipRow[]
+    (rips ?? []) as RawRipRow[],
+    (decompositions ?? []) as RawDecompositionRow[]
   );
 
   return (

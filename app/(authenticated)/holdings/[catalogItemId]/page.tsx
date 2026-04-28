@@ -94,7 +94,7 @@ export default async function HoldingDetailPage({
     id: r.id,
     source_purchase_id: r.sourcePurchaseId,
   }));
-  const [holding] = aggregateHoldings(rawPurchases, rawRips);
+  const [holding] = aggregateHoldings(rawPurchases, rawRips, []);
 
   const initial: HoldingDetailDto = {
     item: {

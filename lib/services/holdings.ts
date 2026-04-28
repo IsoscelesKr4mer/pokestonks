@@ -29,6 +29,11 @@ export type RawRipRow = {
   source_purchase_id: number;
 };
 
+export type RawDecompositionRow = {
+  id: number;
+  source_purchase_id: number;
+};
+
 export type Holding = {
   catalogItemId: number;
   kind: 'sealed' | 'card';
@@ -54,14 +59,21 @@ export type Holding = {
  */
 export function aggregateHoldings(
   purchases: readonly RawPurchaseRow[],
-  rips: readonly RawRipRow[]
+  rips: readonly RawRipRow[],
+  decompositions: readonly RawDecompositionRow[]
 ): Holding[] {
-  // Count rips per source purchase so we can subtract them from sealed qty.
-  const rippedUnitsByPurchase = new Map<number, number>();
+  // Count rips and decompositions per source purchase so we can subtract them from sealed qty.
+  const consumedUnitsByPurchase = new Map<number, number>();
   for (const r of rips) {
-    rippedUnitsByPurchase.set(
+    consumedUnitsByPurchase.set(
       r.source_purchase_id,
-      (rippedUnitsByPurchase.get(r.source_purchase_id) ?? 0) + 1
+      (consumedUnitsByPurchase.get(r.source_purchase_id) ?? 0) + 1
+    );
+  }
+  for (const d of decompositions) {
+    consumedUnitsByPurchase.set(
+      d.source_purchase_id,
+      (consumedUnitsByPurchase.get(d.source_purchase_id) ?? 0) + 1
     );
   }
 
@@ -73,8 +85,8 @@ export function aggregateHoldings(
 
   for (const p of purchases) {
     if (p.deleted_at != null) continue;
-    const ripped = rippedUnitsByPurchase.get(p.id) ?? 0;
-    const remaining = p.quantity - ripped;
+    const consumed = consumedUnitsByPurchase.get(p.id) ?? 0;
+    const remaining = p.quantity - consumed;
     if (remaining <= 0) continue;
 
     const existing = byCatalogItem.get(p.catalog_item_id);
