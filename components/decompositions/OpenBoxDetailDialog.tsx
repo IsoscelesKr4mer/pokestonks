@@ -114,7 +114,7 @@ export function OpenBoxDetailDialog({
             onClick={handleUndo}
             disabled={undoMutation.isPending || !data}
           >
-            {undoMutation.isPending ? 'Undoing…' : 'Undo decomposition'}
+            {undoMutation.isPending ? 'Undoing...' : 'Undo decomposition'}
           </Button>
         </div>
       </DialogContent>

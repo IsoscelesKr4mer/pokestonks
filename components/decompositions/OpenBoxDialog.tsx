@@ -157,7 +157,7 @@ export function OpenBoxDialog({
             Cancel
           </Button>
           <Button type="button" onClick={handleSubmit} disabled={createMutation.isPending}>
-            {createMutation.isPending ? 'Opening…' : 'Open box'}
+            {createMutation.isPending ? 'Opening...' : 'Open box'}
           </Button>
         </div>
       </DialogContent>
