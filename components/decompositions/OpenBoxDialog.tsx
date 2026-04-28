@@ -10,6 +10,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { useCreateDecomposition } from '@/lib/query/hooks/useDecompositions';
 import { computePerPackCost } from '@/lib/services/decompositions';
+import { formatCents } from '@/lib/utils/format';
 
 export type OpenBoxSourceLot = {
   purchaseId: number;
@@ -23,17 +24,9 @@ export type OpenBoxSourceLot = {
   setName: string | null;
 };
 
-function formatCents(cents: number): string {
-  const dollars = cents / 100;
-  return `$${Math.abs(dollars).toLocaleString('en-US', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
-}
-
 function formatSignedCents(cents: number): string {
   const sign = cents < 0 ? '-' : cents > 0 ? '+' : '';
-  return `${sign}${formatCents(cents)}`;
+  return `${sign}${formatCents(Math.abs(cents))}`;
 }
 
 export function OpenBoxDialog({

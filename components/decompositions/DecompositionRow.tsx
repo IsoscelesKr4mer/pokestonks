@@ -3,14 +3,7 @@ import { useState } from 'react';
 import { MoreHorizontal, PackageOpen } from 'lucide-react';
 import { OpenBoxDetailDialog } from './OpenBoxDetailDialog';
 import { useDeleteDecomposition } from '@/lib/query/hooks/useDecompositions';
-
-function formatCents(cents: number): string {
-  const dollars = cents / 100;
-  return `$${dollars.toLocaleString('en-US', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
-}
+import { formatCents } from '@/lib/utils/format';
 
 export type DecompositionRowProps = {
   decomposition: {

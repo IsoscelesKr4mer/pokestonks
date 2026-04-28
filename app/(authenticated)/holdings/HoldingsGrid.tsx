@@ -3,11 +3,7 @@ import Link from 'next/link';
 import { useHoldings } from '@/lib/query/hooks/useHoldings';
 import { getImageUrl } from '@/lib/utils/images';
 import type { Holding } from '@/lib/services/holdings';
-
-function formatCents(cents: number): string {
-  const dollars = cents / 100;
-  return `$${dollars.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-}
+import { formatCents } from '@/lib/utils/format';
 
 export function HoldingsGrid({ initialHoldings }: { initialHoldings: Holding[] }) {
   const { data } = useHoldings();

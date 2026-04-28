@@ -2,15 +2,7 @@
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useDashboardTotals } from '@/lib/query/hooks/useDashboardTotals';
-
-function formatCents(cents: number): string {
-  const dollars = cents / 100;
-  const sign = dollars < 0 ? '-' : '';
-  return `${sign}$${Math.abs(dollars).toLocaleString('en-US', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
-}
+import { formatCents } from '@/lib/utils/format';
 
 export function DashboardTotalsCard() {
   const { data, isLoading } = useDashboardTotals();

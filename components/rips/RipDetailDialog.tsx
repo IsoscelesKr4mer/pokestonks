@@ -8,11 +8,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { useRip, useDeleteRip, type RipDetailDto } from '@/lib/query/hooks/useRips';
-
-function formatCents(cents: number): string {
-  const dollars = cents / 100;
-  return `$${Math.abs(dollars).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-}
+import { formatCents } from '@/lib/utils/format';
 
 export function RipDetailDialog({
   open,

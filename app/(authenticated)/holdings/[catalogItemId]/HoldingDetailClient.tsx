@@ -10,11 +10,7 @@ import { useHolding, type HoldingDetailDto } from '@/lib/query/hooks/useHoldings
 import { useCreatePurchase } from '@/lib/query/hooks/usePurchases';
 import type { PurchaseFormCatalogItem } from '@/components/purchases/PurchaseForm';
 import type { EditableLot } from '@/components/purchases/EditPurchaseDialog';
-
-function formatCents(cents: number): string {
-  const dollars = cents / 100;
-  return `$${dollars.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-}
+import { formatCents } from '@/lib/utils/format';
 
 async function searchCardsInSet(q: string, setName: string | null): Promise<CardSearchHit[]> {
   if (!q.trim()) return [];

@@ -11,18 +11,11 @@ import {
   useDecomposition,
   useDeleteDecomposition,
 } from '@/lib/query/hooks/useDecompositions';
-
-function formatCents(cents: number): string {
-  const dollars = cents / 100;
-  return `$${Math.abs(dollars).toLocaleString('en-US', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })}`;
-}
+import { formatCents } from '@/lib/utils/format';
 
 function formatSignedCents(cents: number): string {
   const sign = cents < 0 ? '-' : cents > 0 ? '+' : '';
-  return `${sign}${formatCents(cents)}`;
+  return `${sign}${formatCents(Math.abs(cents))}`;
 }
 
 export function OpenBoxDetailDialog({

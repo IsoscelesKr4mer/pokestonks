@@ -5,11 +5,7 @@ import { MoreHorizontal } from 'lucide-react';
 import { useDeletePurchase, DeletePurchaseError } from '@/lib/query/hooks/usePurchases';
 import { EditPurchaseDialog, type EditableLot } from './EditPurchaseDialog';
 import type { PurchaseFormCatalogItem } from './PurchaseForm';
-
-function formatCents(cents: number): string {
-  const dollars = cents / 100;
-  return `$${dollars.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-}
+import { formatCents } from '@/lib/utils/format';
 
 export type LotRowProps = {
   lot: EditableLot;
