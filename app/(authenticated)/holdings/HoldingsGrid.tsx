@@ -4,6 +4,9 @@ import { useHoldings } from '@/lib/query/hooks/useHoldings';
 import { getImageUrl } from '@/lib/utils/images';
 import type { HoldingPnL } from '@/lib/services/pnl';
 import { formatCents } from '@/lib/utils/format';
+import { PnLDisplay } from '@/components/holdings/PnLDisplay';
+import { StalePill } from '@/components/holdings/StalePill';
+import { UnpricedBadge } from '@/components/holdings/UnpricedBadge';
 
 export function HoldingsGrid({ initialHoldings }: { initialHoldings: HoldingPnL[] }) {
   const { data } = useHoldings();
@@ -55,11 +58,26 @@ export function HoldingsGrid({ initialHoldings }: { initialHoldings: HoldingPnL[
               {h.kind === 'sealed' ? h.productType ?? 'Sealed' : 'Card'}
             </div>
           </div>
-          <div className="mt-3 flex items-center justify-between text-xs">
-            <span className="font-medium tabular-nums">Qty: {h.qtyHeld}</span>
-            <span className="text-muted-foreground tabular-nums">
-              {formatCents(h.totalInvestedCents)}
-            </span>
+          <div className="mt-3 space-y-1 text-xs">
+            <div className="flex items-center justify-between">
+              <span className="font-medium tabular-nums">Qty: {h.qtyHeld}</span>
+              <span className="text-muted-foreground tabular-nums">
+                {formatCents(h.totalInvestedCents)}
+              </span>
+            </div>
+            <div className="flex items-center justify-between gap-2">
+              {h.priced ? (
+                <>
+                  <span className="flex items-center gap-1.5 tabular-nums text-muted-foreground">
+                    {formatCents(h.currentValueCents!)}
+                    <StalePill stale={h.stale} linkHref={`/catalog/${h.catalogItemId}`} />
+                  </span>
+                  <PnLDisplay pnlCents={h.pnlCents} pnlPct={h.pnlPct} />
+                </>
+              ) : (
+                <UnpricedBadge />
+              )}
+            </div>
           </div>
         </Link>
       ))}
