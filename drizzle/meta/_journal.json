@@ -50,6 +50,13 @@
       "when": 1777358361481,
       "tag": "0006_hesitant_freak",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1777359312298,
+      "tag": "0007_green_triathlon",
+      "breakpoints": true
     }
   ]
 }
