@@ -70,7 +70,7 @@ export function HoldingsGrid({ initialHoldings }: { initialHoldings: HoldingPnL[
                 <>
                   <span className="flex items-center gap-1.5 tabular-nums text-muted-foreground">
                     {formatCents(h.currentValueCents!)}
-                    <StalePill stale={h.stale} linkHref={`/catalog/${h.catalogItemId}`} />
+                    <StalePill stale={h.stale} />
                   </span>
                   <PnLDisplay pnlCents={h.pnlCents} pnlPct={h.pnlPct} />
                 </>
