@@ -1,5 +1,5 @@
 import 'server-only';
-import { and, or, eq, ilike, type SQL } from 'drizzle-orm';
+import { and, or, eq, ilike, sql, type SQL } from 'drizzle-orm';
 import { db, schema } from '@/lib/db/client';
 import {
   applySort,
@@ -42,6 +42,13 @@ export type LocalSearchFilters = {
   setCode: string | null;
 };
 
+// TCGCSV often prefixes group names with "SV:", "ME01:", "POP:" etc. The
+// Pokémon TCG API stores the same set under the bare name. Strip the prefix
+// before comparing so a sealed pack's setName lines up with its cards'.
+function stripSetPrefix(name: string): string {
+  return name.replace(/^[A-Z]{1,4}\d*:\s*/i, '').trim();
+}
+
 function buildConditions(
   tokens: Tokens,
   kind: SearchKind,
@@ -79,7 +86,17 @@ function buildConditions(
   }
 
   if (filters.setName) {
-    clauses.push(ilike(schema.catalogItems.setName, filters.setName));
+    // Bidirectional substring (after prefix-stripping the filter): a sealed
+    // pack might have setName "SV: Mega Evolution Ascended Heroes" while its
+    // cards have "Ascended Heroes". Either side may contain the other.
+    const term = stripSetPrefix(filters.setName);
+    const pattern = `%${term}%`;
+    clauses.push(
+      orRequired(
+        ilike(schema.catalogItems.setName, pattern),
+        sql`${term} ILIKE '%' || ${schema.catalogItems.setName} || '%'`
+      )
+    );
   }
   if (filters.setCode) {
     clauses.push(ilike(schema.catalogItems.setCode, filters.setCode));

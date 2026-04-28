@@ -68,15 +68,19 @@ export async function GET(request: NextRequest) {
 
   // 2) Nothing usable in local. Fall back to the upstream-import path.
   const upstream = await searchAll(trimmed, kind, limit, sortBy);
+  const stripPrefix = (s: string) => s.replace(/^[A-Z]{1,4}\d*:\s*/i, '').trim();
+  const filterSetName = filters.setName ? stripPrefix(filters.setName).toLowerCase() : null;
+  const filterSetCode = filters.setCode ? filters.setCode.toLowerCase() : null;
   const filteredResults = hasFilter
     ? upstream.results.filter((r) => {
-        if (filters.setName && r.setName?.toLowerCase() !== filters.setName.toLowerCase()) {
-          return false;
+        if (filterSetCode && r.setCode?.toLowerCase() === filterSetCode) return true;
+        if (filterSetName) {
+          const rName = r.setName ? stripPrefix(r.setName).toLowerCase() : '';
+          if (rName && (rName.includes(filterSetName) || filterSetName.includes(rName))) {
+            return true;
+          }
         }
-        if (filters.setCode && r.setCode?.toLowerCase() !== filters.setCode.toLowerCase()) {
-          return false;
-        }
-        return true;
+        return false;
       })
     : upstream.results;
   return NextResponse.json(
