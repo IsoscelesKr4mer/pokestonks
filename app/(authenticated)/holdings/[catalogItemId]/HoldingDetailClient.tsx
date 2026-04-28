@@ -11,6 +11,9 @@ import { useCreatePurchase } from '@/lib/query/hooks/usePurchases';
 import type { PurchaseFormCatalogItem } from '@/components/purchases/PurchaseForm';
 import type { EditableLot } from '@/components/purchases/EditPurchaseDialog';
 import { formatCents } from '@/lib/utils/format';
+import { PnLDisplay } from '@/components/holdings/PnLDisplay';
+import { StalePill } from '@/components/holdings/StalePill';
+import { UnpricedBadge } from '@/components/holdings/UnpricedBadge';
 
 async function searchCardsInSet(q: string, setName: string | null): Promise<CardSearchHit[]> {
   if (!q.trim()) return [];
@@ -108,26 +111,49 @@ export function HoldingDetailClient({
     setOpenBoxOpen(true);
   };
 
-  // Build a map of source_purchase_id -> ripped_units for sealed lots.
-  // Used to gate the "Rip pack" menu item per lot.
-  const rippedUnitsByLot = new Map<number, number>();
+  // Build a map of source_purchase_id -> consumed_units (rips + decompositions) for sealed lots.
+  // Used to gate the "Rip pack" / "Open box" menu items per lot AND to compute per-lot P&L.
+  const consumedUnitsByLot = new Map<number, number>();
   for (const r of detail.rips) {
-    rippedUnitsByLot.set(r.sourcePurchaseId, (rippedUnitsByLot.get(r.sourcePurchaseId) ?? 0) + 1);
+    consumedUnitsByLot.set(r.sourcePurchaseId, (consumedUnitsByLot.get(r.sourcePurchaseId) ?? 0) + 1);
+  }
+  for (const d of detail.decompositions) {
+    consumedUnitsByLot.set(d.sourcePurchaseId, (consumedUnitsByLot.get(d.sourcePurchaseId) ?? 0) + 1);
   }
 
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between gap-4 border-b pb-6">
-        <div>
-          <p className="text-sm text-muted-foreground">
+        <div className="space-y-1 text-sm">
+          <p className="text-muted-foreground">
             Qty held: <span className="font-semibold text-foreground tabular-nums">{detail.holding.qtyHeld}</span>
           </p>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-muted-foreground">
             Invested:{' '}
             <span className="font-semibold text-foreground tabular-nums">
               {formatCents(detail.holding.totalInvestedCents)}
             </span>
           </p>
+          {detail.holding.priced ? (
+            <>
+              <p className="text-muted-foreground">
+                Current value:{' '}
+                <span className="font-semibold text-foreground tabular-nums">
+                  {formatCents(detail.holding.currentValueCents!)}
+                </span>
+                <StalePill stale={detail.holding.stale} linkHref={`/catalog/${detail.holding.catalogItemId}`} className="ml-2 align-middle" />
+              </p>
+              <p className="text-muted-foreground">
+                Unrealized P&L:{' '}
+                <PnLDisplay pnlCents={detail.holding.pnlCents} pnlPct={detail.holding.pnlPct} className="font-semibold" />
+              </p>
+            </>
+          ) : (
+            <p>
+              <UnpricedBadge className="mr-2" />
+              <span className="text-xs text-muted-foreground">Refresh on the catalog page to populate P&L.</span>
+            </p>
+          )}
         </div>
         <button
           type="button"
@@ -164,8 +190,8 @@ export function HoldingDetailClient({
                 certNumber: lot.certNumber,
                 sourceRipId: lot.sourceRipId,
               };
-              const ripped = rippedUnitsByLot.get(lot.id) ?? 0;
-              const qtyRemaining = lot.quantity - ripped;
+              const consumed = consumedUnitsByLot.get(lot.id) ?? 0;
+              const qtyRemaining = lot.quantity - consumed;
               const canRip = isSealed && qtyRemaining > 0;
               const canOpenBox =
                 isSealed &&
@@ -181,6 +207,8 @@ export function HoldingDetailClient({
                   sourcePack={sourcePack}
                   sourceDecomposition={sourceDecomposition}
                   sourceContainer={sourceContainer}
+                  currentUnitMarketCents={detail.holding.lastMarketCents}
+                  qtyRemaining={qtyRemaining}
                   onRip={canRip ? openRip : undefined}
                   onOpenBox={canOpenBox ? openOpenBox : undefined}
                 />

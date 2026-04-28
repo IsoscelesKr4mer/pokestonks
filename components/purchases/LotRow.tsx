@@ -6,6 +6,7 @@ import { useDeletePurchase, DeletePurchaseError } from '@/lib/query/hooks/usePur
 import { EditPurchaseDialog, type EditableLot } from './EditPurchaseDialog';
 import type { PurchaseFormCatalogItem } from './PurchaseForm';
 import { formatCents } from '@/lib/utils/format';
+import { PnLDisplay } from '@/components/holdings/PnLDisplay';
 
 export type LotRowProps = {
   lot: EditableLot;
@@ -14,6 +15,10 @@ export type LotRowProps = {
   sourceRip?: { id: number; ripDate: string } | null;
   sourceContainer?: { catalogItemId: number; name: string } | null;
   sourceDecomposition?: { id: number; decomposeDate: string } | null;
+  /** Current market price per unit; null if unpriced. */
+  currentUnitMarketCents?: number | null;
+  /** Units of this lot still held (not consumed by rips/decompositions). */
+  qtyRemaining?: number;
   /** Optional rip action; only rendered for sealed lots when caller passes a handler. */
   onRip?: (lot: EditableLot) => void;
   /** Optional open-box action; only rendered for sealed multi-pack lots when caller passes a handler. */
@@ -27,6 +32,8 @@ export function LotRow({
   sourceRip,
   sourceContainer,
   sourceDecomposition,
+  currentUnitMarketCents,
+  qtyRemaining,
   onRip,
   onOpenBox,
 }: LotRowProps) {
@@ -63,6 +70,20 @@ export function LotRow({
       alert(message);
     }
   };
+
+  const effectiveQtyRemaining = qtyRemaining ?? lot.quantity;
+  const lotPnL =
+    currentUnitMarketCents != null && effectiveQtyRemaining > 0
+      ? {
+          currentValueCents: currentUnitMarketCents * effectiveQtyRemaining,
+          investedRemainingCents: lot.costCents * effectiveQtyRemaining,
+          pnlCents: (currentUnitMarketCents - lot.costCents) * effectiveQtyRemaining,
+          pnlPct:
+            lot.costCents > 0
+              ? ((currentUnitMarketCents - lot.costCents) / lot.costCents) * 100
+              : null,
+        }
+      : null;
 
   return (
     <>
@@ -109,6 +130,15 @@ export function LotRow({
             <div className="text-xs text-muted-foreground">
               Graded · {lot.gradingCompany} {lot.grade}
               {lot.certNumber && ` · ${lot.certNumber}`}
+            </div>
+          )}
+          {lotPnL && (
+            <div className="mt-1 flex items-center gap-2 text-xs">
+              <span className="text-muted-foreground tabular-nums">
+                Lot value: {formatCents(lotPnL.currentValueCents)}
+              </span>
+              <span className="text-muted-foreground">·</span>
+              <PnLDisplay pnlCents={lotPnL.pnlCents} pnlPct={lotPnL.pnlPct} />
             </div>
           )}
         </div>
