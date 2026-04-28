@@ -68,7 +68,7 @@ export const purchasePatchSchema = z.object({
 
 export type PurchasePatch = z.infer<typeof purchasePatchSchema>;
 
-export const HARD_FIELDS_FOR_RIP_CHILDREN = [
+export const HARD_FIELDS_FOR_DERIVED_CHILDREN = [
   'catalogItemId',
   'quantity',
   'costCents',

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@/lib/supabase/server';
 import {
   purchasePatchSchema,
-  HARD_FIELDS_FOR_RIP_CHILDREN,
+  HARD_FIELDS_FOR_DERIVED_CHILDREN,
 } from '@/lib/validation/purchase';
 
 export async function PATCH(
@@ -35,7 +35,7 @@ export async function PATCH(
 
   const { data: existing, error: lookupErr } = await supabase
     .from('purchases')
-    .select('id, source_rip_id, deleted_at')
+    .select('id, source_rip_id, source_decomposition_id, deleted_at')
     .eq('id', numericId)
     .is('deleted_at', null)
     .maybeSingle();
@@ -46,15 +46,17 @@ export async function PATCH(
     return NextResponse.json({ error: 'purchase not found' }, { status: 404 });
   }
 
-  if (existing.source_rip_id != null) {
-    const violatedFields = HARD_FIELDS_FOR_RIP_CHILDREN.filter(
+  const isDerivedChild =
+    existing.source_rip_id != null || existing.source_decomposition_id != null;
+  if (isDerivedChild) {
+    const violatedFields = HARD_FIELDS_FOR_DERIVED_CHILDREN.filter(
       (f) => v[f] !== undefined
     );
     if (violatedFields.length > 0) {
       return NextResponse.json(
         {
           error:
-            'cannot edit cost/quantity/date on rip-child purchases; undo the rip and recreate',
+            'cannot edit cost/quantity/date on derived purchases (rip or decomposition children); undo the parent event and recreate',
           fields: violatedFields,
         },
         { status: 422 }
