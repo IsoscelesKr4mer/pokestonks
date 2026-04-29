@@ -7,6 +7,7 @@ import {
   type RawPurchaseRow,
   type RawRipRow,
   type RawDecompositionRow,
+  type RawSaleRow,
 } from '@/lib/services/holdings';
 import { computeHoldingPnL } from '@/lib/services/pnl';
 
@@ -159,7 +160,23 @@ export async function GET(
     id: d.id,
     source_purchase_id: d.sourcePurchaseId,
   }));
-  const [holdingRaw] = aggregateHoldings(rawPurchases, rawRips, rawDecompositions);
+  // Sales linked to lots of this holding.
+  const salesForLots =
+    lotIds.length > 0
+      ? await db.query.sales.findMany({
+          where: and(
+            eq(schema.sales.userId, user.id),
+            inArray(schema.sales.purchaseId, lotIds)
+          ),
+        })
+      : [];
+
+  const rawSales: RawSaleRow[] = salesForLots.map((s) => ({
+    id: Number(s.id),
+    purchase_id: s.purchaseId,
+    quantity: s.quantity,
+  }));
+  const [holdingRaw] = aggregateHoldings(rawPurchases, rawRips, rawDecompositions, rawSales);
   const now = new Date();
   const holding = holdingRaw ? computeHoldingPnL(holdingRaw, now) : null;
 
@@ -221,6 +238,47 @@ export async function GET(
         }))
       : [];
 
+  // Group sales by sale_group_id for response shape.
+  const salesGroupedById = new Map<string, typeof salesForLots>();
+  for (const s of salesForLots) {
+    const arr = salesGroupedById.get(s.saleGroupId) ?? [];
+    arr.push(s);
+    salesGroupedById.set(s.saleGroupId, arr);
+  }
+  const salesEvents = Array.from(salesGroupedById.entries())
+    .map(([saleGroupId, rows]) => {
+      const totals = rows.reduce(
+        (acc, r) => ({
+          quantity: acc.quantity + r.quantity,
+          salePriceCents: acc.salePriceCents + r.salePriceCents,
+          feesCents: acc.feesCents + r.feesCents,
+          matchedCostCents: acc.matchedCostCents + r.matchedCostCents,
+        }),
+        { quantity: 0, salePriceCents: 0, feesCents: 0, matchedCostCents: 0 }
+      );
+      const first = rows[0];
+      return {
+        saleGroupId,
+        saleDate: first.saleDate,
+        platform: first.platform,
+        notes: first.notes,
+        totals: {
+          ...totals,
+          realizedPnLCents: totals.salePriceCents - totals.feesCents - totals.matchedCostCents,
+        },
+        rows: rows.map((r) => ({
+          saleId: Number(r.id),
+          purchaseId: r.purchaseId,
+          quantity: r.quantity,
+          salePriceCents: r.salePriceCents,
+          feesCents: r.feesCents,
+          matchedCostCents: r.matchedCostCents,
+        })),
+        createdAt: first.createdAt instanceof Date ? first.createdAt.toISOString() : first.createdAt,
+      };
+    })
+    .sort((a, b) => (a.saleDate < b.saleDate ? 1 : -1));
+
   return NextResponse.json({
     item: {
       id: item.id,
@@ -260,5 +318,6 @@ export async function GET(
     lots: lotsWithProvenance,
     rips: ripsSummary,
     decompositions: decompositionsSummary,
+    sales: salesEvents,
   });
 }

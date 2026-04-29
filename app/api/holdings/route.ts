@@ -5,6 +5,7 @@ import {
   type RawPurchaseRow,
   type RawRipRow,
   type RawDecompositionRow,
+  type RawSaleRow,
 } from '@/lib/services/holdings';
 import { computeHoldingPnL } from '@/lib/services/pnl';
 
@@ -41,10 +42,18 @@ export async function GET() {
     return NextResponse.json({ error: dErr.message }, { status: 500 });
   }
 
+  const { data: sales, error: sErr } = await supabase
+    .from('sales')
+    .select('id, purchase_id, quantity');
+  if (sErr) {
+    return NextResponse.json({ error: sErr.message }, { status: 500 });
+  }
+
   const holdings = aggregateHoldings(
     (purchases ?? []) as unknown as RawPurchaseRow[],
     (rips ?? []) as RawRipRow[],
-    (decompositions ?? []) as RawDecompositionRow[]
+    (decompositions ?? []) as RawDecompositionRow[],
+    (sales ?? []) as RawSaleRow[]
   );
 
   const now = new Date();

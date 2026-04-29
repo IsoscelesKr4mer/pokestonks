@@ -32,6 +32,7 @@ function buildSupabase(opts: {
   purchases?: Purchase[];
   rips?: Array<{ id: number; source_purchase_id: number; realized_loss_cents: number }>;
   decompositions?: Array<{ id: number; source_purchase_id: number }>;
+  sales?: Array<{ id: number; purchase_id: number; quantity: number; sale_price_cents: number; fees_cents: number; matched_cost_cents: number; sale_group_id: string }>;
 }) {
   const fromMap: Record<string, unknown> = {
     purchases: {
@@ -44,6 +45,9 @@ function buildSupabase(opts: {
     },
     box_decompositions: {
       select: vi.fn().mockResolvedValue({ data: opts.decompositions ?? [], error: null }),
+    },
+    sales: {
+      select: vi.fn().mockResolvedValue({ data: opts.sales ?? [], error: null }),
     },
   };
   return {

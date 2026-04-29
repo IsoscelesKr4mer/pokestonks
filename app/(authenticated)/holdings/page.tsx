@@ -1,7 +1,7 @@
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { HoldingsGrid } from './HoldingsGrid';
-import { aggregateHoldings, type RawPurchaseRow, type RawRipRow, type RawDecompositionRow } from '@/lib/services/holdings';
+import { aggregateHoldings, type RawPurchaseRow, type RawRipRow, type RawDecompositionRow, type RawSaleRow } from '@/lib/services/holdings';
 import { computeHoldingPnL } from '@/lib/services/pnl';
 
 export default async function HoldingsPage() {
@@ -24,10 +24,15 @@ export default async function HoldingsPage() {
     .from('box_decompositions')
     .select('id, source_purchase_id');
 
+  const { data: sales } = await supabase
+    .from('sales')
+    .select('id, purchase_id, quantity');
+
   const holdings = aggregateHoldings(
     (purchases ?? []) as unknown as RawPurchaseRow[],
     (rips ?? []) as RawRipRow[],
-    (decompositions ?? []) as RawDecompositionRow[]
+    (decompositions ?? []) as RawDecompositionRow[],
+    (sales ?? []) as RawSaleRow[]
   );
   const now = new Date();
   const holdingsPnL = holdings.map((h) => computeHoldingPnL(h, now));

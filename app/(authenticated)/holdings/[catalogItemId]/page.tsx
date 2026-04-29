@@ -9,10 +9,37 @@ import {
   type RawPurchaseRow,
   type RawRipRow,
   type RawDecompositionRow,
+  type RawSaleRow,
 } from '@/lib/services/holdings';
 import { computeHoldingPnL } from '@/lib/services/pnl';
 import { formatCents } from '@/lib/utils/format';
 import type { HoldingDetailDto } from '@/lib/query/hooks/useHoldings';
+
+// Inline until Task 14 canonicalizes it in the hook types.
+type SaleEventDto = {
+  saleGroupId: string;
+  saleDate: string;
+  platform: string | null;
+  notes: string | null;
+  totals: {
+    quantity: number;
+    salePriceCents: number;
+    feesCents: number;
+    matchedCostCents: number;
+    realizedPnLCents: number;
+  };
+  rows: Array<{
+    saleId: number;
+    purchaseId: number;
+    quantity: number;
+    salePriceCents: number;
+    feesCents: number;
+    matchedCostCents: number;
+  }>;
+  createdAt: string;
+};
+
+type HoldingDetailWithSalesDto = HoldingDetailDto & { sales: SaleEventDto[] };
 
 export default async function HoldingDetailPage({
   params,
@@ -112,6 +139,17 @@ export default async function HoldingDetailPage({
         })
       : [];
 
+  // Sales linked to lots of this holding.
+  const salesForLots =
+    lotIds.length > 0
+      ? await db.query.sales.findMany({
+          where: and(
+            eq(schema.sales.userId, user.id),
+            inArray(schema.sales.purchaseId, lotIds)
+          ),
+        })
+      : [];
+
   // Rollup.
   const rawPurchases: RawPurchaseRow[] = lots.map((l) => ({
     id: l.id,
@@ -139,11 +177,57 @@ export default async function HoldingDetailPage({
     id: d.id,
     source_purchase_id: d.sourcePurchaseId,
   }));
-  const [holdingRaw] = aggregateHoldings(rawPurchases, rawRips, rawDecompositions);
+  const rawSales: RawSaleRow[] = salesForLots.map((s) => ({
+    id: Number(s.id),
+    purchase_id: s.purchaseId,
+    quantity: s.quantity,
+  }));
+  const [holdingRaw] = aggregateHoldings(rawPurchases, rawRips, rawDecompositions, rawSales);
   const now = new Date();
   const holding = holdingRaw ? computeHoldingPnL(holdingRaw, now) : null;
 
-  const initial: HoldingDetailDto = {
+  // Group sales by sale_group_id for response shape.
+  const salesGroupedById = new Map<string, typeof salesForLots>();
+  for (const s of salesForLots) {
+    const arr = salesGroupedById.get(s.saleGroupId) ?? [];
+    arr.push(s);
+    salesGroupedById.set(s.saleGroupId, arr);
+  }
+  const salesEvents: SaleEventDto[] = Array.from(salesGroupedById.entries())
+    .map(([saleGroupId, rows]) => {
+      const totals = rows.reduce(
+        (acc, r) => ({
+          quantity: acc.quantity + r.quantity,
+          salePriceCents: acc.salePriceCents + r.salePriceCents,
+          feesCents: acc.feesCents + r.feesCents,
+          matchedCostCents: acc.matchedCostCents + r.matchedCostCents,
+        }),
+        { quantity: 0, salePriceCents: 0, feesCents: 0, matchedCostCents: 0 }
+      );
+      const first = rows[0];
+      return {
+        saleGroupId,
+        saleDate: first.saleDate,
+        platform: first.platform,
+        notes: first.notes,
+        totals: {
+          ...totals,
+          realizedPnLCents: totals.salePriceCents - totals.feesCents - totals.matchedCostCents,
+        },
+        rows: rows.map((r) => ({
+          saleId: Number(r.id),
+          purchaseId: r.purchaseId,
+          quantity: r.quantity,
+          salePriceCents: r.salePriceCents,
+          feesCents: r.feesCents,
+          matchedCostCents: r.matchedCostCents,
+        })),
+        createdAt: first.createdAt instanceof Date ? first.createdAt.toISOString() : first.createdAt,
+      };
+    })
+    .sort((a, b) => (a.saleDate < b.saleDate ? 1 : -1));
+
+  const initial: HoldingDetailWithSalesDto = {
     item: {
       id: item.id,
       kind: item.kind as 'sealed' | 'card',
@@ -253,6 +337,7 @@ export default async function HoldingDetailPage({
             notes: d.notes,
           }))
         : [],
+    sales: salesEvents,
   };
 
   const isCard = item.kind === 'card';
