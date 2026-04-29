@@ -1,5 +1,5 @@
 import { notFound, redirect } from 'next/navigation';
-import { eq, and, isNull, asc, inArray } from 'drizzle-orm';
+import { eq, and, isNull, asc, desc, inArray } from 'drizzle-orm';
 import { createClient } from '@/lib/supabase/server';
 import { db, schema } from '@/lib/db/client';
 import { getImageUrl } from '@/lib/utils/images';
@@ -31,6 +31,8 @@ type SaleEventDto = {
   rows: Array<{
     saleId: number;
     purchaseId: number;
+    purchaseDate: string;
+    perUnitCostCents: number;
     quantity: number;
     salePriceCents: number;
     feesCents: number;
@@ -147,6 +149,7 @@ export default async function HoldingDetailPage({
             eq(schema.sales.userId, user.id),
             inArray(schema.sales.purchaseId, lotIds)
           ),
+          orderBy: [desc(schema.sales.saleDate), asc(schema.sales.saleGroupId), asc(schema.sales.id)],
         })
       : [];
 
@@ -187,6 +190,7 @@ export default async function HoldingDetailPage({
   const holding = holdingRaw ? computeHoldingPnL(holdingRaw, now) : null;
 
   // Group sales by sale_group_id for response shape.
+  const lotById = new Map(lots.map((l) => [l.id, l]));
   const salesGroupedById = new Map<string, typeof salesForLots>();
   for (const s of salesForLots) {
     const arr = salesGroupedById.get(s.saleGroupId) ?? [];
@@ -214,18 +218,26 @@ export default async function HoldingDetailPage({
           ...totals,
           realizedPnLCents: totals.salePriceCents - totals.feesCents - totals.matchedCostCents,
         },
-        rows: rows.map((r) => ({
-          saleId: Number(r.id),
-          purchaseId: r.purchaseId,
-          quantity: r.quantity,
-          salePriceCents: r.salePriceCents,
-          feesCents: r.feesCents,
-          matchedCostCents: r.matchedCostCents,
-        })),
+        rows: rows.map((r) => {
+          const lot = lotById.get(r.purchaseId);
+          return {
+            saleId: Number(r.id),
+            purchaseId: r.purchaseId,
+            purchaseDate: lot?.purchaseDate ?? '',
+            perUnitCostCents: lot?.costCents ?? 0,
+            quantity: r.quantity,
+            salePriceCents: r.salePriceCents,
+            feesCents: r.feesCents,
+            matchedCostCents: r.matchedCostCents,
+          };
+        }),
         createdAt: first.createdAt instanceof Date ? first.createdAt.toISOString() : first.createdAt,
       };
     })
-    .sort((a, b) => (a.saleDate < b.saleDate ? 1 : -1));
+    .sort((a, b) => {
+      if (a.saleDate !== b.saleDate) return a.saleDate < b.saleDate ? 1 : -1;
+      return a.saleGroupId < b.saleGroupId ? -1 : a.saleGroupId > b.saleGroupId ? 1 : 0;
+    });
 
   const initial: HoldingDetailWithSalesDto = {
     item: {
