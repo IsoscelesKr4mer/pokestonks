@@ -147,9 +147,12 @@ export async function GET(request: NextRequest) {
   if (platform) query = query.eq('platform', platform);
   if (q) query = query.ilike('purchase.catalog_item.name', `%${q}%`);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { data: rawData, error } = await (query as any);
-  if (error) return NextResponse.json({ error: (error as { message: string }).message }, { status: 500 });
+  // TODO: drop cast after Supabase types regen post-migration-0008.
+  const { data: rawData, error } = (await query) as {
+    data: SaleRow[] | null;
+    error: { message: string } | null;
+  };
+  if (error) return NextResponse.json({ error: error.message }, { status: 500 });
 
   type SaleRow = {
     id: number;
