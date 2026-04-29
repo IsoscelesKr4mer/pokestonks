@@ -69,3 +69,7 @@ playwright-report/
 !components/**/*.png
 !app/**/*.png
 !tests/fixtures/*.png
+
+# Drizzle introspection mirrors (regenerated via drizzle-kit pull when needed)
+drizzle/schema.ts
+drizzle/relations.ts
