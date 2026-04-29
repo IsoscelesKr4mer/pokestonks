@@ -7,6 +7,7 @@ export const sales = pgTable(
   {
     id: bigserial('id', { mode: 'number' }).primaryKey(),
     userId: uuid('user_id').notNull(),
+    saleGroupId: uuid('sale_group_id').notNull().defaultRandom(),
     purchaseId: bigint('purchase_id', { mode: 'number' })
       .notNull()
       .references(() => purchases.id),
@@ -21,6 +22,8 @@ export const sales = pgTable(
   },
   (t) => ({
     userDateIdx: index('sales_user_date_idx').on(t.userId, t.saleDate),
+    saleGroupIdx: index('sales_sale_group_idx').on(t.saleGroupId),
+    purchaseIdx: index('sales_purchase_idx').on(t.purchaseId),
     quantityCheck: check('sales_quantity_positive', sql`${t.quantity} > 0`),
     feesCheck: check('sales_fees_nonneg', sql`${t.feesCents} >= 0`),
   })
