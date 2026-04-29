@@ -143,4 +143,12 @@ describe('matchFifo', () => {
     if (!r.ok) return;
     expect(r.rows[0]).toEqual({ purchaseId: 1, quantity: 1, salePriceCents: 5000, feesCents: 250, matchedCostCents: 4000 });
   });
+
+  it('totalQty <= 0 returns insufficient_qty without crashing', () => {
+    const r = matchFifo([lot({ qtyAvailable: 5 })], { ...baseReq, totalQty: 0, totalSalePriceCents: 0 });
+    expect(r.ok).toBe(false);
+    if (r.ok) return;
+    expect(r.reason).toBe('insufficient_qty');
+    expect(r.totalAvailable).toBe(0);
+  });
 });

@@ -28,6 +28,10 @@ export type FifoResult =
   | { ok: false; reason: 'insufficient_qty'; totalAvailable: number };
 
 export function matchFifo(lots: readonly OpenLot[], req: SaleRequest): FifoResult {
+  if (req.totalQty <= 0) {
+    return { ok: false, reason: 'insufficient_qty', totalAvailable: 0 };
+  }
+
   const sorted = [...lots]
     .filter((l) => l.qtyAvailable > 0)
     .sort((a, b) => {
