@@ -28,7 +28,9 @@ export type PortfolioPnL = {
   totalCurrentValueCents: number;
   unrealizedPnLCents: number;
   unrealizedPnLPct: number | null;
-  realizedRipPnLCents: number;
+  realizedPnLCents: number;          // unified: rips (sign-flipped) + sales
+  realizedRipPnLCents: number;       // signed; preserved on wire for forward compat
+  realizedSalesPnLCents: number;     // signed; preserved on wire for forward compat
   pricedCount: number;
   unpricedCount: number;
   staleCount: number;
@@ -83,6 +85,7 @@ export function computeHoldingPnL(holding: Holding, now: Date): HoldingPnL {
 export function computePortfolioPnL(
   holdings: readonly Holding[],
   realizedRipLossCents: number,
+  realizedSalesPnLCents: number,
   lotCount: number,
   now: Date = new Date()
 ): PortfolioPnL {
@@ -129,13 +132,19 @@ export function computePortfolioPnL(
     return a.catalogItemId - b.catalogItemId;
   });
 
+  const realizedRipPnLCents = realizedRipLossCents === 0 ? 0 : -realizedRipLossCents;
+  const sumRealized = realizedRipPnLCents + realizedSalesPnLCents;
+  const realizedPnLCents = sumRealized === 0 ? 0 : sumRealized;
+
   return {
     totalInvestedCents,
     pricedInvestedCents,
     totalCurrentValueCents,
     unrealizedPnLCents,
     unrealizedPnLPct,
-    realizedRipPnLCents: realizedRipLossCents === 0 ? 0 : -realizedRipLossCents,
+    realizedPnLCents,
+    realizedRipPnLCents,
+    realizedSalesPnLCents: realizedSalesPnLCents === 0 ? 0 : realizedSalesPnLCents,
     pricedCount,
     unpricedCount,
     staleCount,

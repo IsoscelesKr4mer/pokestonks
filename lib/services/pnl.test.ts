@@ -77,7 +77,7 @@ describe('computeHoldingPnL', () => {
 
 describe('computePortfolioPnL', () => {
   it('empty holdings → zero totals, empty arrays, null pct', () => {
-    const r = computePortfolioPnL([], 0, 0, NOW);
+    const r = computePortfolioPnL([], 0, 0, 0, NOW);
     expect(r.totalInvestedCents).toBe(0);
     expect(r.pricedInvestedCents).toBe(0);
     expect(r.totalCurrentValueCents).toBe(0);
@@ -98,7 +98,7 @@ describe('computePortfolioPnL', () => {
       makeHolding({ catalogItemId: 1, lastMarketCents: null, lastMarketAt: null }),
       makeHolding({ catalogItemId: 2, lastMarketCents: null, lastMarketAt: null, totalInvestedCents: 3000 }),
     ];
-    const r = computePortfolioPnL(h, 0, 2, NOW);
+    const r = computePortfolioPnL(h, 0, 0, 2, NOW);
     expect(r.totalInvestedCents).toBe(8000);
     expect(r.pricedInvestedCents).toBe(0);
     expect(r.totalCurrentValueCents).toBe(0);
@@ -115,7 +115,7 @@ describe('computePortfolioPnL', () => {
       makeHolding({ catalogItemId: 1, lastMarketCents: 6000, totalInvestedCents: 5000 }),
       makeHolding({ catalogItemId: 2, lastMarketCents: null, lastMarketAt: null, totalInvestedCents: 3000 }),
     ];
-    const r = computePortfolioPnL(h, 0, 2, NOW);
+    const r = computePortfolioPnL(h, 0, 0, 2, NOW);
     expect(r.totalInvestedCents).toBe(8000);
     expect(r.pricedInvestedCents).toBe(5000);
     expect(r.totalCurrentValueCents).toBe(6000);
@@ -129,7 +129,7 @@ describe('computePortfolioPnL', () => {
     const h = [
       makeHolding({ catalogItemId: 1, lastMarketAt: STALE_AT }),
     ];
-    const r = computePortfolioPnL(h, 0, 1, NOW);
+    const r = computePortfolioPnL(h, 0, 0, 1, NOW);
     expect(r.staleCount).toBe(1);
     expect(r.pricedCount).toBe(1);
     expect(r.unrealizedPnLCents).toBe(1000);
@@ -145,7 +145,7 @@ describe('computePortfolioPnL', () => {
       makeHolding({ catalogItemId: 6, lastMarketCents: 2000, totalInvestedCents: 5000 }), // -3000
       makeHolding({ catalogItemId: 7, lastMarketCents: 5000, totalInvestedCents: 5000 }), // 0
     ];
-    const r = computePortfolioPnL(h, 0, 7, NOW);
+    const r = computePortfolioPnL(h, 0, 0, 7, NOW);
     expect(r.bestPerformers.map((b) => b.catalogItemId)).toEqual([5, 3, 1]);
     expect(r.worstPerformers.map((w) => w.catalogItemId)).toEqual([6, 2, 4]);
   });
@@ -155,7 +155,7 @@ describe('computePortfolioPnL', () => {
       makeHolding({ catalogItemId: 1, lastMarketCents: 6000, totalInvestedCents: 5000 }),
       makeHolding({ catalogItemId: 2, lastMarketCents: null, lastMarketAt: null }),
     ];
-    const r = computePortfolioPnL(h, 0, 2, NOW);
+    const r = computePortfolioPnL(h, 0, 0, 2, NOW);
     expect(r.bestPerformers).toHaveLength(1);
     expect(r.worstPerformers).toHaveLength(1);
     expect(r.bestPerformers[0].catalogItemId).toBe(1);
@@ -163,9 +163,9 @@ describe('computePortfolioPnL', () => {
   });
 
   it('realized rip P&L sign flip: positive loss → negative P&L, negative loss → positive P&L', () => {
-    expect(computePortfolioPnL([], 500, 0, NOW).realizedRipPnLCents).toBe(-500);
-    expect(computePortfolioPnL([], -200, 0, NOW).realizedRipPnLCents).toBe(200);
-    expect(computePortfolioPnL([], 0, 0, NOW).realizedRipPnLCents).toBe(0);
+    expect(computePortfolioPnL([], 500, 0, 0, NOW).realizedRipPnLCents).toBe(-500);
+    expect(computePortfolioPnL([], -200, 0, 0, NOW).realizedRipPnLCents).toBe(200);
+    expect(computePortfolioPnL([], 0, 0, 0, NOW).realizedRipPnLCents).toBe(0);
   });
 
   it('tie-breaking: equal pnlCents sorted by qtyHeld desc then catalogItemId asc', () => {
@@ -175,7 +175,7 @@ describe('computePortfolioPnL', () => {
       makeHolding({ catalogItemId: 9, lastMarketCents: 6000, totalInvestedCents: 5000, qtyHeld: 1 }), // pnl=1000, qty=1
       makeHolding({ catalogItemId: 1, lastMarketCents: 6000, totalInvestedCents: 5000, qtyHeld: 3 }), // pnl=3000, qty=3 (different pnl so doesn't tie)
     ];
-    const r = computePortfolioPnL(h, 0, 3, NOW);
+    const r = computePortfolioPnL(h, 0, 0, 3, NOW);
     // Top: id=1 (pnl 3000), then ties on 1000: qtyHeld desc tied, catalogItemId asc → 5, 9
     expect(r.bestPerformers.map((b) => b.catalogItemId)).toEqual([1, 5, 9]);
   });
@@ -185,7 +185,30 @@ describe('computePortfolioPnL', () => {
   });
 
   it('lotCount is passed through unchanged', () => {
-    const r = computePortfolioPnL([], 0, 42, NOW);
+    const r = computePortfolioPnL([], 0, 0, 42, NOW);
     expect(r.lotCount).toBe(42);
+  });
+
+  it('realizedSalesPnLCents propagates onto wire', () => {
+    const r = computePortfolioPnL([], 0, 500, 0, NOW);
+    expect(r.realizedSalesPnLCents).toBe(500);
+    expect(r.realizedPnLCents).toBe(500);
+  });
+
+  it('unified realizedPnLCents = rip (sign-flipped) + sales', () => {
+    // realizedRipLossCents=200 (loss) -> rip pnl is -200
+    // realizedSalesPnLCents=500 (already signed gain)
+    // unified = -200 + 500 = 300
+    const r = computePortfolioPnL([], 200, 500, 0, NOW);
+    expect(r.realizedRipPnLCents).toBe(-200);
+    expect(r.realizedSalesPnLCents).toBe(500);
+    expect(r.realizedPnLCents).toBe(300);
+  });
+
+  it('all-zero realized: no negative-zero leak on unified', () => {
+    const r = computePortfolioPnL([], 0, 0, 0, NOW);
+    expect(Object.is(r.realizedPnLCents, 0)).toBe(true);
+    expect(Object.is(r.realizedRipPnLCents, 0)).toBe(true);
+    expect(Object.is(r.realizedSalesPnLCents, 0)).toBe(true);
   });
 });
