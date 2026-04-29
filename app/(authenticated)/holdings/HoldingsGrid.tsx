@@ -29,57 +29,61 @@ export function HoldingsGrid({ initialHoldings }: { initialHoldings: HoldingPnL[
   return (
     <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
       {holdings.map((h) => (
-        <Link
+        <div
           key={h.catalogItemId}
-          href={`/holdings/${h.catalogItemId}`}
           className="group flex flex-col rounded-lg border bg-card p-3 transition hover:border-foreground/20"
         >
-          <div
-            className={
-              h.kind === 'sealed'
-                ? 'aspect-square w-full overflow-hidden rounded-md bg-muted'
-                : 'aspect-[5/7] w-full overflow-hidden rounded-md bg-muted'
-            }
+          <Link
+            href={`/holdings/${h.catalogItemId}`}
+            className="flex flex-col"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={getImageUrl({
-                imageStoragePath: h.imageStoragePath,
-                imageUrl: h.imageUrl,
-              })}
-              alt={h.name}
-              loading="lazy"
-              className="size-full object-contain"
-            />
-          </div>
-          <div className="mt-3 flex-1 space-y-1">
-            <div className="line-clamp-2 text-sm font-semibold leading-tight">{h.name}</div>
-            <div className="text-xs text-muted-foreground">{h.setName ?? '—'}</div>
-            <div className="text-xs text-muted-foreground">
-              {h.kind === 'sealed' ? h.productType ?? 'Sealed' : 'Card'}
+            <div
+              className={
+                h.kind === 'sealed'
+                  ? 'aspect-square w-full overflow-hidden rounded-md bg-muted'
+                  : 'aspect-[5/7] w-full overflow-hidden rounded-md bg-muted'
+              }
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={getImageUrl({
+                  imageStoragePath: h.imageStoragePath,
+                  imageUrl: h.imageUrl,
+                })}
+                alt={h.name}
+                loading="lazy"
+                className="size-full object-contain"
+              />
             </div>
-          </div>
-          <div className="mt-3 space-y-1 text-xs">
-            <div className="flex items-center justify-between">
-              <span className="font-medium tabular-nums">Qty: {h.qtyHeld}</span>
-              <span className="text-muted-foreground tabular-nums">
-                {formatCents(h.totalInvestedCents)}
-              </span>
+            <div className="mt-3 flex-1 space-y-1">
+              <div className="line-clamp-2 text-sm font-semibold leading-tight">{h.name}</div>
+              <div className="text-xs text-muted-foreground">{h.setName ?? '-'}</div>
+              <div className="text-xs text-muted-foreground">
+                {h.kind === 'sealed' ? h.productType ?? 'Sealed' : 'Card'}
+              </div>
             </div>
-            <div className="flex items-center justify-between gap-2">
-              {h.priced ? (
-                <>
-                  <span className="flex items-center gap-1.5 tabular-nums text-muted-foreground">
-                    {formatCents(h.currentValueCents!)}
-                    <StalePill stale={h.stale} />
-                  </span>
-                  <PnLDisplay pnlCents={h.pnlCents} pnlPct={h.pnlPct} />
-                </>
-              ) : (
-                <UnpricedBadge />
-              )}
+            <div className="mt-3 space-y-1 text-xs">
+              <div className="flex items-center justify-between">
+                <span className="font-medium tabular-nums">Qty: {h.qtyHeld}</span>
+                <span className="text-muted-foreground tabular-nums">
+                  {formatCents(h.totalInvestedCents)}
+                </span>
+              </div>
+              <div className="flex items-center justify-between gap-2">
+                {h.priced ? (
+                  <>
+                    <span className="flex items-center gap-1.5 tabular-nums text-muted-foreground">
+                      {formatCents(h.currentValueCents!)}
+                      <StalePill stale={h.stale} />
+                    </span>
+                    <PnLDisplay pnlCents={h.pnlCents} pnlPct={h.pnlPct} />
+                  </>
+                ) : (
+                  <UnpricedBadge />
+                )}
+              </div>
             </div>
-          </div>
+          </Link>
           <div className="flex justify-end pt-2 border-t mt-2">
             <SellButton
               catalogItemId={h.catalogItemId}
@@ -88,7 +92,7 @@ export function HoldingsGrid({ initialHoldings }: { initialHoldings: HoldingPnL[
               variant="card"
             />
           </div>
-        </Link>
+        </div>
       ))}
     </div>
   );
