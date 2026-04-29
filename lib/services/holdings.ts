@@ -35,6 +35,12 @@ export type RawDecompositionRow = {
   source_purchase_id: number;
 };
 
+export type RawSaleRow = {
+  id: number;
+  purchase_id: number;
+  quantity: number;
+};
+
 export type Holding = {
   catalogItemId: number;
   kind: 'sealed' | 'card';
@@ -49,22 +55,12 @@ export type Holding = {
   totalInvestedCents: number;
 };
 
-/**
- * Group purchases by catalog_item_id, subtract ripped units (sealed only),
- * compute qty_held and total_invested per item.
- *
- * Skips: soft-deleted purchases, items with qty_held <= 0 after rip
- * subtraction.
- *
- * Sort: most recently created underlying lot descending (matches the spec
- * SQL ORDER BY MAX(p.created_at) DESC).
- */
 export function aggregateHoldings(
   purchases: readonly RawPurchaseRow[],
   rips: readonly RawRipRow[],
-  decompositions: readonly RawDecompositionRow[]
+  decompositions: readonly RawDecompositionRow[],
+  sales: readonly RawSaleRow[]
 ): Holding[] {
-  // Count rips and decompositions per source purchase so we can subtract them from sealed qty.
   const consumedUnitsByPurchase = new Map<number, number>();
   for (const r of rips) {
     consumedUnitsByPurchase.set(
@@ -76,6 +72,12 @@ export function aggregateHoldings(
     consumedUnitsByPurchase.set(
       d.source_purchase_id,
       (consumedUnitsByPurchase.get(d.source_purchase_id) ?? 0) + 1
+    );
+  }
+  for (const s of sales) {
+    consumedUnitsByPurchase.set(
+      s.purchase_id,
+      (consumedUnitsByPurchase.get(s.purchase_id) ?? 0) + s.quantity
     );
   }
 
