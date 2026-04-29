@@ -55,6 +55,14 @@ export type Holding = {
   totalInvestedCents: number;
 };
 
+/**
+ * Group purchases by catalog_item_id, subtract consumed units (rips +
+ * decompositions + sales), compute qty_held and total_invested per item.
+ *
+ * Skips: soft-deleted purchases, items with qty_held <= 0 after consumption.
+ *
+ * Sort: most recently created underlying lot descending.
+ */
 export function aggregateHoldings(
   purchases: readonly RawPurchaseRow[],
   rips: readonly RawRipRow[],

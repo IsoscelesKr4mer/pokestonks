@@ -160,4 +160,10 @@ describe('aggregateHoldings', () => {
     const result = aggregateHoldings(purchases, rips, decomps, sales);
     expect(result[0].qtyHeld).toBe(2);  // 6 - 1 - 1 - 2
   });
+
+  it('excludes fully-sold sealed lots from output', () => {
+    const purchases = [makePurchase({ id: 10, quantity: 2 })];
+    const sales: RawSaleRow[] = [{ id: 1, purchase_id: 10, quantity: 2 }];
+    expect(aggregateHoldings(purchases, [], [], sales)).toEqual([]);
+  });
 });
