@@ -64,6 +64,41 @@ export async function PATCH(
     }
   }
 
+  // If quantity is being reduced, ensure it doesn't drop below total consumed
+  // (rips + decompositions + sales) for this purchase.
+  if (v.quantity !== undefined) {
+    const [ripsRes, decompsRes, salesRes] = await Promise.all([
+      supabase.from('rips').select('id').eq('source_purchase_id', numericId),
+      supabase
+        .from('box_decompositions')
+        .select('id')
+        .eq('source_purchase_id', numericId),
+      supabase.from('sales').select('quantity').eq('purchase_id', numericId),
+    ]);
+    if (ripsRes.error) {
+      return NextResponse.json({ error: ripsRes.error.message }, { status: 500 });
+    }
+    if (decompsRes.error) {
+      return NextResponse.json(
+        { error: decompsRes.error.message },
+        { status: 500 }
+      );
+    }
+    if (salesRes.error) {
+      return NextResponse.json({ error: salesRes.error.message }, { status: 500 });
+    }
+    const ripsConsumed = (ripsRes.data ?? []).length;
+    const decompsConsumed = (decompsRes.data ?? []).length;
+    const salesConsumed = (salesRes.data ?? []).reduce((s, r) => s + r.quantity, 0);
+    const totalConsumed = ripsConsumed + decompsConsumed + salesConsumed;
+    if (v.quantity < totalConsumed) {
+      return NextResponse.json(
+        { error: 'cannot reduce quantity below consumed', consumed: totalConsumed },
+        { status: 422 }
+      );
+    }
+  }
+
   const update: Record<string, unknown> = {};
   if (v.catalogItemId !== undefined) update.catalog_item_id = v.catalogItemId;
   if (v.quantity !== undefined) update.quantity = v.quantity;
