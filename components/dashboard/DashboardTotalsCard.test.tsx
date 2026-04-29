@@ -61,14 +61,14 @@ describe('DashboardTotalsCard', () => {
     expect(screen.getByText(/12 lots · 11 priced · 1 unpriced · 2 stale/)).toBeTruthy();
   });
 
-  it('renders em-dash for current value and P&L when nothing priced', () => {
+  it('renders hyphen for current value and P&L when nothing priced', () => {
     (useDashboardTotals as ReturnType<typeof vi.fn>).mockReturnValue({
       data: { ...baseData, pricedInvestedCents: 0, pricedCount: 0, unpricedCount: 12, totalCurrentValueCents: 0, unrealizedPnLCents: 0, unrealizedPnLPct: null, staleCount: 0 },
       isLoading: false,
     });
     render(withQuery(<DashboardTotalsCard />));
-    // both current value and P&L are em-dashes
-    const dashes = screen.getAllByText('—');
+    // both current value and P&L are hyphens
+    const dashes = screen.getAllByText('-');
     expect(dashes.length).toBeGreaterThanOrEqual(2);
   });
 });

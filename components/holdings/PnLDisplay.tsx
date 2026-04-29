@@ -11,7 +11,7 @@ export function PnLDisplay({ pnlCents, pnlPct, showPct = true, className }: PnLD
   if (pnlCents == null) {
     return (
       <span className={className} data-pnl-sign="null">
-        —
+        -
       </span>
     );
   }

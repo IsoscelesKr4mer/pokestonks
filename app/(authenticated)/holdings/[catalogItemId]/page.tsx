@@ -11,6 +11,7 @@ import {
   type RawDecompositionRow,
 } from '@/lib/services/holdings';
 import { computeHoldingPnL } from '@/lib/services/pnl';
+import { formatCents } from '@/lib/utils/format';
 import type { HoldingDetailDto } from '@/lib/query/hooks/useHoldings';
 
 export default async function HoldingDetailPage({
@@ -284,7 +285,7 @@ export default async function HoldingDetailPage({
           )}
           {item.lastMarketCents != null && (
             <p className="text-2xl font-semibold tabular-nums">
-              ${(item.lastMarketCents / 100).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              {formatCents(item.lastMarketCents)}
             </p>
           )}
         </div>

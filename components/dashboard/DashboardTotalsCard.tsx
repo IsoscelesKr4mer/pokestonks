@@ -45,11 +45,11 @@ export function DashboardTotalsCard() {
         <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
           <Stat label="Invested">{formatCents(data.totalInvestedCents)}</Stat>
           <Stat label="Current value">
-            {nothingPriced ? '—' : formatCents(data.totalCurrentValueCents)}
+            {nothingPriced ? '-' : formatCents(data.totalCurrentValueCents)}
           </Stat>
           <Stat label="Unrealized P&L">
             {nothingPriced ? (
-              <span>—</span>
+              <span>-</span>
             ) : (
               <PnLDisplay pnlCents={data.unrealizedPnLCents} pnlPct={data.unrealizedPnLPct} />
             )}

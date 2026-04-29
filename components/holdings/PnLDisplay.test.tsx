@@ -24,9 +24,9 @@ describe('PnLDisplay', () => {
     expect(container.querySelector('[data-pnl-sign="zero"]')).not.toBeNull();
   });
 
-  it('renders em-dash when pnlCents is null', () => {
+  it('renders hyphen when pnlCents is null', () => {
     render(<PnLDisplay pnlCents={null} pnlPct={null} />);
-    expect(screen.getByText('—')).toBeTruthy();
+    expect(screen.getByText('-')).toBeTruthy();
   });
 
   it('shows pct only when pnlPct is non-null', () => {
