@@ -54,8 +54,8 @@ export function DashboardTotalsCard() {
               <PnLDisplay pnlCents={data.unrealizedPnLCents} pnlPct={data.unrealizedPnLPct} />
             )}
           </Stat>
-          <Stat label="Realized rip P&L">
-            <PnLDisplay pnlCents={data.realizedRipPnLCents} pnlPct={null} showPct={false} />
+          <Stat label="Realized P&L">
+            <PnLDisplay pnlCents={data.realizedPnLCents} pnlPct={null} showPct={false} />
           </Stat>
         </div>
         {nothingPriced && (
@@ -70,6 +70,7 @@ export function DashboardTotalsCard() {
         <div className="text-xs text-muted-foreground">
           {data.lotCount} lot{data.lotCount === 1 ? '' : 's'} · {data.pricedCount} priced · {data.unpricedCount} unpriced
           {data.staleCount > 0 ? ` · ${data.staleCount} stale` : ''}
+          {data.saleEventCount > 0 ? ` · ${data.saleEventCount} ${data.saleEventCount === 1 ? 'sale' : 'sales'}` : ''}
         </div>
         <Link href="/holdings" className="text-sm underline">
           View holdings

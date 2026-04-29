@@ -3,7 +3,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { DashboardTotalsCard } from './DashboardTotalsCard';
-import type { PortfolioPnL } from '@/lib/services/pnl';
+import type { DashboardTotals } from '@/lib/query/hooks/useDashboardTotals';
 
 vi.mock('@/lib/query/hooks/useDashboardTotals', () => ({
   useDashboardTotals: vi.fn(),
@@ -15,17 +15,20 @@ function withQuery(node: React.ReactNode) {
   return <QueryClientProvider client={qc}>{node}</QueryClientProvider>;
 }
 
-const baseData: PortfolioPnL = {
+const baseData: DashboardTotals = {
   totalInvestedCents: 543210,
   pricedInvestedCents: 498765,
   totalCurrentValueCents: 610955,
   unrealizedPnLCents: 112190,
   unrealizedPnLPct: 22.49,
+  realizedPnLCents: -2430,
   realizedRipPnLCents: -2430,
+  realizedSalesPnLCents: 0,
   pricedCount: 11,
   unpricedCount: 1,
   staleCount: 2,
   lotCount: 12,
+  saleEventCount: 0,
   perHolding: [],
   bestPerformers: [],
   worstPerformers: [],
@@ -50,7 +53,7 @@ describe('DashboardTotalsCard', () => {
     expect(screen.getByText('Invested')).toBeTruthy();
     expect(screen.getByText('Current value')).toBeTruthy();
     expect(screen.getByText('Unrealized P&L')).toBeTruthy();
-    expect(screen.getByText('Realized rip P&L')).toBeTruthy();
+    expect(screen.getByText('Realized P&L')).toBeTruthy();
     expect(screen.getByText('$5,432.10')).toBeTruthy();
     expect(screen.getByText('$6,109.55')).toBeTruthy();
     // signed +$1,121.90
@@ -70,5 +73,14 @@ describe('DashboardTotalsCard', () => {
     // both current value and P&L are hyphens
     const dashes = screen.getAllByText('-');
     expect(dashes.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it('shows sale count in caption when > 0', () => {
+    (useDashboardTotals as ReturnType<typeof vi.fn>).mockReturnValue({
+      data: { ...baseData, saleEventCount: 3 },
+      isLoading: false,
+    });
+    render(withQuery(<DashboardTotalsCard />));
+    expect(screen.getByText(/3 sales/)).toBeTruthy();
   });
 });
