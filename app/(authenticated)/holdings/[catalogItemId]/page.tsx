@@ -13,35 +13,7 @@ import {
 } from '@/lib/services/holdings';
 import { computeHoldingPnL } from '@/lib/services/pnl';
 import { formatCents } from '@/lib/utils/format';
-import type { HoldingDetailDto } from '@/lib/query/hooks/useHoldings';
-
-// Inline until Task 14 canonicalizes it in the hook types.
-type SaleEventDto = {
-  saleGroupId: string;
-  saleDate: string;
-  platform: string | null;
-  notes: string | null;
-  totals: {
-    quantity: number;
-    salePriceCents: number;
-    feesCents: number;
-    matchedCostCents: number;
-    realizedPnLCents: number;
-  };
-  rows: Array<{
-    saleId: number;
-    purchaseId: number;
-    purchaseDate: string;
-    perUnitCostCents: number;
-    quantity: number;
-    salePriceCents: number;
-    feesCents: number;
-    matchedCostCents: number;
-  }>;
-  createdAt: string;
-};
-
-type HoldingDetailWithSalesDto = HoldingDetailDto & { sales: SaleEventDto[] };
+import type { HoldingDetailDto, HoldingDetailSaleEvent } from '@/lib/query/hooks/useHoldings';
 
 export default async function HoldingDetailPage({
   params,
@@ -197,7 +169,7 @@ export default async function HoldingDetailPage({
     arr.push(s);
     salesGroupedById.set(s.saleGroupId, arr);
   }
-  const salesEvents: SaleEventDto[] = Array.from(salesGroupedById.entries())
+  const salesEvents: HoldingDetailSaleEvent[] = Array.from(salesGroupedById.entries())
     .map(([saleGroupId, rows]) => {
       const totals = rows.reduce(
         (acc, r) => ({
@@ -239,7 +211,7 @@ export default async function HoldingDetailPage({
       return a.saleGroupId < b.saleGroupId ? -1 : a.saleGroupId > b.saleGroupId ? 1 : 0;
     });
 
-  const initial: HoldingDetailWithSalesDto = {
+  const initial: HoldingDetailDto = {
     item: {
       id: item.id,
       kind: item.kind as 'sealed' | 'card',

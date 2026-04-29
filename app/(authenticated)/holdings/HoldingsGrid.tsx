@@ -7,6 +7,7 @@ import { formatCents } from '@/lib/utils/format';
 import { PnLDisplay } from '@/components/holdings/PnLDisplay';
 import { StalePill } from '@/components/holdings/StalePill';
 import { UnpricedBadge } from '@/components/holdings/UnpricedBadge';
+import { SellButton } from '@/components/sales/SellButton';
 
 export function HoldingsGrid({ initialHoldings }: { initialHoldings: HoldingPnL[] }) {
   const { data } = useHoldings();
@@ -78,6 +79,14 @@ export function HoldingsGrid({ initialHoldings }: { initialHoldings: HoldingPnL[
                 <UnpricedBadge />
               )}
             </div>
+          </div>
+          <div className="flex justify-end pt-2 border-t mt-2">
+            <SellButton
+              catalogItemId={h.catalogItemId}
+              catalogItemName={h.name}
+              qtyHeld={h.qtyHeld}
+              variant="card"
+            />
           </div>
         </Link>
       ))}

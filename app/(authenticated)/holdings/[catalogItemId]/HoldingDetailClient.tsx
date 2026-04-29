@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Plus } from 'lucide-react';
 import { LotRow } from '@/components/purchases/LotRow';
 import { RipRow } from '@/components/rips/RipRow';
@@ -14,6 +14,10 @@ import { formatCents } from '@/lib/utils/format';
 import { PnLDisplay } from '@/components/holdings/PnLDisplay';
 import { StalePill } from '@/components/holdings/StalePill';
 import { UnpricedBadge } from '@/components/holdings/UnpricedBadge';
+import { SellButton } from '@/components/sales/SellButton';
+import { SaleRow } from '@/components/sales/SaleRow';
+import { SaleDetailDialog } from '@/components/sales/SaleDetailDialog';
+import type { SaleEventDto } from '@/lib/query/hooks/useSales';
 
 async function searchCardsInSet(q: string, setName: string | null): Promise<CardSearchHit[]> {
   if (!q.trim()) return [];
@@ -47,6 +51,8 @@ export function HoldingDetailClient({
 
   const [openBoxOpen, setOpenBoxOpen] = useState(false);
   const [openBoxSource, setOpenBoxSource] = useState<OpenBoxSourceLot | null>(null);
+
+  const [selectedSaleId, setSelectedSaleId] = useState<string | null>(null);
 
   const isSealed = detail.item.kind === 'sealed';
 
@@ -121,6 +127,35 @@ export function HoldingDetailClient({
     consumedUnitsByLot.set(d.sourcePurchaseId, (consumedUnitsByLot.get(d.sourcePurchaseId) ?? 0) + 1);
   }
 
+  const sales = detail.sales ?? [];
+
+  // Build a map of purchaseId -> { qty, realizedPnLCents } from sale events.
+  const salesByPurchase = useMemo(() => {
+    const m = new Map<number, { qty: number; realizedPnLCents: number }>();
+    for (const event of sales) {
+      for (const r of event.rows) {
+        const realized = r.salePriceCents - r.feesCents - r.matchedCostCents;
+        const cur = m.get(r.purchaseId) ?? { qty: 0, realizedPnLCents: 0 };
+        m.set(r.purchaseId, { qty: cur.qty + r.quantity, realizedPnLCents: cur.realizedPnLCents + realized });
+      }
+    }
+    return m;
+  }, [sales]);
+
+  // Synthesize SaleEventDto (with catalogItem) for SaleRow, which expects the full shape.
+  const saleEventDtos = useMemo((): SaleEventDto[] => {
+    const catalogItem = {
+      id: detail.item.id,
+      name: detail.item.name,
+      setName: detail.item.setName,
+      productType: detail.item.productType,
+      kind: detail.item.kind,
+      imageUrl: detail.item.imageUrl,
+      imageStoragePath: detail.item.imageStoragePath,
+    };
+    return sales.map((s) => ({ ...s, catalogItem }));
+  }, [sales, detail.item]);
+
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between gap-4 border-b pb-6">
@@ -155,16 +190,24 @@ export function HoldingDetailClient({
             </p>
           )}
         </div>
-        <button
-          type="button"
-          aria-label="Add another"
-          onClick={handleQuickAdd}
-          disabled={createMutation.isPending}
-          className="inline-flex h-9 items-center gap-1.5 rounded-full border bg-foreground px-3 text-sm font-medium text-background transition hover:bg-foreground/90 disabled:opacity-50"
-        >
-          <Plus className="size-4" />
-          Add another
-        </button>
+        <div className="flex items-center gap-2">
+          <SellButton
+            catalogItemId={detail.item.id}
+            catalogItemName={detail.item.name}
+            qtyHeld={detail.holding.qtyHeld}
+            variant="header"
+          />
+          <button
+            type="button"
+            aria-label="Add another"
+            onClick={handleQuickAdd}
+            disabled={createMutation.isPending}
+            className="inline-flex h-9 items-center gap-1.5 rounded-full border bg-foreground px-3 text-sm font-medium text-background transition hover:bg-foreground/90 disabled:opacity-50"
+          >
+            <Plus className="size-4" />
+            Add another
+          </button>
+        </div>
       </div>
 
       <section className="space-y-2">
@@ -211,6 +254,7 @@ export function HoldingDetailClient({
                   qtyRemaining={qtyRemaining}
                   onRip={canRip ? openRip : undefined}
                   onOpenBox={canOpenBox ? openOpenBox : undefined}
+                  salesByPurchase={salesByPurchase}
                 />
               );
             })}
@@ -262,6 +306,27 @@ export function HoldingDetailClient({
           </div>
         </section>
       )}
+
+      {sales.length > 0 ? (
+        <section className="space-y-3 mt-6">
+          <h2 className="text-sm font-semibold tracking-tight">Sales</h2>
+          <div className="grid gap-2">
+            {saleEventDtos.map((s) => (
+              <SaleRow
+                key={s.saleGroupId}
+                sale={s}
+                onClick={() => setSelectedSaleId(s.saleGroupId)}
+              />
+            ))}
+          </div>
+        </section>
+      ) : null}
+
+      <SaleDetailDialog
+        open={selectedSaleId != null}
+        onOpenChange={(o) => { if (!o) setSelectedSaleId(null); }}
+        saleGroupId={selectedSaleId}
+      />
 
       {ripPack && (
         <RipPackDialog

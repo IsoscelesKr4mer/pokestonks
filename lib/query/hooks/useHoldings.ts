@@ -18,6 +18,33 @@ export function useHoldings() {
   });
 }
 
+export type HoldingDetailSaleRow = {
+  saleId: number;
+  purchaseId: number;
+  purchaseDate: string;
+  perUnitCostCents: number;
+  quantity: number;
+  salePriceCents: number;
+  feesCents: number;
+  matchedCostCents: number;
+};
+
+export type HoldingDetailSaleEvent = {
+  saleGroupId: string;
+  saleDate: string;
+  platform: string | null;
+  notes: string | null;
+  totals: {
+    quantity: number;
+    salePriceCents: number;
+    feesCents: number;
+    matchedCostCents: number;
+    realizedPnLCents: number;
+  };
+  rows: HoldingDetailSaleRow[];
+  createdAt: string;
+};
+
 export type HoldingDetailDto = {
   item: {
     id: number;
@@ -79,6 +106,7 @@ export type HoldingDetailDto = {
     sourcePurchaseId: number;
     notes: string | null;
   }>;
+  sales: HoldingDetailSaleEvent[];
 };
 
 export function useHolding(catalogItemId: number) {

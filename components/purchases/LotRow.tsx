@@ -5,8 +5,10 @@ import { MoreHorizontal } from 'lucide-react';
 import { useDeletePurchase, DeletePurchaseError } from '@/lib/query/hooks/usePurchases';
 import { EditPurchaseDialog, type EditableLot } from './EditPurchaseDialog';
 import type { PurchaseFormCatalogItem } from './PurchaseForm';
-import { formatCents } from '@/lib/utils/format';
+import { formatCents, formatCentsSigned } from '@/lib/utils/format';
 import { PnLDisplay } from '@/components/holdings/PnLDisplay';
+
+type SalesByPurchase = Map<number, { qty: number; realizedPnLCents: number }>;
 
 export type LotRowProps = {
   lot: EditableLot;
@@ -23,6 +25,8 @@ export type LotRowProps = {
   onRip?: (lot: EditableLot) => void;
   /** Optional open-box action; only rendered for sealed multi-pack lots when caller passes a handler. */
   onOpenBox?: (lot: EditableLot) => void;
+  /** Map of purchaseId -> sold qty + realized P&L, from the holding's sales events. */
+  salesByPurchase?: SalesByPurchase;
 };
 
 export function LotRow({
@@ -36,6 +40,7 @@ export function LotRow({
   qtyRemaining,
   onRip,
   onOpenBox,
+  salesByPurchase,
 }: LotRowProps) {
   const [editOpen, setEditOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -141,6 +146,12 @@ export function LotRow({
               <PnLDisplay pnlCents={lotPnL.pnlCents} pnlPct={lotPnL.pnlPct} />
             </div>
           )}
+          {salesByPurchase?.get(lot.id) ? (
+            <div className="text-xs text-muted-foreground">
+              Sold {salesByPurchase.get(lot.id)!.qty} of {lot.quantity}{' '}
+              ({formatCentsSigned(salesByPurchase.get(lot.id)!.realizedPnLCents)} realized)
+            </div>
+          ) : null}
         </div>
         <div className="relative shrink-0">
           <button
