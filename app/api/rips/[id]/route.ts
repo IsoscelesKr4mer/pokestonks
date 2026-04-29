@@ -111,7 +111,7 @@ export async function DELETE(
     await db.transaction(async (tx) => {
       await tx
         .update(schema.purchases)
-        .set({ deletedAt: new Date() })
+        .set({ deletedAt: new Date(), sourceRipId: null })
         .where(eq(schema.purchases.sourceRipId, numericId));
       await tx.delete(schema.rips).where(eq(schema.rips.id, numericId));
     });
