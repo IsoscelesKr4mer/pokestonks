@@ -117,4 +117,46 @@ describe('POST /api/sales/preview', () => {
     expect(body.reason).toBe('insufficient_qty');
     expect(body.totalAvailable).toBe(1);
   });
+
+  it('subtracts rip count from lot qty_available', async () => {
+    mockGetUser.mockResolvedValue({ data: { user: { id: 'u1' } } });
+    mockFromBuilder.mockImplementation((table: string) => {
+      const result = (() => {
+        if (table === 'purchases')
+          return [{ id: 100, quantity: 5, cost_cents: 5000, purchase_date: '2026-03-01', created_at: '2026-03-01T00:00:00Z', source: 'Walmart' }];
+        if (table === 'rips')
+          // Two rips against purchase 100 -> consumed: 2 -> qtyAvailable: 5 - 2 = 3
+          return [{ source_purchase_id: 100 }, { source_purchase_id: 100 }];
+        if (table === 'box_decompositions') return [];
+        if (table === 'sales') return [];
+        return [];
+      })();
+      return {
+        select: () => ({
+          eq: () => ({
+            is: () => ({ then: (cb: (v: unknown) => unknown) => cb({ data: result, error: null }) }),
+            in: () => ({ then: (cb: (v: unknown) => unknown) => cb({ data: result, error: null }) }),
+            then: (cb: (v: unknown) => unknown) => cb({ data: result, error: null }),
+          }),
+          in: () => ({ then: (cb: (v: unknown) => unknown) => cb({ data: result, error: null }) }),
+          then: (cb: (v: unknown) => unknown) => cb({ data: result, error: null }),
+        }),
+      };
+    });
+
+    // Try to sell 4 units. Available = 5 - 2 ripped = 3. Should fail with insufficient_qty.
+    const res = await POST(
+      makeReq({
+        catalogItemId: 5,
+        totalQty: 4,
+        totalSalePriceCents: 24000,
+        totalFeesCents: 0,
+        saleDate: '2026-04-20',
+      }) as never
+    );
+    expect(res.status).toBe(422);
+    const body = (await res.json()) as { ok: false; reason: string; totalAvailable: number };
+    expect(body.ok).toBe(false);
+    expect(body.totalAvailable).toBe(3);
+  });
 });
