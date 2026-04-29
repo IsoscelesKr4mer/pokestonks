@@ -17,6 +17,10 @@ export async function GET(
 
   const { saleGroupId } = await ctx.params;
 
+  if (!/^[0-9a-fA-F-]{36}$/.test(saleGroupId)) {
+    return NextResponse.json({ error: 'invalid id' }, { status: 400 });
+  }
+
   type SaleRow = {
     id: number;
     sale_group_id: string;
@@ -119,6 +123,10 @@ export async function DELETE(
   }
 
   const { saleGroupId } = await ctx.params;
+
+  if (!/^[0-9a-fA-F-]{36}$/.test(saleGroupId)) {
+    return NextResponse.json({ error: 'invalid id' }, { status: 400 });
+  }
 
   try {
     const deleted = await db

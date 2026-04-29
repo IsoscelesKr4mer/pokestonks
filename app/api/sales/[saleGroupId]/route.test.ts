@@ -37,7 +37,7 @@ describe('GET /api/sales/[saleGroupId]', () => {
 
   it('401 without auth', async () => {
     mockGetUser.mockResolvedValue({ data: { user: null } });
-    const res = await GET(new Request('http://localhost') as never, makeCtx('g1'));
+    const res = await GET(new Request('http://localhost') as never, makeCtx('00000000-0000-0000-0000-000000000001'));
     expect(res.status).toBe(401);
   });
 
@@ -50,8 +50,14 @@ describe('GET /api/sales/[saleGroupId]', () => {
       then: (cb: (v: unknown) => unknown) => cb({ data: [], error: null }),
     };
     mockFromBuilder.mockReturnValue(chain);
-    const res = await GET(new Request('http://localhost') as never, makeCtx('g1'));
+    const res = await GET(new Request('http://localhost') as never, makeCtx('00000000-0000-0000-0000-000000000001'));
     expect(res.status).toBe(404);
+  });
+
+  it('returns 400 on invalid id format', async () => {
+    mockGetUser.mockResolvedValue({ data: { user: { id: 'u1' } } });
+    const res = await GET(new Request('http://localhost') as never, makeCtx('not-a-uuid'));
+    expect(res.status).toBe(400);
   });
 });
 
@@ -64,7 +70,7 @@ describe('DELETE /api/sales/[saleGroupId]', () => {
 
   it('401 without auth', async () => {
     mockGetUser.mockResolvedValue({ data: { user: null } });
-    const res = await DELETE(new Request('http://localhost', { method: 'DELETE' }) as never, makeCtx('g1'));
+    const res = await DELETE(new Request('http://localhost', { method: 'DELETE' }) as never, makeCtx('00000000-0000-0000-0000-000000000001'));
     expect(res.status).toBe(401);
   });
 
@@ -73,7 +79,13 @@ describe('DELETE /api/sales/[saleGroupId]', () => {
     const mockReturning = vi.fn().mockResolvedValue([{ id: 1 }, { id: 2 }, { id: 3 }]);
     mockWhere.mockReturnValue({ returning: mockReturning });
     mockDelete.mockReturnValue({ where: mockWhere });
-    const res = await DELETE(new Request('http://localhost', { method: 'DELETE' }) as never, makeCtx('g1'));
+    const res = await DELETE(new Request('http://localhost', { method: 'DELETE' }) as never, makeCtx('00000000-0000-0000-0000-000000000001'));
     expect(res.status).toBe(204);
+  });
+
+  it('returns 400 on invalid id format', async () => {
+    mockGetUser.mockResolvedValue({ data: { user: { id: 'u1' } } });
+    const res = await DELETE(new Request('http://localhost', { method: 'DELETE' }) as never, makeCtx('not-a-uuid'));
+    expect(res.status).toBe(400);
   });
 });
