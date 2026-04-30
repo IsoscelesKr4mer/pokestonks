@@ -97,12 +97,9 @@ export function HoldingDetailClient({
   };
 
   const openOpenBox = (lot: EditableLot) => {
-    if (
-      detail.item.packCount == null ||
-      detail.item.packCount <= 1
-    ) {
-      return; // not decomposable; the menu item shouldn't have been visible
-    }
+    // Decomposability is determined by productType (any sealed lot that
+    // isn't a Booster Pack). The dialog's recipe picker handles cases where
+    // pack_count is unknown or the recipe is unsaved.
     setOpenBoxSource({
       purchaseId: lot.id,
       catalogItemId: detail.item.id,

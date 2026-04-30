@@ -22,7 +22,7 @@ export type OpenBoxSourceLot = {
   name: string;
   productType: string;
   imageUrl: string | null;
-  packCount: number;
+  packCount: number | null;
   sourceCostCents: number;
   setCode: string | null;
   setName: string | null;
