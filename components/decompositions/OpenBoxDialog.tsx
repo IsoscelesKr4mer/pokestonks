@@ -173,7 +173,8 @@ export function OpenBoxDialog({
         <DialogHeader>
           <DialogTitle>Open box</DialogTitle>
           <DialogDescription>
-            Create a new pack lot and split this box's cost basis evenly.
+            Pick the booster pack(s) inside; the cost basis splits evenly across
+            them.
           </DialogDescription>
         </DialogHeader>
 
@@ -188,7 +189,10 @@ export function OpenBoxDialog({
           <div className="min-w-0 flex-1 space-y-0.5 text-sm">
             <div className="font-medium">{source.name}</div>
             <div className="text-xs text-muted-foreground">
-              {source.productType} · {source.packCount} packs
+              {source.productType}
+              {totalPacks > 0
+                ? ` · ${totalPacks} pack${totalPacks === 1 ? '' : 's'} in recipe`
+                : ''}
             </div>
             <div className="text-xs text-muted-foreground">
               Cost basis: {formatCents(source.sourceCostCents)}
