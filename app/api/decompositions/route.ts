@@ -48,7 +48,9 @@ async function resolveRecipe(
     DETERMINISTIC_DECOMPOSITION_TYPES.has(sourceItem.productType) &&
     sourceItem.packCount != null
   ) {
-    const packCatalog = await db.query.catalogItems.findFirst({
+    // Prefer the shortest-named Booster Pack — that's almost always the bare
+    // "{Set} Booster Pack" when art/signed/etc variants also exist.
+    const packCandidates = await db.query.catalogItems.findMany({
       where: (ci, ops) =>
         ops.and(
           ops.eq(ci.kind, 'sealed'),
@@ -58,6 +60,10 @@ async function resolveRecipe(
             : ops.and(ops.isNull(ci.setCode), ops.eq(ci.setName, sourceItem.setName ?? ''))
         ),
     });
+    const packCatalog =
+      packCandidates.length > 0
+        ? [...packCandidates].sort((a, b) => a.name.length - b.name.length)[0]
+        : null;
     if (packCatalog) {
       return {
         recipe: [{ packCatalogItemId: packCatalog.id, quantity: sourceItem.packCount }],

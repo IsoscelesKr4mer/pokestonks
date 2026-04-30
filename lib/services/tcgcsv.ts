@@ -125,13 +125,20 @@ export const DETERMINISTIC_DECOMPOSITION_TYPES = new Set<string>([
   'Build & Battle',
 ]);
 
-const SEALED_PATTERNS: Array<{ pattern: RegExp; productType: string }> = [
+const SEALED_PATTERNS: Array<{ pattern: RegExp; productType: string; reject?: RegExp }> = [
   // More-specific pattern must come BEFORE the generic Elite Trainer Box match.
   { pattern: /Pok[eé]mon Center Elite Trainer Box/i, productType: 'Pokemon Center Elite Trainer Box' },
   { pattern: /\bElite Trainer Box\b/i, productType: 'Elite Trainer Box' },
   { pattern: /\bBooster Box\b/i, productType: 'Booster Box' },
   { pattern: /\bBooster Bundle\b/i, productType: 'Booster Bundle' },
-  { pattern: /\bBooster Pack\b/i, productType: 'Booster Pack' },
+  // Reject art bundles, multi-pack [Set of N] variants, and "Booster Pack
+  // Bundle" wrappers from being tagged as Booster Pack. Otherwise the
+  // auto-derive same-set lookup picks them up by mistake.
+  {
+    pattern: /\bBooster Pack\b/i,
+    productType: 'Booster Pack',
+    reject: /\bArt Bundle\b|\[Set of \d+\]|\bBooster Pack Bundle\b/i,
+  },
   { pattern: /\bPremium Collection\b/i, productType: 'Premium Collection' },
   { pattern: /\bBuild & Battle\b/i, productType: 'Build & Battle' },
   { pattern: /\bCollection Box\b/i, productType: 'Collection Box' },
@@ -269,8 +276,10 @@ export async function fetchPrices(groupId: number, now: number = Date.now()): Pr
 }
 
 function classifySealedType(name: string): string | null {
-  for (const { pattern, productType } of SEALED_PATTERNS) {
-    if (pattern.test(name)) return productType;
+  for (const { pattern, productType, reject } of SEALED_PATTERNS) {
+    if (!pattern.test(name)) continue;
+    if (reject && reject.test(name)) continue;
+    return productType;
   }
   return null;
 }

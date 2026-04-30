@@ -72,8 +72,11 @@ export async function GET(
     sourceItem.packCount != null
   ) {
     // Auto-derive: same-set Booster Pack with qty = packCount.
-    // Only for product types where this is universally correct.
-    const packCatalog = await db.query.catalogItems.findFirst({
+    // Only for product types where this is universally correct. If multiple
+    // Booster Pack rows exist for the set (art variants, signed variants,
+    // etc.), prefer the shortest name — that's almost always the bare
+    // "{Set} Booster Pack".
+    const packCandidates = await db.query.catalogItems.findMany({
       where: (ci, ops) =>
         ops.and(
           ops.eq(ci.kind, 'sealed'),
@@ -83,6 +86,10 @@ export async function GET(
             : ops.and(ops.isNull(ci.setCode), ops.eq(ci.setName, sourceItem.setName ?? ''))
         ),
     });
+    const packCatalog =
+      packCandidates.length > 0
+        ? [...packCandidates].sort((a, b) => a.name.length - b.name.length)[0]
+        : null;
     if (packCatalog) {
       suggested = true;
       recipe = [
