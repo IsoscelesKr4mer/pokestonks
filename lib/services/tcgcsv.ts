@@ -86,6 +86,7 @@ export const PACK_COUNT_BY_PRODUCT_TYPE: Record<string, number | null> = {
   'Pin Collection': 3,
   'Collection Box': 4,
   'Collection': 4,
+  'Mini Portfolio': 1,
   'Blister': 3,
   'Booster Pack': 1,
 };
@@ -103,6 +104,7 @@ const SEALED_PATTERNS: Array<{ pattern: RegExp; productType: string }> = [
   // and weren't covered, so they used to get dropped by classifySealedType.
   { pattern: /\bex Box(?:es)?\b/i, productType: 'ex Box' },
   { pattern: /\bPin Collection\b/i, productType: 'Pin Collection' },
+  { pattern: /\bMini Portfolio\b/i, productType: 'Mini Portfolio' },
   { pattern: /\bCollection\b/i, productType: 'Collection' },
   { pattern: /\bTin\b/i, productType: 'Tin' },
   { pattern: /\bBlister\b/i, productType: 'Blister' },
