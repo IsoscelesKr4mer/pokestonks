@@ -17,7 +17,7 @@ type Props = {
 export function SellDialog({ open, onOpenChange, catalogItemId, catalogItemName, qtyHeld }: Props) {
   const today = new Date().toISOString().slice(0, 10);
   const [qty, setQty] = useState(1);
-  const [salePriceDollars, setSalePriceDollars] = useState('');
+  const [perUnitPriceDollars, setPerUnitPriceDollars] = useState('');
   const [feesDollars, setFeesDollars] = useState('');
   const [saleDate, setSaleDate] = useState(today);
   const [platform, setPlatform] = useState('');
@@ -28,7 +28,8 @@ export function SellDialog({ open, onOpenChange, catalogItemId, catalogItemName,
     return Number.isFinite(n) ? Math.round(n * 100) : 0;
   };
 
-  const totalSalePriceCents = dollarsToCents(salePriceDollars);
+  const perUnitPriceCents = dollarsToCents(perUnitPriceDollars);
+  const totalSalePriceCents = perUnitPriceCents * qty;
   const totalFeesCents = dollarsToCents(feesDollars);
 
   const previewInput =
@@ -87,11 +88,16 @@ export function SellDialog({ open, onOpenChange, catalogItemId, catalogItemName,
             <Input id="saleDate" type="date" value={saleDate} max={today} onChange={(e) => setSaleDate(e.target.value)} />
           </div>
           <div>
-            <label htmlFor="salePrice" className="text-sm font-medium block mb-1">Sale price (gross)</label>
-            <Input id="salePrice" type="number" min={0} step="0.01" value={salePriceDollars} onChange={(e) => setSalePriceDollars(e.target.value)} placeholder="0.00" />
+            <label htmlFor="salePrice" className="text-sm font-medium block mb-1">Sale price per unit</label>
+            <Input id="salePrice" type="number" min={0} step="0.01" value={perUnitPriceDollars} onChange={(e) => setPerUnitPriceDollars(e.target.value)} placeholder="0.00" />
+            {qty > 1 && perUnitPriceCents > 0 ? (
+              <p className="text-xs text-muted-foreground mt-1">
+                Total: {formatCents(totalSalePriceCents)}
+              </p>
+            ) : null}
           </div>
           <div>
-            <label htmlFor="fees" className="text-sm font-medium block mb-1">Fees</label>
+            <label htmlFor="fees" className="text-sm font-medium block mb-1">Fees (total)</label>
             <Input id="fees" type="number" min={0} step="0.01" value={feesDollars} onChange={(e) => setFeesDollars(e.target.value)} placeholder="0.00" />
           </div>
           <div className="col-span-2">
