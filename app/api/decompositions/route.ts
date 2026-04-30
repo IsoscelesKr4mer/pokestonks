@@ -1,9 +1,73 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { eq, and, count } from 'drizzle-orm';
+import { eq, and, count, asc } from 'drizzle-orm';
 import { createClient } from '@/lib/supabase/server';
 import { db, schema } from '@/lib/db/client';
 import { decompositionInputSchema } from '@/lib/validation/decomposition';
 import { computePerPackCost } from '@/lib/services/decompositions';
+import type { RecipeRow } from '@/lib/validation/decomposition';
+
+// ---------------------------------------------------------------------------
+// Recipe resolution
+// ---------------------------------------------------------------------------
+
+type ResolvedRecipe = {
+  recipe: RecipeRow[];
+  persisted: boolean;
+  usedBody: boolean;
+};
+
+async function resolveRecipe(
+  sourceItem: { id: number; setCode: string | null; setName: string | null; packCount: number | null },
+  bodyRecipe: RecipeRow[] | undefined
+): Promise<ResolvedRecipe> {
+  // 1. Use body recipe if provided.
+  if (bodyRecipe && bodyRecipe.length > 0) {
+    return { recipe: bodyRecipe, persisted: false, usedBody: true };
+  }
+
+  // 2. Check saved recipe.
+  const saved = await db.query.catalogPackCompositions.findMany({
+    where: eq(schema.catalogPackCompositions.sourceCatalogItemId, sourceItem.id),
+    orderBy: [
+      asc(schema.catalogPackCompositions.displayOrder),
+      asc(schema.catalogPackCompositions.id),
+    ],
+  });
+  if (saved.length > 0) {
+    return {
+      recipe: saved.map((r) => ({ packCatalogItemId: r.packCatalogItemId, quantity: r.quantity })),
+      persisted: true,
+      usedBody: false,
+    };
+  }
+
+  // 3. Auto-derive: same-set Booster Pack with qty = packCount.
+  if (sourceItem.packCount != null) {
+    const packCatalog = await db.query.catalogItems.findFirst({
+      where: (ci, ops) =>
+        ops.and(
+          ops.eq(ci.kind, 'sealed'),
+          ops.eq(ci.productType, 'Booster Pack'),
+          sourceItem.setCode != null
+            ? ops.eq(ci.setCode, sourceItem.setCode)
+            : ops.and(ops.isNull(ci.setCode), ops.eq(ci.setName, sourceItem.setName ?? ''))
+        ),
+    });
+    if (packCatalog) {
+      return {
+        recipe: [{ packCatalogItemId: packCatalog.id, quantity: sourceItem.packCount }],
+        persisted: false,
+        usedBody: false,
+      };
+    }
+  }
+
+  return { recipe: [], persisted: false, usedBody: false };
+}
+
+// ---------------------------------------------------------------------------
+// POST /api/decompositions
+// ---------------------------------------------------------------------------
 
 export async function POST(request: NextRequest) {
   // 1. Auth.
@@ -37,27 +101,35 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'source purchase not found' }, { status: 404 });
   }
 
-  // 4. Lookup source catalog item. Verify kind=sealed and pack_count > 1.
+  // 4. Lookup source catalog item.
   const sourceItem = await db.query.catalogItems.findFirst({
     where: eq(schema.catalogItems.id, sourcePurchase.catalogItemId),
   });
   if (!sourceItem) {
     return NextResponse.json({ error: 'source catalog item not found' }, { status: 404 });
   }
+
+  // 5. Gate: must be a sealed product, not a Booster Pack itself, and must have packCount.
   if (sourceItem.kind !== 'sealed') {
     return NextResponse.json(
       { error: 'decompose source must be a sealed lot' },
       { status: 422 }
     );
   }
-  if (sourceItem.packCount == null || sourceItem.packCount <= 1) {
+  if (sourceItem.productType === 'Booster Pack') {
+    return NextResponse.json(
+      { error: 'cannot decompose a Booster Pack into packs' },
+      { status: 422 }
+    );
+  }
+  if (sourceItem.packCount == null) {
     return NextResponse.json(
       { error: 'this product type is not decomposable' },
       { status: 422 }
     );
   }
 
-  // 5. qty_remaining = quantity - count(rips) - count(decompositions).
+  // 6. qty_remaining = quantity - count(rips) - count(decompositions).
   const [{ ripped }] = await db
     .select({ ripped: count() })
     .from(schema.rips)
@@ -74,42 +146,67 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  // 6. Look up the corresponding Booster Pack catalog row.
-  const packCatalog = await db.query.catalogItems.findFirst({
-    where: (ci, ops) =>
-      ops.and(
-        ops.eq(ci.kind, 'sealed'),
-        ops.eq(ci.productType, 'Booster Pack'),
-        sourceItem.setCode != null
-          ? ops.eq(ci.setCode, sourceItem.setCode)
-          : ops.and(ops.isNull(ci.setCode), ops.eq(ci.setName, sourceItem.setName ?? ''))
-      ),
-  });
-  if (!packCatalog) {
+  // 7. Resolve effective recipe.
+  const { recipe, persisted, usedBody } = await resolveRecipe(sourceItem, v.recipe);
+
+  if (recipe.length === 0) {
     return NextResponse.json(
       {
-        error: 'booster pack catalog row not found for this set',
-        setCode: sourceItem.setCode,
-        setName: sourceItem.setName,
+        error: 'recipe_required',
+        message: 'No saved or auto-derived recipe; provide a recipe in the request body.',
       },
       { status: 422 }
     );
   }
 
-  // 7. Snapshot source cost + compute per-pack cost.
+  // 8. Validate all pack catalog items exist and are kind='sealed'.
+  const packCatalogMap = new Map<number, { id: number; name: string }>();
+  for (const row of recipe) {
+    if (!packCatalogMap.has(row.packCatalogItemId)) {
+      const packItem = await db.query.catalogItems.findFirst({
+        where: eq(schema.catalogItems.id, row.packCatalogItemId),
+      });
+      if (!packItem || packItem.kind !== 'sealed') {
+        return NextResponse.json(
+          { error: 'invalid_pack_catalog', packCatalogItemId: row.packCatalogItemId },
+          { status: 422 }
+        );
+      }
+      packCatalogMap.set(packItem.id, packItem);
+    }
+  }
+
+  // 9. Compute totals.
+  const totalPacks = recipe.reduce((sum, r) => sum + r.quantity, 0);
   const sourceCostCents = sourcePurchase.costCents;
-  const packCount = sourceItem.packCount;
   const { perPackCostCents, roundingResidualCents } = computePerPackCost(
     sourceCostCents,
-    packCount
+    totalPacks
   );
 
-  // 8. Transaction: insert decomposition + child pack purchase atomically.
+  // 10. Transaction: persist recipe if needed, insert decomposition, insert N child purchases.
   const today = new Date().toISOString().slice(0, 10);
   const decomposeDate = v.decomposeDate ?? today;
 
   try {
     const result = await db.transaction(async (tx) => {
+      // Persist recipe when: caller supplied it (usedBody) or auto-derived (not yet persisted).
+      if (usedBody || (!usedBody && !persisted)) {
+        await tx
+          .delete(schema.catalogPackCompositions)
+          .where(
+            eq(schema.catalogPackCompositions.sourceCatalogItemId, sourceItem.id)
+          );
+        for (let i = 0; i < recipe.length; i++) {
+          await tx.insert(schema.catalogPackCompositions).values({
+            sourceCatalogItemId: sourceItem.id,
+            packCatalogItemId: recipe[i].packCatalogItemId,
+            quantity: recipe[i].quantity,
+            displayOrder: i,
+          });
+        }
+      }
+
       const [decomposition] = await tx
         .insert(schema.boxDecompositions)
         .values({
@@ -117,34 +214,38 @@ export async function POST(request: NextRequest) {
           sourcePurchaseId: sourcePurchase.id,
           decomposeDate,
           sourceCostCents,
-          packCount,
+          packCount: totalPacks,
           perPackCostCents,
           roundingResidualCents,
           notes: v.notes ?? null,
         })
         .returning();
 
-      const [packPurchase] = await tx
-        .insert(schema.purchases)
-        .values({
-          userId: user.id,
-          catalogItemId: packCatalog.id,
-          purchaseDate: decomposeDate,
-          quantity: packCount,
-          costCents: perPackCostCents,
-          condition: null,
-          isGraded: false,
-          gradingCompany: null,
-          grade: null,
-          certNumber: null,
-          source: null,
-          location: null,
-          notes: null,
-          sourceDecompositionId: decomposition.id,
-        })
-        .returning();
+      const packPurchases = [];
+      for (const row of recipe) {
+        const [packPurchase] = await tx
+          .insert(schema.purchases)
+          .values({
+            userId: user.id,
+            catalogItemId: row.packCatalogItemId,
+            purchaseDate: decomposeDate,
+            quantity: row.quantity,
+            costCents: perPackCostCents,
+            condition: null,
+            isGraded: false,
+            gradingCompany: null,
+            grade: null,
+            certNumber: null,
+            source: null,
+            location: null,
+            notes: null,
+            sourceDecompositionId: decomposition.id,
+          })
+          .returning();
+        packPurchases.push(packPurchase);
+      }
 
-      return { decomposition, packPurchase };
+      return { decomposition, packPurchases };
     });
 
     return NextResponse.json(result, { status: 201 });

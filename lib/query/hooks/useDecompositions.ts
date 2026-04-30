@@ -67,6 +67,7 @@ function invalidateAfterDecompositionMutation(
   qc.invalidateQueries({ queryKey: ['dashboardTotals'] });
   qc.invalidateQueries({ queryKey: ['decompositions'] });
   qc.invalidateQueries({ queryKey: ['purchases'] });
+  qc.invalidateQueries({ queryKey: ['catalogComposition'] });
   for (const id of affectedCatalogIds) {
     qc.invalidateQueries({ queryKey: ['holding', id] });
   }
@@ -100,6 +101,33 @@ export function useCreateDecomposition() {
         variables._packCatalogItemId,
       ]);
     },
+  });
+}
+
+export type CatalogCompositionDto = {
+  sourceCatalogItemId: number;
+  sourceName: string;
+  sourcePackCount: number | null;
+  sourceProductType: string | null;
+  recipe: Array<{
+    packCatalogItemId: number;
+    quantity: number;
+    packName: string;
+    packSetName: string | null;
+    packImageUrl: string | null;
+  }> | null;
+  persisted: boolean;
+  suggested: boolean;
+};
+
+export function useCatalogComposition(catalogItemId: number | null) {
+  return useQuery({
+    queryKey: ['catalogComposition', catalogItemId],
+    queryFn: async () => {
+      const res = await fetch(`/api/catalog/${catalogItemId}/composition`);
+      return json<CatalogCompositionDto>(res);
+    },
+    enabled: catalogItemId != null && Number.isFinite(catalogItemId),
   });
 }
 
