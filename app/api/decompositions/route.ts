@@ -41,27 +41,8 @@ async function resolveRecipe(
     };
   }
 
-  // 3. Auto-derive: same-set Booster Pack with qty = packCount.
-  if (sourceItem.packCount != null) {
-    const packCatalog = await db.query.catalogItems.findFirst({
-      where: (ci, ops) =>
-        ops.and(
-          ops.eq(ci.kind, 'sealed'),
-          ops.eq(ci.productType, 'Booster Pack'),
-          sourceItem.setCode != null
-            ? ops.eq(ci.setCode, sourceItem.setCode)
-            : ops.and(ops.isNull(ci.setCode), ops.eq(ci.setName, sourceItem.setName ?? ''))
-        ),
-    });
-    if (packCatalog) {
-      return {
-        recipe: [{ packCatalogItemId: packCatalog.id, quantity: sourceItem.packCount }],
-        persisted: false,
-        usedBody: false,
-      };
-    }
-  }
-
+  // No auto-derive: same-set heuristics produced wrong recipes for cross-set
+  // blisters and Misc-set products. Caller must supply a recipe.
   return { recipe: [], persisted: false, usedBody: false };
 }
 

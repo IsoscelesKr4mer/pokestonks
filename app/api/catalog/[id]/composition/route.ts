@@ -45,7 +45,7 @@ export async function GET(
     packImageUrl: string | null;
   }> | null = null;
   let persisted = false;
-  let suggested = false;
+  const suggested = false;
 
   if (saved.length > 0) {
     persisted = true;
@@ -64,35 +64,10 @@ export async function GET(
         packImageUrl: p.imageUrl,
       };
     });
-  } else if (
-    sourceItem.kind === 'sealed' &&
-    sourceItem.productType !== 'Booster Pack' &&
-    sourceItem.packCount != null
-  ) {
-    // 2. Auto-derive from same-set Booster Pack.
-    const packCatalog = await db.query.catalogItems.findFirst({
-      where: (ci, ops) =>
-        ops.and(
-          ops.eq(ci.kind, 'sealed'),
-          ops.eq(ci.productType, 'Booster Pack'),
-          sourceItem.setCode != null
-            ? ops.eq(ci.setCode, sourceItem.setCode)
-            : ops.and(ops.isNull(ci.setCode), ops.eq(ci.setName, sourceItem.setName ?? ''))
-        ),
-    });
-    if (packCatalog) {
-      suggested = true;
-      recipe = [
-        {
-          packCatalogItemId: packCatalog.id,
-          quantity: sourceItem.packCount,
-          packName: packCatalog.name,
-          packSetName: packCatalog.setName,
-          packImageUrl: packCatalog.imageUrl,
-        },
-      ];
-    }
   }
+  // No auto-derive: same-set Booster Pack heuristics produced wrong recipes
+  // for cross-set blisters and Misc-set products. User picks manually first
+  // time; recipe is saved on submit so subsequent opens pre-fill.
 
   return NextResponse.json({
     sourceCatalogItemId: numericId,
