@@ -7,3 +7,4 @@ export * from './userGradedValues';
 export * from './refreshRuns';
 export * from './rips';
 export * from './boxDecompositions';
+export * from './catalogPackCompositions';

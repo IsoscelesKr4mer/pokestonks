@@ -8,10 +8,17 @@ const isoDate = z
     return s <= today;
   }, 'Date cannot be in the future');
 
+export const recipeRowSchema = z.object({
+  packCatalogItemId: z.number().int().positive(),
+  quantity: z.number().int().positive(),
+});
+
 export const decompositionInputSchema = z.object({
   sourcePurchaseId: z.number().int().positive(),
   decomposeDate: isoDate.optional(),
   notes: z.string().max(1000).nullable().optional(),
+  recipe: z.array(recipeRowSchema).min(1).optional(),
 });
 
+export type RecipeRow = z.infer<typeof recipeRowSchema>;
 export type DecompositionInput = z.infer<typeof decompositionInputSchema>;
