@@ -10,10 +10,11 @@ import { StalePill } from '@/components/holdings/StalePill';
 import { UnpricedBadge } from '@/components/holdings/UnpricedBadge';
 import { SellButton } from '@/components/sales/SellButton';
 
-type SortKey = 'value' | 'pnl' | 'pnlPct' | 'cost' | 'qty' | 'name' | 'recent';
+type SortKey = 'marketPrice' | 'value' | 'pnl' | 'pnlPct' | 'cost' | 'qty' | 'name' | 'recent';
 
 const SORT_OPTIONS: { value: SortKey; label: string }[] = [
-  { value: 'value', label: 'Current value' },
+  { value: 'marketPrice', label: 'Market price' },
+  { value: 'value', label: 'Total value' },
   { value: 'pnl', label: 'P&L $' },
   { value: 'pnlPct', label: 'P&L %' },
   { value: 'cost', label: 'Cost basis' },
@@ -25,6 +26,12 @@ const SORT_OPTIONS: { value: SortKey; label: string }[] = [
 function sortHoldings(holdings: readonly HoldingPnL[], key: SortKey): HoldingPnL[] {
   const arr = [...holdings];
   switch (key) {
+    case 'marketPrice':
+      // Per-unit market price desc. Unpriced sink to the bottom.
+      return arr.sort((a, b) => {
+        if (a.priced !== b.priced) return a.priced ? -1 : 1;
+        return (b.lastMarketCents ?? 0) - (a.lastMarketCents ?? 0);
+      });
     case 'value':
       // Unpriced sink to the bottom; among priced, highest value first.
       return arr.sort((a, b) => {
@@ -56,7 +63,7 @@ function sortHoldings(holdings: readonly HoldingPnL[], key: SortKey): HoldingPnL
 export function HoldingsGrid({ initialHoldings }: { initialHoldings: HoldingPnL[] }) {
   const { data } = useHoldings();
   const holdings = data?.holdings ?? initialHoldings;
-  const [sortKey, setSortKey] = useState<SortKey>('value');
+  const [sortKey, setSortKey] = useState<SortKey>('marketPrice');
 
   const sortedHoldings = useMemo(() => sortHoldings(holdings, sortKey), [holdings, sortKey]);
 
