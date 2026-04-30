@@ -110,11 +110,24 @@ export const PACK_COUNT_BY_PRODUCT_TYPE: Record<string, number | null> = {
   'Booster Box': 36,
   'Booster Bundle': 6,
   'Elite Trainer Box': 9,
+  'Pokemon Center Elite Trainer Box': 11,
   'Build & Battle': 4,
-  'Collection Box': 4,
 };
 
+// Product types where the pack content is universally fixed: a known
+// number of booster packs, all from the same set as the source. Auto-derive
+// is safe for these; everything else requires user-supplied recipe.
+export const DETERMINISTIC_DECOMPOSITION_TYPES = new Set<string>([
+  'Booster Box',
+  'Booster Bundle',
+  'Elite Trainer Box',
+  'Pokemon Center Elite Trainer Box',
+  'Build & Battle',
+]);
+
 const SEALED_PATTERNS: Array<{ pattern: RegExp; productType: string }> = [
+  // More-specific pattern must come BEFORE the generic Elite Trainer Box match.
+  { pattern: /Pok[eé]mon Center Elite Trainer Box/i, productType: 'Pokemon Center Elite Trainer Box' },
   { pattern: /\bElite Trainer Box\b/i, productType: 'Elite Trainer Box' },
   { pattern: /\bBooster Box\b/i, productType: 'Booster Box' },
   { pattern: /\bBooster Bundle\b/i, productType: 'Booster Bundle' },

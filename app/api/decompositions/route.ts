@@ -4,6 +4,7 @@ import { createClient } from '@/lib/supabase/server';
 import { db, schema } from '@/lib/db/client';
 import { decompositionInputSchema } from '@/lib/validation/decomposition';
 import { computePerPackCost } from '@/lib/services/decompositions';
+import { DETERMINISTIC_DECOMPOSITION_TYPES } from '@/lib/services/tcgcsv';
 import type { RecipeRow } from '@/lib/validation/decomposition';
 
 // ---------------------------------------------------------------------------
@@ -17,7 +18,7 @@ type ResolvedRecipe = {
 };
 
 async function resolveRecipe(
-  sourceItem: { id: number; setCode: string | null; setName: string | null; packCount: number | null },
+  sourceItem: { id: number; productType: string | null; setCode: string | null; setName: string | null; packCount: number | null },
   bodyRecipe: RecipeRow[] | undefined
 ): Promise<ResolvedRecipe> {
   // 1. Use body recipe if provided.
@@ -41,8 +42,32 @@ async function resolveRecipe(
     };
   }
 
-  // No auto-derive: same-set heuristics produced wrong recipes for cross-set
-  // blisters and Misc-set products. Caller must supply a recipe.
+  // 3. Auto-derive for deterministic product types only.
+  if (
+    sourceItem.productType != null &&
+    DETERMINISTIC_DECOMPOSITION_TYPES.has(sourceItem.productType) &&
+    sourceItem.packCount != null
+  ) {
+    const packCatalog = await db.query.catalogItems.findFirst({
+      where: (ci, ops) =>
+        ops.and(
+          ops.eq(ci.kind, 'sealed'),
+          ops.eq(ci.productType, 'Booster Pack'),
+          sourceItem.setCode != null
+            ? ops.eq(ci.setCode, sourceItem.setCode)
+            : ops.and(ops.isNull(ci.setCode), ops.eq(ci.setName, sourceItem.setName ?? ''))
+        ),
+    });
+    if (packCatalog) {
+      return {
+        recipe: [{ packCatalogItemId: packCatalog.id, quantity: sourceItem.packCount }],
+        persisted: false,
+        usedBody: false,
+      };
+    }
+  }
+
+  // No saved recipe, no auto-derive applicable: caller must supply a recipe.
   return { recipe: [], persisted: false, usedBody: false };
 }
 

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { eq, asc } from 'drizzle-orm';
 import { createClient } from '@/lib/supabase/server';
 import { db, schema } from '@/lib/db/client';
+import { DETERMINISTIC_DECOMPOSITION_TYPES } from '@/lib/services/tcgcsv';
 
 export async function GET(
   _req: NextRequest,
@@ -45,7 +46,7 @@ export async function GET(
     packImageUrl: string | null;
   }> | null = null;
   let persisted = false;
-  const suggested = false;
+  let suggested = false;
 
   if (saved.length > 0) {
     persisted = true;
@@ -64,10 +65,37 @@ export async function GET(
         packImageUrl: p.imageUrl,
       };
     });
+  } else if (
+    sourceItem.kind === 'sealed' &&
+    sourceItem.productType != null &&
+    DETERMINISTIC_DECOMPOSITION_TYPES.has(sourceItem.productType) &&
+    sourceItem.packCount != null
+  ) {
+    // Auto-derive: same-set Booster Pack with qty = packCount.
+    // Only for product types where this is universally correct.
+    const packCatalog = await db.query.catalogItems.findFirst({
+      where: (ci, ops) =>
+        ops.and(
+          ops.eq(ci.kind, 'sealed'),
+          ops.eq(ci.productType, 'Booster Pack'),
+          sourceItem.setCode != null
+            ? ops.eq(ci.setCode, sourceItem.setCode)
+            : ops.and(ops.isNull(ci.setCode), ops.eq(ci.setName, sourceItem.setName ?? ''))
+        ),
+    });
+    if (packCatalog) {
+      suggested = true;
+      recipe = [
+        {
+          packCatalogItemId: packCatalog.id,
+          quantity: sourceItem.packCount,
+          packName: packCatalog.name,
+          packSetName: packCatalog.setName,
+          packImageUrl: packCatalog.imageUrl,
+        },
+      ];
+    }
   }
-  // No auto-derive: same-set Booster Pack heuristics produced wrong recipes
-  // for cross-set blisters and Misc-set products. User picks manually first
-  // time; recipe is saved on submit so subsequent opens pre-fill.
 
   return NextResponse.json({
     sourceCatalogItemId: numericId,

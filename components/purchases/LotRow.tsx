@@ -179,7 +179,7 @@ export function LotRow({
               >
                 Edit
               </button>
-              {onRip && catalogItem.kind === 'sealed' && (
+              {onRip && catalogItem.kind === 'sealed' && catalogItem.productType === 'Booster Pack' && (
                 <button
                   type="button"
                   role="menuitem"
@@ -192,22 +192,19 @@ export function LotRow({
                   Rip pack
                 </button>
               )}
-              {onOpenBox &&
-                catalogItem.kind === 'sealed' &&
-                catalogItem.packCount != null &&
-                catalogItem.packCount > 1 && (
-                  <button
-                    type="button"
-                    role="menuitem"
-                    onClick={() => {
-                      setMenuOpen(false);
-                      onOpenBox(lot);
-                    }}
-                    className="block w-full rounded-sm px-2 py-1.5 text-left hover:bg-muted"
-                  >
-                    Open box
-                  </button>
-                )}
+              {onOpenBox && catalogItem.kind === 'sealed' && catalogItem.productType !== 'Booster Pack' && (
+                <button
+                  type="button"
+                  role="menuitem"
+                  onClick={() => {
+                    setMenuOpen(false);
+                    onOpenBox(lot);
+                  }}
+                  className="block w-full rounded-sm px-2 py-1.5 text-left hover:bg-muted"
+                >
+                  Open box
+                </button>
+              )}
               <button
                 type="button"
                 role="menuitem"
