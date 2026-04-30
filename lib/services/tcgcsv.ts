@@ -1,8 +1,12 @@
 import Papa from 'papaparse';
 import pLimit from 'p-limit';
 
-export const POKEMON_CATEGORY_ID = 3;
-const TCGCSV_BASE = `https://tcgcsv.com/tcgplayer/${POKEMON_CATEGORY_ID}`;
+// Categories that contain genuine Pokemon sealed product:
+//   3  = Pokemon (main TCG)
+//   50 = Storage Albums (mini portfolios that include packs, etc.)
+export const POKEMON_CATEGORIES = [3, 50] as const;
+export const POKEMON_CATEGORY_ID = 3; // Kept for backwards compat with any external import
+const TCGCSV_BASE = `https://tcgcsv.com/tcgplayer`;
 const GROUP_CACHE_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 const GROUP_FANOUT_LIMIT = pLimit(10);
 // TCGCSV's edge rejects requests without a User-Agent (returns 401). Node's fetch
@@ -20,9 +24,11 @@ export type TcgcsvGroup = {
 };
 
 let groupCache: { fetchedAt: number; groups: TcgcsvGroup[] } | null = null;
+const groupCategoryById = new Map<number, number>();
 
 export function __resetGroupCacheForTests() {
   groupCache = null;
+  groupCategoryById.clear();
 }
 
 // Strip common TCGCSV name prefixes like "SV: ", "ME01: ", "POP: " so the
@@ -61,18 +67,38 @@ export async function getGroups(now: number = Date.now()): Promise<TcgcsvGroup[]
   if (groupFetchInflight) return groupFetchInflight;
   groupFetchInflight = (async () => {
     try {
-      const res = await fetch(`${TCGCSV_BASE}/groups`, {
-        headers: { Accept: 'application/json', 'User-Agent': USER_AGENT },
-      });
-      if (!res.ok) throw new Error(`TCGCSV groups fetch failed: ${res.status}`);
-      const body = (await res.json()) as { results: TcgcsvGroup[] };
-      groupCache = { fetchedAt: now, groups: body.results };
-      return body.results;
+      const allGroups: TcgcsvGroup[] = [];
+      for (const categoryId of POKEMON_CATEGORIES) {
+        const res = await fetch(`${TCGCSV_BASE}/${categoryId}/groups`, {
+          headers: { Accept: 'application/json', 'User-Agent': USER_AGENT },
+        });
+        if (!res.ok) throw new Error(`TCGCSV groups fetch failed: ${res.status} (cat ${categoryId})`);
+        const body = (await res.json()) as { results: TcgcsvGroup[] };
+        for (const g of body.results) {
+          // TCGCSV's group response may not always include categoryId; ensure it's set.
+          const tagged: TcgcsvGroup = { ...g, categoryId: g.categoryId ?? categoryId };
+          allGroups.push(tagged);
+          groupCategoryById.set(tagged.groupId, tagged.categoryId);
+        }
+      }
+      groupCache = { fetchedAt: now, groups: allGroups };
+      return allGroups;
     } finally {
       groupFetchInflight = null;
     }
   })();
   return groupFetchInflight;
+}
+
+async function getCategoryForGroup(groupId: number): Promise<number> {
+  if (!groupCategoryById.has(groupId)) {
+    await getGroups();
+  }
+  const cat = groupCategoryById.get(groupId);
+  if (cat == null) {
+    throw new Error(`tcgcsv: unknown group ${groupId} (call getGroups() first)`);
+  }
+  return cat;
 }
 
 export const PACK_COUNT_BY_PRODUCT_TYPE: Record<string, number | null> = {
@@ -169,7 +195,8 @@ export async function fetchProducts(groupId: number, now: number = Date.now()): 
   if (existing) return existing;
   const promise = (async () => {
     try {
-      const res = await fetch(`${TCGCSV_BASE}/${groupId}/products`, {
+      const categoryId = await getCategoryForGroup(groupId);
+      const res = await fetch(`${TCGCSV_BASE}/${categoryId}/${groupId}/products`, {
         headers: { Accept: 'application/json', 'User-Agent': USER_AGENT },
       });
       if (!res.ok) throw new Error(`tcgcsv products ${groupId} ${res.status}`);
@@ -206,7 +233,8 @@ export async function fetchPrices(groupId: number, now: number = Date.now()): Pr
   // and made every sealed price come back null.
   const promise = (async () => {
     try {
-      const res = await fetch(`${TCGCSV_BASE}/${groupId}/prices`, {
+      const categoryId = await getCategoryForGroup(groupId);
+      const res = await fetch(`${TCGCSV_BASE}/${categoryId}/${groupId}/prices`, {
         headers: { Accept: 'application/json', 'User-Agent': USER_AGENT },
       });
       if (!res.ok) throw new Error(`tcgcsv prices ${groupId} ${res.status}`);

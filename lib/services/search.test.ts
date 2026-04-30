@@ -87,12 +87,15 @@ describe('tokenizeQuery', () => {
   });
 });
 
+const emptyCat50Groups = { totalItems: 0, success: true, errors: [], results: [] };
+
 describe('searchSealedWithImport', () => {
   beforeEach(() => resetAllCaches());
 
   function mockApi() {
     server.use(
       http.get('https://tcgcsv.com/tcgplayer/3/groups', () => HttpResponse.json(groupsFixture)),
+      http.get('https://tcgcsv.com/tcgplayer/50/groups', () => HttpResponse.json(emptyCat50Groups)),
       http.get('https://tcgcsv.com/tcgplayer/3/23237/products', () => HttpResponse.json(productsFixture)),
       http.get('https://tcgcsv.com/tcgplayer/3/23237/prices', () =>
         HttpResponse.json(sv151PricesFixture)
@@ -127,6 +130,7 @@ describe('searchCardsWithImport', () => {
         return HttpResponse.json(charizardFixture);
       }),
       http.get('https://tcgcsv.com/tcgplayer/3/groups', () => HttpResponse.json(groupsFixture)),
+      http.get('https://tcgcsv.com/tcgplayer/50/groups', () => HttpResponse.json(emptyCat50Groups)),
       http.get('https://tcgcsv.com/tcgplayer/3/23237/products', () => HttpResponse.json(productsFixture)),
       http.get('https://tcgcsv.com/tcgplayer/3/23237/prices', () =>
         HttpResponse.json(sv151PricesFixture)
@@ -205,6 +209,7 @@ describe('searchAll', () => {
         return HttpResponse.json(charizardFixture);
       }),
       http.get('https://tcgcsv.com/tcgplayer/3/groups', () => HttpResponse.json(groupsFixture)),
+      http.get('https://tcgcsv.com/tcgplayer/50/groups', () => HttpResponse.json(emptyCat50Groups)),
       http.get('https://tcgcsv.com/tcgplayer/3/23237/products', () => HttpResponse.json(productsFixture)),
       http.get('https://tcgcsv.com/tcgplayer/3/23237/prices', () =>
         HttpResponse.json(sv151PricesFixture)

@@ -12,6 +12,8 @@ function resetAllCaches() {
 
 import sv151PricesFixture from '../../tests/fixtures/tcgcsv-sv151-prices.json';
 
+const emptyCat50Groups = { totalItems: 0, success: true, errors: [], results: [] };
+
 describe('tcgcsv.getGroups', () => {
   beforeEach(() => resetAllCaches());
 
@@ -21,7 +23,8 @@ describe('tcgcsv.getGroups', () => {
       http.get('https://tcgcsv.com/tcgplayer/3/groups', () => {
         hits++;
         return HttpResponse.json(groupsFixture);
-      })
+      }),
+      http.get('https://tcgcsv.com/tcgplayer/50/groups', () => HttpResponse.json(emptyCat50Groups))
     );
     const groups = await getGroups();
     expect(hits).toBe(1);
@@ -36,7 +39,8 @@ describe('tcgcsv.getGroups', () => {
       http.get('https://tcgcsv.com/tcgplayer/3/groups', () => {
         hits++;
         return HttpResponse.json(groupsFixture);
-      })
+      }),
+      http.get('https://tcgcsv.com/tcgplayer/50/groups', () => HttpResponse.json(emptyCat50Groups))
     );
     await getGroups();
     await getGroups();
@@ -49,7 +53,8 @@ describe('tcgcsv.getGroups', () => {
       http.get('https://tcgcsv.com/tcgplayer/3/groups', () => {
         hits++;
         return HttpResponse.json(groupsFixture);
-      })
+      }),
+      http.get('https://tcgcsv.com/tcgplayer/50/groups', () => HttpResponse.json(emptyCat50Groups))
     );
     vi.useFakeTimers();
     vi.setSystemTime(new Date('2026-01-01T00:00:00Z'));
@@ -67,6 +72,7 @@ describe('tcgcsv.searchSealed', () => {
   function mockApi() {
     server.use(
       http.get('https://tcgcsv.com/tcgplayer/3/groups', () => HttpResponse.json(groupsFixture)),
+      http.get('https://tcgcsv.com/tcgplayer/50/groups', () => HttpResponse.json(emptyCat50Groups)),
       http.get('https://tcgcsv.com/tcgplayer/3/23237/products', () => HttpResponse.json(productsFixture)),
       http.get('https://tcgcsv.com/tcgplayer/3/23237/prices', () =>
         HttpResponse.json(sv151PricesFixture)
@@ -122,6 +128,8 @@ describe('tcgcsv.fetchSinglePrice', () => {
 
   it('returns the market price in cents for a known product', async () => {
     server.use(
+      http.get('https://tcgcsv.com/tcgplayer/3/groups', () => HttpResponse.json(groupsFixture)),
+      http.get('https://tcgcsv.com/tcgplayer/50/groups', () => HttpResponse.json(emptyCat50Groups)),
       http.get('https://tcgcsv.com/tcgplayer/3/23237/prices', () =>
         HttpResponse.json(sv151PricesFixture)
       )
@@ -134,6 +142,8 @@ describe('tcgcsv.fetchSinglePrice', () => {
 
   it('returns null when productId is not in the prices CSV', async () => {
     server.use(
+      http.get('https://tcgcsv.com/tcgplayer/3/groups', () => HttpResponse.json(groupsFixture)),
+      http.get('https://tcgcsv.com/tcgplayer/50/groups', () => HttpResponse.json(emptyCat50Groups)),
       http.get('https://tcgcsv.com/tcgplayer/3/23237/prices', () =>
         HttpResponse.json(sv151PricesFixture)
       )
@@ -144,6 +154,8 @@ describe('tcgcsv.fetchSinglePrice', () => {
 
   it('throws on 5xx', async () => {
     server.use(
+      http.get('https://tcgcsv.com/tcgplayer/3/groups', () => HttpResponse.json(groupsFixture)),
+      http.get('https://tcgcsv.com/tcgplayer/50/groups', () => HttpResponse.json(emptyCat50Groups)),
       http.get('https://tcgcsv.com/tcgplayer/3/23237/prices', () => new HttpResponse(null, { status: 502 }))
     );
     await expect(fetchSinglePrice({ groupId: 23237, productId: 1 })).rejects.toThrow();
