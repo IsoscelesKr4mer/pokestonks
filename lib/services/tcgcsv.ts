@@ -101,20 +101,17 @@ async function getCategoryForGroup(groupId: number): Promise<number> {
   return cat;
 }
 
+// Pack counts that are universal across all SKUs of a product type. Other
+// product types (Collection, Blister, Tin, Mini Portfolio, Pin Collection,
+// Premium Collection, ex Box, Booster Pack) have variable contents and
+// should not be auto-stamped -- their packCount stays null and the recipe
+// table (catalog_pack_compositions) drives decomposition.
 export const PACK_COUNT_BY_PRODUCT_TYPE: Record<string, number | null> = {
   'Booster Box': 36,
   'Booster Bundle': 6,
   'Elite Trainer Box': 9,
   'Build & Battle': 4,
-  'Premium Collection': 6,
-  'ex Box': 6,
-  'Tin': 3,
-  'Pin Collection': 3,
   'Collection Box': 4,
-  'Collection': 4,
-  'Mini Portfolio': 1,
-  'Blister': 3,
-  'Booster Pack': 1,
 };
 
 const SEALED_PATTERNS: Array<{ pattern: RegExp; productType: string }> = [

@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'source catalog item not found' }, { status: 404 });
   }
 
-  // 5. Gate: must be a sealed product, not a Booster Pack itself, and must have packCount.
+  // 5. Gate: must be a sealed product and not a Booster Pack itself.
   if (sourceItem.kind !== 'sealed') {
     return NextResponse.json(
       { error: 'decompose source must be a sealed lot' },
@@ -103,12 +103,9 @@ export async function POST(request: NextRequest) {
       { status: 422 }
     );
   }
-  if (sourceItem.packCount == null) {
-    return NextResponse.json(
-      { error: 'this product type is not decomposable' },
-      { status: 422 }
-    );
-  }
+  // No packCount gate. Decomposability is determined by productType (any
+  // sealed product that isn't a Booster Pack). The recipe table is the
+  // source of truth for what's inside.
 
   // 6. qty_remaining = quantity - count(rips) - count(decompositions).
   const [{ ripped }] = await db
