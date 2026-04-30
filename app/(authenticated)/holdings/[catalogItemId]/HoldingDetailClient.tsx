@@ -235,12 +235,12 @@ export function HoldingDetailClient({
               };
               const consumed = consumedUnitsByLot.get(lot.id) ?? 0;
               const qtyRemaining = lot.quantity - consumed;
-              const canRip = isSealed && qtyRemaining > 0;
-              const canOpenBox =
-                isSealed &&
-                detail.item.packCount != null &&
-                detail.item.packCount > 1 &&
-                qtyRemaining > 0;
+              const isBoosterPack = detail.item.productType === 'Booster Pack';
+              // Rip Pack: only on actual Booster Packs.
+              const canRip = isSealed && isBoosterPack && qtyRemaining > 0;
+              // Open Box: any sealed product that isn't a Booster Pack itself.
+              // Recipe table determines what's inside; pack_count not required.
+              const canOpenBox = isSealed && !isBoosterPack && qtyRemaining > 0;
               return (
                 <LotRow
                   key={lot.id}
