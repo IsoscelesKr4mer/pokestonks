@@ -1,4 +1,5 @@
 'use client';
+import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useHoldings } from '@/lib/query/hooks/useHoldings';
 import { getImageUrl } from '@/lib/utils/images';
@@ -9,9 +10,55 @@ import { StalePill } from '@/components/holdings/StalePill';
 import { UnpricedBadge } from '@/components/holdings/UnpricedBadge';
 import { SellButton } from '@/components/sales/SellButton';
 
+type SortKey = 'value' | 'pnl' | 'pnlPct' | 'cost' | 'qty' | 'name' | 'recent';
+
+const SORT_OPTIONS: { value: SortKey; label: string }[] = [
+  { value: 'value', label: 'Current value' },
+  { value: 'pnl', label: 'P&L $' },
+  { value: 'pnlPct', label: 'P&L %' },
+  { value: 'cost', label: 'Cost basis' },
+  { value: 'qty', label: 'Quantity' },
+  { value: 'name', label: 'Name (A-Z)' },
+  { value: 'recent', label: 'Recently added' },
+];
+
+function sortHoldings(holdings: readonly HoldingPnL[], key: SortKey): HoldingPnL[] {
+  const arr = [...holdings];
+  switch (key) {
+    case 'value':
+      // Unpriced sink to the bottom; among priced, highest value first.
+      return arr.sort((a, b) => {
+        if (a.priced !== b.priced) return a.priced ? -1 : 1;
+        return (b.currentValueCents ?? 0) - (a.currentValueCents ?? 0);
+      });
+    case 'pnl':
+      return arr.sort((a, b) => {
+        if (a.priced !== b.priced) return a.priced ? -1 : 1;
+        return (b.pnlCents ?? 0) - (a.pnlCents ?? 0);
+      });
+    case 'pnlPct':
+      return arr.sort((a, b) => {
+        if (a.priced !== b.priced) return a.priced ? -1 : 1;
+        return (b.pnlPct ?? 0) - (a.pnlPct ?? 0);
+      });
+    case 'cost':
+      return arr.sort((a, b) => b.totalInvestedCents - a.totalInvestedCents);
+    case 'qty':
+      return arr.sort((a, b) => b.qtyHeld - a.qtyHeld);
+    case 'name':
+      return arr.sort((a, b) => a.name.localeCompare(b.name));
+    case 'recent':
+      // Server already returns recent-first order; preserve it.
+      return arr;
+  }
+}
+
 export function HoldingsGrid({ initialHoldings }: { initialHoldings: HoldingPnL[] }) {
   const { data } = useHoldings();
   const holdings = data?.holdings ?? initialHoldings;
+  const [sortKey, setSortKey] = useState<SortKey>('value');
+
+  const sortedHoldings = useMemo(() => sortHoldings(holdings, sortKey), [holdings, sortKey]);
 
   if (holdings.length === 0) {
     return (
@@ -27,8 +74,22 @@ export function HoldingsGrid({ initialHoldings }: { initialHoldings: HoldingPnL[
   }
 
   return (
-    <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-      {holdings.map((h) => (
+    <div className="space-y-4">
+      <div className="flex items-center justify-end gap-2">
+        <label htmlFor="sort" className="text-xs text-muted-foreground">Sort by</label>
+        <select
+          id="sort"
+          value={sortKey}
+          onChange={(e) => setSortKey(e.target.value as SortKey)}
+          className="rounded-md border bg-background px-2 py-1 text-xs"
+        >
+          {SORT_OPTIONS.map((o) => (
+            <option key={o.value} value={o.value}>{o.label}</option>
+          ))}
+        </select>
+      </div>
+      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+      {sortedHoldings.map((h) => (
         <div
           key={h.catalogItemId}
           className="group flex flex-col rounded-lg border bg-card p-3 transition hover:border-foreground/20"
@@ -94,6 +155,7 @@ export function HoldingsGrid({ initialHoldings }: { initialHoldings: HoldingPnL[
           </div>
         </div>
       ))}
+      </div>
     </div>
   );
 }
