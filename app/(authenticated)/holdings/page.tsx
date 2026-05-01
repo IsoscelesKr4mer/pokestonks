@@ -4,6 +4,7 @@ import { HoldingsGrid } from './HoldingsGrid';
 import { aggregateHoldings, type RawPurchaseRow, type RawRipRow, type RawDecompositionRow, type RawSaleRow } from '@/lib/services/holdings';
 import { computeHoldingPnL } from '@/lib/services/pnl';
 import { formatCents } from '@/lib/utils/format';
+import { RefreshHeldButton } from '@/components/prices/RefreshHeldButton';
 
 export default async function HoldingsPage() {
   const supabase = await createClient();
@@ -47,13 +48,14 @@ export default async function HoldingsPage() {
 
   return (
     <div className="mx-auto w-full max-w-[1200px] px-6 md:px-8 py-10">
-      <div className="flex items-end justify-between pb-[18px] border-b border-divider">
+      <div className="flex items-end justify-between gap-4 pb-[18px] border-b border-divider">
         <div className="grid gap-1">
           <h1 className="text-[32px] font-semibold tracking-[-0.02em] leading-none">Holdings</h1>
           <div className="text-[12px] font-mono text-meta">
             {totals.lotCount} LOTS · {totals.pricedCount} PRICED · {totals.unpricedCount} UNPRICED · {formatCents(totals.totalInvestedCents)} INVESTED
           </div>
         </div>
+        <RefreshHeldButton />
       </div>
       <div className="mt-6">
         <HoldingsGrid initialHoldings={holdingsPnL} />
