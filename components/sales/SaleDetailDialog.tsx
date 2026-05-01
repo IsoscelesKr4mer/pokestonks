@@ -67,7 +67,7 @@ export function SaleDetailDialog({ open, onOpenChange, saleGroupId }: Props) {
             disabled={!data || del.isPending}
             onClick={() => {
               if (!data) return;
-              del.mutate({ saleGroupId: data.saleGroupId, _catalogItemId: data.catalogItem.id }, { onSuccess: () => onOpenChange(false) });
+              del.mutate({ saleGroupId: data.saleGroupId, catalogItemIdForInvalidation: data.catalogItem.id }, { onSuccess: () => onOpenChange(false) });
             }}
           >
             {del.isPending ? 'Undoing...' : 'Undo sale'}

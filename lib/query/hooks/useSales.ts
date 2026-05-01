@@ -1,46 +1,17 @@
 'use client';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import type { SaleCreateInput } from '@/lib/validation/sale';
+import type { SaleEvent } from '@/lib/types/sales';
+
+export type { SaleEvent };
+/** @deprecated Use SaleEvent from '@/lib/types/sales' instead. */
+export type SaleEventDto = SaleEvent;
 
 const json = <T,>(res: Response) =>
   res.json().then((b) => {
     if (!res.ok) throw new Error((b as { error?: string }).error ?? `HTTP ${res.status}`);
     return b as T;
   });
-
-export type SaleEventDto = {
-  saleGroupId: string;
-  saleDate: string;
-  platform: string | null;
-  notes: string | null;
-  catalogItem: {
-    id: number;
-    name: string;
-    setName: string | null;
-    productType: string | null;
-    kind: 'sealed' | 'card';
-    imageUrl: string | null;
-    imageStoragePath: string | null;
-  };
-  totals: {
-    quantity: number;
-    salePriceCents: number;
-    feesCents: number;
-    matchedCostCents: number;
-    realizedPnLCents: number;
-  };
-  rows: Array<{
-    saleId: number;
-    purchaseId: number;
-    purchaseDate: string;
-    perUnitCostCents: number;
-    quantity: number;
-    salePriceCents: number;
-    feesCents: number;
-    matchedCostCents: number;
-  }>;
-  createdAt: string;
-};
 
 export type SalesListFilters = {
   start?: string;
@@ -64,7 +35,7 @@ export function useSales(filters: SalesListFilters = {}) {
     queryKey: ['sales', 'list', filters],
     queryFn: async () => {
       const res = await fetch(`/api/sales${qs ? `?${qs}` : ''}`);
-      return json<{ sales: SaleEventDto[]; nextOffset: number | null }>(res);
+      return json<{ sales: SaleEvent[]; nextOffset: number | null }>(res);
     },
     staleTime: 30_000,
   });
@@ -75,7 +46,7 @@ export function useSale(saleGroupId: string | null) {
     queryKey: ['sale', saleGroupId],
     queryFn: async () => {
       const res = await fetch(`/api/sales/${saleGroupId}`);
-      return json<SaleEventDto>(res);
+      return json<SaleEvent>(res);
     },
     enabled: saleGroupId != null,
   });
@@ -159,13 +130,19 @@ export function useCreateSale() {
 export function useDeleteSale() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async ({ saleGroupId, _catalogItemId }: { saleGroupId: string; _catalogItemId: number }) => {
+    mutationFn: async ({
+      saleGroupId,
+      catalogItemIdForInvalidation,
+    }: {
+      saleGroupId: string;
+      catalogItemIdForInvalidation: number;
+    }) => {
       const res = await fetch(`/api/sales/${saleGroupId}`, { method: 'DELETE' });
       if (res.status === 204) return { saleGroupId };
       return json<{ error: string }>(res);
     },
     onSuccess: (_data, variables) => {
-      invalidateAfterSaleMutation(qc, variables._catalogItemId);
+      invalidateAfterSaleMutation(qc, variables.catalogItemIdForInvalidation);
     },
   });
 }
