@@ -4,7 +4,11 @@ import pLimit from 'p-limit';
 import { parseArchiveCsv, type ArchivePriceRow } from './tcgcsv-archive';
 
 const TCGCSV_BASE = 'https://tcgcsv.com/tcgplayer';
-const PARALLEL = 8;
+// Vercel-to-TCGCSV outbound latency runs ~1.5-2s per group fetch (much
+// higher than local). With ~220 Pokemon groups across cat 3 + cat 50,
+// pLimit(8) hit Vercel's 60s function timeout. 32 finishes comfortably
+// while staying polite to TCGCSV's CloudFront.
+const PARALLEL = 32;
 
 // TCGCSV's CloudFront WAF rejects requests with empty / Node default
 // User-Agent (returns 401). Send a proper UA on every request.
