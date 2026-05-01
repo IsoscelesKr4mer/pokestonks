@@ -4,7 +4,9 @@ import { db, schema } from '@/lib/db/client';
 import { eq } from 'drizzle-orm';
 import { snapshotAllCatalogItems } from '@/lib/services/price-snapshots';
 
-export const maxDuration = 60;
+// Pro tier max. Pokemon catalog spans ~100+ TCGCSV groups when fully built;
+// Vercel-to-TCGCSV outbound is the bottleneck.
+export const maxDuration = 300;
 
 export async function GET(req: Request) {
   const secret = process.env.CRON_SECRET;
