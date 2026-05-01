@@ -47,4 +47,10 @@ describe('<HoldingThumbnail>', () => {
     render(<HoldingThumbnail {...baseProps} ownedQty={0} />);
     expect(screen.queryByText(/Owned/)).toBeNull();
   });
+
+  it('falls back to placeholder when no image is provided', () => {
+    render(<HoldingThumbnail {...baseProps} imageUrl={null} imageStoragePath={null} />);
+    const img = screen.getByAltText('SV 151 ETB') as HTMLImageElement;
+    expect(img.src).toContain('/placeholder.svg');
+  });
 });
