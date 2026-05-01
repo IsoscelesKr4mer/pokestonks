@@ -57,8 +57,8 @@ export function PortfolioHero({
     <div className="grid gap-8">
       <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-8 items-end">
         <div className="grid gap-3">
-          <div className="flex items-center justify-between gap-4 text-[10px] uppercase tracking-[0.18em] font-mono">
-            <div className="text-meta">
+          <div className="flex items-center justify-between gap-4">
+            <div className="text-[10px] uppercase tracking-[0.18em] text-meta font-mono">
               Vault total · {new Date().toISOString().slice(0, 10)}
             </div>
             <RefreshHeldButton />

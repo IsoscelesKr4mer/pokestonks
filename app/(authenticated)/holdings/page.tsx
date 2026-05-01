@@ -51,14 +51,11 @@ export default async function HoldingsPage() {
       <div className="flex items-end justify-between gap-4 pb-[18px] border-b border-divider">
         <div className="grid gap-1">
           <h1 className="text-[32px] font-semibold tracking-[-0.02em] leading-none">Holdings</h1>
-          <div className="text-[12px] font-mono text-meta flex flex-wrap items-center gap-x-2">
-            <span>
-              {totals.lotCount} LOTS · {totals.pricedCount} PRICED · {totals.unpricedCount} UNPRICED · {formatCents(totals.totalInvestedCents)} INVESTED
-            </span>
-            <span className="text-meta-dim" aria-hidden="true">·</span>
-            <RefreshHeldButton />
+          <div className="text-[12px] font-mono text-meta">
+            {totals.lotCount} LOTS · {totals.pricedCount} PRICED · {totals.unpricedCount} UNPRICED · {formatCents(totals.totalInvestedCents)} INVESTED
           </div>
         </div>
+        <RefreshHeldButton />
       </div>
       <div className="mt-6">
         <HoldingsGrid initialHoldings={holdingsPnL} />

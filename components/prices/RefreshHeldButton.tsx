@@ -5,23 +5,16 @@ import { useRefreshHeld, getLastRefreshHeldAt } from '@/lib/query/hooks/useRefre
 const DEBOUNCE_MS = 60_000;
 
 function formatRefreshedAgo(iso: string | null): string {
-  if (!iso) return '';
+  if (!iso) return 'Never refreshed';
   const ms = Date.now() - Date.parse(iso);
-  if (ms < 60_000) return 'just now';
+  if (ms < 60_000) return 'Refreshed just now';
   const mins = Math.floor(ms / 60_000);
-  if (mins < 60) return `${mins}m ago`;
+  if (mins < 60) return `Refreshed ${mins} min ago`;
   const hours = Math.floor(mins / 60);
-  if (hours < 24) return `${hours}h ago`;
-  const days = Math.floor(hours / 24);
-  return `${days}d ago`;
+  if (hours < 24) return `Refreshed ${hours}h ago`;
+  return 'Refreshed > 1 day ago';
 }
 
-/**
- * Inline refresh affordance designed to sit alongside other mono caption
- * text (dashboard hero overline, holdings header tally, etc.). Inherits
- * font-size and tracking from its parent — does NOT impose its own
- * background, border, or typographic scale.
- */
 export function RefreshHeldButton() {
   const refresh = useRefreshHeld();
   const [lastAt, setLastAt] = useState<string | null>(null);
@@ -39,26 +32,18 @@ export function RefreshHeldButton() {
 
   const debounced = lastAt != null && Date.now() - Date.parse(lastAt) < DEBOUNCE_MS;
   const disabled = refresh.isPending || debounced;
-  const ago = formatRefreshedAgo(lastAt);
 
   return (
-    <button
-      type="button"
-      onClick={() => refresh.mutate()}
-      disabled={disabled}
-      title={lastAt ? `Last refreshed ${new Date(lastAt).toLocaleString()}` : 'Refresh held prices'}
-      className="inline-flex items-center gap-1.5 text-meta hover:text-text disabled:hover:text-meta disabled:opacity-50 transition-colors cursor-pointer disabled:cursor-default"
-    >
-      <span aria-hidden="true" className={refresh.isPending ? 'animate-spin' : ''}>
-        ↻
-      </span>
-      <span>
-        {refresh.isPending
-          ? 'Refreshing'
-          : ago
-          ? `Refresh · ${ago}`
-          : 'Refresh'}
-      </span>
-    </button>
+    <div className="flex items-center gap-2.5 font-mono text-[10px]">
+      <span className="uppercase tracking-[0.14em] text-meta">{formatRefreshedAgo(lastAt)}</span>
+      <button
+        type="button"
+        onClick={() => refresh.mutate()}
+        disabled={disabled}
+        className="px-3 py-1.5 rounded-2xl border border-divider bg-vault text-[11px] font-mono uppercase tracking-[0.12em] text-text hover:text-accent hover:border-accent disabled:opacity-40 disabled:hover:text-text disabled:hover:border-divider transition-colors"
+      >
+        {refresh.isPending ? 'Refreshing' : 'Refresh now'}
+      </button>
+    </div>
   );
 }

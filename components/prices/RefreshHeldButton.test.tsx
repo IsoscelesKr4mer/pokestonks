@@ -31,9 +31,7 @@ describe('<RefreshHeldButton>', () => {
 
   it('renders Refresh button enabled when no recent refresh', () => {
     render(withQuery(<RefreshHeldButton />));
-    const btn = screen.getByRole('button', { name: /Refresh/i });
-    expect(btn).not.toBeDisabled();
-    // No prior refresh in localStorage → just shows "Refresh"
-    expect(btn.textContent).toMatch(/Refresh/i);
+    expect(screen.getByRole('button', { name: /Refresh/i })).not.toBeDisabled();
+    expect(screen.getByText(/Never refreshed/i)).toBeInTheDocument();
   });
 });
