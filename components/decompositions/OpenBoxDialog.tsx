@@ -4,9 +4,6 @@ import { useQuery } from '@tanstack/react-query';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import {
@@ -14,7 +11,14 @@ import {
   useCatalogComposition,
 } from '@/lib/query/hooks/useDecompositions';
 import { computePerPackCost } from '@/lib/services/decompositions';
-import { formatCents } from '@/lib/utils/format';
+import { formatCents, formatCentsSigned } from '@/lib/utils/format';
+import {
+  VaultDialogHeader,
+  FormSection,
+  FormLabel,
+  FormHint,
+  DialogActions,
+} from '@/components/ui/dialog-form';
 
 export type OpenBoxSourceLot = {
   purchaseId: number;
@@ -43,11 +47,6 @@ type PackSearchResult = {
   productType: string | null;
   imageUrl: string | null;
 };
-
-function formatSignedCents(cents: number): string {
-  const sign = cents < 0 ? '-' : cents > 0 ? '+' : '';
-  return `${sign}${formatCents(Math.abs(cents))}`;
-}
 
 export function OpenBoxDialog({
   open,
@@ -170,13 +169,10 @@ export function OpenBoxDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
-        <DialogHeader>
-          <DialogTitle>Open box</DialogTitle>
-          <DialogDescription>
-            Pick the booster pack(s) inside; the cost basis splits evenly across
-            them.
-          </DialogDescription>
-        </DialogHeader>
+        <VaultDialogHeader
+          title="Open box"
+          sub="Pick the booster pack(s) inside; the cost basis splits evenly across them."
+        />
 
         {/* Source info card */}
         <div className="flex items-center gap-3 rounded-lg border p-3">
@@ -201,11 +197,9 @@ export function OpenBoxDialog({
         </div>
 
         {/* Pack contents section */}
-        <div className="space-y-2">
+        <FormSection>
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-              Pack contents
-            </span>
+            <FormLabel>Pack contents</FormLabel>
             {recipe.length > 0 && !showPicker && (
               <Button
                 type="button"
@@ -343,7 +337,7 @@ export function OpenBoxDialog({
               )}
             </div>
           )}
-        </div>
+        </FormSection>
 
         {/* Cost preview */}
         {recipe.length > 0 && (
@@ -362,16 +356,17 @@ export function OpenBoxDialog({
             <div className="mt-1 text-xs">
               at <span data-testid="decomp-per-pack">{formatCents(perPackCostCents)}</span> each
               {' - rounding residual: '}
-              <span data-testid="decomp-residual">{formatSignedCents(roundingResidualCents)}</span>
+              <span data-testid="decomp-residual">{formatCentsSigned(roundingResidualCents)}</span>
             </div>
+            {totalPacks > 0 && (
+              <FormHint>Source: {totalPacks} pack{totalPacks === 1 ? '' : 's'} in recipe</FormHint>
+            )}
           </div>
         )}
 
         {/* Notes */}
-        <label className="block space-y-1.5">
-          <span className="text-xs uppercase tracking-wide text-muted-foreground">
-            Notes (optional)
-          </span>
+        <FormSection>
+          <FormLabel>Notes (optional)</FormLabel>
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
@@ -379,7 +374,7 @@ export function OpenBoxDialog({
             rows={2}
             className="block w-full rounded-md border bg-background px-3 py-2 text-sm"
           />
-        </label>
+        </FormSection>
 
         {/* Error display */}
         {error && (
@@ -388,7 +383,7 @@ export function OpenBoxDialog({
           </div>
         )}
 
-        <div className="flex justify-end gap-2 border-t pt-4">
+        <DialogActions>
           <Button
             type="button"
             variant="ghost"
@@ -400,7 +395,7 @@ export function OpenBoxDialog({
           <Button type="button" onClick={handleSubmit} disabled={isSubmitDisabled}>
             {createMutation.isPending ? 'Opening...' : 'Open box'}
           </Button>
-        </div>
+        </DialogActions>
       </DialogContent>
     </Dialog>
   );
