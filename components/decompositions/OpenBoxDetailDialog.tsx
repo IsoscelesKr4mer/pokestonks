@@ -2,21 +2,18 @@
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import {
   useDecomposition,
   useDeleteDecomposition,
 } from '@/lib/query/hooks/useDecompositions';
-import { formatCents } from '@/lib/utils/format';
-
-function formatSignedCents(cents: number): string {
-  const sign = cents < 0 ? '-' : cents > 0 ? '+' : '';
-  return `${sign}${formatCents(Math.abs(cents))}`;
-}
+import { formatCents, formatCentsSigned } from '@/lib/utils/format';
+import {
+  VaultDialogHeader,
+  FormSection,
+  DialogActions,
+} from '@/components/ui/dialog-form';
 
 export function OpenBoxDetailDialog({
   open,
@@ -57,47 +54,53 @@ export function OpenBoxDetailDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-xl">
-        <DialogHeader>
-          <DialogTitle>Decomposition details</DialogTitle>
-          <DialogDescription>Review the open-box event, then optionally undo it.</DialogDescription>
-        </DialogHeader>
+        <VaultDialogHeader
+          title="Decomposition details"
+          sub="Review the open-box event, then optionally undo it."
+        />
 
         {isLoading || !data ? (
           <div className="h-32 animate-pulse rounded bg-muted" />
         ) : (
           <div className="space-y-4">
-            <div className="rounded-md border p-3 text-sm">
-              <div className="text-xs uppercase tracking-wide text-muted-foreground">Box</div>
-              <div className="font-medium">{data.sourceCatalogItem?.name ?? '(deleted)'}</div>
-              <div className="mt-1 text-xs text-muted-foreground">
-                Opened {data.decomposition.decomposeDate} · Cost basis{' '}
-                {formatCents(data.decomposition.sourceCostCents)}
+            <FormSection>
+              <div className="rounded-md border p-3 text-sm">
+                <div className="text-xs uppercase tracking-wide text-muted-foreground">Box</div>
+                <div className="font-medium">{data.sourceCatalogItem?.name ?? '(deleted)'}</div>
+                <div className="mt-1 text-xs text-muted-foreground">
+                  Opened {data.decomposition.decomposeDate} · Cost basis{' '}
+                  {formatCents(data.decomposition.sourceCostCents)}
+                </div>
               </div>
-            </div>
+            </FormSection>
 
-            <div className="rounded-md border p-3 text-sm">
-              <div className="text-xs uppercase tracking-wide text-muted-foreground">
-                Resulting pack lot
+            <FormSection>
+              <div className="rounded-md border p-3 text-sm">
+                <div className="text-xs uppercase tracking-wide text-muted-foreground">
+                  Resulting pack lot
+                </div>
+                <div className="font-medium">
+                  {data.decomposition.packCount} x {data.packCatalogItem?.name ?? '(deleted)'}
+                </div>
+                <div className="mt-1 text-xs text-muted-foreground">
+                  at {formatCents(data.decomposition.perPackCostCents)} each · rounding residual{' '}
+                  {formatCentsSigned(data.decomposition.roundingResidualCents)}
+                </div>
               </div>
-              <div className="font-medium">
-                {data.decomposition.packCount} × {data.packCatalogItem?.name ?? '(deleted)'}
-              </div>
-              <div className="mt-1 text-xs text-muted-foreground">
-                at {formatCents(data.decomposition.perPackCostCents)} each · rounding residual{' '}
-                {formatSignedCents(data.decomposition.roundingResidualCents)}
-              </div>
-            </div>
+            </FormSection>
 
             {data.decomposition.notes && (
-              <div className="rounded-md border p-3 text-sm">
-                <div className="text-xs uppercase tracking-wide text-muted-foreground">Notes</div>
-                <div className="whitespace-pre-wrap">{data.decomposition.notes}</div>
-              </div>
+              <FormSection>
+                <div className="rounded-md border p-3 text-sm">
+                  <div className="text-xs uppercase tracking-wide text-muted-foreground">Notes</div>
+                  <div className="whitespace-pre-wrap">{data.decomposition.notes}</div>
+                </div>
+              </FormSection>
             )}
           </div>
         )}
 
-        <div className="flex justify-end gap-2 border-t pt-4">
+        <DialogActions>
           <Button type="button" variant="ghost" onClick={() => onOpenChange(false)}>
             Close
           </Button>
@@ -109,7 +112,7 @@ export function OpenBoxDetailDialog({
           >
             {undoMutation.isPending ? 'Undoing...' : 'Undo decomposition'}
           </Button>
-        </div>
+        </DialogActions>
       </DialogContent>
     </Dialog>
   );
