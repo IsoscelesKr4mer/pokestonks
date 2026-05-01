@@ -300,14 +300,12 @@ export function HoldingDetailClient({ initial }: { initial: HoldingDetailDto }) 
                   Rip pack
                 </Button>
               )}
-            {/* Show "Set price" prominently when unpriced; show small affordance otherwise (but not when manual is set -- chart's ManualPricePanel handles that) */}
+            {/* Manual price button only appears when actually useful: TCGCSV
+                hasn't priced this item. When manual override is already set,
+                the chart's <ManualPricePanel> handles edit/clear. When TCGCSV
+                has priced it, the button is just clutter. */}
             {item.lastMarketCents === null && (summary.manualMarketCents ?? null) === null && (
               <Button onClick={() => setSetPriceOpen(true)}>Set price</Button>
-            )}
-            {item.lastMarketCents !== null && (summary.manualMarketCents ?? null) === null && (
-              <Button variant="outline" onClick={() => setSetPriceOpen(true)}>
-                Set manual price
-              </Button>
             )}
           </div>
         </div>

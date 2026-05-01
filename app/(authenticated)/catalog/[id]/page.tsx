@@ -124,10 +124,15 @@ export default async function CatalogItemPage({ params }: { params: Promise<{ id
           {/* CTAs */}
           <div className="flex flex-wrap gap-2">
             <LogPurchaseCta catalogItemId={item.id} />
-            <SetManualPriceCta
-              catalogItemId={item.id}
-              initialCents={item.manualMarketCents ?? null}
-            />
+            {/* Manual price affordance only appears when it's actually useful:
+                - item is unpriced by TCGCSV (lastMarketCents null), OR
+                - already has a manual override the user might want to edit/clear */}
+            {(item.lastMarketCents == null || item.manualMarketCents != null) && (
+              <SetManualPriceCta
+                catalogItemId={item.id}
+                initialCents={item.manualMarketCents ?? null}
+              />
+            )}
           </div>
         </div>
       </div>
