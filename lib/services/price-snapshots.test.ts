@@ -155,6 +155,7 @@ describe('snapshotForItems', () => {
       prices: sample,
       groupsAttempted: 5,
       groupsFailed: 0,
+      categoriesFailed: [],
     });
     mockFindMany.mockResolvedValue([
       { id: 1, tcgplayerProductId: 101, manualMarketCents: null },

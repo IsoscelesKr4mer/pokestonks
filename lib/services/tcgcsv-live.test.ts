@@ -112,5 +112,25 @@ describe('fetchAllPrices', () => {
     expect(result.groupsFailed).toBe(1);
     expect(result.prices.size).toBe(1);
     expect(result.prices.get(101)).toBeDefined();
+    expect(result.categoriesFailed).toEqual([]);
+  });
+
+  it('tolerates a category-level Groups.csv fetch failure and reports it', async () => {
+    const fetchMock = vi.fn(async (url: string) => {
+      if (url.includes('/3/Groups.csv')) return new Response(groupsCsvCat3, { status: 200 });
+      if (url.includes('/50/Groups.csv')) return new Response('boom', { status: 500 });
+      if (url.includes('/3/24688/ProductsAndPrices.csv')) return new Response(ppCsv24688, { status: 200 });
+      if (url.includes('/3/2374/ProductsAndPrices.csv')) return new Response(ppCsv2374, { status: 200 });
+      return new Response('not found', { status: 404 });
+    });
+    global.fetch = fetchMock as unknown as typeof fetch;
+
+    const result = await fetchAllPrices([3, 50]);
+    expect(result.categoriesFailed).toEqual([50]);
+    expect(result.groupsAttempted).toBe(2); // only cat 3 groups counted
+    expect(result.groupsFailed).toBe(0);
+    expect(result.prices.size).toBe(2);
+    expect(result.prices.get(101)?.marketPriceCents).toBe(9999);
+    expect(result.prices.get(202)?.marketPriceCents).toBe(425);
   });
 });

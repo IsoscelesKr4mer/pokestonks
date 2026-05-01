@@ -17,6 +17,7 @@ export type FetchAllResult = {
   prices: Map<number, ArchivePriceRow>;
   groupsAttempted: number;
   groupsFailed: number;
+  categoriesFailed: number[]; // categoryIds whose Groups.csv could not be fetched
 };
 
 export async function fetchGroupList(categoryId: number): Promise<TcgcsvGroup[]> {
@@ -62,11 +63,25 @@ export async function fetchProductsAndPrices(
 }
 
 export async function fetchAllPrices(categoryIds: number[]): Promise<FetchAllResult> {
-  // Step 1: fetch group lists for all categories in parallel (small N)
-  const groupLists = await Promise.all(categoryIds.map((cat) => fetchGroupList(cat)));
+  // Step 1: fetch group lists per category. Use allSettled so a single
+  // category failure does not abort the whole job — common when TCGCSV's
+  // CloudFront edge serves transient 5xx for less-trafficked categories.
+  const groupListResults = await Promise.allSettled(
+    categoryIds.map(async (cat) => ({ cat, groups: await fetchGroupList(cat) }))
+  );
   const flat: Array<{ categoryId: number; groupId: number }> = [];
-  for (const list of groupLists) {
-    for (const g of list) flat.push({ categoryId: g.categoryId, groupId: g.groupId });
+  const categoriesFailed: number[] = [];
+  for (let i = 0; i < groupListResults.length; i++) {
+    const r = groupListResults[i];
+    if (r.status === 'fulfilled') {
+      for (const g of r.value.groups) flat.push({ categoryId: g.categoryId, groupId: g.groupId });
+    } else {
+      categoriesFailed.push(categoryIds[i]);
+      console.error(
+        `[tcgcsv-live] groups fetch failed for cat ${categoryIds[i]}:`,
+        r.reason instanceof Error ? r.reason.message : r.reason
+      );
+    }
   }
 
   // Step 2: per-group fetches throttled to PARALLEL concurrent
@@ -91,5 +106,5 @@ export async function fetchAllPrices(categoryIds: number[]): Promise<FetchAllRes
     )
   );
 
-  return { prices, groupsAttempted: flat.length, groupsFailed: failed };
+  return { prices, groupsAttempted: flat.length, groupsFailed: failed, categoriesFailed };
 }
