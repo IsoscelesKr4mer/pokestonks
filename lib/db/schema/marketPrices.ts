@@ -1,4 +1,4 @@
-import { pgTable, bigserial, bigint, date, integer, text, unique, index } from 'drizzle-orm/pg-core';
+import { pgTable, bigserial, bigint, date, integer, text, unique, index, timestamp } from 'drizzle-orm/pg-core';
 import { catalogItems } from './catalogItems';
 
 export const marketPrices = pgTable(
@@ -14,6 +14,7 @@ export const marketPrices = pgTable(
     lowPriceCents: integer('low_price_cents'),
     highPriceCents: integer('high_price_cents'),
     source: text('source').notNull().default('tcgcsv'),
+    createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   },
   (t) => ({
     uniqSnapshot: unique('market_prices_uniq_snapshot').on(
@@ -23,6 +24,10 @@ export const marketPrices = pgTable(
       t.source
     ),
     catalogDateIdx: index('market_prices_catalog_date_idx').on(t.catalogItemId, t.snapshotDate),
+    catalogDateDescIdx: index('market_prices_catalog_date_desc_idx').on(
+      t.catalogItemId,
+      t.snapshotDate.desc()
+    ),
   })
 );
 
