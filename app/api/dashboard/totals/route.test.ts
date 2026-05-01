@@ -1,8 +1,26 @@
 // @vitest-environment node
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
+const { mockFindManyCatalogItems, mockFindManyMarketPrices } = vi.hoisted(() => ({
+  mockFindManyCatalogItems: vi.fn(),
+  mockFindManyMarketPrices: vi.fn(),
+}));
+
 vi.mock('@/lib/supabase/server', () => ({
   createClient: vi.fn(),
+}));
+
+vi.mock('@/lib/db/client', () => ({
+  db: {
+    query: {
+      catalogItems: { findMany: mockFindManyCatalogItems },
+      marketPrices: { findMany: mockFindManyMarketPrices },
+    },
+  },
+  schema: {
+    catalogItems: { id: 'id' },
+    marketPrices: { catalogItemId: 'catalog_item_id', snapshotDate: 'snapshot_date' },
+  },
 }));
 
 import { createClient } from '@/lib/supabase/server';
@@ -62,6 +80,9 @@ function buildSupabase(opts: {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  // Default: no manual prices, no historical snapshot rows
+  mockFindManyCatalogItems.mockResolvedValue([]);
+  mockFindManyMarketPrices.mockResolvedValue([]);
 });
 
 describe('GET /api/dashboard/totals', () => {
@@ -188,6 +209,159 @@ describe('GET /api/dashboard/totals', () => {
     const res = await GET();
     const body = await res.json();
     expect(body.realizedRipPnLCents).toBe(-500);
+  });
+
+  it('includes portfolioDelta7dCents, portfolioDelta7dPct, deltaCoverage fields', async () => {
+    const purchases: Purchase[] = [
+      {
+        id: 1,
+        catalog_item_id: 10,
+        quantity: 2,
+        cost_cents: 5000,
+        deleted_at: null,
+        created_at: '2026-04-25T00:00:00Z',
+        catalog_item: {
+          kind: 'sealed',
+          name: 'ETB',
+          set_name: 'SV151',
+          product_type: 'ETB',
+          image_url: null,
+          image_storage_path: null,
+          last_market_cents: 6000,
+          last_market_at: '2026-04-29T00:00:00Z',
+        },
+      },
+    ];
+    (createClient as ReturnType<typeof vi.fn>).mockResolvedValue(
+      buildSupabase({ authedUserId: 'u1', purchases, rips: [], decompositions: [] })
+    );
+    // No manual, then price was 5000
+    mockFindManyCatalogItems.mockResolvedValue([{ id: 10, manualMarketCents: null }]);
+    mockFindManyMarketPrices.mockResolvedValue([
+      { catalogItemId: 10, snapshotDate: '2026-04-23', marketPriceCents: 5000 },
+    ]);
+
+    const res = await GET();
+    expect(res.status).toBe(200);
+    const body = await res.json();
+
+    // now = 6000 * 2 = 12000, then = 5000 * 2 = 10000, delta = 2000
+    expect(body.portfolioDelta7dCents).toBe(2000);
+    // pct = (2000 / 10000) * 100 = 20.00
+    expect(body.portfolioDelta7dPct).toBe(20);
+    expect(body.deltaCoverage).toEqual({ covered: 1, total: 1 });
+  });
+
+  it('sets portfolioDelta7dCents null when no historical prices exist', async () => {
+    const purchases: Purchase[] = [
+      {
+        id: 1,
+        catalog_item_id: 20,
+        quantity: 1,
+        cost_cents: 4000,
+        deleted_at: null,
+        created_at: '2026-04-25T00:00:00Z',
+        catalog_item: {
+          kind: 'sealed',
+          name: 'New ETB',
+          set_name: 'SV Base',
+          product_type: 'ETB',
+          image_url: null,
+          image_storage_path: null,
+          last_market_cents: 4500,
+          last_market_at: '2026-04-29T00:00:00Z',
+        },
+      },
+    ];
+    (createClient as ReturnType<typeof vi.fn>).mockResolvedValue(
+      buildSupabase({ authedUserId: 'u1', purchases, rips: [], decompositions: [] })
+    );
+    mockFindManyCatalogItems.mockResolvedValue([{ id: 20, manualMarketCents: null }]);
+    mockFindManyMarketPrices.mockResolvedValue([]); // no historical rows
+
+    const res = await GET();
+    const body = await res.json();
+
+    expect(body.portfolioDelta7dCents).toBeNull();
+    expect(body.portfolioDelta7dPct).toBeNull();
+    expect(body.deltaCoverage).toEqual({ covered: 0, total: 1 });
+  });
+
+  it('uses manualMarketCents as nowCents for portfolio delta', async () => {
+    const purchases: Purchase[] = [
+      {
+        id: 1,
+        catalog_item_id: 30,
+        quantity: 1,
+        cost_cents: 3000,
+        deleted_at: null,
+        created_at: '2026-04-25T00:00:00Z',
+        catalog_item: {
+          kind: 'sealed',
+          name: 'Paldea ETB',
+          set_name: 'Paldea Fates',
+          product_type: 'ETB',
+          image_url: null,
+          image_storage_path: null,
+          last_market_cents: 4000,
+          last_market_at: '2026-04-29T00:00:00Z',
+        },
+      },
+    ];
+    (createClient as ReturnType<typeof vi.fn>).mockResolvedValue(
+      buildSupabase({ authedUserId: 'u1', purchases, rips: [], decompositions: [] })
+    );
+    // Manual price = 7000 overrides lastMarketCents = 4000
+    mockFindManyCatalogItems.mockResolvedValue([{ id: 30, manualMarketCents: 7000 }]);
+    mockFindManyMarketPrices.mockResolvedValue([
+      { catalogItemId: 30, snapshotDate: '2026-04-23', marketPriceCents: 5000 },
+    ]);
+
+    const res = await GET();
+    const body = await res.json();
+
+    // nowCents = 7000 (manual), thenCents = 5000, qty = 1 → delta = 2000
+    expect(body.portfolioDelta7dCents).toBe(2000);
+    expect(body.deltaCoverage).toEqual({ covered: 1, total: 1 });
+  });
+
+  it('adds delta7dCents, delta7dPct, manualMarketCents to bestPerformers rows', async () => {
+    const purchases: Purchase[] = [
+      {
+        id: 1,
+        catalog_item_id: 40,
+        quantity: 1,
+        cost_cents: 4000,
+        deleted_at: null,
+        created_at: '2026-04-25T00:00:00Z',
+        catalog_item: {
+          kind: 'sealed',
+          name: 'ETB A',
+          set_name: 'SV151',
+          product_type: 'ETB',
+          image_url: null,
+          image_storage_path: null,
+          last_market_cents: 6000,
+          last_market_at: '2026-04-29T00:00:00Z',
+        },
+      },
+    ];
+    (createClient as ReturnType<typeof vi.fn>).mockResolvedValue(
+      buildSupabase({ authedUserId: 'u1', purchases, rips: [], decompositions: [] })
+    );
+    mockFindManyCatalogItems.mockResolvedValue([{ id: 40, manualMarketCents: null }]);
+    mockFindManyMarketPrices.mockResolvedValue([
+      { catalogItemId: 40, snapshotDate: '2026-04-23', marketPriceCents: 5000 },
+    ]);
+
+    const res = await GET();
+    const body = await res.json();
+
+    expect(body.bestPerformers).toHaveLength(1);
+    const bp = body.bestPerformers[0];
+    expect(bp.delta7dCents).toBe(1000);
+    expect(bp.delta7dPct).toBe(20);
+    expect(bp.manualMarketCents).toBeNull();
   });
 
   it('folds sales realized P&L into realizedPnLCents', async () => {

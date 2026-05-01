@@ -7,7 +7,10 @@ import {
   type RawDecompositionRow,
   type RawSaleRow,
 } from '@/lib/services/holdings';
-import { computePortfolioPnL } from '@/lib/services/pnl';
+import { computePortfolioPnL, type HoldingPnL } from '@/lib/services/pnl';
+import { db, schema } from '@/lib/db/client';
+import { and, desc, inArray, lte } from 'drizzle-orm';
+import { computeDeltas } from '@/lib/services/price-deltas';
 
 export async function GET() {
   const supabase = await createClient();
@@ -65,5 +68,100 @@ export async function GET() {
     realizedSalesPnLCents,
     lotCount
   );
-  return NextResponse.json({ ...result, saleEventCount });
+
+  // --- Delta + manual enrichment ---
+  const heldIds = result.perHolding.map((h) => h.catalogItemId);
+
+  let deltaMap = new Map<number, { deltaCents: number | null; deltaPct: number | null }>();
+  let manualMap = new Map<number, number | null>();
+  let portfolioDelta7dCents: number | null = null;
+  let portfolioDelta7dPct: number | null = null;
+  let deltaCoverage = { covered: 0, total: heldIds.length };
+
+  if (heldIds.length > 0) {
+    // Manual overrides.
+    const manuals = await db.query.catalogItems.findMany({
+      where: inArray(schema.catalogItems.id, heldIds),
+      columns: { id: true, manualMarketCents: true },
+    });
+    for (const m of manuals) {
+      manualMap.set(m.id, m.manualMarketCents ?? null);
+    }
+
+    // "Then" prices: latest row per item at or before 7 days ago.
+    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+      .toISOString()
+      .slice(0, 10);
+    const allThenRows = await db.query.marketPrices.findMany({
+      where: and(
+        inArray(schema.marketPrices.catalogItemId, heldIds),
+        lte(schema.marketPrices.snapshotDate, sevenDaysAgo)
+      ),
+      columns: { catalogItemId: true, snapshotDate: true, marketPriceCents: true },
+      orderBy: [desc(schema.marketPrices.snapshotDate)],
+    });
+    const thenMap = new Map<number, number | null>();
+    for (const row of allThenRows) {
+      if (!thenMap.has(row.catalogItemId)) {
+        thenMap.set(row.catalogItemId, row.marketPriceCents);
+      }
+    }
+
+    // Per-item delta inputs.
+    const deltaInputs = result.perHolding.map((h) => {
+      const manual = manualMap.get(h.catalogItemId) ?? null;
+      const nowCents = manual ?? h.lastMarketCents ?? null;
+      return {
+        catalogItemId: h.catalogItemId,
+        nowCents,
+        thenCents: thenMap.get(h.catalogItemId) ?? null,
+      };
+    });
+    deltaMap = computeDeltas(deltaInputs);
+
+    // Portfolio-level delta: sum across items that have both nowCents + thenCents.
+    let nowTotal = 0;
+    let thenTotal = 0;
+    let covered = 0;
+    for (const h of result.perHolding) {
+      const manual = manualMap.get(h.catalogItemId) ?? null;
+      const nowCents = manual ?? h.lastMarketCents ?? null;
+      const thenCents = thenMap.get(h.catalogItemId) ?? null;
+      if (nowCents != null && thenCents != null) {
+        nowTotal += nowCents * h.qtyHeld;
+        thenTotal += thenCents * h.qtyHeld;
+        covered++;
+      }
+    }
+    deltaCoverage = { covered, total: heldIds.length };
+    if (covered > 0) {
+      portfolioDelta7dCents = nowTotal - thenTotal;
+      portfolioDelta7dPct =
+        thenTotal > 0
+          ? Math.round(((portfolioDelta7dCents / thenTotal) * 100) * 100) / 100
+          : null;
+    }
+  }
+
+  // Enrich a HoldingPnL row with per-item delta + manual fields.
+  function enrichHolding(h: HoldingPnL) {
+    const d = deltaMap.get(h.catalogItemId) ?? { deltaCents: null, deltaPct: null };
+    return {
+      ...h,
+      delta7dCents: d.deltaCents,
+      delta7dPct: d.deltaPct,
+      manualMarketCents: manualMap.get(h.catalogItemId) ?? null,
+    };
+  }
+
+  const enrichedResult = {
+    ...result,
+    bestPerformers: result.bestPerformers.map(enrichHolding),
+    worstPerformers: result.worstPerformers.map(enrichHolding),
+    portfolioDelta7dCents,
+    portfolioDelta7dPct,
+    deltaCoverage,
+  };
+
+  return NextResponse.json({ ...enrichedResult, saleEventCount });
 }

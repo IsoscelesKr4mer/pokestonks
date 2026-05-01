@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { eq, and, isNull, asc, desc, inArray } from 'drizzle-orm';
+import { eq, and, isNull, asc, desc, inArray, lte } from 'drizzle-orm';
 import { createClient } from '@/lib/supabase/server';
 import { db, schema } from '@/lib/db/client';
 import {
@@ -11,6 +11,7 @@ import {
 } from '@/lib/services/holdings';
 import { computeHoldingPnL, emptyHoldingPnL } from '@/lib/services/pnl';
 import { buildActivityEvents } from '@/lib/api/holdingDetailDto';
+import { computeDeltas } from '@/lib/services/price-deltas';
 
 export async function GET(
   _req: NextRequest,
@@ -181,6 +182,40 @@ export async function GET(
   const now = new Date();
   const holding = holdingRaw ? computeHoldingPnL(holdingRaw, now) : null;
 
+  // Fetch delta + manual fields (same pattern as /api/holdings T11).
+  let delta7dCents: number | null = null;
+  let delta7dPct: number | null = null;
+  let manualMarketCents: number | null = null;
+
+  {
+    // Manual price override.
+    const [manualRow] = await db.query.catalogItems.findMany({
+      where: eq(schema.catalogItems.id, numericId),
+      columns: { id: true, manualMarketCents: true },
+    });
+    manualMarketCents = manualRow?.manualMarketCents ?? null;
+
+    // "Then" price: latest market_prices row at or before 7 days ago.
+    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+      .toISOString()
+      .slice(0, 10);
+    const thenRows = await db.query.marketPrices.findMany({
+      where: and(
+        eq(schema.marketPrices.catalogItemId, numericId),
+        lte(schema.marketPrices.snapshotDate, sevenDaysAgo)
+      ),
+      columns: { catalogItemId: true, snapshotDate: true, marketPriceCents: true },
+      orderBy: [desc(schema.marketPrices.snapshotDate)],
+    });
+    const thenCents = thenRows.length > 0 ? thenRows[0].marketPriceCents : null;
+
+    const nowCents = manualMarketCents ?? holding?.lastMarketCents ?? item.lastMarketCents ?? null;
+    const deltaMap = computeDeltas([{ catalogItemId: numericId, nowCents, thenCents }]);
+    const deltaOut = deltaMap.get(numericId) ?? { deltaCents: null, deltaPct: null };
+    delta7dCents = deltaOut.deltaCents;
+    delta7dPct = deltaOut.deltaPct;
+  }
+
   // Build consumed-units map for qtyRemaining per lot.
   const consumedUnitsByLot = new Map<number, number>();
   for (const r of ripsForSealed) {
@@ -350,6 +385,18 @@ export async function GET(
     })),
   });
 
+  const holdingBase = holding ?? emptyHoldingPnL({
+    id: item.id,
+    name: item.name,
+    kind: item.kind as 'sealed' | 'card',
+    imageUrl: item.imageUrl,
+    imageStoragePath: item.imageStoragePath,
+    setName: item.setName,
+    productType: item.productType,
+    lastMarketCents: item.lastMarketCents,
+    lastMarketAt: item.lastMarketAt instanceof Date ? item.lastMarketAt.toISOString() : item.lastMarketAt,
+  });
+
   return NextResponse.json({
     item: {
       id: item.id,
@@ -368,17 +415,12 @@ export async function GET(
       msrpCents: item.msrpCents,
       packCount: item.packCount,
     },
-    holding: holding ?? emptyHoldingPnL({
-      id: item.id,
-      name: item.name,
-      kind: item.kind as 'sealed' | 'card',
-      imageUrl: item.imageUrl,
-      imageStoragePath: item.imageStoragePath,
-      setName: item.setName,
-      productType: item.productType,
-      lastMarketCents: item.lastMarketCents,
-      lastMarketAt: item.lastMarketAt instanceof Date ? item.lastMarketAt.toISOString() : item.lastMarketAt,
-    }),
+    holding: {
+      ...holdingBase,
+      delta7dCents,
+      delta7dPct,
+      manualMarketCents,
+    },
     lots: lotsWithProvenance,
     rips: ripsSummary,
     decompositions: decompositionsSummary,
