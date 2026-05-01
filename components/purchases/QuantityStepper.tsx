@@ -18,17 +18,17 @@ export function QuantityStepper({
   const incDisabled = max != null && value >= max;
 
   return (
-    <div className="inline-flex items-center gap-2 rounded-full border bg-background px-1.5 py-1">
+    <div className="inline-flex items-center gap-2 bg-canvas border border-divider rounded-xl px-2 py-[6px] focus-within:border-accent focus-within:ring-3 focus-within:ring-[rgba(181,140,255,0.18)]">
       <button
         type="button"
         aria-label="Decrease quantity"
         onClick={dec}
         disabled={decDisabled}
-        className="grid size-7 place-items-center rounded-full hover:bg-muted disabled:opacity-40 disabled:hover:bg-transparent"
+        className="grid size-7 place-items-center rounded-md border border-divider hover:bg-hover text-text-muted disabled:opacity-50"
       >
         <Minus className="size-4" />
       </button>
-      <span aria-label="Quantity" className="min-w-[1.5ch] text-center text-sm tabular-nums">
+      <span aria-label="Quantity" className="font-mono tabular-nums text-[14px] text-text min-w-[2ch] text-center">
         {value}
       </span>
       <button
@@ -36,7 +36,7 @@ export function QuantityStepper({
         aria-label="Increase quantity"
         onClick={inc}
         disabled={incDisabled}
-        className="grid size-7 place-items-center rounded-full hover:bg-muted disabled:opacity-40 disabled:hover:bg-transparent"
+        className="grid size-7 place-items-center rounded-md border border-divider hover:bg-hover text-text-muted disabled:opacity-50"
       >
         <Plus className="size-4" />
       </button>

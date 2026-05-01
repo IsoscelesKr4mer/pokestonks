@@ -26,12 +26,19 @@ export function NewPurchaseClient({ catalogItem }: { catalogItem: PurchaseFormCa
   };
 
   return (
-    <PurchaseForm
-      mode="create"
-      catalogItem={catalogItem}
-      onSubmit={handleSubmit}
-      onCancel={() => router.back()}
-      submitting={createMutation.isPending}
-    />
+    <div className="mx-auto w-full max-w-[640px] px-6 md:px-8 py-10">
+      <div className="grid gap-1 pb-[14px] border-b border-divider mb-6">
+        <h1 className="text-[26px] font-semibold tracking-[-0.02em]">Log purchase</h1>
+      </div>
+      <div className="vault-card p-6">
+        <PurchaseForm
+          mode="create"
+          catalogItem={catalogItem}
+          onSubmit={handleSubmit}
+          onCancel={() => router.back()}
+          submitting={createMutation.isPending}
+        />
+      </div>
+    </div>
   );
 }

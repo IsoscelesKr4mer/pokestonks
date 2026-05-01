@@ -55,10 +55,5 @@ export default async function NewPurchasePage({
     packCount: item.packCount ?? null,
   };
 
-  return (
-    <div className="mx-auto w-full max-w-2xl px-6 py-8">
-      <h1 className="mb-6 text-2xl font-semibold tracking-tight">Log a purchase</h1>
-      <NewPurchaseClient catalogItem={catalogItem} />
-    </div>
-  );
+  return <NewPurchaseClient catalogItem={catalogItem} />;
 }

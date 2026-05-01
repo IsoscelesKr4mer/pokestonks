@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
@@ -8,6 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { FormLabel, FormSection, DialogActions } from '@/components/ui/dialog-form';
 import { QuantityStepper } from './QuantityStepper';
 import { SourceChipPicker } from './SourceChipPicker';
 import { CONDITIONS, GRADING_COMPANIES } from '@/lib/validation/purchase';
@@ -129,26 +131,24 @@ export function PurchaseForm({
   };
 
   const lockedNote = isRipChild ? (
-    <p className="rounded-md bg-muted/50 px-3 py-2 text-xs text-muted-foreground">
+    <p className="rounded-xl bg-vault border border-divider px-3 py-2 text-[11px] font-mono text-meta">
       Locked because this card was pulled from a rip. Undo the rip to change cost basis.
     </p>
   ) : null;
 
-  const labelClass = 'text-xs uppercase tracking-wide text-muted-foreground';
-
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      <div className="flex items-center gap-3 rounded-lg border p-3">
-        <div className={isCard ? 'aspect-[5/7] w-16 overflow-hidden rounded' : 'aspect-square w-16 overflow-hidden rounded'}>
+      <div className="flex items-center gap-3 rounded-xl border border-divider bg-canvas p-3">
+        <div className={isCard ? 'aspect-[5/7] w-16 overflow-hidden rounded-lg' : 'aspect-square w-16 overflow-hidden rounded-lg'}>
           {catalogItem.imageUrl && (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={catalogItem.imageUrl} alt={catalogItem.name} className="size-full object-contain" />
           )}
         </div>
         <div className="min-w-0 flex-1 space-y-0.5">
-          <div className="truncate text-sm font-semibold">{catalogItem.name}</div>
-          {catalogItem.setName && <div className="truncate text-xs text-muted-foreground">{catalogItem.setName}</div>}
-          <div className="text-xs text-muted-foreground">
+          <div className="truncate text-[14px] font-semibold text-text">{catalogItem.name}</div>
+          {catalogItem.setName && <div className="truncate text-[11px] font-mono text-meta">{catalogItem.setName}</div>}
+          <div className="text-[11px] font-mono text-meta">
             {isCard
               ? [catalogItem.rarity, catalogItem.cardNumber, catalogItem.variant].filter(Boolean).join(' · ')
               : (catalogItem.productType ?? 'Sealed')}
@@ -159,19 +159,19 @@ export function PurchaseForm({
       {isRipChild && lockedNote}
 
       <div className="grid gap-4 md:grid-cols-2">
-        <label className="space-y-1.5">
-          <span className={labelClass}>Date</span>
-          <input
+        <FormSection>
+          <FormLabel>Date</FormLabel>
+          <Input
             type="date"
             value={purchaseDate}
             max={today()}
             onChange={(e) => setPurchaseDate(e.target.value)}
             disabled={isRipChild}
-            className="block w-full rounded-md border bg-background px-3 py-2 text-sm disabled:opacity-50"
+            required
           />
-        </label>
-        <div className="space-y-1.5">
-          <span className={labelClass}>Quantity</span>
+        </FormSection>
+        <FormSection>
+          <FormLabel>Quantity</FormLabel>
           <div>
             <QuantityStepper
               value={quantity}
@@ -180,56 +180,56 @@ export function PurchaseForm({
               max={isRipChild ? 1 : undefined}
             />
           </div>
-        </div>
-        <label className="space-y-1.5 md:col-span-2">
-          <span className={labelClass}>Per-unit cost</span>
+        </FormSection>
+        <FormSection className="md:col-span-2">
+          <FormLabel>Per-unit cost</FormLabel>
           <div className="relative">
-            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">$</span>
-            <input
+            <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[14px] text-meta">$</span>
+            <Input
               type="text"
               inputMode="decimal"
               value={costInput}
               onChange={(e) => setCostInput(e.target.value)}
               disabled={isRipChild}
-              className="block w-full rounded-md border bg-background py-2 pl-7 pr-3 text-sm tabular-nums disabled:opacity-50"
+              className="pl-7"
+              required
             />
           </div>
-        </label>
+        </FormSection>
       </div>
 
-      <div className="space-y-1.5">
-        <span className={labelClass}>Source</span>
+      <FormSection>
+        <FormLabel>Source</FormLabel>
         <SourceChipPicker value={source} onChange={setSource} suggestions={sources} />
-      </div>
+      </FormSection>
 
-      <label className="block space-y-1.5">
-        <span className={labelClass}>Location (optional)</span>
-        <input
+      <FormSection>
+        <FormLabel>Location (optional)</FormLabel>
+        <Input
           type="text"
           value={location ?? ''}
           onChange={(e) => setLocation(e.target.value === '' ? null : e.target.value)}
           maxLength={120}
-          className="block w-full rounded-md border bg-background px-3 py-2 text-sm"
         />
-      </label>
+      </FormSection>
 
-      <label className="block space-y-1.5">
-        <span className={labelClass}>Notes (optional)</span>
+      <FormSection>
+        <FormLabel>Notes (optional)</FormLabel>
         <textarea
           value={notes ?? ''}
           onChange={(e) => setNotes(e.target.value === '' ? null : e.target.value)}
           maxLength={1000}
           rows={3}
-          className="block w-full rounded-md border bg-background px-3 py-2 text-sm"
+          className="flex w-full rounded-xl border border-divider bg-canvas px-3 py-2 text-[14px] text-text placeholder:text-meta focus-visible:outline-none focus-visible:border-accent focus-visible:ring-3 focus-visible:ring-[rgba(181,140,255,0.18)]"
         />
-      </label>
+      </FormSection>
 
       {isCard && (
-        <div className="space-y-4 border-t pt-6">
-          <div className="text-xs uppercase tracking-wide text-muted-foreground">Card details</div>
+        <div className="space-y-4 border-t border-divider pt-6">
+          <div className="text-[9px] uppercase tracking-[0.16em] text-meta font-mono">Card details</div>
 
-          <label className="block space-y-1.5">
-            <span className={labelClass}>Condition</span>
+          <FormSection>
+            <FormLabel>Condition</FormLabel>
             <Select value={condition ?? 'NM'} onValueChange={(v) => setCondition(v as typeof CONDITIONS[number])}>
               <SelectTrigger className="w-full">
                 <SelectValue />
@@ -242,7 +242,7 @@ export function PurchaseForm({
                 ))}
               </SelectContent>
             </Select>
-          </label>
+          </FormSection>
 
           <label className="flex items-center gap-2">
             <input
@@ -251,13 +251,13 @@ export function PurchaseForm({
               onChange={(e) => setIsGraded(e.target.checked)}
               className="size-4"
             />
-            <span className="text-sm">This is graded</span>
+            <span className="text-[14px] text-text">This is graded</span>
           </label>
 
           {isGraded && (
             <div className="grid gap-4 md:grid-cols-3">
-              <label className="space-y-1.5">
-                <span className={labelClass}>Grading company</span>
+              <FormSection>
+                <FormLabel>Grading company</FormLabel>
                 <Select
                   value={gradingCompany ?? ''}
                   onValueChange={(v) => setGradingCompany(v as typeof GRADING_COMPANIES[number])}
@@ -273,37 +273,35 @@ export function PurchaseForm({
                     ))}
                   </SelectContent>
                 </Select>
-              </label>
-              <label className="space-y-1.5">
-                <span className={labelClass}>Grade</span>
-                <input
+              </FormSection>
+              <FormSection>
+                <FormLabel>Grade</FormLabel>
+                <Input
                   type="number"
                   step="0.5"
                   min="0"
                   max="10"
                   value={grade ?? ''}
                   onChange={(e) => setGrade(e.target.value === '' ? null : Number(e.target.value))}
-                  className="block w-full rounded-md border bg-background px-3 py-2 text-sm"
                 />
-              </label>
-              <label className="space-y-1.5">
-                <span className={labelClass}>Cert number</span>
-                <input
+              </FormSection>
+              <FormSection>
+                <FormLabel>Cert number</FormLabel>
+                <Input
                   type="text"
                   value={certNumber ?? ''}
                   onChange={(e) => setCertNumber(e.target.value === '' ? null : e.target.value)}
                   maxLength={64}
-                  className="block w-full rounded-md border bg-background px-3 py-2 text-sm"
                 />
-              </label>
+              </FormSection>
             </div>
           )}
         </div>
       )}
 
-      {error && <p className="text-sm text-destructive">{error}</p>}
+      {error && <p className="text-[13px] text-negative">{error}</p>}
 
-      <div className="flex justify-end gap-2 border-t pt-4">
+      <DialogActions>
         {onCancel && (
           <Button type="button" variant="ghost" onClick={onCancel} disabled={submitting}>
             Cancel
@@ -312,7 +310,7 @@ export function PurchaseForm({
         <Button type="submit" disabled={submitting}>
           {submitLabel ?? (mode === 'edit' ? 'Save' : 'Log purchase')}
         </Button>
-      </div>
+      </DialogActions>
     </form>
   );
 }

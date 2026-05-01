@@ -41,10 +41,10 @@ export function SourceChipPicker({
                 onChange(s);
               }}
               className={cn(
-                'rounded-full border px-3 py-1 text-xs font-medium transition',
+                'inline-flex items-center px-3 py-[6px] rounded-full text-[12px] transition',
                 active
-                  ? 'border-primary bg-primary text-primary-foreground'
-                  : 'border-border bg-background hover:bg-muted'
+                  ? 'bg-accent text-canvas border border-accent font-semibold'
+                  : 'bg-vault border border-divider hover:bg-hover text-text-muted'
               )}
             >
               {s}
@@ -59,10 +59,10 @@ export function SourceChipPicker({
             // Don't clear existing value if user accidentally clicks Other.
           }}
           className={cn(
-            'rounded-full border px-3 py-1 text-xs font-medium transition',
+            'inline-flex items-center px-3 py-[6px] rounded-full text-[12px] transition',
             otherActive
-              ? 'border-primary bg-primary text-primary-foreground'
-              : 'border-border bg-background hover:bg-muted'
+              ? 'bg-accent text-canvas border border-accent font-semibold'
+              : 'bg-vault border border-divider hover:bg-hover text-text-muted'
           )}
         >
           + Other
@@ -79,7 +79,7 @@ export function SourceChipPicker({
             onChange(next === '' ? null : next);
           }}
           maxLength={120}
-          className="w-full rounded-md border bg-background px-3 py-2 text-sm"
+          className="flex h-10 w-full rounded-xl border border-divider bg-canvas px-3 py-2 text-[14px] text-text placeholder:text-meta focus-visible:outline-none focus-visible:border-accent focus-visible:ring-3 focus-visible:ring-[rgba(181,140,255,0.18)]"
         />
       )}
     </div>

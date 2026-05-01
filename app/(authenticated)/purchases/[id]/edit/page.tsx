@@ -55,26 +55,23 @@ export default async function EditPurchasePage({
   };
 
   return (
-    <div className="mx-auto w-full max-w-2xl px-6 py-8">
-      <h1 className="mb-6 text-2xl font-semibold tracking-tight">Edit purchase</h1>
-      <EditPurchaseClient
-        purchaseId={numericId}
-        catalogItem={catalogItem}
-        initialValues={{
-          purchaseDate: lot.purchaseDate,
-          quantity: lot.quantity,
-          costCents: lot.costCents,
-          source: lot.source,
-          location: lot.location,
-          notes: lot.notes,
-          condition: lot.condition as Condition | null,
-          isGraded: lot.isGraded,
-          gradingCompany: lot.gradingCompany as GradingCompany | null,
-          grade: lot.grade != null ? Number(lot.grade) : null,
-          certNumber: lot.certNumber,
-          sourceRipId: lot.sourceRipId ?? null,
-        }}
-      />
-    </div>
+    <EditPurchaseClient
+      purchaseId={numericId}
+      catalogItem={catalogItem}
+      initialValues={{
+        purchaseDate: lot.purchaseDate,
+        quantity: lot.quantity,
+        costCents: lot.costCents,
+        source: lot.source,
+        location: lot.location,
+        notes: lot.notes,
+        condition: lot.condition as Condition | null,
+        isGraded: lot.isGraded,
+        gradingCompany: lot.gradingCompany as GradingCompany | null,
+        grade: lot.grade != null ? Number(lot.grade) : null,
+        certNumber: lot.certNumber,
+        sourceRipId: lot.sourceRipId ?? null,
+      }}
+    />
   );
 }
