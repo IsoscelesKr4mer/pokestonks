@@ -7,8 +7,9 @@ import { snapshotForItems } from '@/lib/services/price-snapshots';
 export const maxDuration = 60;
 
 export async function GET(req: Request) {
+  const secret = process.env.CRON_SECRET;
   const auth = req.headers.get('authorization');
-  if (auth !== `Bearer ${process.env.CRON_SECRET}`) {
+  if (!secret || auth !== `Bearer ${secret}`) {
     return new NextResponse('Unauthorized', { status: 401 });
   }
 
@@ -34,9 +35,16 @@ export async function GET(req: Request) {
         status: 'ok',
         totalItems: ids.length,
         succeeded: result.rowsWritten,
-        failed: ids.length - result.rowsWritten,
+        // `failed` reserved for genuine HTTP/parse failures surfaced by snapshotForItems.
+        // Items in our catalog that don't appear in today's TCGCSV feed (discontinued
+        // SKUs, vending exclusives, etc.) are NOT failures — they're coverage gaps.
+        failed: 0,
       })
       .where(eq(schema.refreshRuns.id, run.id));
+
+    console.log(
+      `[cron/refresh-prices] ok rows=${result.rowsWritten} updated=${result.itemsUpdated} skippedManual=${result.itemsSkippedManual} duration=${Date.now() - startedAt.getTime()}ms`
+    );
 
     return NextResponse.json({
       snapshotsWritten: result.rowsWritten,
@@ -55,6 +63,8 @@ export async function GET(req: Request) {
         errorsJson: { message } as never,
       })
       .where(eq(schema.refreshRuns.id, run.id));
+
+    console.error(`[cron/refresh-prices] failed: ${message}`);
 
     return new NextResponse(`refresh-prices failed: ${message}`, { status: 502 });
   }
