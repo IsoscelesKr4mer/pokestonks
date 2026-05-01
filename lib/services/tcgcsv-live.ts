@@ -12,13 +12,19 @@ const PARALLEL = 32;
 
 // TCGCSV's CloudFront WAF rejects requests with empty / Node default
 // User-Agent (returns 401). Send a proper UA on every request.
-const TCGCSV_FETCH_INIT: RequestInit = {
-  cache: 'no-store',
-  headers: {
-    'User-Agent': 'Pokestonks/1.0 (+https://pokestonks.vercel.app)',
-    Accept: 'text/csv,*/*;q=0.8',
-  },
-};
+// Per-fetch timeout caps wall-time when a group hangs.
+const PER_FETCH_TIMEOUT_MS = 12_000;
+
+function tcgcsvFetchInit(): RequestInit {
+  return {
+    cache: 'no-store',
+    headers: {
+      'User-Agent': 'Pokestonks/1.0 (+https://pokestonks.vercel.app)',
+      Accept: 'text/csv,*/*;q=0.8',
+    },
+    signal: AbortSignal.timeout(PER_FETCH_TIMEOUT_MS),
+  };
+}
 
 export type TcgcsvGroup = {
   groupId: number;
@@ -36,7 +42,7 @@ export type FetchAllResult = {
 
 export async function fetchGroupList(categoryId: number): Promise<TcgcsvGroup[]> {
   const url = `${TCGCSV_BASE}/${categoryId}/Groups.csv`;
-  const res = await fetch(url, TCGCSV_FETCH_INIT);
+  const res = await fetch(url, tcgcsvFetchInit());
   if (!res.ok) {
     throw new Error(`tcgcsv groups fetch failed for cat ${categoryId}: ${res.status}`);
   }
@@ -66,7 +72,7 @@ export async function fetchProductsAndPrices(
   groupId: number
 ): Promise<Map<number, ArchivePriceRow>> {
   const url = `${TCGCSV_BASE}/${categoryId}/${groupId}/ProductsAndPrices.csv`;
-  const res = await fetch(url, TCGCSV_FETCH_INIT);
+  const res = await fetch(url, tcgcsvFetchInit());
   if (!res.ok) {
     throw new Error(
       `tcgcsv ProductsAndPrices fetch failed for ${categoryId}/${groupId}: ${res.status}`
@@ -119,6 +125,10 @@ export async function fetchAllPrices(
       );
     }
   }
+
+  console.log(
+    `[tcgcsv-live] groups to fetch: ${flat.length} (parallel=${PARALLEL}, timeout=${PER_FETCH_TIMEOUT_MS}ms, setCodeFilter=${setCodeFilter ? Array.from(setCodeFilter).join(',') : 'none'})`
+  );
 
   // Step 2: per-group fetches throttled to PARALLEL concurrent
   const limit = pLimit(PARALLEL);

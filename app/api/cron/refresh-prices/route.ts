@@ -1,8 +1,8 @@
 import 'server-only';
 import { NextResponse } from 'next/server';
 import { db, schema } from '@/lib/db/client';
-import { eq, isNotNull } from 'drizzle-orm';
-import { snapshotForItems } from '@/lib/services/price-snapshots';
+import { eq } from 'drizzle-orm';
+import { snapshotAllCatalogItems } from '@/lib/services/price-snapshots';
 
 export const maxDuration = 60;
 
@@ -20,20 +20,13 @@ export async function GET(req: Request) {
     .returning({ id: schema.refreshRuns.id });
 
   try {
-    const items = await db.query.catalogItems.findMany({
-      where: isNotNull(schema.catalogItems.tcgplayerProductId),
-      columns: { id: true },
-    });
-    const ids = items.map((i) => i.id);
-
-    const result = await snapshotForItems(ids);
+    const result = await snapshotAllCatalogItems();
 
     await db
       .update(schema.refreshRuns)
       .set({
         finishedAt: new Date(),
         status: 'ok',
-        totalItems: ids.length,
         succeeded: result.rowsWritten,
         // `failed` reserved for genuine HTTP/parse failures surfaced by snapshotForItems.
         // Items in our catalog that don't appear in today's TCGCSV feed (discontinued

@@ -1,32 +1,29 @@
 // @vitest-environment happy-dom
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 
-const { mockSnapshotForItems, mockFindMany, mockReturning, mockInsertValues, mockInsert, mockUpdateWhere, mockUpdateSet, mockUpdate } = vi.hoisted(() => {
+const { mockSnapshotAllCatalogItems, mockReturning, mockInsertValues, mockInsert, mockUpdateWhere, mockUpdateSet, mockUpdate } = vi.hoisted(() => {
   const mockReturning = vi.fn();
   const mockInsertValues = vi.fn(() => ({ returning: mockReturning }));
   const mockInsert = vi.fn(() => ({ values: mockInsertValues }));
   const mockUpdateWhere = vi.fn();
   const mockUpdateSet = vi.fn(() => ({ where: mockUpdateWhere }));
   const mockUpdate = vi.fn(() => ({ set: mockUpdateSet }));
-  const mockFindMany = vi.fn();
-  const mockSnapshotForItems = vi.fn();
-  return { mockSnapshotForItems, mockFindMany, mockReturning, mockInsertValues, mockInsert, mockUpdateWhere, mockUpdateSet, mockUpdate };
+  const mockSnapshotAllCatalogItems = vi.fn();
+  return { mockSnapshotAllCatalogItems, mockReturning, mockInsertValues, mockInsert, mockUpdateWhere, mockUpdateSet, mockUpdate };
 });
 
 vi.mock('@/lib/db/client', () => ({
   db: {
     insert: mockInsert,
     update: mockUpdate,
-    query: { catalogItems: { findMany: mockFindMany } },
   },
   schema: {
-    catalogItems: { id: 'id', tcgplayerProductId: 'tpid' },
     refreshRuns: { id: 'rid' },
   },
 }));
 
 vi.mock('@/lib/services/price-snapshots', () => ({
-  snapshotForItems: mockSnapshotForItems,
+  snapshotAllCatalogItems: mockSnapshotAllCatalogItems,
 }));
 
 import { GET } from './route';
@@ -60,8 +57,7 @@ describe('GET /api/cron/refresh-prices', () => {
   });
 
   it('happy path: returns 200 with snapshot stats', async () => {
-    mockFindMany.mockResolvedValue([{ id: 1 }, { id: 2 }]);
-    mockSnapshotForItems.mockResolvedValue({
+    mockSnapshotAllCatalogItems.mockResolvedValue({
       date: '2026-04-30',
       rowsWritten: 2,
       itemsUpdated: 2,
@@ -72,12 +68,11 @@ describe('GET /api/cron/refresh-prices', () => {
     const body = await res.json();
     expect(body.snapshotsWritten).toBe(2);
     expect(body.date).toBe('2026-04-30');
-    expect(mockSnapshotForItems).toHaveBeenCalledWith([1, 2]);
+    expect(mockSnapshotAllCatalogItems).toHaveBeenCalled();
   });
 
-  it('returns 502 on snapshotForItems failure and updates refresh_runs as failed', async () => {
-    mockFindMany.mockResolvedValue([{ id: 1 }]);
-    mockSnapshotForItems.mockRejectedValue(new Error('archive 404'));
+  it('returns 502 on snapshot failure and updates refresh_runs as failed', async () => {
+    mockSnapshotAllCatalogItems.mockRejectedValue(new Error('boom'));
     const res = await GET(makeReq('Bearer test-secret'));
     expect(res.status).toBe(502);
     // Verify the failed status update was issued

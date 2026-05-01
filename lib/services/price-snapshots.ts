@@ -1,7 +1,7 @@
 import 'server-only';
 import { sql } from 'drizzle-orm';
 import { db, schema } from '@/lib/db/client';
-import { and, eq, inArray, isNull } from 'drizzle-orm';
+import { and, eq, inArray, isNotNull, isNull } from 'drizzle-orm';
 import type { ArchivePriceRow } from './tcgcsv-archive';
 import { fetchAllPrices } from './tcgcsv-live';
 
@@ -120,6 +120,43 @@ export async function snapshotForItems(catalogItemIds: number[]): Promise<Snapsh
         .map((i) => i.setCode)
         .filter((s): s is string => typeof s === 'string' && s.length > 0)
     )
+  );
+
+  const fetchResult = await fetchAllPrices(POKEMON_CATEGORY_IDS, { setCodes });
+
+  const result = await persistSnapshot(todayUtc, fetchResult.prices, items, {
+    source: 'tcgcsv',
+    updateLastMarket: true,
+  });
+
+  return { ...result, date: todayUtc };
+}
+
+// Cron-only path: skip the IN-clause round trip from snapshotForItems.
+// Single SELECT pulls every catalog item with a tcgplayer_product_id and
+// the columns persistSnapshot needs.
+export async function snapshotAllCatalogItems(): Promise<SnapshotResult> {
+  const todayUtc = new Date().toISOString().slice(0, 10);
+
+  const items = await db.query.catalogItems.findMany({
+    where: isNotNull(schema.catalogItems.tcgplayerProductId),
+    columns: { id: true, tcgplayerProductId: true, manualMarketCents: true, setCode: true },
+  });
+
+  if (items.length === 0) {
+    return { rowsWritten: 0, itemsUpdated: 0, itemsSkippedManual: 0, date: todayUtc };
+  }
+
+  const setCodes = Array.from(
+    new Set(
+      items
+        .map((i) => i.setCode)
+        .filter((s): s is string => typeof s === 'string' && s.length > 0)
+    )
+  );
+
+  console.log(
+    `[price-snapshots] cron items=${items.length} distinctSetCodes=${setCodes.length}`
   );
 
   const fetchResult = await fetchAllPrices(POKEMON_CATEGORY_IDS, { setCodes });
