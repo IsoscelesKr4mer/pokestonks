@@ -7,6 +7,7 @@ const {
   mockOnConflictDoUpdate,
   mockValues,
   mockInsert,
+  mockUpdateReturning,
   mockUpdateWhere,
   mockUpdateSet,
   mockUpdate,
@@ -17,7 +18,8 @@ const {
   const mockValues = vi.fn(() => ({ onConflictDoUpdate: mockOnConflictDoUpdate }));
   const mockInsert = vi.fn(() => ({ values: mockValues }));
 
-  const mockUpdateWhere = vi.fn();
+  const mockUpdateReturning = vi.fn();
+  const mockUpdateWhere = vi.fn(() => ({ returning: mockUpdateReturning }));
   const mockUpdateSet = vi.fn(() => ({ where: mockUpdateWhere }));
   const mockUpdate = vi.fn(() => ({ set: mockUpdateSet }));
 
@@ -28,6 +30,7 @@ const {
     mockOnConflictDoUpdate,
     mockValues,
     mockInsert,
+    mockUpdateReturning,
     mockUpdateWhere,
     mockUpdateSet,
     mockUpdate,
@@ -72,11 +75,12 @@ describe('persistSnapshot', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockReturning.mockResolvedValue([{ id: 1 }, { id: 2 }]);
-    mockUpdateWhere.mockResolvedValue(undefined);
+    mockUpdateReturning.mockResolvedValue([{ id: 1 }]);
     // Re-wire chains after clearAllMocks resets return values
     mockOnConflictDoUpdate.mockReturnValue({ returning: mockReturning });
     mockValues.mockReturnValue({ onConflictDoUpdate: mockOnConflictDoUpdate });
     mockInsert.mockReturnValue({ values: mockValues });
+    mockUpdateWhere.mockReturnValue({ returning: mockUpdateReturning });
     mockUpdateSet.mockReturnValue({ where: mockUpdateWhere });
     mockUpdate.mockReturnValue({ set: mockUpdateSet });
   });
@@ -130,11 +134,12 @@ describe('snapshotForItems', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockReturning.mockResolvedValue([{ id: 1 }]);
-    mockUpdateWhere.mockResolvedValue(undefined);
+    mockUpdateReturning.mockResolvedValue([{ id: 1 }]);
     // Re-wire chains after clearAllMocks resets return values
     mockOnConflictDoUpdate.mockReturnValue({ returning: mockReturning });
     mockValues.mockReturnValue({ onConflictDoUpdate: mockOnConflictDoUpdate });
     mockInsert.mockReturnValue({ values: mockValues });
+    mockUpdateWhere.mockReturnValue({ returning: mockUpdateReturning });
     mockUpdateSet.mockReturnValue({ where: mockUpdateWhere });
     mockUpdate.mockReturnValue({ set: mockUpdateSet });
   });

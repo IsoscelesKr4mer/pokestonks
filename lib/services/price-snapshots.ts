@@ -82,11 +82,12 @@ export async function persistSnapshot(
   }
 
   for (const { id, cents } of idsToUpdateLastMarket) {
-    await db
+    const affected = await db
       .update(schema.catalogItems)
       .set({ lastMarketCents: cents, lastMarketAt: new Date() })
-      .where(and(eq(schema.catalogItems.id, id), isNull(schema.catalogItems.manualMarketCents)));
-    itemsUpdated++;
+      .where(and(eq(schema.catalogItems.id, id), isNull(schema.catalogItems.manualMarketCents)))
+      .returning({ id: schema.catalogItems.id });
+    if (affected.length > 0) itemsUpdated++;
   }
 
   return { rowsWritten, itemsUpdated, itemsSkippedManual };
