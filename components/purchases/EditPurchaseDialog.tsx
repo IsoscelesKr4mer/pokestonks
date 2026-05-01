@@ -2,12 +2,13 @@
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
 } from '@/components/ui/dialog';
 import { PurchaseForm, type PurchaseFormCatalogItem, type PurchaseFormValues } from './PurchaseForm';
 import { useUpdatePurchase } from '@/lib/query/hooks/usePurchases';
+import {
+  VaultDialogHeader,
+  FormHint,
+} from '@/components/ui/dialog-form';
 
 export type EditableLot = {
   id: number;
@@ -77,14 +78,15 @@ export function EditPurchaseDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
-        <DialogHeader>
-          <DialogTitle>Edit purchase</DialogTitle>
-          <DialogDescription>
-            {lot.sourceRipId != null
-              ? 'This card was pulled from a rip; cost basis is locked.'
-              : 'Update purchase details.'}
-          </DialogDescription>
-        </DialogHeader>
+        <VaultDialogHeader
+          title="Edit purchase"
+          sub={catalogItem.name}
+        />
+        {lot.sourceRipId != null && (
+          <FormHint>
+            This card was pulled from a rip -- cost, qty, and date are locked to the rip record.
+          </FormHint>
+        )}
         <PurchaseForm
           mode="edit"
           catalogItem={catalogItem}
