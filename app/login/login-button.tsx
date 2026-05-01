@@ -15,7 +15,11 @@ export function LoginButton() {
   };
 
   return (
-    <Button onClick={handleClick} size="lg" className="w-full max-w-xs">
+    <Button
+      onClick={handleClick}
+      size="lg"
+      className="w-full px-4 py-3 rounded-xl bg-accent text-canvas font-semibold text-[14px] hover:bg-[#c5a0ff] transition-colors flex items-center justify-center gap-2"
+    >
       Continue with Google
     </Button>
   );

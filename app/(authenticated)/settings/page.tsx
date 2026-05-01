@@ -1,33 +1,64 @@
+import { createClient } from '@/lib/supabase/server';
+import { redirect } from 'next/navigation';
 import { SignOutButton } from '@/components/auth/SignOutButton';
-import { Button } from '@/components/ui/button';
 
-export default function SettingsPage() {
+function SectionLabel({ children }: { children: string }) {
+  return <div className="text-[10px] uppercase tracking-[0.16em] text-meta font-mono mb-3">{children}</div>;
+}
+
+function ActionRow({ title, sub, action }: { title: string; sub?: string; action: React.ReactNode }) {
   return (
-    <div className="mx-auto w-full max-w-7xl px-6 py-8 space-y-6">
-      <h1 className="text-2xl font-semibold tracking-tight">Settings</h1>
+    <div className="flex justify-between items-center py-3 border-t border-divider first:border-t-0 gap-4">
+      <div>
+        <div className="text-[14px]">{title}</div>
+        {sub && <div className="text-[11px] font-mono text-meta">{sub}</div>}
+      </div>
+      <div>{action}</div>
+    </div>
+  );
+}
 
-      <section className="rounded-md border p-4 space-y-3">
-        <h2 className="text-sm font-semibold">Export</h2>
-        <p className="text-xs text-muted-foreground">
-          Download CSV files of your data. Money columns are integer cents.
-        </p>
-        <div className="grid gap-2 sm:grid-cols-3">
-          <a href="/api/exports/sales" download>
-            <Button variant="outline" className="w-full">Export sales (CSV)</Button>
-          </a>
-          <a href="/api/exports/purchases" download>
-            <Button variant="outline" className="w-full">Export purchases (CSV)</Button>
-          </a>
-          <a href="/api/exports/portfolio-summary" download>
-            <Button variant="outline" className="w-full">Export portfolio summary (CSV)</Button>
-          </a>
-        </div>
-      </section>
+export default async function SettingsPage() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) redirect('/login');
 
-      <section className="rounded-md border p-4">
-        <h2 className="text-sm font-semibold mb-3">Account</h2>
-        <SignOutButton />
-      </section>
+  const today = new Date().toISOString().slice(0, 10);
+
+  return (
+    <div className="mx-auto w-full max-w-[820px] px-6 md:px-8 py-10 space-y-8">
+      <h1 className="text-[26px] font-semibold tracking-[-0.02em]">Settings</h1>
+
+      <div className="vault-card p-6">
+        <SectionLabel>Account</SectionLabel>
+        <ActionRow title="Signed in as" sub={user.email ?? ''} action={null} />
+        <ActionRow title="Sign out" action={<SignOutButton />} />
+      </div>
+
+      <div className="vault-card p-6">
+        <SectionLabel>Exports</SectionLabel>
+        <ActionRow
+          title="Sales (CSV)"
+          sub={`pokestonks-sales-${today}.csv`}
+          action={<a href="/api/exports/sales" className="text-accent text-[13px]">Download ↓</a>}
+        />
+        <ActionRow
+          title="Purchases (CSV)"
+          sub={`pokestonks-purchases-${today}.csv`}
+          action={<a href="/api/exports/purchases" className="text-accent text-[13px]">Download ↓</a>}
+        />
+        <ActionRow
+          title="Portfolio summary (CSV)"
+          sub={`pokestonks-portfolio-${today}.csv`}
+          action={<a href="/api/exports/portfolio-summary" className="text-accent text-[13px]">Download ↓</a>}
+        />
+      </div>
+
+      <div className="vault-card p-6">
+        <SectionLabel>About</SectionLabel>
+        <ActionRow title="Version" sub="Plan 6 · Vault" action={null} />
+        <ActionRow title="Source" action={<a href="https://github.com/IsoscelesKr4mer/pokestonks" className="text-accent text-[13px]">GitHub ↗</a>} />
+      </div>
     </div>
   );
 }
