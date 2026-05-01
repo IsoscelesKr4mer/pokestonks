@@ -51,6 +51,7 @@ export type SealedResult = SealedSearchHit & {
   catalogItemId: number;
   imageStoragePath: string | null;
   lastMarketAt: string | null;
+  manualMarketCents: number | null;
 };
 
 export async function searchSealedWithImport(query: string, limit: number): Promise<SealedResult[]> {
@@ -82,6 +83,7 @@ export async function searchSealedWithImport(query: string, limit: number): Prom
         imageUrl: resolvedImageUrl,
         imageStoragePath: upserted.imageStoragePath,
         lastMarketAt: upserted.lastMarketAt?.toISOString() ?? null,
+        manualMarketCents: upserted.manualMarketCents,
       };
     })
   );
@@ -100,6 +102,7 @@ export type CardVariantHit = {
   imageStoragePath: string | null;
   marketCents: number | null;
   lastMarketAt: string | null;
+  manualMarketCents: number | null;
 };
 
 // Vercel Hobby has a 10s function budget. Pokémon TCG API parallel pagination
@@ -311,6 +314,7 @@ export async function searchCardsWithImport(
       imageStoragePath: upserted.imageStoragePath,
       marketCents: p.marketCents,
       lastMarketAt: upserted.lastMarketAt?.toISOString() ?? null,
+      manualMarketCents: upserted.manualMarketCents,
     };
   });
 
@@ -329,6 +333,7 @@ export type SealedResultDto = {
   imageUrl: string | null;
   marketCents: number | null;
   lastMarketAt: string | null;
+  manualMarketCents: number | null;
 };
 
 export type CardResultDto = { type: 'card' } & CardVariantHit & { lastMarketAt: string | null };
@@ -448,6 +453,7 @@ export async function searchAll(
     imageUrl: s.imageUrl,
     marketCents: s.marketCents,
     lastMarketAt: s.lastMarketAt,
+    manualMarketCents: s.manualMarketCents,
   }));
   const cardDtos: CardResultDto[] = cards.results.map((c) => ({ type: 'card' as const, ...c }));
 

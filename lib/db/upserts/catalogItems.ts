@@ -36,6 +36,7 @@ export type UpsertResult = {
   id: number;
   imageStoragePath: string | null;
   lastMarketAt: Date | null;
+  manualMarketCents: number | null;
 };
 
 export async function upsertSealed(input: SealedUpsertInput): Promise<UpsertResult> {
@@ -72,6 +73,7 @@ export async function upsertSealed(input: SealedUpsertInput): Promise<UpsertResu
       id: schema.catalogItems.id,
       imageStoragePath: schema.catalogItems.imageStoragePath,
       lastMarketAt: schema.catalogItems.lastMarketAt,
+      manualMarketCents: schema.catalogItems.manualMarketCents,
     });
   return rows[0];
 }
@@ -125,6 +127,7 @@ export async function bulkUpsertCards(inputs: CardUpsertInput[]): Promise<Upsert
       id: schema.catalogItems.id,
       imageStoragePath: schema.catalogItems.imageStoragePath,
       lastMarketAt: schema.catalogItems.lastMarketAt,
+      manualMarketCents: schema.catalogItems.manualMarketCents,
     });
   return rows;
 }

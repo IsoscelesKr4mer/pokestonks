@@ -19,6 +19,7 @@ vi.mock('@/lib/db/client', () => ({
       imageStoragePath: {},
       lastMarketCents: {},
       lastMarketAt: {},
+      manualMarketCents: {},
     },
   },
 }));
@@ -54,6 +55,7 @@ describe('__rowToDto', () => {
     imageStoragePath: 'catalog/1.webp',
     lastMarketCents: 7450,
     lastMarketAt: new Date('2026-04-26T00:00:00Z'),
+    manualMarketCents: null,
   };
 
   const baseCardRow = {
@@ -70,6 +72,7 @@ describe('__rowToDto', () => {
     imageStoragePath: null,
     lastMarketCents: 110000,
     lastMarketAt: new Date('2026-04-26T00:00:00Z'),
+    manualMarketCents: null,
   };
 
   it('maps a sealed row to SealedResultDto', () => {
@@ -102,5 +105,20 @@ describe('__rowToDto', () => {
   it('returns null lastMarketAt when the column is null', () => {
     const dto = __rowToDto({ ...baseSealedRow, lastMarketAt: null });
     expect(dto?.lastMarketAt).toBeNull();
+  });
+
+  it('propagates manualMarketCents as null when not set', () => {
+    const dto = __rowToDto({ ...baseSealedRow, manualMarketCents: null });
+    expect(dto).toHaveProperty('manualMarketCents', null);
+  });
+
+  it('propagates manualMarketCents when set on a sealed row', () => {
+    const dto = __rowToDto({ ...baseSealedRow, manualMarketCents: 8000 });
+    expect(dto).toHaveProperty('manualMarketCents', 8000);
+  });
+
+  it('propagates manualMarketCents when set on a card row', () => {
+    const dto = __rowToDto({ ...baseCardRow, manualMarketCents: 12500 });
+    expect(dto).toHaveProperty('manualMarketCents', 12500);
   });
 });

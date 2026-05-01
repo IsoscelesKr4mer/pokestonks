@@ -26,7 +26,7 @@ import { searchAll } from '@/lib/services/search';
 const localMock = vi.mocked(searchLocalCatalog);
 const upstreamMock = vi.mocked(searchAll);
 
-const cardRow = (id: number, marketCents: number | null = 100) => ({
+const cardRow = (id: number, marketCents: number | null = 100, manualMarketCents: number | null = null) => ({
   type: 'card' as const,
   catalogItemId: id,
   name: `card-${id}`,
@@ -39,6 +39,7 @@ const cardRow = (id: number, marketCents: number | null = 100) => ({
   imageStoragePath: null,
   marketCents,
   lastMarketAt: '2026-04-26T00:00:00Z',
+  manualMarketCents,
 });
 
 describe('GET /api/search dispatch', () => {
@@ -134,5 +135,45 @@ describe('GET /api/search dispatch', () => {
 
     expect(upstreamMock).toHaveBeenCalledOnce();
     expect(body.source).toBe('upstream');
+  });
+
+  it('local path: result rows carry manualMarketCents (null when not set)', async () => {
+    localMock.mockResolvedValue({ sealed: [], cards: [cardRow(1, 500, null)], warnings: [] });
+
+    const req = new NextRequest('http://test/api/search?q=sv3pt5');
+    const res = await GET(req);
+    const body = await res.json();
+
+    expect(body.source).toBe('local');
+    expect(body.results[0]).toHaveProperty('manualMarketCents', null);
+  });
+
+  it('local path: result rows carry manualMarketCents when set', async () => {
+    localMock.mockResolvedValue({ sealed: [], cards: [cardRow(1, 500, 999)], warnings: [] });
+
+    const req = new NextRequest('http://test/api/search?q=sv3pt5');
+    const res = await GET(req);
+    const body = await res.json();
+
+    expect(body.source).toBe('local');
+    expect(body.results[0]).toHaveProperty('manualMarketCents', 999);
+  });
+
+  it('upstream path: result rows carry manualMarketCents from upstream response', async () => {
+    localMock.mockResolvedValue({ sealed: [], cards: [], warnings: [] });
+    upstreamMock.mockResolvedValue({
+      query: 'pikachu',
+      kind: 'all',
+      sortBy: 'price-desc',
+      results: [{ ...cardRow(1, 200, 750), type: 'card' as const }],
+      warnings: [],
+    });
+
+    const req = new NextRequest('http://test/api/search?q=pikachu');
+    const res = await GET(req);
+    const body = await res.json();
+
+    expect(body.source).toBe('upstream');
+    expect(body.results[0]).toHaveProperty('manualMarketCents', 750);
   });
 });

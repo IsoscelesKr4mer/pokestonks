@@ -27,6 +27,7 @@ type LocalRow = {
   imageStoragePath: string | null;
   lastMarketCents: number | null;
   lastMarketAt: Date | null;
+  manualMarketCents: number | null;
 };
 
 // Drizzle's or() returns SQL | undefined when its args might be undefined.
@@ -128,6 +129,7 @@ export function __rowToDto(row: LocalRow): AnyDto | null {
       imageUrl,
       marketCents: row.lastMarketCents,
       lastMarketAt,
+      manualMarketCents: row.manualMarketCents,
     } satisfies SealedResultDto;
   }
   if (row.kind === 'card' && row.cardNumber !== null && row.variant !== null) {
@@ -144,6 +146,7 @@ export function __rowToDto(row: LocalRow): AnyDto | null {
       imageStoragePath: row.imageStoragePath,
       marketCents: row.lastMarketCents,
       lastMarketAt,
+      manualMarketCents: row.manualMarketCents,
     } satisfies CardResultDto;
   }
   return null;
@@ -180,6 +183,7 @@ export async function searchLocalCatalog(
       imageStoragePath: schema.catalogItems.imageStoragePath,
       lastMarketCents: schema.catalogItems.lastMarketCents,
       lastMarketAt: schema.catalogItems.lastMarketAt,
+      manualMarketCents: schema.catalogItems.manualMarketCents,
     })
     .from(schema.catalogItems)
     .where(conditions)
