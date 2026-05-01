@@ -1,7 +1,7 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
 
-export function DialogHeader({ title, sub, className }: { title: string; sub?: string; className?: string }) {
+export function VaultDialogHeader({ title, sub, className }: { title: string; sub?: string; className?: string }) {
   return (
     <div className={cn('flex justify-between items-start pr-8', className)}>
       <div>

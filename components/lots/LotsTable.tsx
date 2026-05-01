@@ -28,10 +28,10 @@ export interface LotsTableProps {
 
 export function LotsTable({ rows, onEdit, onDelete, onSell, onRip, onOpen }: LotsTableProps) {
   if (rows.length === 0) {
-    return <div className="vault-card p-6 text-center text-[13px] font-mono text-meta">No open lots.</div>;
+    return <div className="bg-vault border border-divider rounded-2xl p-6 text-center text-[13px] font-mono text-meta">No open lots.</div>;
   }
   return (
-    <div className="vault-card overflow-hidden">
+    <div className="bg-vault border border-divider rounded-2xl overflow-hidden">
       {rows.map((row, i) => (
         <div
           key={row.purchaseId}
