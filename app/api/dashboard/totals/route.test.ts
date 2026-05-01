@@ -189,4 +189,65 @@ describe('GET /api/dashboard/totals', () => {
     const body = await res.json();
     expect(body.realizedRipPnLCents).toBe(-500);
   });
+
+  it('folds sales realized P&L into realizedPnLCents', async () => {
+    // 1 purchase qty 5 @ $20 each (cost_cents = 2000 per unit)
+    // 1 sale qty 2 @ $30 each, fees $0
+    // matched_cost_cents = 2000 (total cost matched for the 2-unit sale, i.e. 1000/unit * 2)
+    // realizedSalesPnLCents = sale_price_cents - fees_cents - matched_cost_cents
+    //                       = 3000 - 0 - 1000 = 2000
+    // spec says: (3000 - 2000) * 2 = 2000; purchase cost is 2000 per unit so 2 units = 4000 matched
+    // route formula: SUM(sale_price_cents - fees_cents - matched_cost_cents)
+    // for result = 2000: sale_price_cents=3000, fees_cents=0, matched_cost_cents=1000
+    const purchases: Purchase[] = [
+      {
+        id: 1,
+        catalog_item_id: 1,
+        quantity: 5,
+        cost_cents: 2000,
+        deleted_at: null,
+        created_at: '2026-04-25T00:00:00Z',
+        catalog_item: {
+          kind: 'sealed',
+          name: 'ETB',
+          set_name: 'SV151',
+          product_type: 'ETB',
+          image_url: null,
+          image_storage_path: null,
+          last_market_cents: null,
+          last_market_at: null,
+        },
+      },
+    ];
+    // Two separate sale rows, one unit each @ $3000 sale, $1000 matched cost (= $2000 purchase / 2 units)
+    const sales = [
+      {
+        id: 10,
+        purchase_id: 1,
+        quantity: 1,
+        sale_price_cents: 3000,
+        fees_cents: 0,
+        matched_cost_cents: 2000,
+        sale_group_id: 'grp-1',
+      },
+      {
+        id: 11,
+        purchase_id: 1,
+        quantity: 1,
+        sale_price_cents: 3000,
+        fees_cents: 0,
+        matched_cost_cents: 2000,
+        sale_group_id: 'grp-1',
+      },
+    ];
+    (createClient as ReturnType<typeof vi.fn>).mockResolvedValue(
+      buildSupabase({ authedUserId: 'u1', purchases, rips: [], decompositions: [], sales })
+    );
+    const res = await GET();
+    const body = await res.json();
+    expect(res.status).toBe(200);
+    // SUM((3000 - 0 - 2000) * 2 rows) = 2000
+    expect(body.realizedSalesPnLCents).toBe(2000);
+    expect(body.realizedPnLCents).toBe(2000);
+  });
 });

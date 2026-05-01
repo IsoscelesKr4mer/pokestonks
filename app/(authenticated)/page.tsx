@@ -3,8 +3,8 @@ import { redirect } from 'next/navigation';
 import Link from 'next/link';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { buttonVariants } from '@/components/ui/button';
-import { DashboardTotalsCard } from '@/components/dashboard/DashboardTotalsCard';
-import { DashboardPerformersWrapper } from '@/components/dashboard/DashboardPerformersWrapper';
+import { PortfolioHeroLive } from '@/components/dashboard/PortfolioHero';
+import { PerformersStrip } from '@/components/dashboard/PerformersStrip';
 
 export default async function DashboardPage() {
   const supabase = await createClient();
@@ -20,16 +20,22 @@ export default async function DashboardPage() {
   const hasLots = (count ?? 0) > 0;
 
   return (
-    <div className="mx-auto w-full max-w-7xl px-6 py-8 space-y-8">
-      <div className="space-y-1">
-        <h1 className="text-2xl font-semibold tracking-tight">Dashboard</h1>
-        <p className="text-sm text-muted-foreground">Signed in as {user.email}</p>
-      </div>
-
+    <div className="mx-auto w-full max-w-[1200px] px-6 md:px-8 py-10 space-y-10">
       {hasLots ? (
         <>
-          <DashboardTotalsCard />
-          <DashboardPerformersWrapper />
+          <PortfolioHeroLive />
+          <PerformersStrip />
+          <div className="grid gap-3">
+            <div className="flex justify-between items-baseline">
+              <h3 className="text-[14px] font-semibold uppercase tracking-[0.04em]">
+                Value over time
+              </h3>
+              <span className="text-[11px] text-meta font-mono">RESERVED FOR PLAN 7</span>
+            </div>
+            <div className="rounded-2xl border border-dashed border-accent/20 bg-vault min-h-[180px] flex items-center justify-center text-[12px] font-mono text-meta">
+              Chart slot &mdash; time-series &middot; 1M / 3M / 6M / 12M / MAX
+            </div>
+          </div>
         </>
       ) : (
         <Card>
@@ -37,7 +43,7 @@ export default async function DashboardPage() {
             <CardTitle>You haven&apos;t added anything yet</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-text-muted">
               Add your first sealed product or card to start tracking your portfolio.
             </p>
             <Link href="/catalog" className={buttonVariants({ variant: 'default', size: 'lg' })}>
