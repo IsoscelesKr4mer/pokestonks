@@ -8,6 +8,9 @@ import {
   type RawSaleRow,
 } from '@/lib/services/holdings';
 import { computeHoldingPnL } from '@/lib/services/pnl';
+import { db, schema } from '@/lib/db/client';
+import { and, desc, inArray, lte } from 'drizzle-orm';
+import { computeDeltas } from '@/lib/services/price-deltas';
 
 export async function GET() {
   const supabase = await createClient();
@@ -59,5 +62,67 @@ export async function GET() {
   const now = new Date();
   const holdingsPnL = holdings.map((h) => computeHoldingPnL(h, now));
 
-  return NextResponse.json({ holdings: holdingsPnL });
+  const catalogItemIds = holdingsPnL.map((h) => h.catalogItemId);
+
+  let deltaMap = new Map<number, { deltaCents: number | null; deltaPct: number | null }>();
+  let manualMap = new Map<number, number | null>();
+
+  if (catalogItemIds.length > 0) {
+    // Fetch manual_market_cents per held item
+    const manuals = await db.query.catalogItems.findMany({
+      where: inArray(schema.catalogItems.id, catalogItemIds),
+      columns: { id: true, manualMarketCents: true },
+    });
+    for (const m of manuals) {
+      manualMap.set(m.id, m.manualMarketCents ?? null);
+    }
+
+    // Find each item's market price at or before 7 days ago (latest qualifying row)
+    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+      .toISOString()
+      .slice(0, 10);
+
+    // Fetch all rows at or before sevenDaysAgo for held items, then keep the latest per item.
+    // Holdings are typically < 50 items so this is fine without a subquery.
+    const allThenRows = await db.query.marketPrices.findMany({
+      where: and(
+        inArray(schema.marketPrices.catalogItemId, catalogItemIds),
+        lte(schema.marketPrices.snapshotDate, sevenDaysAgo)
+      ),
+      columns: { catalogItemId: true, snapshotDate: true, marketPriceCents: true },
+      orderBy: [desc(schema.marketPrices.snapshotDate)],
+    });
+
+    // Pick the first (latest) row per catalogItemId
+    const thenMap = new Map<number, number | null>();
+    for (const row of allThenRows) {
+      if (!thenMap.has(row.catalogItemId)) {
+        thenMap.set(row.catalogItemId, row.marketPriceCents);
+      }
+    }
+
+    const deltaInputs = holdingsPnL.map((h) => {
+      const manualCents = manualMap.get(h.catalogItemId);
+      const nowCents = manualCents ?? h.lastMarketCents ?? null;
+      return {
+        catalogItemId: h.catalogItemId,
+        nowCents,
+        thenCents: thenMap.get(h.catalogItemId) ?? null,
+      };
+    });
+
+    deltaMap = computeDeltas(deltaInputs);
+  }
+
+  const enriched = holdingsPnL.map((h) => {
+    const delta = deltaMap.get(h.catalogItemId) ?? { deltaCents: null, deltaPct: null };
+    return {
+      ...h,
+      delta7dCents: delta.deltaCents,
+      delta7dPct: delta.deltaPct,
+      manualMarketCents: manualMap.get(h.catalogItemId) ?? null,
+    };
+  });
+
+  return NextResponse.json({ holdings: enriched });
 }
