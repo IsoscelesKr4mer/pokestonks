@@ -1,6 +1,5 @@
 'use client';
 import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
 import { useRefreshHeld, getLastRefreshHeldAt } from '@/lib/query/hooks/useRefreshHeld';
 
 const DEBOUNCE_MS = 60_000;
@@ -35,17 +34,16 @@ export function RefreshHeldButton() {
   const disabled = refresh.isPending || debounced;
 
   return (
-    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-      <span>{formatRefreshedAgo(lastAt)}</span>
-      <Button
+    <div className="flex items-center gap-2.5 font-mono text-[10px]">
+      <span className="uppercase tracking-[0.14em] text-meta">{formatRefreshedAgo(lastAt)}</span>
+      <button
         type="button"
-        variant="outline"
-        size="sm"
         onClick={() => refresh.mutate()}
         disabled={disabled}
+        className="px-3 py-1.5 rounded-2xl border border-divider bg-vault text-[11px] font-mono uppercase tracking-[0.12em] text-text hover:text-accent hover:border-accent disabled:opacity-40 disabled:hover:text-text disabled:hover:border-divider transition-colors"
       >
-        {refresh.isPending ? 'Refreshing...' : 'Refresh'}
-      </Button>
+        {refresh.isPending ? 'Refreshing' : 'Refresh now'}
+      </button>
     </div>
   );
 }

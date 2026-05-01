@@ -59,7 +59,32 @@ export async function GET() {
     (acc, s) => acc + (s.sale_price_cents - s.fees_cents - s.matched_cost_cents),
     0
   );
-  const lotCount = (purchases ?? []).length;
+  // Count OPEN lots only (matches holdings page). Mirrors the consumption
+  // logic in aggregateHoldings — a purchase row whose units have all been
+  // ripped, decomposed, or sold is no longer a "lot you currently hold."
+  const consumedByPurchase = new Map<number, number>();
+  for (const r of (rips ?? []) as RawRipRow[]) {
+    consumedByPurchase.set(
+      r.source_purchase_id,
+      (consumedByPurchase.get(r.source_purchase_id) ?? 0) + 1
+    );
+  }
+  for (const d of (decompositions ?? []) as RawDecompositionRow[]) {
+    consumedByPurchase.set(
+      d.source_purchase_id,
+      (consumedByPurchase.get(d.source_purchase_id) ?? 0) + 1
+    );
+  }
+  for (const s of (sales ?? []) as Array<{ purchase_id: number; quantity: number }>) {
+    consumedByPurchase.set(
+      s.purchase_id,
+      (consumedByPurchase.get(s.purchase_id) ?? 0) + s.quantity
+    );
+  }
+  const lotCount = (purchases ?? []).filter((p) => {
+    const consumed = consumedByPurchase.get((p as { id: number }).id) ?? 0;
+    return ((p as { quantity: number }).quantity ?? 0) - consumed > 0;
+  }).length;
   const saleEventCount = new Set((sales ?? []).map((s) => s.sale_group_id)).size;
 
   const result = computePortfolioPnL(
