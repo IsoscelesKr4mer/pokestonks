@@ -1,10 +1,19 @@
 'use client';
 import { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import { Dialog, DialogContent } from '@/components/ui/dialog';
+import {
+  VaultDialogHeader,
+  FormSection,
+  FormLabel,
+  FormRow,
+  DialogPreview,
+  DialogActions,
+} from '@/components/ui/dialog-form';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useCreateSale, useFifoPreview, type FifoPreviewRow } from '@/lib/query/hooks/useSales';
 import { formatCents, formatCentsSigned, formatPct } from '@/lib/utils/format';
+import { dollarsStringToCents } from '@/lib/utils/cents';
 
 type Props = {
   open: boolean;
@@ -23,14 +32,9 @@ export function SellDialog({ open, onOpenChange, catalogItemId, catalogItemName,
   const [platform, setPlatform] = useState('');
   const [notes, setNotes] = useState('');
 
-  const dollarsToCents = (s: string): number => {
-    const n = Number.parseFloat(s);
-    return Number.isFinite(n) ? Math.round(n * 100) : 0;
-  };
-
-  const perUnitPriceCents = dollarsToCents(perUnitPriceDollars);
+  const perUnitPriceCents = dollarsStringToCents(perUnitPriceDollars) ?? 0;
   const totalSalePriceCents = perUnitPriceCents * qty;
-  const totalFeesCents = dollarsToCents(feesDollars);
+  const totalFeesCents = dollarsStringToCents(feesDollars) ?? 0;
 
   const previewInput =
     qty > 0 && totalSalePriceCents >= 0 && totalFeesCents >= 0 && saleDate
@@ -56,97 +60,138 @@ export function SellDialog({ open, onOpenChange, catalogItemId, catalogItemName,
 
   const submit = () => {
     if (!previewInput || !canSubmit) return;
-    create.mutate(previewInput, {
-      onSuccess: () => onOpenChange(false),
-    });
+    const priceCents = dollarsStringToCents(perUnitPriceDollars);
+    const feesCents = dollarsStringToCents(feesDollars);
+    if (priceCents === null) return;
+    create.mutate(
+      {
+        ...previewInput,
+        totalSalePriceCents: priceCents * qty,
+        totalFeesCents: feesCents ?? 0,
+      },
+      { onSuccess: () => onOpenChange(false) },
+    );
   };
+
+  const previewRows = (() => {
+    if (preview.data?.ok !== true || preview.data.rows.length === 0) return [];
+    const rows = preview.data.rows.map((r: FifoPreviewRow) => ({
+      label: `Lot ${r.purchaseDate}${r.purchaseSource ? ` (${r.purchaseSource})` : ''} · ${r.quantity}x @ ${formatCents(r.perUnitCostCents)}`,
+      value: formatCentsSigned(r.realizedPnLCents),
+      tone: r.realizedPnLCents >= 0 ? ('positive' as const) : ('negative' as const),
+    }));
+    const totals = preview.data.totals;
+    const pct =
+      totals.totalMatchedCostCents > 0
+        ? ` (${formatPct((totals.realizedPnLCents / totals.totalMatchedCostCents) * 100)})`
+        : '';
+    rows.push({
+      label: 'Realized P&L',
+      value: `${formatCentsSigned(totals.realizedPnLCents)}${pct}`,
+      tone: totals.realizedPnLCents >= 0 ? 'positive' : 'negative',
+    });
+    return rows;
+  })();
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg">
-        <DialogHeader>
-          <DialogTitle>Sell {catalogItemName}</DialogTitle>
-          <DialogDescription>
-            FIFO matches your oldest open lots first. {qtyHeld} on hand.
-          </DialogDescription>
-        </DialogHeader>
+        <VaultDialogHeader
+          title={`Sell · ${catalogItemName}`}
+          sub={`${qtyHeld} on hand · FIFO lot matching`}
+        />
 
-        <div className="grid grid-cols-2 gap-3">
+        <FormSection>
+          <FormRow>
+            <div>
+              <FormLabel>Quantity</FormLabel>
+              <Input
+                id="qty"
+                type="number"
+                min={1}
+                max={qtyHeld}
+                value={qty}
+                onChange={(e) => setQty(Math.max(1, Number(e.target.value) || 1))}
+              />
+            </div>
+            <div>
+              <FormLabel>Sale date</FormLabel>
+              <Input
+                id="saleDate"
+                type="date"
+                value={saleDate}
+                max={today}
+                onChange={(e) => setSaleDate(e.target.value)}
+              />
+            </div>
+          </FormRow>
+          <FormRow>
+            <div>
+              <FormLabel>Sale price per unit</FormLabel>
+              <Input
+                id="salePrice"
+                type="number"
+                min={0}
+                step="0.01"
+                value={perUnitPriceDollars}
+                onChange={(e) => setPerUnitPriceDollars(e.target.value)}
+                placeholder="0.00"
+              />
+              {qty > 1 && perUnitPriceCents > 0 ? (
+                <p className="text-xs text-muted-foreground mt-1">
+                  Total: {formatCents(totalSalePriceCents)}
+                </p>
+              ) : null}
+            </div>
+            <div>
+              <FormLabel>Fees (total)</FormLabel>
+              <Input
+                id="fees"
+                type="number"
+                min={0}
+                step="0.01"
+                value={feesDollars}
+                onChange={(e) => setFeesDollars(e.target.value)}
+                placeholder="0.00"
+              />
+            </div>
+          </FormRow>
           <div>
-            <label htmlFor="qty" className="text-sm font-medium block mb-1">Quantity</label>
+            <FormLabel>Platform</FormLabel>
             <Input
-              id="qty"
-              type="number"
-              min={1}
-              max={qtyHeld}
-              value={qty}
-              onChange={(e) => setQty(Math.max(1, Number(e.target.value) || 1))}
+              id="platform"
+              value={platform}
+              onChange={(e) => setPlatform(e.target.value)}
+              placeholder="eBay, Facebook Marketplace, ..."
             />
           </div>
           <div>
-            <label htmlFor="saleDate" className="text-sm font-medium block mb-1">Sale date</label>
-            <Input id="saleDate" type="date" value={saleDate} max={today} onChange={(e) => setSaleDate(e.target.value)} />
+            <FormLabel>Notes</FormLabel>
+            <Input
+              id="notes"
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="(optional)"
+            />
           </div>
-          <div>
-            <label htmlFor="salePrice" className="text-sm font-medium block mb-1">Sale price per unit</label>
-            <Input id="salePrice" type="number" min={0} step="0.01" value={perUnitPriceDollars} onChange={(e) => setPerUnitPriceDollars(e.target.value)} placeholder="0.00" />
-            {qty > 1 && perUnitPriceCents > 0 ? (
-              <p className="text-xs text-muted-foreground mt-1">
-                Total: {formatCents(totalSalePriceCents)}
-              </p>
-            ) : null}
-          </div>
-          <div>
-            <label htmlFor="fees" className="text-sm font-medium block mb-1">Fees (total)</label>
-            <Input id="fees" type="number" min={0} step="0.01" value={feesDollars} onChange={(e) => setFeesDollars(e.target.value)} placeholder="0.00" />
-          </div>
-          <div className="col-span-2">
-            <label htmlFor="platform" className="text-sm font-medium block mb-1">Platform</label>
-            <Input id="platform" value={platform} onChange={(e) => setPlatform(e.target.value)} placeholder="eBay, Facebook Marketplace, ..." />
-          </div>
-          <div className="col-span-2">
-            <label htmlFor="notes" className="text-sm font-medium block mb-1">Notes</label>
-            <Input id="notes" value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="(optional)" />
-          </div>
-        </div>
+        </FormSection>
 
-        <div className="border-t pt-3 mt-2">
-          <h3 className="text-sm font-medium mb-2">Preview</h3>
-          {preview.data?.ok === false && (
-            <p className="text-sm text-destructive">
-              Not enough open qty. Available: {preview.data.totalAvailable}.
-            </p>
-          )}
-          {preview.data?.ok === true && preview.data.rows.length > 0 && (
-            <div className="space-y-1 text-sm">
-              {preview.data.rows.map((r: FifoPreviewRow) => (
-                <div key={r.purchaseId} className="flex justify-between gap-2">
-                  <span className="text-muted-foreground">
-                    Lot {r.purchaseDate}{' '}
-                    {r.purchaseSource ? <span className="text-xs">({r.purchaseSource})</span> : null} - {r.quantity}x @ {formatCents(r.perUnitCostCents)}
-                  </span>
-                  <span>{formatCentsSigned(r.realizedPnLCents)}</span>
-                </div>
-              ))}
-              <div className="flex justify-between border-t pt-1 mt-1 font-medium">
-                <span>Realized P&amp;L</span>
-                <span>
-                  {formatCentsSigned(preview.data.totals.realizedPnLCents)}
-                  {preview.data.totals.totalMatchedCostCents > 0 ? (
-                    <> ({formatPct((preview.data.totals.realizedPnLCents / preview.data.totals.totalMatchedCostCents) * 100)})</>
-                  ) : null}
-                </span>
-              </div>
-            </div>
-          )}
-        </div>
+        {preview.data?.ok === false && (
+          <p className="text-sm text-destructive">
+            Not enough open qty. Available: {preview.data.totalAvailable}.
+          </p>
+        )}
 
-        <DialogFooter>
-          <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
-          <Button onClick={submit} disabled={!canSubmit}>
-            {create.isPending ? 'Selling...' : 'Sell'}
+        {previewRows.length > 0 && <DialogPreview rows={previewRows} />}
+
+        <DialogActions>
+          <Button variant="ghost" onClick={() => onOpenChange(false)}>
+            Cancel
           </Button>
-        </DialogFooter>
+          <Button onClick={submit} disabled={!canSubmit}>
+            {create.isPending ? 'Selling...' : 'Confirm sale'}
+          </Button>
+        </DialogActions>
       </DialogContent>
     </Dialog>
   );

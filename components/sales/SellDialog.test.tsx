@@ -1,15 +1,17 @@
 // @vitest-environment happy-dom
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen, fireEvent } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SellDialog } from './SellDialog';
+
+const mockMutate = vi.fn();
 
 vi.mock('@/lib/query/hooks/useSales', () => ({
   useFifoPreview: () => ({
     data: { ok: true, rows: [], totals: { totalSalePriceCents: 0, totalFeesCents: 0, totalMatchedCostCents: 0, realizedPnLCents: 0, qtyAvailable: 5 } },
     isLoading: false,
   }),
-  useCreateSale: () => ({ mutate: vi.fn(), isPending: false }),
+  useCreateSale: () => ({ mutate: mockMutate, isPending: false }),
 }));
 
 function renderWithQuery(ui: React.ReactNode) {
@@ -18,6 +20,10 @@ function renderWithQuery(ui: React.ReactNode) {
 }
 
 describe('SellDialog', () => {
+  beforeEach(() => {
+    mockMutate.mockClear();
+  });
+
   it('renders form fields when open', () => {
     renderWithQuery(
       <SellDialog
@@ -28,12 +34,12 @@ describe('SellDialog', () => {
         qtyHeld={5}
       />
     );
-    expect(screen.getByLabelText(/quantity/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/sale price/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/fees/i)).toBeInTheDocument();
+    expect(document.getElementById('qty')).toBeInTheDocument();
+    expect(document.getElementById('salePrice')).toBeInTheDocument();
+    expect(document.getElementById('fees')).toBeInTheDocument();
   });
 
-  it('disables submit when preview not yet ok', () => {
+  it('shows confirm sale button when open', () => {
     renderWithQuery(
       <SellDialog
         open
@@ -43,9 +49,31 @@ describe('SellDialog', () => {
         qtyHeld={5}
       />
     );
-    // Default form state has qty=1, price=0, fees=0, date=today, so preview enabled
-    // but the test mock returns ok:true with 0 rows, which isn't a real submission case.
-    // Instead, we just verify the button exists.
-    expect(screen.getByRole('button', { name: /sell/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /confirm sale/i })).toBeInTheDocument();
+  });
+
+  it('treats $0.295 sale price as 30 cents per unit (FP edge case)', () => {
+    renderWithQuery(
+      <SellDialog
+        open
+        onOpenChange={() => {}}
+        catalogItemId={5}
+        catalogItemName="ETB"
+        qtyHeld={5}
+      />
+    );
+
+    // Fill price = 0.295, qty = 1, fees = 0
+    const priceInput = document.getElementById('salePrice')!;
+    fireEvent.change(priceInput, { target: { value: '0.295' } });
+
+    // Trigger submit via confirm sale button — mock preview is ok:true so canSubmit is true
+    const submitBtn = screen.getByRole('button', { name: /confirm sale/i });
+    fireEvent.click(submitBtn);
+
+    expect(mockMutate).toHaveBeenCalledWith(
+      expect.objectContaining({ totalSalePriceCents: 30 }),
+      expect.anything(),
+    );
   });
 });

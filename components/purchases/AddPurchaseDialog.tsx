@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import { useCreatePurchase } from '@/lib/query/hooks/usePurchases';
+import { dollarsStringToCents } from '@/lib/utils/cents';
 
 export function AddPurchaseDialog({
   open,
@@ -90,9 +91,8 @@ export function AddPurchaseDialog({
           </Button>
           <Button
             onClick={async () => {
-              // TODO: replace with dollarsStringToCents from lib/utils/cents.ts when Task 16 creates it
-              const cents = Math.round(parseFloat(costDollars) * 100);
-              if (!Number.isFinite(cents) || cents <= 0) return;
+              const cents = dollarsStringToCents(costDollars);
+              if (cents === null || cents <= 0) return;
               await create.mutateAsync({
                 catalogItemId,
                 purchaseDate: date,
