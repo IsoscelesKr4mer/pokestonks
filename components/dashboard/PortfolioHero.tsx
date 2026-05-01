@@ -56,10 +56,10 @@ export function PortfolioHero({
       <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-8 items-end">
         <div className="grid gap-3">
           <div className="text-[10px] uppercase tracking-[0.18em] text-meta font-mono">
-            Vault total &mdash; {new Date().toISOString().slice(0, 10)}
+            Vault total · {new Date().toISOString().slice(0, 10)}
           </div>
           {nothingPriced ? (
-            <div className="text-[40px] text-meta font-mono">&mdash;</div>
+            <div className="text-[40px] text-meta font-mono">--</div>
           ) : (
             <HologramTotal cents={data.totalCurrentValueCents} />
           )}
@@ -104,7 +104,7 @@ export function PortfolioHero({
           />
           <Stat
             label="Unrealized"
-            value={nothingPriced ? '—' : formatCentsSigned(data.unrealizedPnLCents)}
+            value={nothingPriced ? '--' : formatCentsSigned(data.unrealizedPnLCents)}
             sub={nothingPriced ? '' : formatPct(data.unrealizedPnLPct ?? 0)}
             tone={
               nothingPriced ? 'muted' : data.unrealizedPnLCents >= 0 ? 'positive' : 'negative'
