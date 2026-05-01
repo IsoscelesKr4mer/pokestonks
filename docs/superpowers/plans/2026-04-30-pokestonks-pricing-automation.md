@@ -1,5 +1,15 @@
 # Plan 7 — Pricing Automation + History Implementation Plan
 
+> **STATUS NOTE (2026-04-30 evening, commit f3aea4b):** Spec was revised after T4 smoke discovered TCGCSV has no archive endpoint. Going-forward-only model. Tasks below partially superseded:
+> - **T4** rewritten as per-group ProductsAndPrices.csv fetch (not zip).
+> - **T9** (lazy backfill) DELETED.
+> - **T14** drops `useTriggerBackfill`.
+> - **T18** drops backfill polling; empty state copy = "Tracking starts soon. We snapshot daily at 21:00 UTC."
+> - **T21** drops the 365-day backfill script; only `vercel.json` remains.
+> - Cron schedule: 21:00 UTC (was 06:00).
+>
+> The implementation prompts the controller dispatches contain the corrected task text. The plan body below is left for historical reference; the spec at `docs/superpowers/specs/2026-04-30-pokestonks-pricing-automation-design.md` is the authoritative source.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Replace on-demand-only pricing with a daily Vercel Cron that snapshots TCGCSV archive zips into `market_prices`, gives every catalog item a multi-month chart on first view via lazy 90-day backfill, surfaces 7d delta indicators across portfolio surfaces, supports manual override for vending-only SKUs, and adds a refresh-all-held button.
