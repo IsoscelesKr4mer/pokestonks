@@ -6,6 +6,16 @@ import { parseArchiveCsv, type ArchivePriceRow } from './tcgcsv-archive';
 const TCGCSV_BASE = 'https://tcgcsv.com/tcgplayer';
 const PARALLEL = 8;
 
+// TCGCSV's CloudFront WAF rejects requests with empty / Node default
+// User-Agent (returns 401). Send a proper UA on every request.
+const TCGCSV_FETCH_INIT: RequestInit = {
+  cache: 'no-store',
+  headers: {
+    'User-Agent': 'Pokestonks/1.0 (+https://pokestonks.vercel.app)',
+    Accept: 'text/csv,*/*;q=0.8',
+  },
+};
+
 export type TcgcsvGroup = {
   groupId: number;
   name: string;
@@ -22,7 +32,7 @@ export type FetchAllResult = {
 
 export async function fetchGroupList(categoryId: number): Promise<TcgcsvGroup[]> {
   const url = `${TCGCSV_BASE}/${categoryId}/Groups.csv`;
-  const res = await fetch(url, { cache: 'no-store' });
+  const res = await fetch(url, TCGCSV_FETCH_INIT);
   if (!res.ok) {
     throw new Error(`tcgcsv groups fetch failed for cat ${categoryId}: ${res.status}`);
   }
@@ -52,7 +62,7 @@ export async function fetchProductsAndPrices(
   groupId: number
 ): Promise<Map<number, ArchivePriceRow>> {
   const url = `${TCGCSV_BASE}/${categoryId}/${groupId}/ProductsAndPrices.csv`;
-  const res = await fetch(url, { cache: 'no-store' });
+  const res = await fetch(url, TCGCSV_FETCH_INIT);
   if (!res.ok) {
     throw new Error(
       `tcgcsv ProductsAndPrices fetch failed for ${categoryId}/${groupId}: ${res.status}`
