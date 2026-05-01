@@ -54,7 +54,7 @@ The first five plans focused on data correctness. UI was shipped plain — neutr
 background-size: 200% 100%;
 ```
 
-**Usage rule:** appears on **exactly one** element in the entire app — the dashboard portfolio total. `text-fill: transparent` + `background-clip: text`. Animated via `--motion-holo-shimmer` (8s loop) and the cursor-tracking parallax primitive. No buttons, no badges, no other numbers.
+**Usage rule:** appears on **exactly one** element in the entire app — the dashboard portfolio total. Implemented via `background: var(--gradient-holo); -webkit-background-clip: text; background-clip: text; color: transparent;`. Animated via `holo-shimmer` (8s loop) and the cursor-tracking `hologram-parallax` primitive. No buttons, no badges, no other numbers.
 
 ### 2.4 Typography
 
