@@ -20,6 +20,10 @@ export type HoldingPnL = {
   pnlPct: number | null;
   priced: boolean;
   stale: boolean;
+  // Enriched by API routes (not computed in-process)
+  delta7dCents?: number | null;
+  delta7dPct?: number | null;
+  manualMarketCents?: number | null;
 };
 
 export type PortfolioPnL = {

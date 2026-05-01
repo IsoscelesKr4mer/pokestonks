@@ -3,6 +3,8 @@ import Link from 'next/link';
 import { useDashboardTotals } from '@/lib/query/hooks/useDashboardTotals';
 import { HoldingThumbnail } from '@/components/holdings/HoldingThumbnail';
 import { formatCents, formatPct } from '@/lib/utils/format';
+import { DeltaPill } from '@/components/prices/DeltaPill';
+import { ManualPriceBadge } from '@/components/prices/ManualPriceBadge';
 
 export function PerformersStrip() {
   const { data } = useDashboardTotals();
@@ -35,8 +37,11 @@ export function PerformersStrip() {
             <div className="text-[12px] font-semibold leading-[1.3] line-clamp-2 min-h-[32px]">
               {h.name}
             </div>
-            <div className="font-mono text-[11px] flex justify-between">
-              <span>{h.lastMarketCents !== null ? formatCents(h.lastMarketCents) : '—'}</span>
+            <div className="font-mono text-[11px] flex justify-between items-center">
+              <span className="flex items-center gap-1">
+                {h.lastMarketCents !== null ? formatCents(h.lastMarketCents) : '—'}
+                {h.manualMarketCents != null && <ManualPriceBadge setAt={null} />}
+              </span>
               {h.pnlPct !== null && (
                 <span className={h.pnlPct >= 0 ? 'text-positive' : 'text-negative'}>
                   {h.pnlPct >= 0 ? '+' : ''}
@@ -44,6 +49,7 @@ export function PerformersStrip() {
                 </span>
               )}
             </div>
+            <DeltaPill deltaCents={h.delta7dCents ?? null} deltaPct={h.delta7dPct ?? null} size="sm" />
           </Link>
         ))}
       </div>

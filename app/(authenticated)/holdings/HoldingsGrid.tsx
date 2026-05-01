@@ -7,6 +7,8 @@ import { formatCents, formatCentsSigned, formatPct } from '@/lib/utils/format';
 import { HoldingThumbnail } from '@/components/holdings/HoldingThumbnail';
 import { KebabMenu, KebabMenuItem } from '@/components/ui/kebab-menu';
 import { SellDialog } from '@/components/sales/SellDialog';
+import { DeltaPill } from '@/components/prices/DeltaPill';
+import { ManualPriceBadge } from '@/components/prices/ManualPriceBadge';
 
 type SortKey = 'marketPrice' | 'value' | 'pnl' | 'pnlPct' | 'cost' | 'qty' | 'name' | 'recent';
 
@@ -108,7 +110,10 @@ export function HoldingsGrid({ initialHoldings }: { initialHoldings: HoldingPnL[
               </div>
               <div className="border-t border-divider pt-[10px] grid grid-cols-[1fr_auto] gap-2 items-baseline">
                 <div className="grid gap-[2px]">
-                  <div className="text-[9px] uppercase tracking-[0.14em] text-meta font-mono">Market · qty {h.qtyHeld}</div>
+                  <div className="flex items-center gap-1 text-[9px] uppercase tracking-[0.14em] text-meta font-mono">
+                    <span>Market · qty {h.qtyHeld}</span>
+                    {h.manualMarketCents != null && <ManualPriceBadge setAt={null} />}
+                  </div>
                   <div className="text-[18px] font-semibold tabular-nums tracking-[-0.01em]">
                     {h.lastMarketCents !== null ? formatCents(h.lastMarketCents) : <span className="text-meta">--</span>}
                   </div>
@@ -129,6 +134,7 @@ export function HoldingsGrid({ initialHoldings }: { initialHoldings: HoldingPnL[
               <div className="text-[10px] font-mono text-meta">
                 {formatCents(h.currentValueCents ?? 0)} value · {formatCents(h.totalInvestedCents)} cost
               </div>
+              <DeltaPill deltaCents={h.delta7dCents ?? null} deltaPct={h.delta7dPct ?? null} size="sm" />
             </Link>
             <div className="absolute top-[20px] right-[20px]">
               <KebabMenu label={`Actions for ${h.name}`}>

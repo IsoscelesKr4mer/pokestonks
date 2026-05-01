@@ -2,7 +2,12 @@
 import { useQuery } from '@tanstack/react-query';
 import type { PortfolioPnL } from '@/lib/services/pnl';
 
-export type DashboardTotals = PortfolioPnL & { saleEventCount: number };
+export type DashboardTotals = PortfolioPnL & {
+  saleEventCount: number;
+  portfolioDelta7dCents?: number | null;
+  portfolioDelta7dPct?: number | null;
+  deltaCoverage?: { covered: number; total: number };
+};
 
 export function useDashboardTotals() {
   return useQuery({

@@ -4,6 +4,8 @@ import Link from 'next/link';
 import { useDashboardTotals, type DashboardTotals } from '@/lib/query/hooks/useDashboardTotals';
 import { formatCents, formatCentsSigned, formatPct } from '@/lib/utils/format';
 import { animateNumber, attachHologramParallax } from '@/lib/motion';
+import { DeltaPill } from '@/components/prices/DeltaPill';
+import { RefreshHeldButton } from '@/components/prices/RefreshHeldButton';
 
 function HologramTotal({ cents }: { cents: number }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -55,8 +57,11 @@ export function PortfolioHero({
     <div className="grid gap-8">
       <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-8 items-end">
         <div className="grid gap-3">
-          <div className="text-[10px] uppercase tracking-[0.18em] text-meta font-mono">
-            Vault total · {new Date().toISOString().slice(0, 10)}
+          <div className="flex items-center justify-between gap-4">
+            <div className="text-[10px] uppercase tracking-[0.18em] text-meta font-mono">
+              Vault total · {new Date().toISOString().slice(0, 10)}
+            </div>
+            <RefreshHeldButton />
           </div>
           {nothingPriced ? (
             <div className="text-[40px] text-meta font-mono">--</div>
@@ -92,6 +97,20 @@ export function PortfolioHero({
                 </span>{' '}
                 realized
               </span>
+            </div>
+          )}
+          {!nothingPriced && (
+            <div>
+              <DeltaPill
+                deltaCents={data.portfolioDelta7dCents ?? null}
+                deltaPct={data.portfolioDelta7dPct ?? null}
+              />
+              {data.deltaCoverage != null &&
+                data.deltaCoverage.covered < data.deltaCoverage.total && (
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Based on {data.deltaCoverage.covered} of {data.deltaCoverage.total} holdings
+                  </p>
+                )}
             </div>
           )}
         </div>
