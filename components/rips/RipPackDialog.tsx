@@ -4,12 +4,17 @@ import { X } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { useCreateRip } from '@/lib/query/hooks/useRips';
+import { formatCentsSigned } from '@/lib/utils/format';
+import {
+  VaultDialogHeader,
+  FormSection,
+  FormLabel,
+  DialogPreview,
+  DialogActions,
+} from '@/components/ui/dialog-form';
 
 export type RipPackSourceLot = {
   purchaseId: number;
@@ -44,11 +49,6 @@ function dollarsToCents(s: string): number {
   const n = parseFloat(cleaned);
   if (!Number.isFinite(n)) return 0;
   return Math.round(n * 100);
-}
-
-function formatSignedCents(cents: number): string {
-  const dollars = cents / 100;
-  return `$${Math.abs(dollars).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
 
 /**
@@ -99,12 +99,8 @@ export function RipPackDialog({
   const bulkLossCents = pack.packCostCents - totalKeptCents;
   const bulkLossLabel =
     bulkLossCents > 0 ? 'Bulk loss' : bulkLossCents < 0 ? 'Bulk gain' : 'Clean transfer';
-  const bulkLossColor =
-    bulkLossCents > 0
-      ? 'text-destructive'
-      : bulkLossCents < 0
-        ? 'text-emerald-600 dark:text-emerald-400'
-        : 'text-muted-foreground';
+  const bulkLossTone: 'negative' | 'positive' | 'muted' =
+    bulkLossCents > 0 ? 'negative' : bulkLossCents < 0 ? 'positive' : 'muted';
 
   const onSearchInput = async (q: string) => {
     setQuery(q);
@@ -176,12 +172,10 @@ export function RipPackDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-2xl">
-        <DialogHeader>
-          <DialogTitle>Rip pack</DialogTitle>
-          <DialogDescription>
-            Pack cost: ${centsToDollars(pack.packCostCents)}. Add the cards you kept; any cost not transferred becomes realized rip loss.
-          </DialogDescription>
-        </DialogHeader>
+        <VaultDialogHeader
+          title="Rip pack"
+          sub={`Pack cost: $${centsToDollars(pack.packCostCents)} -- any cost not transferred becomes realized rip loss`}
+        />
 
         <div className="flex items-center gap-3 rounded-lg border p-3">
           <div className="aspect-square w-12 overflow-hidden rounded bg-muted">
@@ -193,7 +187,8 @@ export function RipPackDialog({
           <div className="flex-1 text-sm font-medium">{pack.name}</div>
         </div>
 
-        <div className="space-y-2">
+        <FormSection>
+          <FormLabel>Search cards to add</FormLabel>
           <input
             type="text"
             value={query}
@@ -222,56 +217,65 @@ export function RipPackDialog({
             </div>
           )}
           {searching && <p className="text-xs text-muted-foreground">Searching...</p>}
-        </div>
+        </FormSection>
 
-        <div className="space-y-2">
-          {kept.map((k) => (
-            <div key={k.catalogItemId} className="flex items-center gap-3 rounded-md border p-2">
-              <div className="aspect-[5/7] w-10 overflow-hidden rounded bg-muted">
-                {k.imageUrl && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={k.imageUrl} alt={k.name} className="size-full object-contain" />
-                )}
+        <FormSection>
+          <FormLabel>Kept cards</FormLabel>
+          <div className="space-y-2">
+            {kept.map((k) => (
+              <div key={k.catalogItemId} className="flex items-center gap-3 rounded-md border p-2">
+                <div className="aspect-[5/7] w-10 overflow-hidden rounded bg-muted">
+                  {k.imageUrl && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={k.imageUrl} alt={k.name} className="size-full object-contain" />
+                  )}
+                </div>
+                <div className="min-w-0 flex-1 text-sm">
+                  <div className="truncate">{k.name}</div>
+                </div>
+                <label className="flex items-center gap-1.5 text-sm">
+                  <span className="text-xs uppercase tracking-wide text-muted-foreground">Cost</span>
+                  <span className="text-muted-foreground">$</span>
+                  <input
+                    type="text"
+                    inputMode="decimal"
+                    aria-label={`Cost for ${k.name}`}
+                    value={k.costCentsInput}
+                    onChange={(e) => updateCostInput(k.catalogItemId, e.target.value)}
+                    className="w-20 rounded-md border bg-background px-2 py-1 text-sm tabular-nums"
+                  />
+                </label>
+                <button
+                  type="button"
+                  aria-label={`Remove ${k.name}`}
+                  onClick={() => removeKept(k.catalogItemId)}
+                  className="grid size-7 place-items-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
+                >
+                  <X className="size-4" />
+                </button>
               </div>
-              <div className="min-w-0 flex-1 text-sm">
-                <div className="truncate">{k.name}</div>
-              </div>
-              <label className="flex items-center gap-1.5 text-sm">
-                <span className="text-xs uppercase tracking-wide text-muted-foreground">Cost</span>
-                <span className="text-muted-foreground">$</span>
-                <input
-                  type="text"
-                  inputMode="decimal"
-                  aria-label={`Cost for ${k.name}`}
-                  value={k.costCentsInput}
-                  onChange={(e) => updateCostInput(k.catalogItemId, e.target.value)}
-                  className="w-20 rounded-md border bg-background px-2 py-1 text-sm tabular-nums"
-                />
-              </label>
-              <button
-                type="button"
-                aria-label={`Remove ${k.name}`}
-                onClick={() => removeKept(k.catalogItemId)}
-                className="grid size-7 place-items-center rounded-md text-muted-foreground hover:bg-muted hover:text-foreground"
-              >
-                <X className="size-4" />
-              </button>
-            </div>
-          ))}
+            ))}
+          </div>
+        </FormSection>
+
+        <DialogPreview
+          rows={[
+            {
+              label: bulkLossLabel,
+              value: formatCentsSigned(-bulkLossCents),
+              tone: bulkLossTone,
+            },
+          ]}
+        />
+
+        {/* Expose data-testid attributes for tests */}
+        <div className="sr-only" aria-hidden="true">
+          <span data-testid="bulk-loss-label">{bulkLossLabel}</span>
+          <span data-testid="bulk-loss">{formatCentsSigned(-bulkLossCents)}</span>
         </div>
 
-        <div className="flex items-center justify-between rounded-md bg-muted/30 px-3 py-2">
-          <span data-testid="bulk-loss-label" className="text-xs uppercase tracking-wide text-muted-foreground">
-            {bulkLossLabel}
-          </span>
-          <span data-testid="bulk-loss" className={`text-base font-semibold tabular-nums ${bulkLossColor}`}>
-            {bulkLossCents > 0 ? '-' : bulkLossCents < 0 ? '+' : ''}
-            {formatSignedCents(bulkLossCents)}
-          </span>
-        </div>
-
-        <label className="block space-y-1.5">
-          <span className="text-xs uppercase tracking-wide text-muted-foreground">Notes (optional)</span>
+        <FormSection>
+          <FormLabel>Notes (optional)</FormLabel>
           <textarea
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
@@ -279,18 +283,18 @@ export function RipPackDialog({
             rows={2}
             className="block w-full rounded-md border bg-background px-3 py-2 text-sm"
           />
-        </label>
+        </FormSection>
 
         {error && <p className="text-sm text-destructive">{error}</p>}
 
-        <div className="flex justify-end gap-2 border-t pt-4">
+        <DialogActions>
           <Button type="button" variant="ghost" onClick={() => onOpenChange(false)} disabled={createMutation.isPending}>
             Cancel
           </Button>
           <Button type="button" onClick={handleSubmit} disabled={createMutation.isPending}>
             {createMutation.isPending ? 'Saving...' : 'Save rip'}
           </Button>
-        </div>
+        </DialogActions>
       </DialogContent>
     </Dialog>
   );
