@@ -30,7 +30,7 @@ export function QuickAddButton({ catalogItemId }: { catalogItemId: number }) {
       aria-label="Add to portfolio"
       onClick={() => mutate()}
       disabled={isPending}
-      className="inline-flex size-9 shrink-0 items-center justify-center rounded-full border bg-foreground text-background transition hover:bg-foreground/90 disabled:opacity-50"
+      className="size-8 rounded-[9px] border border-positive/35 bg-positive/10 text-positive flex items-center justify-center text-[18px] font-light leading-none transition-all hover:bg-positive/[0.18] hover:border-positive/60 hover:scale-105 disabled:opacity-50"
     >
       {isPending ? (
         <svg className="size-4 animate-spin" viewBox="0 0 24 24" fill="none">

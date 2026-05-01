@@ -1,24 +1,63 @@
 'use client';
 import { useEffect, useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Input } from '@/components/ui/input';
+import { Search } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
-import { SearchResultRow, type ResultRow } from './SearchResultRow';
+import { SearchResultCard, type SearchResultItem } from './SearchResultCard';
 import { RefreshButton } from './RefreshButton';
-import { formatRelativeTime } from '@/lib/utils/time';
+import { useHoldings } from '@/lib/query/hooks/useHoldings';
 
 type SortBy = 'price-desc' | 'price-asc' | 'rarity-desc' | 'relevance' | 'name';
 
-type ResultRowWithMeta = ResultRow & { lastMarketAt?: string | null };
+type RawResult = {
+  type: 'sealed' | 'card';
+  catalogItemId: number;
+  name: string;
+  setName: string | null;
+  setCode: string | null;
+  productType: string | null;
+  rarity: string | null;
+  variant: string | null;
+  imageUrl: string | null;
+  imageStoragePath: string | null;
+  marketCents: number | null;
+  lastMarketAt: string | null;
+};
 
 type SearchResponse = {
   query: string;
   kind: 'all' | 'sealed' | 'card';
   sortBy: SortBy;
-  results: ResultRowWithMeta[];
+  results: RawResult[];
   warnings: Array<{ source: string; message: string }>;
   source?: 'local' | 'upstream' | 'refresh';
 };
+
+const STALE_THRESHOLD_MS = 7 * 24 * 60 * 60 * 1000;
+
+function isStale(lastMarketAt: string | null): boolean {
+  if (!lastMarketAt) return true;
+  const d = new Date(lastMarketAt);
+  if (isNaN(d.getTime())) return false; // relative string like "4h ago" — not stale
+  return Date.now() - d.getTime() > STALE_THRESHOLD_MS;
+}
+
+function rawToItem(r: RawResult): SearchResultItem {
+  return {
+    id: r.catalogItemId,
+    name: r.name,
+    kind: r.type === 'sealed' ? 'sealed' : 'card',
+    setName: r.setName,
+    setCode: r.setCode,
+    productType: r.productType,
+    rarity: r.rarity,
+    imageUrl: r.imageUrl,
+    imageStoragePath: r.imageStoragePath,
+    lastMarketCents: r.marketCents,
+    lastMarketAt: r.lastMarketAt,
+    stale: isStale(r.lastMarketAt),
+  };
+}
 
 const KINDS: Array<{ key: 'all' | 'sealed' | 'card'; label: string }> = [
   { key: 'all', label: 'All' },
@@ -27,10 +66,10 @@ const KINDS: Array<{ key: 'all' | 'sealed' | 'card'; label: string }> = [
 ];
 
 const SORTS: Array<{ key: SortBy; label: string }> = [
-  { key: 'price-desc', label: 'Price (high to low)' },
-  { key: 'price-asc', label: 'Price (low to high)' },
-  { key: 'rarity-desc', label: 'Rarity (highest first)' },
-  { key: 'name', label: 'Name (A-Z)' },
+  { key: 'price-desc', label: 'Price high-low' },
+  { key: 'price-asc', label: 'Price low-high' },
+  { key: 'rarity-desc', label: 'Rarity' },
+  { key: 'name', label: 'Name A-Z' },
   { key: 'relevance', label: 'Best match' },
 ];
 
@@ -71,6 +110,18 @@ export function SearchBox() {
     staleTime: 5 * 60 * 1000,
   });
 
+  const { data: holdingsData } = useHoldings();
+
+  // Build a map of catalogItemId -> total quantity held
+  const ownedQtyByCatalogId = useMemo(() => {
+    const map = new Map<number, number>();
+    if (!holdingsData) return map;
+    for (const h of holdingsData.holdings) {
+      map.set(h.catalogItemId, (map.get(h.catalogItemId) ?? 0) + h.qtyHeld);
+    }
+    return map;
+  }, [holdingsData]);
+
   const rarityOptions = useMemo(() => {
     if (!data) return [] as string[];
     const seen = new Set<string>();
@@ -80,37 +131,30 @@ export function SearchBox() {
     return Array.from(seen).sort();
   }, [data]);
 
-  const filteredResults = useMemo(() => {
-    if (!data) return [] as ResultRowWithMeta[];
-    if (rarity === ALL_RARITIES) return data.results;
-    return data.results.filter((r) => r.type === 'card' && r.rarity === rarity);
-  }, [data, rarity]);
+  const allItems = useMemo<SearchResultItem[]>(() => {
+    if (!data) return [];
+    return data.results.map(rawToItem);
+  }, [data]);
 
-  const visible = filteredResults.slice(0, shown);
-  const hasMore = filteredResults.length > shown;
+  const filteredItems = useMemo(() => {
+    if (rarity === ALL_RARITIES) return allItems;
+    return allItems.filter((r) => r.kind === 'card' && r.rarity === rarity);
+  }, [allItems, rarity]);
 
-  // "Updated" caption: oldest lastMarketAt among visible results = worst-case freshness.
-  const oldestUpdated = useMemo(() => {
-    if (visible.length === 0) return null;
-    let oldest: Date | null = null;
-    let anyMissing = false;
-    for (const r of visible) {
-      const ts = r.lastMarketAt;
-      if (!ts) {
-        anyMissing = true;
-        continue;
-      }
-      const d = new Date(ts);
-      if (!oldest || d < oldest) oldest = d;
-    }
-    return anyMissing ? null : oldest;
-  }, [visible]);
+  const visible = filteredItems.slice(0, shown);
+  const hasMore = filteredItems.length > shown;
 
+  // Stats
+  const pricedCount = filteredItems.filter((r) => r.lastMarketCents !== null).length;
+  const staleCount = filteredItems.filter((r) => r.stale).length;
+  const ownedCount = filteredItems.filter((r) => (ownedQtyByCatalogId.get(r.id) ?? 0) > 0).length;
+
+  // Image pre-cache for items without a local storage path
   useEffect(() => {
     if (visible.length === 0) return;
     const ids = visible
-      .filter((r) => !('imageStoragePath' in r) || !(r as { imageStoragePath?: string | null }).imageStoragePath)
-      .map((r) => r.catalogItemId)
+      .filter((r) => !r.imageStoragePath)
+      .map((r) => r.id)
       .slice(0, 24);
     if (ids.length === 0) return;
     fetch('/api/cache-images', {
@@ -122,13 +166,31 @@ export function SearchBox() {
 
   return (
     <div className="space-y-4">
-      <Input
-        autoFocus
-        placeholder="Search Pokemon products and cards"
-        value={q}
-        onChange={(e) => setQ(e.target.value)}
-      />
+      {/* Search row */}
+      <div className="flex gap-2 items-center">
+        <div className="relative flex-1">
+          <Search
+            size={16}
+            className="absolute left-[14px] top-1/2 -translate-y-1/2 text-meta pointer-events-none"
+          />
+          <input
+            autoFocus
+            type="text"
+            placeholder="Search Pokemon products and cards"
+            value={q}
+            onChange={(e) => setQ(e.target.value)}
+            className="w-full bg-vault border border-divider rounded-2xl pl-[44px] pr-4 py-[12px] text-[14px] focus-visible:border-accent focus-visible:ring-[3px] focus-visible:ring-[rgba(181,140,255,0.18)] outline-none"
+          />
+        </div>
+        <RefreshButton
+          query={debounced}
+          kind={kind}
+          sortBy={sortBy}
+          disabled={!enabled}
+        />
+      </div>
 
+      {/* Filter row */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap items-center gap-2">
           {KINDS.map((k) => (
@@ -137,7 +199,9 @@ export function SearchBox() {
               type="button"
               onClick={() => setKind(k.key)}
               className={`rounded-full border px-3 py-1 text-sm ${
-                kind === k.key ? 'bg-foreground text-background' : 'hover:bg-muted/50'
+                kind === k.key
+                  ? 'bg-accent/20 border-accent/40 text-accent'
+                  : 'border-divider text-meta hover:bg-hover'
               }`}
             >
               {k.label}
@@ -147,7 +211,7 @@ export function SearchBox() {
             <select
               value={rarity}
               onChange={(e) => setRarity(e.target.value)}
-              className="rounded-full border bg-background px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
+              className="rounded-full border border-divider bg-vault px-3 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-accent/30"
               aria-label="Filter by rarity"
             >
               <option value={ALL_RARITIES}>All rarities</option>
@@ -159,82 +223,102 @@ export function SearchBox() {
             </select>
           )}
         </div>
-        <div className="flex items-center gap-2">
-          <RefreshButton
-            query={debounced}
-            kind={kind}
-            sortBy={sortBy}
-            disabled={!enabled}
-          />
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value as SortBy)}
-            className="rounded-md border bg-background px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
-            aria-label="Sort results"
-          >
-            {SORTS.map((s) => (
-              <option key={s.key} value={s.key}>
-                {s.label}
-              </option>
-            ))}
-          </select>
-        </div>
+        <select
+          value={sortBy}
+          onChange={(e) => setSortBy(e.target.value as SortBy)}
+          className="rounded-2xl border border-divider bg-vault px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent/30"
+          aria-label="Sort results"
+        >
+          {SORTS.map((s) => (
+            <option key={s.key} value={s.key}>
+              {s.label}
+            </option>
+          ))}
+        </select>
       </div>
 
+      {/* Empty prompt */}
       {!enabled && (
-        <p className="text-sm text-muted-foreground">
-          Try &ldquo;ascended heroes&rdquo;, &ldquo;pikachu ascended heroes&rdquo;, or &ldquo;074/088&rdquo;.
+        <p className="text-[13px] text-meta">
+          Try &ldquo;151 ETB&rdquo;, &ldquo;pikachu&rdquo;, or a set code like &ldquo;SV03.5&rdquo;.
         </p>
       )}
 
+      {/* Loading skeletons */}
       {enabled && isFetching && !data && (
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-[10px] sm:grid-cols-3 lg:grid-cols-4">
           {[0, 1, 2, 3, 4, 5, 6, 7].map((i) => (
-            <Skeleton key={i} className="aspect-[3/4] w-full" />
+            <Skeleton key={i} className="aspect-square w-full rounded-xl" />
           ))}
         </div>
       )}
 
       {error && (
-        <p className="text-sm text-destructive">
-          Couldn&rsquo;t reach pricing source. Try again.
+        <p className="text-[13px] text-negative">
+          Could not reach pricing source. Try again.
         </p>
       )}
 
       {data && data.warnings.length > 0 && (
-        <p className="text-xs text-muted-foreground">
+        <p className="text-[11px] font-mono text-meta">
           Some sources are slow: {data.warnings.map((w) => w.source).join(', ')}.
         </p>
       )}
 
-      {data && filteredResults.length === 0 && enabled && !isFetching && (
-        <p className="text-sm text-muted-foreground">No matches.</p>
+      {data && filteredItems.length === 0 && enabled && !isFetching && (
+        <p className="text-[13px] text-meta">No matches.</p>
       )}
 
+      {/* Stats line */}
+      {enabled && (data || isFetching) && (
+        <div className="text-[10px] font-mono text-meta flex gap-2 items-center flex-wrap">
+          <span>{filteredItems.length} RESULTS</span>
+          <span className="text-meta-dim">·</span>
+          <span className="text-positive">{pricedCount} PRICED</span>
+          {staleCount > 0 && (
+            <>
+              <span className="text-meta-dim">·</span>
+              <span className="text-stale">{staleCount} STALE</span>
+            </>
+          )}
+          {ownedCount > 0 && (
+            <>
+              <span className="text-meta-dim">·</span>
+              <span className="text-accent">{ownedCount} OWNED</span>
+            </>
+          )}
+          {rarity !== ALL_RARITIES && data && (
+            <>
+              <span className="text-meta-dim">·</span>
+              <span>filtered from {data.results.length}</span>
+            </>
+          )}
+        </div>
+      )}
+
+      {/* Result grid */}
       {visible.length > 0 && (
         <>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-            {visible.map((row, i) => (
-              <SearchResultRow key={`${row.type}-${row.catalogItemId}-${i}`} row={row} />
+          <div className="grid grid-cols-2 gap-[10px] sm:grid-cols-3 lg:grid-cols-4">
+            {visible.map((item) => (
+              <SearchResultCard
+                key={item.id}
+                item={item}
+                ownedQty={ownedQtyByCatalogId.get(item.id) ?? 0}
+              />
             ))}
           </div>
-          <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
-            <span>
-              Showing {visible.length} of {filteredResults.length}
-              {rarity !== ALL_RARITIES && data ? ` (filtered from ${data.results.length})` : ''}
-              <span className="mx-2 text-muted-foreground/50">·</span>
-              {formatRelativeTime(oldestUpdated)}
-            </span>
-            {hasMore && (
+          {hasMore && (
+            <div className="flex justify-center pt-2">
               <button
                 type="button"
                 onClick={() => setShown((s) => s + PAGE_SIZE)}
-                className="rounded-md border px-3 py-1.5 text-sm hover:bg-muted/50"
+                className="px-[14px] py-[11px] rounded-2xl border border-divider bg-vault text-text text-[11px] font-mono uppercase tracking-[0.06em] hover:bg-hover"
               >
-                Load more
+                Load more ({filteredItems.length - shown} remaining)
               </button>
-            )}
-          </div>
+            </div>
+          )}
         </>
       )}
     </div>

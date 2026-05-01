@@ -46,7 +46,7 @@ export function RefreshButton({
       aria-label="Refresh search results"
       onClick={() => mutate()}
       disabled={isDisabled}
-      className="inline-flex h-9 items-center gap-1.5 rounded-md border bg-background px-3 text-sm hover:bg-muted/50 disabled:cursor-not-allowed disabled:opacity-50"
+      className="px-[14px] py-[11px] rounded-2xl border border-divider bg-vault text-text text-[11px] font-mono uppercase tracking-[0.06em] inline-flex items-center gap-2 hover:bg-hover disabled:cursor-not-allowed disabled:opacity-50"
     >
       {isPending ? (
         <svg className="size-4 animate-spin" viewBox="0 0 24 24" fill="none">
