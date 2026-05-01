@@ -22,6 +22,7 @@ type RawResult = {
   imageStoragePath: string | null;
   marketCents: number | null;
   lastMarketAt: string | null;
+  manualMarketCents?: number | null;
 };
 
 type SearchResponse = {
@@ -56,6 +57,7 @@ function rawToItem(r: RawResult): SearchResultItem {
     lastMarketCents: r.marketCents,
     lastMarketAt: r.lastMarketAt,
     stale: isStale(r.lastMarketAt),
+    manualMarketCents: r.manualMarketCents ?? null,
   };
 }
 

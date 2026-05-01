@@ -6,8 +6,10 @@ import { getImageUrl } from '@/lib/utils/images';
 import { downloadIfMissing } from '@/lib/services/images';
 import { HoldingThumbnail } from '@/components/holdings/HoldingThumbnail';
 import { PriceLabel } from '@/components/catalog/PriceLabel';
+import { ManualPriceBadge } from '@/components/prices/ManualPriceBadge';
 import { formatRelativeTime } from '@/lib/utils/time';
 import { LogPurchaseCta } from './LogPurchaseCta';
+import { SetManualPriceCta } from './SetManualPriceCta';
 
 const VARIANT_LABEL: Record<string, string> = {
   normal: 'Normal',
@@ -104,16 +106,29 @@ export default async function CatalogItemPage({ params }: { params: Promise<{ id
             <div className="text-[9px] uppercase tracking-[0.14em] text-meta font-mono">
               Market · per unit
             </div>
-            <div className="text-[32px] font-semibold font-mono tabular-nums leading-none">
-              <PriceLabel cents={item.lastMarketCents ?? null} />
+            <div className="flex items-center gap-2">
+              <div className="text-[32px] font-semibold font-mono tabular-nums leading-none">
+                <PriceLabel cents={(item.manualMarketCents ?? item.lastMarketCents) ?? null} />
+              </div>
+              {item.manualMarketCents != null && (
+                <ManualPriceBadge setAt={item.manualMarketAt ?? null} />
+              )}
             </div>
             <div className="text-[10px] font-mono text-meta">
-              {formatRelativeTime(item.lastMarketAt ?? null)}
+              {item.manualMarketCents != null
+                ? formatRelativeTime(item.manualMarketAt ?? null)
+                : formatRelativeTime(item.lastMarketAt ?? null)}
             </div>
           </div>
 
-          {/* CTA */}
-          <LogPurchaseCta catalogItemId={item.id} />
+          {/* CTAs */}
+          <div className="flex flex-wrap gap-2">
+            <LogPurchaseCta catalogItemId={item.id} />
+            <SetManualPriceCta
+              catalogItemId={item.id}
+              initialCents={item.manualMarketCents ?? null}
+            />
+          </div>
         </div>
       </div>
 

@@ -15,6 +15,9 @@ import { SellDialog } from '@/components/sales/SellDialog';
 import { RipPackDialog, type RipPackSourceLot } from '@/components/rips/RipPackDialog';
 import { OpenBoxDialog, type OpenBoxSourceLot } from '@/components/decompositions/OpenBoxDialog';
 import type { HoldingDetailDto, HoldingDetailLot } from '@/lib/api/holdingDetailDto';
+import { DeltaPill } from '@/components/prices/DeltaPill';
+import { PriceChart } from '@/components/charts/PriceChart';
+import { SetManualPriceDialog } from '@/components/prices/SetManualPriceDialog';
 
 export function HoldingDetailClient({ initial }: { initial: HoldingDetailDto }) {
   const { data } = useHolding(initial.item.id);
@@ -28,6 +31,7 @@ export function HoldingDetailClient({ initial }: { initial: HoldingDetailDto }) 
   const [editTarget, setEditTarget] = useState<number | null>(null);
   const [ripTarget, setRipTarget] = useState<RipPackSourceLot | null>(null);
   const [openBoxTarget, setOpenBoxTarget] = useState<OpenBoxSourceLot | null>(null);
+  const [setPriceOpen, setSetPriceOpen] = useState(false);
 
   // ---- Helpers to build dialog shapes from a lot ----
   function lotForEdit(purchaseId: number): { catalogItem: PurchaseFormCatalogItem; lot: EditableLot } | null {
@@ -217,8 +221,13 @@ export function HoldingDetailClient({ initial }: { initial: HoldingDetailDto }) 
               <div className="text-[20px] font-semibold tabular-nums">
                 {item.lastMarketCents !== null ? formatCents(item.lastMarketCents) : '--'}
               </div>
-              <div className="text-[11px] font-mono text-meta">
+              <div className="text-[11px] font-mono text-meta flex items-center gap-2">
                 {item.lastMarketAt ? `updated ${item.lastMarketAt.slice(0, 10)}` : 'no price'}
+                <DeltaPill
+                  deltaCents={summary.delta7dCents ?? null}
+                  deltaPct={summary.delta7dPct ?? null}
+                  size="sm"
+                />
               </div>
             </div>
             <div className="grid gap-1">
@@ -291,9 +300,21 @@ export function HoldingDetailClient({ initial }: { initial: HoldingDetailDto }) 
                   Rip pack
                 </Button>
               )}
+            {/* Show "Set price" prominently when unpriced; show small affordance otherwise (but not when manual is set -- chart's ManualPricePanel handles that) */}
+            {item.lastMarketCents === null && (summary.manualMarketCents ?? null) === null && (
+              <Button onClick={() => setSetPriceOpen(true)}>Set price</Button>
+            )}
+            {item.lastMarketCents !== null && (summary.manualMarketCents ?? null) === null && (
+              <Button variant="outline" onClick={() => setSetPriceOpen(true)}>
+                Set manual price
+              </Button>
+            )}
           </div>
         </div>
       </div>
+
+      {/* Price chart */}
+      <PriceChart catalogItemId={item.id} />
 
       {/* Open lots */}
       <div className="grid gap-3">
@@ -368,6 +389,12 @@ export function HoldingDetailClient({ initial }: { initial: HoldingDetailDto }) 
           lot={editEntry.lot}
         />
       )}
+      <SetManualPriceDialog
+        catalogItemId={item.id}
+        open={setPriceOpen}
+        onOpenChange={setSetPriceOpen}
+        initialCents={summary.manualMarketCents ?? null}
+      />
     </div>
   );
 }

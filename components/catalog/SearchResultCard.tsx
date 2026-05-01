@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { HoldingThumbnail } from '@/components/holdings/HoldingThumbnail';
 import { QuickAddButton } from './QuickAddButton';
+import { ManualPriceBadge } from '@/components/prices/ManualPriceBadge';
 import { formatCents } from '@/lib/utils/format';
 
 export interface SearchResultItem {
@@ -17,6 +18,7 @@ export interface SearchResultItem {
   lastMarketCents: number | null;
   lastMarketAt: string | null;
   stale: boolean;
+  manualMarketCents: number | null;
 }
 
 export function SearchResultCard({
@@ -55,15 +57,20 @@ export function SearchResultCard({
           <div className="text-[8px] uppercase tracking-[0.14em] text-meta font-mono">
             Market{item.stale ? ' · stale' : ''}
           </div>
-          <div
-            className={`text-[15px] font-semibold font-mono tabular-nums leading-[1.2] ${
-              item.stale ? 'text-stale' : ''
-            }`}
-          >
-            {item.lastMarketCents !== null ? (
-              formatCents(item.lastMarketCents)
-            ) : (
-              <span className="text-meta">--</span>
+          <div className="flex items-center gap-1 flex-wrap">
+            <div
+              className={`text-[15px] font-semibold font-mono tabular-nums leading-[1.2] ${
+                item.stale ? 'text-stale' : ''
+              }`}
+            >
+              {item.lastMarketCents !== null ? (
+                formatCents(item.lastMarketCents)
+              ) : (
+                <span className="text-meta">--</span>
+              )}
+            </div>
+            {item.manualMarketCents != null && (
+              <ManualPriceBadge setAt={null} />
             )}
           </div>
         </div>

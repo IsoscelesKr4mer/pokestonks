@@ -23,6 +23,7 @@ describe('<SearchResultCard>', () => {
     lastMarketCents: 5999,
     lastMarketAt: '4h ago',
     stale: false,
+    manualMarketCents: null,
   };
 
   it('renders the name and price', () => {
