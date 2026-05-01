@@ -1,5 +1,3 @@
-import JSZip from 'jszip';
-
 export type ArchivePriceRow = {
   tcgplayerProductId: number;
   marketPriceCents: number | null;
@@ -55,43 +53,3 @@ export function parseArchiveCsv(csv: string): Map<number, ArchivePriceRow> {
   return result;
 }
 
-const TCGCSV_ARCHIVE_BASE = 'https://tcgcsv.com/archive/tcgcsv';
-const POKEMON_CATEGORY_IDS = [3, 50] as const;
-
-function formatYmd(d: Date): string {
-  const yyyy = d.getUTCFullYear();
-  const mm = String(d.getUTCMonth() + 1).padStart(2, '0');
-  const dd = String(d.getUTCDate()).padStart(2, '0');
-  return `${yyyy}-${mm}-${dd}`;
-}
-
-export type ArchiveSnapshot = {
-  date: string;
-  prices: Map<number, ArchivePriceRow>;
-};
-
-export async function fetchArchiveSnapshot(date: Date): Promise<ArchiveSnapshot> {
-  const ymd = formatYmd(date);
-  const url = `${TCGCSV_ARCHIVE_BASE}/prices-${ymd}.zip`;
-
-  const res = await fetch(url, { cache: 'no-store' });
-  if (!res.ok) {
-    throw new Error(`tcgcsv archive fetch failed for ${ymd}: ${res.status}`);
-  }
-  const buf = await res.arrayBuffer();
-  const zip = await JSZip.loadAsync(buf);
-
-  const prices = new Map<number, ArchivePriceRow>();
-  for (const categoryId of POKEMON_CATEGORY_IDS) {
-    const entries = Object.values(zip.files).filter(
-      (f) => !f.dir && f.name.includes(`/${categoryId}/`) && f.name.endsWith('prices.csv')
-    );
-    for (const entry of entries) {
-      const csv = await entry.async('string');
-      const parsed = parseArchiveCsv(csv);
-      for (const [k, v] of parsed) prices.set(k, v);
-    }
-  }
-
-  return { date: ymd, prices };
-}

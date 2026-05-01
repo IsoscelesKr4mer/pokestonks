@@ -1,7 +1,7 @@
 -- ============================================================
 -- Plan 7 — Pricing automation + history
 -- Adds: created_at on market_prices, source CHECK,
--- manual override columns + backfill state on catalog_items.
+-- manual override columns on catalog_items.
 -- ============================================================
 
 -- 1. created_at on market_prices for telemetry
@@ -23,7 +23,3 @@ CREATE INDEX IF NOT EXISTS market_prices_catalog_date_desc_idx
 ALTER TABLE catalog_items
   ADD COLUMN IF NOT EXISTS manual_market_cents INTEGER,
   ADD COLUMN IF NOT EXISTS manual_market_at TIMESTAMPTZ;
-
--- 5. Backfill state on catalog_items
-ALTER TABLE catalog_items
-  ADD COLUMN IF NOT EXISTS backfill_completed_at TIMESTAMPTZ;

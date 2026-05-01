@@ -1,6 +1,5 @@
-import { describe, expect, it, vi, afterEach } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import { parseArchiveCsv, type ArchivePriceRow } from './tcgcsv-archive';
-import { fetchArchiveSnapshot } from './tcgcsv-archive';
 
 describe('parseArchiveCsv', () => {
   it('returns a Map keyed by tcgplayer_product_id with parsed cents', () => {
@@ -62,32 +61,5 @@ describe('parseArchiveCsv', () => {
   it('returns empty Map for empty CSV', () => {
     expect(parseArchiveCsv('').size).toBe(0);
     expect(parseArchiveCsv('productId,marketPrice,lowPrice,highPrice,subTypeName\n').size).toBe(0);
-  });
-});
-
-describe('fetchArchiveSnapshot', () => {
-  const originalFetch = global.fetch;
-  afterEach(() => {
-    global.fetch = originalFetch;
-  });
-
-  it('throws on 404', async () => {
-    global.fetch = vi.fn().mockResolvedValue(new Response(null, { status: 404 }));
-    await expect(fetchArchiveSnapshot(new Date('2026-04-29'))).rejects.toThrow(/404/);
-  });
-
-  it('throws on non-OK response', async () => {
-    global.fetch = vi.fn().mockResolvedValue(new Response('boom', { status: 500 }));
-    await expect(fetchArchiveSnapshot(new Date('2026-04-29'))).rejects.toThrow(/archive/);
-  });
-
-  it('formats the date as YYYY-MM-DD in the URL', async () => {
-    const fetchMock = vi.fn().mockResolvedValue(new Response(null, { status: 404 }));
-    global.fetch = fetchMock;
-    await fetchArchiveSnapshot(new Date('2026-04-29T15:00:00Z')).catch(() => undefined);
-    expect(fetchMock).toHaveBeenCalledWith(
-      expect.stringContaining('2026-04-29'),
-      expect.any(Object)
-    );
   });
 });

@@ -26,7 +26,6 @@ export const catalogItems = pgTable(
     lastMarketAt: timestamp('last_market_at', { withTimezone: true }),
     manualMarketCents: integer('manual_market_cents'),
     manualMarketAt: timestamp('manual_market_at', { withTimezone: true }),
-    backfillCompletedAt: timestamp('backfill_completed_at', { withTimezone: true }),
     packCount: integer('pack_count'),
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   },
