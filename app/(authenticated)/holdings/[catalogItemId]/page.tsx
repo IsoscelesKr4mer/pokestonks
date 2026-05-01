@@ -12,8 +12,8 @@ import {
   type RawSaleRow,
 } from '@/lib/services/holdings';
 import { computeHoldingPnL } from '@/lib/services/pnl';
-import { formatCents } from '@/lib/utils/format';
-import type { HoldingDetailDto, HoldingDetailSaleEvent } from '@/lib/query/hooks/useHoldings';
+import type { HoldingDetailDto, HoldingDetailSaleEvent } from '@/lib/api/holdingDetailDto';
+import { buildActivityEvents } from '@/lib/api/holdingDetailDto';
 
 export default async function HoldingDetailPage({
   params,
@@ -161,6 +161,15 @@ export default async function HoldingDetailPage({
   const now = new Date();
   const holding = holdingRaw ? computeHoldingPnL(holdingRaw, now) : null;
 
+  // Build consumed-units map for qtyRemaining per lot.
+  const consumedUnitsByLot = new Map<number, number>();
+  for (const r of ripsForSealed) {
+    consumedUnitsByLot.set(r.sourcePurchaseId, (consumedUnitsByLot.get(r.sourcePurchaseId) ?? 0) + 1);
+  }
+  for (const d of decompositionsForSealed) {
+    consumedUnitsByLot.set(d.sourcePurchaseId, (consumedUnitsByLot.get(d.sourcePurchaseId) ?? 0) + 1);
+  }
+
   // Group sales by sale_group_id for response shape.
   const lotById = new Map(lots.map((l) => [l.id, l]));
   const salesGroupedById = new Map<string, typeof salesForLots>();
@@ -210,6 +219,64 @@ export default async function HoldingDetailPage({
       if (a.saleDate !== b.saleDate) return a.saleDate < b.saleDate ? 1 : -1;
       return a.saleGroupId < b.saleGroupId ? -1 : a.saleGroupId > b.saleGroupId ? 1 : 0;
     });
+
+  const ripsSummary =
+    item.kind === 'sealed'
+      ? ripsForSealed.map((r) => ({
+          id: r.id,
+          ripDate: r.ripDate,
+          packCostCents: r.packCostCents,
+          realizedLossCents: r.realizedLossCents,
+          keptCardCount: keptCountByRipId.get(r.id) ?? 0,
+          sourcePurchaseId: r.sourcePurchaseId,
+          notes: r.notes,
+        }))
+      : [];
+
+  const decompositionsSummary =
+    item.kind === 'sealed'
+      ? decompositionsForSealed.map((d) => ({
+          id: d.id,
+          decomposeDate: d.decomposeDate,
+          sourceCostCents: d.sourceCostCents,
+          packCount: d.packCount,
+          perPackCostCents: d.perPackCostCents,
+          roundingResidualCents: d.roundingResidualCents,
+          sourcePurchaseId: d.sourcePurchaseId,
+          notes: d.notes,
+        }))
+      : [];
+
+  // Build activity events for SSR pass.
+  const activity = buildActivityEvents({
+    purchases: lots.map((l) => ({
+      id: l.id,
+      purchaseDate: l.purchaseDate,
+      quantity: l.quantity,
+      costCents: l.costCents,
+      source: l.source,
+      location: l.location,
+      sourceRipId: l.sourceRipId,
+      sourceDecompositionId: l.sourceDecompositionId,
+    })),
+    rips: ripsSummary,
+    decompositions: decompositionsForSealed.map((d) => ({
+      id: d.id,
+      decomposeDate: d.decomposeDate,
+      sourcePurchaseId: d.sourcePurchaseId,
+      packCount: d.packCount,
+    })),
+    sales: salesEvents.map((s) => ({
+      id: s.saleGroupId,
+      saleGroupId: s.saleGroupId,
+      saleDate: s.saleDate,
+      quantity: s.totals.quantity,
+      salePriceCents: s.totals.salePriceCents,
+      feesCents: s.totals.feesCents,
+      platform: s.platform,
+      matchedCostCents: s.totals.matchedCostCents,
+    })),
+  });
 
   const initial: HoldingDetailDto = {
     item: {
@@ -264,6 +331,8 @@ export default async function HoldingDetailPage({
       const containerCatalog = container
         ? sourceContainerCatalogById.get(container.catalogItemId) ?? null
         : null;
+      const consumed = consumedUnitsByLot.get(l.id) ?? 0;
+      const qtyRemaining = l.quantity - consumed;
       return {
         lot: {
           id: l.id,
@@ -280,8 +349,10 @@ export default async function HoldingDetailPage({
           location: l.location,
           notes: l.notes,
           sourceRipId: l.sourceRipId,
+          sourceDecompositionId: l.sourceDecompositionId,
           createdAt: l.createdAt.toISOString(),
         },
+        qtyRemaining,
         sourceRip: sourceRip
           ? { id: sourceRip.id, ripDate: sourceRip.ripDate, sourcePurchaseId: sourceRip.sourcePurchaseId }
           : null,
@@ -296,71 +367,11 @@ export default async function HoldingDetailPage({
           : null,
       };
     }),
-    rips:
-      item.kind === 'sealed'
-        ? ripsForSealed.map((r) => ({
-            id: r.id,
-            ripDate: r.ripDate,
-            packCostCents: r.packCostCents,
-            realizedLossCents: r.realizedLossCents,
-            keptCardCount: keptCountByRipId.get(r.id) ?? 0,
-            sourcePurchaseId: r.sourcePurchaseId,
-            notes: r.notes,
-          }))
-        : [],
-    decompositions:
-      item.kind === 'sealed'
-        ? decompositionsForSealed.map((d) => ({
-            id: d.id,
-            decomposeDate: d.decomposeDate,
-            sourceCostCents: d.sourceCostCents,
-            packCount: d.packCount,
-            perPackCostCents: d.perPackCostCents,
-            roundingResidualCents: d.roundingResidualCents,
-            sourcePurchaseId: d.sourcePurchaseId,
-            notes: d.notes,
-          }))
-        : [],
+    rips: ripsSummary,
+    decompositions: decompositionsSummary,
     sales: salesEvents,
+    activity,
   };
 
-  const isCard = item.kind === 'card';
-
-  return (
-    <div className="mx-auto w-full max-w-3xl px-6 py-8 space-y-6">
-      <div className="grid gap-6 md:grid-cols-[200px_1fr]">
-        <div
-          className={
-            isCard
-              ? 'aspect-[5/7] w-full overflow-hidden rounded-lg bg-muted'
-              : 'aspect-square w-full overflow-hidden rounded-lg bg-muted'
-          }
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={initial.item.imageUrl ?? ''} alt={item.name} className="size-full object-contain" />
-        </div>
-        <div className="space-y-2">
-          <h1 className="text-2xl font-semibold tracking-tight">{item.name}</h1>
-          {item.setName && <p className="text-sm text-muted-foreground">{item.setName}</p>}
-          <p className="text-sm text-muted-foreground">
-            {isCard
-              ? [item.rarity, item.cardNumber, item.variant].filter(Boolean).join(' · ')
-              : item.productType ?? 'Sealed'}
-          </p>
-          {item.lastMarketCents != null && (
-            <p className="pt-2 text-xs uppercase tracking-wide text-muted-foreground">
-              Latest market price
-            </p>
-          )}
-          {item.lastMarketCents != null && (
-            <p className="text-2xl font-semibold tabular-nums">
-              {formatCents(item.lastMarketCents)}
-            </p>
-          )}
-        </div>
-      </div>
-
-      <HoldingDetailClient catalogItemId={numericId} initial={initial} />
-    </div>
-  );
+  return <HoldingDetailClient initial={initial} />;
 }

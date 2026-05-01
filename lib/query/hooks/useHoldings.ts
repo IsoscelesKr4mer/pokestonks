@@ -1,6 +1,15 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
 import type { HoldingPnL } from '@/lib/services/pnl';
+import type { HoldingDetailDto } from '@/lib/api/holdingDetailDto';
+
+// Re-export canonical types from the DTO module so existing consumers
+// (page.tsx, HoldingDetailClient.tsx) can keep their existing import paths.
+export type {
+  HoldingDetailDto,
+  HoldingDetailSaleEvent,
+  HoldingDetailSaleRow,
+} from '@/lib/api/holdingDetailDto';
 
 const json = <T,>(res: Response) =>
   res.json().then((b) => {
@@ -17,97 +26,6 @@ export function useHoldings() {
     },
   });
 }
-
-export type HoldingDetailSaleRow = {
-  saleId: number;
-  purchaseId: number;
-  purchaseDate: string;
-  perUnitCostCents: number;
-  quantity: number;
-  salePriceCents: number;
-  feesCents: number;
-  matchedCostCents: number;
-};
-
-export type HoldingDetailSaleEvent = {
-  saleGroupId: string;
-  saleDate: string;
-  platform: string | null;
-  notes: string | null;
-  totals: {
-    quantity: number;
-    salePriceCents: number;
-    feesCents: number;
-    matchedCostCents: number;
-    realizedPnLCents: number;
-  };
-  rows: HoldingDetailSaleRow[];
-  createdAt: string;
-};
-
-export type HoldingDetailDto = {
-  item: {
-    id: number;
-    kind: 'sealed' | 'card';
-    name: string;
-    setName: string | null;
-    setCode: string | null;
-    productType: string | null;
-    cardNumber: string | null;
-    rarity: string | null;
-    variant: string | null;
-    imageUrl: string | null;
-    imageStoragePath: string | null;
-    lastMarketCents: number | null;
-    lastMarketAt: string | null;
-    msrpCents: number | null;
-    packCount: number | null;
-  };
-  holding: HoldingPnL;
-  lots: Array<{
-    lot: {
-      id: number;
-      catalogItemId: number;
-      purchaseDate: string;
-      quantity: number;
-      costCents: number;
-      condition: string | null;
-      isGraded: boolean;
-      gradingCompany: string | null;
-      grade: string | null;
-      certNumber: string | null;
-      source: string | null;
-      location: string | null;
-      notes: string | null;
-      sourceRipId: number | null;
-      createdAt: string;
-    };
-    sourceRip: { id: number; ripDate: string; sourcePurchaseId: number } | null;
-    sourcePack: { catalogItemId: number; name: string } | null;
-    sourceDecomposition: { id: number; decomposeDate: string; sourcePurchaseId: number } | null;
-    sourceContainer: { catalogItemId: number; name: string } | null;
-  }>;
-  rips: Array<{
-    id: number;
-    ripDate: string;
-    packCostCents: number;
-    realizedLossCents: number;
-    keptCardCount: number;
-    sourcePurchaseId: number;
-    notes: string | null;
-  }>;
-  decompositions: Array<{
-    id: number;
-    decomposeDate: string;
-    sourceCostCents: number;
-    packCount: number;
-    perPackCostCents: number;
-    roundingResidualCents: number;
-    sourcePurchaseId: number;
-    notes: string | null;
-  }>;
-  sales: HoldingDetailSaleEvent[];
-};
 
 export function useHolding(catalogItemId: number) {
   return useQuery({

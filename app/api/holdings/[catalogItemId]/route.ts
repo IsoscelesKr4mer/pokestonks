@@ -10,6 +10,7 @@ import {
   type RawSaleRow,
 } from '@/lib/services/holdings';
 import { computeHoldingPnL, emptyHoldingPnL } from '@/lib/services/pnl';
+import { buildActivityEvents } from '@/lib/api/holdingDetailDto';
 
 export async function GET(
   _req: NextRequest,
@@ -133,7 +134,6 @@ export async function GET(
       : [];
 
   // Compute the per-item rollup using the same aggregation as the list endpoint.
-  // We need a synthetic RawPurchaseRow shape to reuse aggregateHoldings.
   const rawPurchases: RawPurchaseRow[] = lots.map((l) => ({
     id: l.id,
     catalog_item_id: l.catalogItemId,
@@ -181,7 +181,16 @@ export async function GET(
   const now = new Date();
   const holding = holdingRaw ? computeHoldingPnL(holdingRaw, now) : null;
 
-  // Annotate lots with provenance for the UI.
+  // Build consumed-units map for qtyRemaining per lot.
+  const consumedUnitsByLot = new Map<number, number>();
+  for (const r of ripsForSealed) {
+    consumedUnitsByLot.set(r.sourcePurchaseId, (consumedUnitsByLot.get(r.sourcePurchaseId) ?? 0) + 1);
+  }
+  for (const d of decompositionsForSealed) {
+    consumedUnitsByLot.set(d.sourcePurchaseId, (consumedUnitsByLot.get(d.sourcePurchaseId) ?? 0) + 1);
+  }
+
+  // Annotate lots with provenance + qtyRemaining for the UI.
   const lotsWithProvenance = lots.map((l) => {
     const rip = l.sourceRipId != null ? ripById.get(l.sourceRipId) ?? null : null;
     const pack = rip ? sourcePackByPurchaseId.get(rip.sourcePurchaseId) ?? null : null;
@@ -197,8 +206,29 @@ export async function GET(
       ? sourceContainerCatalogById.get(container.catalogItemId) ?? null
       : null;
 
+    const consumed = consumedUnitsByLot.get(l.id) ?? 0;
+    const qtyRemaining = l.quantity - consumed;
+
     return {
-      lot: l,
+      lot: {
+        id: l.id,
+        catalogItemId: l.catalogItemId,
+        purchaseDate: l.purchaseDate,
+        quantity: l.quantity,
+        costCents: l.costCents,
+        condition: l.condition,
+        isGraded: l.isGraded,
+        gradingCompany: l.gradingCompany,
+        grade: l.grade,
+        certNumber: l.certNumber,
+        source: l.source,
+        location: l.location,
+        notes: l.notes,
+        sourceRipId: l.sourceRipId,
+        sourceDecompositionId: l.sourceDecompositionId,
+        createdAt: l.createdAt.toISOString(),
+      },
+      qtyRemaining,
       sourceRip: rip ? { id: rip.id, ripDate: rip.ripDate, sourcePurchaseId: rip.sourcePurchaseId } : null,
       sourcePack: packCatalog ? { catalogItemId: packCatalog.id, name: packCatalog.name } : null,
       sourceDecomposition: decomp
@@ -289,6 +319,37 @@ export async function GET(
       return a.saleGroupId < b.saleGroupId ? -1 : a.saleGroupId > b.saleGroupId ? 1 : 0;
     });
 
+  // Build activity events from all raw data.
+  const activity = buildActivityEvents({
+    purchases: lots.map((l) => ({
+      id: l.id,
+      purchaseDate: l.purchaseDate,
+      quantity: l.quantity,
+      costCents: l.costCents,
+      source: l.source,
+      location: l.location,
+      sourceRipId: l.sourceRipId,
+      sourceDecompositionId: l.sourceDecompositionId,
+    })),
+    rips: ripsSummary,
+    decompositions: decompositionsForSealed.map((d) => ({
+      id: d.id,
+      decomposeDate: d.decomposeDate,
+      sourcePurchaseId: d.sourcePurchaseId,
+      packCount: d.packCount,
+    })),
+    sales: salesEvents.map((s) => ({
+      id: s.saleGroupId,
+      saleGroupId: s.saleGroupId,
+      saleDate: s.saleDate,
+      quantity: s.totals.quantity,
+      salePriceCents: s.totals.salePriceCents,
+      feesCents: s.totals.feesCents,
+      platform: s.platform,
+      matchedCostCents: s.totals.matchedCostCents,
+    })),
+  });
+
   return NextResponse.json({
     item: {
       id: item.id,
@@ -322,5 +383,6 @@ export async function GET(
     rips: ripsSummary,
     decompositions: decompositionsSummary,
     sales: salesEvents,
+    activity,
   });
 }

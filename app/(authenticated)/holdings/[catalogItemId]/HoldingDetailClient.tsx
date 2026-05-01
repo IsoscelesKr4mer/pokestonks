@@ -1,344 +1,371 @@
 'use client';
-import { useState, useMemo } from 'react';
-import { Plus } from 'lucide-react';
-import { LotRow } from '@/components/purchases/LotRow';
-import { RipRow } from '@/components/rips/RipRow';
-import { RipPackDialog, type RipPackSourceLot, type CardSearchHit } from '@/components/rips/RipPackDialog';
-import { OpenBoxDialog, type OpenBoxSourceLot } from '@/components/decompositions/OpenBoxDialog';
-import { DecompositionRow } from '@/components/decompositions/DecompositionRow';
-import { useHolding, type HoldingDetailDto } from '@/lib/query/hooks/useHoldings';
-import { useCreatePurchase } from '@/lib/query/hooks/usePurchases';
+import { useState } from 'react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { HoldingThumbnail } from '@/components/holdings/HoldingThumbnail';
+import { LotsTable, type LotsTableRow } from '@/components/lots/LotsTable';
+import { ActivityTimeline } from '@/components/activity/ActivityTimeline';
+import { formatCents, formatCentsSigned, formatPct } from '@/lib/utils/format';
+import { useHolding } from '@/lib/query/hooks/useHoldings';
+import { useDeletePurchase, DeletePurchaseError } from '@/lib/query/hooks/usePurchases';
+import { AddPurchaseDialog } from '@/components/purchases/AddPurchaseDialog';
+import { EditPurchaseDialog, type EditableLot } from '@/components/purchases/EditPurchaseDialog';
 import type { PurchaseFormCatalogItem } from '@/components/purchases/PurchaseForm';
-import type { EditableLot } from '@/components/purchases/EditPurchaseDialog';
-import { formatCents } from '@/lib/utils/format';
-import { PnLDisplay } from '@/components/holdings/PnLDisplay';
-import { StalePill } from '@/components/holdings/StalePill';
-import { UnpricedBadge } from '@/components/holdings/UnpricedBadge';
-import { SellButton } from '@/components/sales/SellButton';
-import { SaleRow } from '@/components/sales/SaleRow';
-import { SaleDetailDialog } from '@/components/sales/SaleDetailDialog';
-import type { SaleEventDto } from '@/lib/query/hooks/useSales';
+import { SellDialog } from '@/components/sales/SellDialog';
+import { RipPackDialog, type RipPackSourceLot } from '@/components/rips/RipPackDialog';
+import { OpenBoxDialog, type OpenBoxSourceLot } from '@/components/decompositions/OpenBoxDialog';
+import type { HoldingDetailDto, HoldingDetailLot } from '@/lib/api/holdingDetailDto';
 
-async function searchCardsInSet(q: string, setName: string | null): Promise<CardSearchHit[]> {
-  if (!q.trim()) return [];
-  const params = new URLSearchParams({ q, kind: 'card' });
-  if (setName) params.set('setName', setName);
-  const res = await fetch(`/api/search?${params.toString()}`);
-  if (!res.ok) return [];
-  const body = (await res.json()) as { results?: Array<{ catalogItemId?: number; name: string; imageUrl?: string | null }> };
-  return (body.results ?? [])
-    .filter((r) => r.catalogItemId != null)
-    .map((r) => ({
-      catalogItemId: r.catalogItemId as number,
-      name: r.name,
-      imageUrl: r.imageUrl ?? null,
-    }));
-}
+export function HoldingDetailClient({ initial }: { initial: HoldingDetailDto }) {
+  const { data } = useHolding(initial.item.id);
+  const dto = data ?? initial;
+  const item = dto.item;
+  const summary = dto.holding;
+  const del = useDeletePurchase();
 
-export function HoldingDetailClient({
-  catalogItemId,
-  initial,
-}: {
-  catalogItemId: number;
-  initial: HoldingDetailDto;
-}) {
-  const { data } = useHolding(catalogItemId);
-  const detail = data ?? initial;
-  const createMutation = useCreatePurchase();
+  const [openAdd, setOpenAdd] = useState(false);
+  const [sellOpen, setSellOpen] = useState(false);
+  const [editTarget, setEditTarget] = useState<number | null>(null);
+  const [ripTarget, setRipTarget] = useState<RipPackSourceLot | null>(null);
+  const [openBoxTarget, setOpenBoxTarget] = useState<OpenBoxSourceLot | null>(null);
 
-  const [ripOpen, setRipOpen] = useState(false);
-  const [ripPack, setRipPack] = useState<RipPackSourceLot | null>(null);
-
-  const [openBoxOpen, setOpenBoxOpen] = useState(false);
-  const [openBoxSource, setOpenBoxSource] = useState<OpenBoxSourceLot | null>(null);
-
-  const [selectedSaleId, setSelectedSaleId] = useState<string | null>(null);
-
-  const isSealed = detail.item.kind === 'sealed';
-
-  const catalogItem: PurchaseFormCatalogItem = {
-    id: detail.item.id,
-    kind: detail.item.kind,
-    name: detail.item.name,
-    setName: detail.item.setName,
-    productType: detail.item.productType,
-    cardNumber: detail.item.cardNumber,
-    rarity: detail.item.rarity,
-    variant: detail.item.variant,
-    imageUrl: detail.item.imageUrl,
-    msrpCents: detail.item.msrpCents,
-    lastMarketCents: detail.item.lastMarketCents,
-    packCount: detail.item.packCount,
-  };
-
-  const handleQuickAdd = async () => {
-    try {
-      await createMutation.mutateAsync({
-        catalogItemId,
-        quantity: 1,
-        isGraded: false,
-      });
-    } catch (err) {
-      alert(err instanceof Error ? err.message : 'add failed');
-    }
-  };
-
-  const openRip = (lot: EditableLot) => {
-    setRipPack({
-      purchaseId: lot.id,
-      catalogItemId: detail.item.id,
-      name: detail.item.name,
-      imageUrl: detail.item.imageUrl,
-      packCostCents: lot.costCents,
-      setName: detail.item.setName,
-      setCode: detail.item.setCode,
-    });
-    setRipOpen(true);
-  };
-
-  const openOpenBox = (lot: EditableLot) => {
-    // Decomposability is determined by productType (any sealed lot that
-    // isn't a Booster Pack). The dialog's recipe picker handles cases where
-    // pack_count is unknown or the recipe is unsaved.
-    setOpenBoxSource({
-      purchaseId: lot.id,
-      catalogItemId: detail.item.id,
-      name: detail.item.name,
-      productType: detail.item.productType ?? 'Sealed',
-      imageUrl: detail.item.imageUrl,
-      packCount: detail.item.packCount,
-      sourceCostCents: lot.costCents,
-      setCode: detail.item.setCode,
-      setName: detail.item.setName,
-    });
-    setOpenBoxOpen(true);
-  };
-
-  // Build a map of source_purchase_id -> consumed_units (rips + decompositions) for sealed lots.
-  // Used to gate the "Rip pack" / "Open box" menu items per lot AND to compute per-lot P&L.
-  const consumedUnitsByLot = new Map<number, number>();
-  for (const r of detail.rips) {
-    consumedUnitsByLot.set(r.sourcePurchaseId, (consumedUnitsByLot.get(r.sourcePurchaseId) ?? 0) + 1);
-  }
-  for (const d of detail.decompositions) {
-    consumedUnitsByLot.set(d.sourcePurchaseId, (consumedUnitsByLot.get(d.sourcePurchaseId) ?? 0) + 1);
-  }
-
-  const sales = detail.sales ?? [];
-
-  // Build a map of purchaseId -> { qty, realizedPnLCents } from sale events.
-  const salesByPurchase = useMemo(() => {
-    const m = new Map<number, { qty: number; realizedPnLCents: number }>();
-    for (const event of sales) {
-      for (const r of event.rows) {
-        const realized = r.salePriceCents - r.feesCents - r.matchedCostCents;
-        const cur = m.get(r.purchaseId) ?? { qty: 0, realizedPnLCents: 0 };
-        m.set(r.purchaseId, { qty: cur.qty + r.quantity, realizedPnLCents: cur.realizedPnLCents + realized });
-      }
-    }
-    return m;
-  }, [sales]);
-
-  // Synthesize SaleEventDto (with catalogItem) for SaleRow, which expects the full shape.
-  const saleEventDtos = useMemo((): SaleEventDto[] => {
-    const catalogItem = {
-      id: detail.item.id,
-      name: detail.item.name,
-      setName: detail.item.setName,
-      productType: detail.item.productType,
-      kind: detail.item.kind,
-      imageUrl: detail.item.imageUrl,
-      imageStoragePath: detail.item.imageStoragePath,
+  // ---- Helpers to build dialog shapes from a lot ----
+  function lotForEdit(purchaseId: number): { catalogItem: PurchaseFormCatalogItem; lot: EditableLot } | null {
+    const entry = dto.lots.find((l) => l.lot.id === purchaseId);
+    if (!entry) return null;
+    const l = entry.lot;
+    const catalogItem: PurchaseFormCatalogItem = {
+      id: item.id,
+      kind: item.kind,
+      name: item.name,
+      setName: item.setName,
+      productType: item.productType,
+      cardNumber: item.cardNumber,
+      rarity: item.rarity,
+      variant: item.variant,
+      imageUrl: item.imageUrl,
+      msrpCents: item.msrpCents,
+      lastMarketCents: item.lastMarketCents,
+      packCount: item.packCount,
     };
-    return sales.map((s) => ({ ...s, catalogItem }));
-  }, [sales, detail.item]);
+    const lot: EditableLot = {
+      id: l.id,
+      catalogItemId: l.catalogItemId,
+      purchaseDate: l.purchaseDate,
+      quantity: l.quantity,
+      costCents: l.costCents,
+      source: l.source,
+      location: l.location,
+      notes: l.notes,
+      condition: l.condition,
+      isGraded: l.isGraded,
+      gradingCompany: l.gradingCompany,
+      grade: l.grade,
+      certNumber: l.certNumber,
+      sourceRipId: l.sourceRipId,
+    };
+    return { catalogItem, lot };
+  }
+
+  function buildRipTarget(purchaseId: number): RipPackSourceLot | null {
+    const entry = dto.lots.find((l) => l.lot.id === purchaseId);
+    if (!entry) return null;
+    return {
+      purchaseId: entry.lot.id,
+      catalogItemId: item.id,
+      name: item.name,
+      imageUrl: item.imageUrl,
+      packCostCents: entry.lot.costCents,
+      setName: item.setName,
+      setCode: item.setCode,
+    };
+  }
+
+  function buildOpenBoxTarget(purchaseId: number): OpenBoxSourceLot | null {
+    const entry = dto.lots.find((l) => l.lot.id === purchaseId);
+    if (!entry) return null;
+    return {
+      purchaseId: entry.lot.id,
+      catalogItemId: item.id,
+      name: item.name,
+      productType: item.productType ?? 'Sealed',
+      imageUrl: item.imageUrl,
+      packCount: item.packCount,
+      sourceCostCents: entry.lot.costCents,
+      setCode: item.setCode,
+      setName: item.setName,
+    };
+  }
+
+  async function handleDelete(purchaseId: number) {
+    if (!confirm('Soft-delete this lot? You can recover it from the database if needed.')) return;
+    try {
+      await del.mutateAsync(purchaseId);
+    } catch (err) {
+      if (err instanceof DeletePurchaseError) {
+        if (err.ripIds && err.ripIds.length > 0) {
+          alert(`${err.message}. Undo rip #${err.ripIds.join(', #')} on the source pack first.`);
+          return;
+        }
+        if (err.decompositionIds && err.decompositionIds.length > 0) {
+          alert(`${err.message}. Undo the decomposition (#${err.decompositionIds.join(', #')}) first.`);
+          return;
+        }
+        if (err.linkedSaleIds && err.linkedSaleIds.length > 0) {
+          alert(`${err.message}. Reverse sale #${err.linkedSaleIds.join(', #')} first.`);
+          return;
+        }
+      }
+      alert(err instanceof Error ? err.message : 'delete failed');
+    }
+  }
+
+  // ---- Lots table rows ----
+  const lotsRows: LotsTableRow[] = dto.lots.map((l) => ({
+    purchaseId: l.lot.id,
+    purchaseDate: l.lot.purchaseDate,
+    source: l.lot.source ?? null,
+    location: l.lot.location ?? null,
+    qtyRemaining: l.qtyRemaining,
+    qtyOriginal: l.lot.quantity,
+    perUnitCostCents: l.lot.costCents,
+    perUnitMarketCents: item.lastMarketCents ?? null,
+    pnlCents:
+      l.qtyRemaining > 0 && item.lastMarketCents !== null
+        ? (item.lastMarketCents - l.lot.costCents) * l.qtyRemaining
+        : null,
+    pnlPct:
+      l.qtyRemaining > 0 && item.lastMarketCents !== null && l.lot.costCents > 0
+        ? ((item.lastMarketCents - l.lot.costCents) / l.lot.costCents) * 100
+        : null,
+    kind: item.kind,
+    productType: item.productType ?? null,
+  }));
+
+  const openLots = lotsRows.filter((r) => r.qtyRemaining > 0);
+  const events = dto.activity ?? [];
+
+  const exhibitTag =
+    item.kind === 'sealed'
+      ? (item.productType ?? 'Sealed')
+      : item.rarity
+        ? `Card · ${item.rarity}`
+        : 'Card';
+
+  const editEntry = editTarget !== null ? lotForEdit(editTarget) : null;
+
+  // Card search helper for RipPackDialog
+  async function searchCardsInSet(q: string) {
+    if (!q.trim()) return [];
+    const params = new URLSearchParams({ q, kind: 'card' });
+    if (item.setName) params.set('setName', item.setName);
+    const res = await fetch(`/api/search?${params.toString()}`);
+    if (!res.ok) return [];
+    const body = (await res.json()) as {
+      results?: Array<{ catalogItemId?: number; name: string; imageUrl?: string | null }>;
+    };
+    return (body.results ?? [])
+      .filter((r) => r.catalogItemId != null)
+      .map((r) => ({
+        catalogItemId: r.catalogItemId as number,
+        name: r.name,
+        imageUrl: r.imageUrl ?? null,
+      }));
+  }
 
   return (
-    <div className="space-y-8">
-      <div className="flex items-center justify-between gap-4 border-b pb-6">
-        <div className="space-y-1 text-sm">
-          <p className="text-muted-foreground">
-            Qty held: <span className="font-semibold text-foreground tabular-nums">{detail.holding.qtyHeld}</span>
-          </p>
-          <p className="text-muted-foreground">
-            Invested:{' '}
-            <span className="font-semibold text-foreground tabular-nums">
-              {formatCents(detail.holding.totalInvestedCents)}
+    <div className="mx-auto w-full max-w-[1200px] px-6 md:px-8 py-10 space-y-10">
+      {/* Breadcrumb */}
+      <div className="text-[11px] font-mono text-meta">
+        <Link href="/holdings" className="text-accent">Holdings</Link>
+        {' / '}
+        <span>{item.name.toUpperCase()}</span>
+      </div>
+
+      {/* Masthead */}
+      <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-7 pb-7 border-b border-divider">
+        <HoldingThumbnail
+          name={item.name}
+          kind={item.kind}
+          imageUrl={item.imageUrl ?? null}
+          imageStoragePath={item.imageStoragePath ?? null}
+          size="lg"
+        />
+        <div className="grid gap-[14px] content-start">
+          {/* Tags */}
+          <div className="flex gap-[6px] items-center flex-wrap">
+            <span className="px-[10px] py-1 rounded-full text-[9px] uppercase tracking-[0.16em] font-mono text-accent border border-accent/25 bg-accent/10">
+              {exhibitTag.toUpperCase()}
             </span>
-          </p>
-          {detail.holding.priced ? (
-            <>
-              <p className="text-muted-foreground">
-                Current value:{' '}
-                <span className="font-semibold text-foreground tabular-nums">
-                  {formatCents(detail.holding.currentValueCents!)}
-                </span>
-                <StalePill stale={detail.holding.stale} linkHref={`/catalog/${detail.holding.catalogItemId}`} className="ml-2 align-middle" />
-              </p>
-              <p className="text-muted-foreground">
-                Unrealized P&L:{' '}
-                <PnLDisplay pnlCents={detail.holding.pnlCents} pnlPct={detail.holding.pnlPct} className="font-semibold" />
-              </p>
-            </>
-          ) : (
-            <p>
-              <UnpricedBadge className="mr-2" />
-              <span className="text-xs text-muted-foreground">Refresh on the catalog page to populate P&L.</span>
-            </p>
-          )}
-        </div>
-        <div className="flex items-center gap-2">
-          <SellButton
-            catalogItemId={detail.item.id}
-            catalogItemName={detail.item.name}
-            qtyHeld={detail.holding.qtyHeld}
-            variant="header"
-          />
-          <button
-            type="button"
-            aria-label="Add another"
-            onClick={handleQuickAdd}
-            disabled={createMutation.isPending}
-            className="inline-flex h-9 items-center gap-1.5 rounded-full border bg-foreground px-3 text-sm font-medium text-background transition hover:bg-foreground/90 disabled:opacity-50"
-          >
-            <Plus className="size-4" />
-            Add another
-          </button>
+            {item.setCode && (
+              <span className="px-[10px] py-1 rounded-full text-[9px] uppercase tracking-[0.16em] font-mono text-meta border border-divider bg-vault">
+                {item.setCode}
+              </span>
+            )}
+            <span className="px-[10px] py-1 rounded-full text-[9px] uppercase tracking-[0.16em] font-mono text-meta border border-divider bg-vault">
+              {item.kind}
+            </span>
+          </div>
+
+          {/* Name */}
+          <h1 className="text-[32px] font-semibold tracking-[-0.02em] leading-[1.1]">{item.name}</h1>
+
+          {/* 3-stat block */}
+          <div className="vault-card p-[18px] grid grid-cols-1 md:grid-cols-3 gap-[14px]">
+            <div className="grid gap-1">
+              <div className="text-[9px] uppercase tracking-[0.16em] text-meta font-mono">Market / unit</div>
+              <div className="text-[20px] font-semibold tabular-nums">
+                {item.lastMarketCents !== null ? formatCents(item.lastMarketCents) : '--'}
+              </div>
+              <div className="text-[11px] font-mono text-meta">
+                {item.lastMarketAt ? `updated ${item.lastMarketAt.slice(0, 10)}` : 'no price'}
+              </div>
+            </div>
+            <div className="grid gap-1">
+              <div className="text-[9px] uppercase tracking-[0.16em] text-meta font-mono">
+                Position · qty {summary.qtyHeld}
+              </div>
+              <div className="text-[20px] font-semibold tabular-nums">
+                {summary.currentValueCents !== null ? formatCents(summary.currentValueCents) : '--'}
+              </div>
+              <div className="text-[11px] font-mono text-meta">
+                {formatCents(summary.totalInvestedCents)} invested
+              </div>
+            </div>
+            <div className="grid gap-1">
+              <div className="text-[9px] uppercase tracking-[0.16em] text-meta font-mono">Unrealized P&amp;L</div>
+              {summary.pnlCents !== null ? (
+                <>
+                  <div
+                    className={`text-[20px] font-semibold tabular-nums ${
+                      summary.pnlCents >= 0 ? 'text-positive' : 'text-negative'
+                    }`}
+                  >
+                    {formatCentsSigned(summary.pnlCents)}
+                  </div>
+                  <div
+                    className={`text-[11px] font-mono ${
+                      (summary.pnlPct ?? 0) >= 0 ? 'text-positive' : 'text-negative'
+                    }`}
+                  >
+                    {formatPct(summary.pnlPct ?? 0)}
+                  </div>
+                </>
+              ) : (
+                <div className="text-[20px] text-meta">--</div>
+              )}
+            </div>
+          </div>
+
+          {/* Action buttons */}
+          <div className="flex gap-2 flex-wrap">
+            <Button onClick={() => setOpenAdd(true)}>+ Log purchase</Button>
+            {summary.qtyHeld > 0 && (
+              <Button variant="outline" onClick={() => setSellOpen(true)}>
+                Sell
+              </Button>
+            )}
+            {summary.qtyHeld > 0 &&
+              item.kind === 'sealed' &&
+              item.productType !== 'Booster Pack' && (
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    const first = dto.lots.find((l) => l.qtyRemaining > 0);
+                    if (first) setOpenBoxTarget(buildOpenBoxTarget(first.lot.id));
+                  }}
+                >
+                  Open box
+                </Button>
+              )}
+            {summary.qtyHeld > 0 &&
+              item.kind === 'sealed' &&
+              item.productType === 'Booster Pack' && (
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    const first = dto.lots.find((l) => l.qtyRemaining > 0);
+                    if (first) setRipTarget(buildRipTarget(first.lot.id));
+                  }}
+                >
+                  Rip pack
+                </Button>
+              )}
+          </div>
         </div>
       </div>
 
-      <section className="space-y-2">
-        <h2 className="text-xs uppercase tracking-wide text-muted-foreground">Lots</h2>
-        {detail.lots.length === 0 ? (
-          <p className="text-sm text-muted-foreground">No lots.</p>
-        ) : (
-          <div>
-            {detail.lots.map(({ lot, sourceRip, sourcePack, sourceDecomposition, sourceContainer }) => {
-              const editableLot: EditableLot = {
-                id: lot.id,
-                catalogItemId: lot.catalogItemId,
-                purchaseDate: lot.purchaseDate,
-                quantity: lot.quantity,
-                costCents: lot.costCents,
-                source: lot.source,
-                location: lot.location,
-                notes: lot.notes,
-                condition: lot.condition,
-                isGraded: lot.isGraded,
-                gradingCompany: lot.gradingCompany,
-                grade: lot.grade,
-                certNumber: lot.certNumber,
-                sourceRipId: lot.sourceRipId,
-              };
-              const consumed = consumedUnitsByLot.get(lot.id) ?? 0;
-              const qtyRemaining = lot.quantity - consumed;
-              const isBoosterPack = detail.item.productType === 'Booster Pack';
-              // Rip Pack: only on actual Booster Packs.
-              const canRip = isSealed && isBoosterPack && qtyRemaining > 0;
-              // Open Box: any sealed product that isn't a Booster Pack itself.
-              // Recipe table determines what's inside; pack_count not required.
-              const canOpenBox = isSealed && !isBoosterPack && qtyRemaining > 0;
-              return (
-                <LotRow
-                  key={lot.id}
-                  lot={editableLot}
-                  catalogItem={catalogItem}
-                  sourceRip={sourceRip}
-                  sourcePack={sourcePack}
-                  sourceDecomposition={sourceDecomposition}
-                  sourceContainer={sourceContainer}
-                  currentUnitMarketCents={detail.holding.lastMarketCents}
-                  qtyRemaining={qtyRemaining}
-                  onRip={canRip ? openRip : undefined}
-                  onOpenBox={canOpenBox ? openOpenBox : undefined}
-                  salesByPurchase={salesByPurchase}
-                />
-              );
-            })}
-          </div>
-        )}
-      </section>
+      {/* Open lots */}
+      <div className="grid gap-3">
+        <div className="flex justify-between items-baseline">
+          <h3 className="text-[14px] font-semibold uppercase tracking-[0.04em]">Open lots</h3>
+          <span className="text-[11px] font-mono text-meta">
+            {openLots.length} OPEN · QTY {summary.qtyHeld}
+          </span>
+        </div>
+        <LotsTable
+          rows={openLots}
+          onEdit={(id) => setEditTarget(id)}
+          onDelete={(id) => { void handleDelete(id); }}
+          onSell={(_id) => setSellOpen(true)}
+          onRip={(id) => {
+            const t = buildRipTarget(id);
+            if (t) setRipTarget(t);
+          }}
+          onOpen={(id) => {
+            const t = buildOpenBoxTarget(id);
+            if (t) setOpenBoxTarget(t);
+          }}
+        />
+      </div>
 
-      {isSealed && detail.rips.length > 0 && (
-        <section className="space-y-2">
-          <h2 className="text-xs uppercase tracking-wide text-muted-foreground">Rip history</h2>
-          <div>
-            {detail.rips.map((r) => (
-              <RipRow
-                key={r.id}
-                rip={{
-                  id: r.id,
-                  ripDate: r.ripDate,
-                  realizedLossCents: r.realizedLossCents,
-                  keptCardCount: r.keptCardCount,
-                }}
-                affectedCatalogItemIds={[detail.item.id]}
-              />
-            ))}
-          </div>
-        </section>
-      )}
+      {/* Activity */}
+      <div className="grid gap-3">
+        <div className="flex justify-between items-baseline">
+          <h3 className="text-[14px] font-semibold uppercase tracking-[0.04em]">Activity</h3>
+          <span className="text-[11px] font-mono text-meta">{events.length} EVENTS</span>
+        </div>
+        <ActivityTimeline events={events} />
+      </div>
 
-      {isSealed && detail.decompositions.length > 0 && (
-        <section className="space-y-2">
-          <h2 className="text-xs uppercase tracking-wide text-muted-foreground">
-            Decomposition history
-          </h2>
-          <div>
-            {detail.decompositions.map((d) => (
-              <DecompositionRow
-                key={d.id}
-                decomposition={{
-                  id: d.id,
-                  decomposeDate: d.decomposeDate,
-                  packCount: d.packCount,
-                  perPackCostCents: d.perPackCostCents,
-                  roundingResidualCents: d.roundingResidualCents,
-                  sourcePurchaseId: d.sourcePurchaseId,
-                }}
-                packCatalogItem={{ id: detail.item.id, name: 'Booster Pack' }}
-                affectedCatalogItemIds={[detail.item.id]}
-              />
-            ))}
-          </div>
-        </section>
-      )}
-
-      {sales.length > 0 ? (
-        <section className="space-y-3 mt-6">
-          <h2 className="text-sm font-semibold tracking-tight">Sales</h2>
-          <div className="grid gap-2">
-            {saleEventDtos.map((s) => (
-              <SaleRow
-                key={s.saleGroupId}
-                sale={s}
-                onClick={() => setSelectedSaleId(s.saleGroupId)}
-              />
-            ))}
-          </div>
-        </section>
-      ) : null}
-
-      <SaleDetailDialog
-        open={selectedSaleId != null}
-        onOpenChange={(o) => { if (!o) setSelectedSaleId(null); }}
-        saleGroupId={selectedSaleId}
-      />
-
-      {ripPack && (
-        <RipPackDialog
-          open={ripOpen}
-          onOpenChange={setRipOpen}
-          pack={ripPack}
-          searchCard={(q) => searchCardsInSet(q, ripPack.setName)}
+      {/* Dialogs */}
+      {openAdd && (
+        <AddPurchaseDialog
+          open={openAdd}
+          onClose={() => setOpenAdd(false)}
+          catalogItemId={item.id}
         />
       )}
-
-      {openBoxSource && (
+      {sellOpen && (
+        <SellDialog
+          open={sellOpen}
+          onOpenChange={(v) => { if (!v) setSellOpen(false); }}
+          catalogItemId={item.id}
+          catalogItemName={item.name}
+          qtyHeld={summary.qtyHeld}
+        />
+      )}
+      {ripTarget !== null && (
+        <RipPackDialog
+          open
+          onOpenChange={(v) => { if (!v) setRipTarget(null); }}
+          pack={ripTarget}
+          searchCard={(q) => searchCardsInSet(q)}
+        />
+      )}
+      {openBoxTarget !== null && (
         <OpenBoxDialog
-          open={openBoxOpen}
-          onOpenChange={setOpenBoxOpen}
-          source={openBoxSource}
+          open
+          onOpenChange={(v) => { if (!v) setOpenBoxTarget(null); }}
+          source={openBoxTarget}
+        />
+      )}
+      {editTarget !== null && editEntry !== null && (
+        <EditPurchaseDialog
+          open
+          onOpenChange={(v) => { if (!v) setEditTarget(null); }}
+          catalogItem={editEntry.catalogItem}
+          lot={editEntry.lot}
         />
       )}
     </div>
