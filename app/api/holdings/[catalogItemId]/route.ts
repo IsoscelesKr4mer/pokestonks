@@ -9,7 +9,7 @@ import {
   type RawDecompositionRow,
   type RawSaleRow,
 } from '@/lib/services/holdings';
-import { computeHoldingPnL } from '@/lib/services/pnl';
+import { computeHoldingPnL, emptyHoldingPnL } from '@/lib/services/pnl';
 
 export async function GET(
   _req: NextRequest,
@@ -307,24 +307,17 @@ export async function GET(
       msrpCents: item.msrpCents,
       packCount: item.packCount,
     },
-    holding: holding ?? {
-      catalogItemId: item.id,
-      kind: item.kind,
+    holding: holding ?? emptyHoldingPnL({
+      id: item.id,
       name: item.name,
-      setName: item.setName,
-      productType: item.productType,
+      kind: item.kind as 'sealed' | 'card',
       imageUrl: item.imageUrl,
       imageStoragePath: item.imageStoragePath,
+      setName: item.setName,
+      productType: item.productType,
       lastMarketCents: item.lastMarketCents,
       lastMarketAt: item.lastMarketAt instanceof Date ? item.lastMarketAt.toISOString() : item.lastMarketAt,
-      qtyHeld: 0,
-      totalInvestedCents: 0,
-      currentValueCents: null,
-      pnlCents: null,
-      pnlPct: null,
-      priced: false,
-      stale: false,
-    },
+    }),
     lots: lotsWithProvenance,
     rips: ripsSummary,
     decompositions: decompositionsSummary,

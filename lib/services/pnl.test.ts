@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { computePortfolioPnL, computeHoldingPnL, STALE_PRICE_THRESHOLD_DAYS } from './pnl';
+import { computePortfolioPnL, computeHoldingPnL, emptyHoldingPnL, STALE_PRICE_THRESHOLD_DAYS } from './pnl';
 import type { Holding } from './holdings';
 
 const NOW = new Date('2026-04-28T12:00:00Z');
@@ -210,5 +210,20 @@ describe('computePortfolioPnL', () => {
     expect(Object.is(r.realizedPnLCents, 0)).toBe(true);
     expect(Object.is(r.realizedRipPnLCents, 0)).toBe(true);
     expect(Object.is(r.realizedSalesPnLCents, 0)).toBe(true);
+  });
+});
+
+describe('emptyHoldingPnL', () => {
+  it('returns a HoldingPnL shape with zero qty and null prices', () => {
+    const result = emptyHoldingPnL({
+      id: 1, name: 'X', kind: 'sealed',
+      imageUrl: null, imageStoragePath: null,
+      setName: null, productType: null,
+      lastMarketCents: null, lastMarketAt: null,
+    });
+    expect(result.qtyHeld).toBe(0);
+    expect(result.priced).toBe(false);
+    expect(result.pnlCents).toBeNull();
+    expect(result.currentValueCents).toBeNull();
   });
 });

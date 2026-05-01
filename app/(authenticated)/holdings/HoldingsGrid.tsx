@@ -2,13 +2,11 @@
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useHoldings } from '@/lib/query/hooks/useHoldings';
-import { getImageUrl } from '@/lib/utils/images';
 import type { HoldingPnL } from '@/lib/services/pnl';
-import { formatCents } from '@/lib/utils/format';
-import { PnLDisplay } from '@/components/holdings/PnLDisplay';
-import { StalePill } from '@/components/holdings/StalePill';
-import { UnpricedBadge } from '@/components/holdings/UnpricedBadge';
-import { SellButton } from '@/components/sales/SellButton';
+import { formatCents, formatCentsSigned, formatPct } from '@/lib/utils/format';
+import { HoldingThumbnail } from '@/components/holdings/HoldingThumbnail';
+import { KebabMenu, KebabMenuItem } from '@/components/ui/kebab-menu';
+import { SellDialog } from '@/components/sales/SellDialog';
 
 type SortKey = 'marketPrice' | 'value' | 'pnl' | 'pnlPct' | 'cost' | 'qty' | 'name' | 'recent';
 
@@ -64,18 +62,17 @@ export function HoldingsGrid({ initialHoldings }: { initialHoldings: HoldingPnL[
   const { data } = useHoldings();
   const holdings = data?.holdings ?? initialHoldings;
   const [sortKey, setSortKey] = useState<SortKey>('marketPrice');
+  const [sellTarget, setSellTarget] = useState<HoldingPnL | null>(null);
 
   const sortedHoldings = useMemo(() => sortHoldings(holdings, sortKey), [holdings, sortKey]);
 
   if (holdings.length === 0) {
     return (
-      <div className="rounded-lg border bg-card p-8 text-center">
-        <p className="text-sm text-muted-foreground">
-          No holdings yet. Search for a product and click &quot;+&quot; or &quot;Log purchase&quot; to start.
+      <div className="bg-vault border border-divider rounded-2xl p-8 text-center">
+        <p className="text-[13px] text-text-muted">
+          No holdings yet. Search for a product and click + or Log purchase to start.
         </p>
-        <Link href="/catalog" className="mt-3 inline-block text-sm underline">
-          Go to search
-        </Link>
+        <Link href="/catalog" className="mt-3 inline-block text-[13px] text-accent underline">Go to search</Link>
       </div>
     );
   }
@@ -83,86 +80,74 @@ export function HoldingsGrid({ initialHoldings }: { initialHoldings: HoldingPnL[
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-end gap-2">
-        <label htmlFor="sort" className="text-xs text-muted-foreground">Sort by</label>
+        <label htmlFor="sort" className="text-[10px] uppercase tracking-[0.14em] text-meta font-mono">Sort by</label>
         <select
           id="sort"
           value={sortKey}
           onChange={(e) => setSortKey(e.target.value as SortKey)}
-          className="rounded-md border bg-background px-2 py-1 text-xs"
+          className="rounded-full border border-divider bg-vault px-3 py-[6px] text-[12px] font-mono text-text"
         >
-          {SORT_OPTIONS.map((o) => (
-            <option key={o.value} value={o.value}>{o.label}</option>
-          ))}
+          {SORT_OPTIONS.map((o) => (<option key={o.value} value={o.value}>{o.label}</option>))}
         </select>
       </div>
-      <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-      {sortedHoldings.map((h) => (
-        <div
-          key={h.catalogItemId}
-          className="group flex flex-col rounded-lg border bg-card p-3 transition hover:border-foreground/20"
-        >
-          <Link
-            href={`/holdings/${h.catalogItemId}`}
-            className="flex flex-col"
-          >
-            <div
-              className={
-                h.kind === 'sealed'
-                  ? 'aspect-square w-full overflow-hidden rounded-md bg-muted'
-                  : 'aspect-[5/7] w-full overflow-hidden rounded-md bg-muted'
-              }
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={getImageUrl({
-                  imageStoragePath: h.imageStoragePath,
-                  imageUrl: h.imageUrl,
-                })}
-                alt={h.name}
-                loading="lazy"
-                className="size-full object-contain"
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-[14px]">
+        {sortedHoldings.map((h) => (
+          <div key={h.catalogItemId} className="vault-card p-[14px] grid gap-3 relative group">
+            <Link href={`/holdings/${h.catalogItemId}`} className="grid gap-3">
+              <HoldingThumbnail
+                name={h.name}
+                kind={h.kind}
+                imageUrl={h.imageUrl ?? null}
+                imageStoragePath={h.imageStoragePath ?? null}
+                exhibitTag={(h.kind === 'sealed' ? (h.productType ?? 'SEALED') : 'CARD').toUpperCase()}
+                stale={h.stale}
               />
-            </div>
-            <div className="mt-3 flex-1 space-y-1">
-              <div className="line-clamp-2 text-sm font-semibold leading-tight">{h.name}</div>
-              <div className="text-xs text-muted-foreground">{h.setName ?? '-'}</div>
-              <div className="text-xs text-muted-foreground">
-                {h.kind === 'sealed' ? h.productType ?? 'Sealed' : 'Card'}
+              <div className="grid gap-1">
+                <div className="text-[13px] font-semibold leading-[1.3] line-clamp-2">{h.name}</div>
+                <div className="text-[11px] font-mono text-meta truncate">{h.setName ?? '--'}</div>
               </div>
-            </div>
-            <div className="mt-3 space-y-1 text-xs">
-              <div className="flex items-center justify-between">
-                <span className="font-medium tabular-nums">Qty: {h.qtyHeld}</span>
-                <span className="text-muted-foreground tabular-nums">
-                  {formatCents(h.totalInvestedCents)}
-                </span>
-              </div>
-              <div className="flex items-center justify-between gap-2">
+              <div className="border-t border-divider pt-[10px] grid grid-cols-[1fr_auto] gap-2 items-baseline">
+                <div className="grid gap-[2px]">
+                  <div className="text-[9px] uppercase tracking-[0.14em] text-meta font-mono">Market · qty {h.qtyHeld}</div>
+                  <div className="text-[18px] font-semibold tabular-nums tracking-[-0.01em]">
+                    {h.lastMarketCents !== null ? formatCents(h.lastMarketCents) : <span className="text-meta">--</span>}
+                  </div>
+                </div>
                 {h.priced ? (
-                  <>
-                    <span className="flex items-center gap-1.5 tabular-nums text-muted-foreground">
-                      {formatCents(h.currentValueCents!)}
-                      <StalePill stale={h.stale} />
-                    </span>
-                    <PnLDisplay pnlCents={h.pnlCents} pnlPct={h.pnlPct} />
-                  </>
+                  <div className="font-mono text-[12px] tabular-nums text-right">
+                    <div className={h.pnlCents! >= 0 ? 'text-positive font-semibold' : 'text-negative font-semibold'}>
+                      {formatCentsSigned(h.pnlCents!)}
+                    </div>
+                    <div className={h.pnlPct! >= 0 ? 'text-positive' : 'text-negative'}>
+                      {formatPct(h.pnlPct!)}
+                    </div>
+                  </div>
                 ) : (
-                  <UnpricedBadge />
+                  <div className="text-[10px] uppercase tracking-[0.08em] text-stale font-mono">Unpriced</div>
                 )}
               </div>
+              <div className="text-[10px] font-mono text-meta">
+                {formatCents(h.currentValueCents ?? 0)} value · {formatCents(h.totalInvestedCents)} cost
+              </div>
+            </Link>
+            <div className="absolute top-[20px] right-[20px]">
+              <KebabMenu label={`Actions for ${h.name}`}>
+                {h.qtyHeld > 0 && <KebabMenuItem onSelect={() => setSellTarget(h)}>Sell</KebabMenuItem>}
+                <KebabMenuItem onSelect={() => { window.location.href = `/holdings/${h.catalogItemId}`; }}>Open detail</KebabMenuItem>
+              </KebabMenu>
             </div>
-          </Link>
-          <div className="flex justify-end pt-2 border-t mt-2">
-            <SellButton
-              catalogItemId={h.catalogItemId}
-              catalogItemName={h.name}
-              qtyHeld={h.qtyHeld}
-              variant="card"
-            />
           </div>
-        </div>
-      ))}
+        ))}
       </div>
+      {sellTarget && (
+        <SellDialog
+          open
+          onOpenChange={(open) => { if (!open) setSellTarget(null); }}
+          catalogItemId={sellTarget.catalogItemId}
+          catalogItemName={sellTarget.name}
+          qtyHeld={sellTarget.qtyHeld}
+        />
+      )}
     </div>
   );
 }

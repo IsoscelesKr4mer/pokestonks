@@ -3,6 +3,7 @@ import { redirect } from 'next/navigation';
 import { HoldingsGrid } from './HoldingsGrid';
 import { aggregateHoldings, type RawPurchaseRow, type RawRipRow, type RawDecompositionRow, type RawSaleRow } from '@/lib/services/holdings';
 import { computeHoldingPnL } from '@/lib/services/pnl';
+import { formatCents } from '@/lib/utils/format';
 
 export default async function HoldingsPage() {
   const supabase = await createClient();
@@ -37,10 +38,26 @@ export default async function HoldingsPage() {
   const now = new Date();
   const holdingsPnL = holdings.map((h) => computeHoldingPnL(h, now));
 
+  const totals = {
+    lotCount: holdingsPnL.length,
+    pricedCount: holdingsPnL.filter((h) => h.priced).length,
+    unpricedCount: holdingsPnL.filter((h) => !h.priced).length,
+    totalInvestedCents: holdingsPnL.reduce((sum, h) => sum + h.totalInvestedCents, 0),
+  };
+
   return (
-    <div className="mx-auto w-full max-w-7xl px-6 py-8">
-      <h1 className="mb-6 text-2xl font-semibold tracking-tight">Holdings</h1>
-      <HoldingsGrid initialHoldings={holdingsPnL} />
+    <div className="mx-auto w-full max-w-[1200px] px-6 md:px-8 py-10">
+      <div className="flex items-end justify-between pb-[18px] border-b border-divider">
+        <div className="grid gap-1">
+          <h1 className="text-[32px] font-semibold tracking-[-0.02em] leading-none">Holdings</h1>
+          <div className="text-[12px] font-mono text-meta">
+            {totals.lotCount} LOTS · {totals.pricedCount} PRICED · {totals.unpricedCount} UNPRICED · {formatCents(totals.totalInvestedCents)} INVESTED
+          </div>
+        </div>
+      </div>
+      <div className="mt-6">
+        <HoldingsGrid initialHoldings={holdingsPnL} />
+      </div>
     </div>
   );
 }

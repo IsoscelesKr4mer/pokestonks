@@ -82,6 +82,37 @@ export function computeHoldingPnL(holding: Holding, now: Date): HoldingPnL {
   };
 }
 
+export function emptyHoldingPnL(item: {
+  id: number;
+  name: string;
+  kind: 'sealed' | 'card';
+  imageUrl: string | null;
+  imageStoragePath: string | null;
+  setName: string | null;
+  productType: string | null;
+  lastMarketCents: number | null;
+  lastMarketAt: string | null;
+}): HoldingPnL {
+  return {
+    catalogItemId: item.id,
+    name: item.name,
+    kind: item.kind,
+    imageUrl: item.imageUrl,
+    imageStoragePath: item.imageStoragePath,
+    setName: item.setName,
+    productType: item.productType,
+    lastMarketCents: item.lastMarketCents,
+    lastMarketAt: item.lastMarketAt,
+    qtyHeld: 0,
+    totalInvestedCents: 0,
+    currentValueCents: null,
+    pnlCents: null,
+    pnlPct: null,
+    priced: false,
+    stale: false,
+  };
+}
+
 export function computePortfolioPnL(
   holdings: readonly Holding[],
   realizedRipLossCents: number,
