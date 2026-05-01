@@ -2,13 +2,16 @@
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { useRip, useDeleteRip, type RipDetailDto } from '@/lib/query/hooks/useRips';
 import { formatCents } from '@/lib/utils/format';
+import { PnLDisplay } from '@/components/holdings/PnLDisplay';
+import {
+  VaultDialogHeader,
+  FormSection,
+  DialogActions,
+} from '@/components/ui/dialog-form';
 
 export function RipDetailDialog({
   open,
@@ -45,24 +48,26 @@ export function RipDetailDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-xl">
-        <DialogHeader>
-          <DialogTitle>Rip details</DialogTitle>
-          <DialogDescription>Review the rip, then optionally undo it.</DialogDescription>
-        </DialogHeader>
+        <VaultDialogHeader
+          title="Rip details"
+          sub="Review the rip, then optionally undo it."
+        />
 
         {isLoading || !detail ? (
           <div className="h-32 animate-pulse rounded bg-muted" />
         ) : (
           <div className="space-y-4">
-            <div className="rounded-md border p-3 text-sm">
-              <div className="text-xs uppercase tracking-wide text-muted-foreground">Pack</div>
-              <div className="font-medium">{detail.sourceCatalogItem?.name ?? '(deleted)'}</div>
-              <div className="mt-1 text-xs text-muted-foreground">
-                Ripped {detail.rip.ripDate} · Pack cost {formatCents(detail.rip.packCostCents)}
+            <FormSection>
+              <div className="rounded-md border p-3 text-sm">
+                <div className="text-xs uppercase tracking-wide text-muted-foreground">Pack</div>
+                <div className="font-medium">{detail.sourceCatalogItem?.name ?? '(deleted)'}</div>
+                <div className="mt-1 text-xs text-muted-foreground">
+                  Ripped {detail.rip.ripDate} · Pack cost {formatCents(detail.rip.packCostCents)}
+                </div>
               </div>
-            </div>
+            </FormSection>
 
-            <div className="space-y-2">
+            <FormSection>
               <div className="text-xs uppercase tracking-wide text-muted-foreground">
                 Kept cards ({detail.keptPurchases.length})
               </div>
@@ -76,8 +81,9 @@ export function RipDetailDialog({
                   </div>
                 ))
               )}
-            </div>
+            </FormSection>
 
+            {/* PnLDisplay swap: realizedLossCents is stored unsigned; negate for signed PnL convention */}
             <div className="flex items-center justify-between rounded-md bg-muted/30 px-3 py-2 text-sm">
               <span className="text-xs uppercase tracking-wide text-muted-foreground">
                 Realized rip{' '}
@@ -87,16 +93,11 @@ export function RipDetailDialog({
                     ? 'gain'
                     : 'P&L'}
               </span>
-              <span
-                className={`tabular-nums font-semibold ${detail.rip.realizedLossCents > 0 ? 'text-destructive' : detail.rip.realizedLossCents < 0 ? 'text-emerald-600 dark:text-emerald-400' : ''}`}
-              >
-                {detail.rip.realizedLossCents > 0
-                  ? '-'
-                  : detail.rip.realizedLossCents < 0
-                    ? '+'
-                    : ''}
-                {formatCents(Math.abs(detail.rip.realizedLossCents))}
-              </span>
+              <PnLDisplay
+                pnlCents={-detail.rip.realizedLossCents}
+                pnlPct={null}
+                showPct={false}
+              />
             </div>
 
             {detail.rip.notes && (
@@ -108,7 +109,7 @@ export function RipDetailDialog({
           </div>
         )}
 
-        <div className="flex justify-end gap-2 border-t pt-4">
+        <DialogActions>
           <Button type="button" variant="ghost" onClick={() => onOpenChange(false)}>
             Close
           </Button>
@@ -120,7 +121,7 @@ export function RipDetailDialog({
           >
             {undoMutation.isPending ? 'Undoing...' : 'Undo rip'}
           </Button>
-        </div>
+        </DialogActions>
       </DialogContent>
     </Dialog>
   );
