@@ -44,58 +44,81 @@ The system has four moving parts:
 
 ## 4. Schema
 
-One SQL migration: `supabase/migrations/20260430000001_pricing_automation.sql`. Applied manually via Supabase SQL editor. Drizzle TS schema updated to match for query typing — no `drizzle-kit push`.
+`market_prices` and `refresh_runs` tables already exist in production (Drizzle schema in `lib/db/schema/marketPrices.ts` + `refreshRuns.ts`). Plan 7 extends — does not recreate — these.
+
+**Existing `market_prices` shape (do not change):**
+```
+id              bigserial pk
+catalog_item_id bigint     fk → catalog_items.id ON DELETE CASCADE
+snapshot_date   date
+condition       text       (NULL for sealed; condition string for cards)
+market_price_cents  integer
+low_price_cents     integer
+high_price_cents    integer
+source          text default 'tcgcsv'
+UNIQUE (catalog_item_id, snapshot_date, condition, source)
+INDEX market_prices_catalog_date_idx (catalog_item_id, snapshot_date)
+```
+
+Note: column names use `_price_cents` suffix (not `_cents`); `condition` is part of the UNIQUE; there is no `mid_price_cents` column. We keep the existing schema verbatim.
+
+**Catalog items use `bigserial` (number) ids, not UUID.** All API contracts and Drizzle types reflect this.
+
+### 4.1 Migration: `supabase/migrations/20260430000001_pricing_automation.sql`
+
+Applied manually via Supabase SQL editor. Drizzle TS schema updated to match — no `drizzle-kit push`.
 
 ```sql
--- 1. Time-series price snapshots
-CREATE TABLE market_prices (
-  id BIGSERIAL PRIMARY KEY,
-  catalog_item_id UUID NOT NULL REFERENCES catalog_items(id) ON DELETE CASCADE,
-  snapshot_date DATE NOT NULL,
-  market_cents INTEGER,
-  low_cents INTEGER,
-  mid_cents INTEGER,
-  high_cents INTEGER,
-  source TEXT NOT NULL DEFAULT 'tcgcsv',
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  CONSTRAINT market_prices_source_check CHECK (source IN ('tcgcsv', 'manual')),
-  CONSTRAINT market_prices_unique UNIQUE (catalog_item_id, snapshot_date, source)
-);
+-- 1. Add created_at to market_prices for telemetry / debugging
+ALTER TABLE market_prices
+  ADD COLUMN created_at TIMESTAMPTZ NOT NULL DEFAULT NOW();
 
-CREATE INDEX market_prices_item_date_idx
+-- 2. Add CHECK constraint on source (tcgcsv | manual)
+ALTER TABLE market_prices
+  DROP CONSTRAINT IF EXISTS market_prices_source_check;
+ALTER TABLE market_prices
+  ADD CONSTRAINT market_prices_source_check
+  CHECK (source IN ('tcgcsv', 'manual'));
+
+-- 3. Add a snapshot_date DESC variant of the existing index for chart range queries
+CREATE INDEX IF NOT EXISTS market_prices_catalog_date_desc_idx
   ON market_prices (catalog_item_id, snapshot_date DESC);
 
-ALTER TABLE market_prices ENABLE ROW LEVEL SECURITY;
-
-CREATE POLICY "market_prices read for authenticated"
-  ON market_prices FOR SELECT TO authenticated USING (true);
-
--- (No write policy for authenticated; service_role bypasses RLS.)
-
--- 2. Manual override columns on catalog_items
+-- 4. Manual override columns on catalog_items
 ALTER TABLE catalog_items
   ADD COLUMN manual_market_cents INTEGER,
   ADD COLUMN manual_market_at TIMESTAMPTZ;
 
--- 3. Backfill state on catalog_items
+-- 5. Backfill state on catalog_items
 ALTER TABLE catalog_items
   ADD COLUMN backfill_completed_at TIMESTAMPTZ;
 -- NULL = backfill not done; non-NULL = lazy/initial backfill complete.
 ```
 
-### 4.1 Drizzle schema
+### 4.2 Drizzle schema changes
 
-- New file `lib/db/schema/market-prices.ts` defining the table.
-- `lib/db/schema/catalog-items.ts` extended with three new column definitions.
-- Both wired into `lib/db/schema/index.ts`.
+- `lib/db/schema/marketPrices.ts` — add `createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull()`.
+- `lib/db/schema/catalogItems.ts` — add three columns: `manualMarketCents`, `manualMarketAt`, `backfillCompletedAt`.
+- `lib/db/schema/index.ts` already exports `marketPrices` — no change needed.
 
-### 4.2 Schema notes
+### 4.3 Schema notes
 
-- `snapshot_date` is DATE (not timestamp). One row per product per day per source. Idempotent re-runs via `INSERT ... ON CONFLICT (catalog_item_id, snapshot_date, source) DO UPDATE`.
-- `source` is a CHECK constraint, not a Postgres enum, so a future `'pricecharting'` source needs only a constraint replacement, not an `ALTER TYPE`.
-- `ON DELETE CASCADE` on the FK because catalog items occasionally get hard-deleted (e.g., the 168-row 'normal' delete from Plan 2 capstone).
+- `snapshot_date` is DATE. One row per product per day per (condition, source). Idempotent re-runs via `INSERT ... ON CONFLICT (catalog_item_id, snapshot_date, condition, source) DO UPDATE`.
+- For sealed products, `condition` is always NULL. For cards, the existing on-demand path uses NULL too (see `lib/services/prices.ts:70`). Plan 7 also writes NULL for `condition` because TCGCSV's bulk archive doesn't differentiate by condition for sealed; cards in the archive use a single price point per product.
+- `mid_price_cents` is NOT in the schema. The spec previously called for it; existing schema doesn't have it and adding it to a production table without a clear use case is YAGNI. If we ever want range bands, we can `ALTER TABLE` then.
+- `source` CHECK is added so a future `'pricecharting'` source needs a constraint replacement, not an `ALTER TYPE`.
 - `manual_market_cents` is on `catalog_items` globally (single-user app). Multi-user mode would need a per-user override table — out of scope.
-- `backfill_completed_at` is a nullable timestamp, not an enum. Two states: needs backfill (NULL) or done.
+- `backfill_completed_at` is a nullable timestamp.
+
+### 4.4 Existing `prices.ts` service (`lib/services/prices.ts`)
+
+The current service exports `getOrRefreshLatestPrice(item)` — does on-demand per-product refresh for sealed only. It uses a 24h freshness window and falls back to TCGCSV's per-group endpoint.
+
+Plan 7 supersedes this with the daily cron + lazy-backfill model. The existing service is **kept** for now (legacy callers), but **its callers are migrated** to read from `catalog_items.last_market_cents` (which the cron now keeps fresh) instead. Once no callers remain, the service can be deleted in a future plan.
+
+### 4.5 Existing `refresh_runs` table (`lib/db/schema/refreshRuns.ts`)
+
+`refresh_runs` already exists with columns `(id, started_at, finished_at, status, total_items, succeeded, failed, errors_json)`. Plan 7's daily cron writes a row per run for telemetry: `started_at = now()`, then on completion `UPDATE` with `finished_at`, `status='ok'|'partial'|'failed'`, totals, and any error payload. Refresh-all-held also writes a `refresh_runs` row.
 
 ## 5. Cron + jobs
 
@@ -200,13 +223,15 @@ Vercel Hobby = 10s function timeout; Pro = 60s. The archive zip strategy keeps t
 {
   range: '3M',
   points: [
-    { date: '2026-01-30', marketCents: 4250, lowCents: 4100, highCents: 4400, source: 'tcgcsv' },
+    { date: '2026-01-30', marketPriceCents: 4250, lowPriceCents: 4100, highPriceCents: 4400, source: 'tcgcsv' | 'manual' },
     ...
   ],
   backfillState: 'pending' | 'completed' | 'not-needed',
   manualOverride: { cents: 5000, setAt: '2026-04-15T...' } | null
 }
 ```
+
+(Column names match Drizzle's camelCase reads of the existing `_price_cents` columns.)
 
 `MAX` drops the date floor. `backfillState` derived from `catalog_items.backfill_completed_at` plus the count of returned points.
 
