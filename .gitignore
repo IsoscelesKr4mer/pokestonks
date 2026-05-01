@@ -73,3 +73,7 @@ playwright-report/
 # Drizzle introspection mirrors (regenerated via drizzle-kit pull when needed)
 drizzle/schema.ts
 drizzle/relations.ts
+
+# personal/scratch reference material kept outside source
+docs/references/
+.claude/
