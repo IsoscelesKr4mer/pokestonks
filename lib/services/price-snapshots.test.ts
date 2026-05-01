@@ -161,7 +161,7 @@ describe('snapshotForItems', () => {
       { id: 1, tcgplayerProductId: 101, manualMarketCents: null },
     ]);
     const result = await snapshotForItems([1]);
-    expect(liveModule.fetchAllPrices).toHaveBeenCalledWith([3, 50]);
+    expect(liveModule.fetchAllPrices).toHaveBeenCalledWith([3, 50], { setCodes: expect.any(Array) });
     expect(result.rowsWritten).toBe(1);
     expect(result.date).toMatch(/^\d{4}-\d{2}-\d{2}$/);
   });

@@ -97,6 +97,11 @@ export type SnapshotResult = PersistResult & { date: string };
 
 // Convenience: fetch today's prices via tcgcsv-live, look up catalog items, persist.
 // Used by the daily cron (all catalog ids) and refresh-held (held ids only).
+//
+// Performance note: TCGCSV has ~217 Pokemon groups in cat 3 alone. Vercel
+// outbound to TCGCSV runs ~1.5-2s per group, so fetching every group blows
+// past the 60s function timeout. We filter groups to those whose abbreviation
+// matches a set_code in our catalog — typically 5-30 groups per cron run.
 export async function snapshotForItems(catalogItemIds: number[]): Promise<SnapshotResult> {
   const todayUtc = new Date().toISOString().slice(0, 10);
 
@@ -104,12 +109,20 @@ export async function snapshotForItems(catalogItemIds: number[]): Promise<Snapsh
     return { rowsWritten: 0, itemsUpdated: 0, itemsSkippedManual: 0, date: todayUtc };
   }
 
-  const fetchResult = await fetchAllPrices(POKEMON_CATEGORY_IDS);
-
   const items = await db.query.catalogItems.findMany({
     where: inArray(schema.catalogItems.id, catalogItemIds),
-    columns: { id: true, tcgplayerProductId: true, manualMarketCents: true },
+    columns: { id: true, tcgplayerProductId: true, manualMarketCents: true, setCode: true },
   });
+
+  const setCodes = Array.from(
+    new Set(
+      items
+        .map((i) => i.setCode)
+        .filter((s): s is string => typeof s === 'string' && s.length > 0)
+    )
+  );
+
+  const fetchResult = await fetchAllPrices(POKEMON_CATEGORY_IDS, { setCodes });
 
   const result = await persistSnapshot(todayUtc, fetchResult.prices, items, {
     source: 'tcgcsv',

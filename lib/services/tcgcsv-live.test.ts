@@ -115,6 +115,23 @@ describe('fetchAllPrices', () => {
     expect(result.categoriesFailed).toEqual([]);
   });
 
+  it('filters groups by setCodes when provided (case-insensitive)', async () => {
+    const fetchMock = vi.fn(async (url: string) => {
+      if (url.includes('/3/Groups.csv')) return new Response(groupsCsvCat3, { status: 200 });
+      if (url.includes('/3/24688/ProductsAndPrices.csv')) return new Response(ppCsv24688, { status: 200 });
+      // 2374 (MCAP) should NOT be fetched because setCodes only includes 'me05'
+      if (url.includes('/3/2374/ProductsAndPrices.csv'))
+        throw new Error('should not have been fetched');
+      return new Response('not found', { status: 404 });
+    });
+    global.fetch = fetchMock as unknown as typeof fetch;
+
+    const result = await fetchAllPrices([3], { setCodes: ['ME05'] });
+    expect(result.groupsAttempted).toBe(1); // only ME05 (24688), MCAP filtered out
+    expect(result.prices.size).toBe(1);
+    expect(result.prices.get(101)).toBeDefined();
+  });
+
   it('tolerates a category-level Groups.csv fetch failure and reports it', async () => {
     const fetchMock = vi.fn(async (url: string) => {
       if (url.includes('/3/Groups.csv')) return new Response(groupsCsvCat3, { status: 200 });

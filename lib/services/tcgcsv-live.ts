@@ -76,7 +76,23 @@ export async function fetchProductsAndPrices(
   return parseArchiveCsv(csv);
 }
 
-export async function fetchAllPrices(categoryIds: number[]): Promise<FetchAllResult> {
+export type FetchAllOptions = {
+  // If provided, only groups whose abbreviation matches one of these
+  // (case-insensitive) are fetched. Drastically shrinks the work when
+  // the caller knows which sets it cares about (e.g. cron filters to
+  // sets in catalog_items). When empty/undefined, all groups are fetched.
+  setCodes?: string[];
+};
+
+export async function fetchAllPrices(
+  categoryIds: number[],
+  options: FetchAllOptions = {}
+): Promise<FetchAllResult> {
+  const setCodeFilter =
+    options.setCodes && options.setCodes.length > 0
+      ? new Set(options.setCodes.map((s) => s.toLowerCase()))
+      : null;
+
   // Step 1: fetch group lists per category. Use allSettled so a single
   // category failure does not abort the whole job — common when TCGCSV's
   // CloudFront edge serves transient 5xx for less-trafficked categories.
@@ -88,7 +104,13 @@ export async function fetchAllPrices(categoryIds: number[]): Promise<FetchAllRes
   for (let i = 0; i < groupListResults.length; i++) {
     const r = groupListResults[i];
     if (r.status === 'fulfilled') {
-      for (const g of r.value.groups) flat.push({ categoryId: g.categoryId, groupId: g.groupId });
+      for (const g of r.value.groups) {
+        if (setCodeFilter != null) {
+          const abbr = (g.abbreviation ?? '').toLowerCase();
+          if (!abbr || !setCodeFilter.has(abbr)) continue;
+        }
+        flat.push({ categoryId: g.categoryId, groupId: g.groupId });
+      }
     } else {
       categoriesFailed.push(categoryIds[i]);
       console.error(
