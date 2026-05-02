@@ -245,6 +245,7 @@ export async function POST(request: NextRequest) {
             gradingCompany: null,
             grade: null,
             certNumber: null,
+            unknownCost: sourcePurchase.unknownCost,
             source: null,
             location: null,
             notes: null,
