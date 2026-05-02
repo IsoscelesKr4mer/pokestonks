@@ -65,12 +65,16 @@ export async function POST(request: NextRequest) {
   }
 
   const isCard = item.kind === 'card';
-  const costCents =
-    v.costCents ??
-    resolveCostBasis({
-      msrpCents: item.msrpCents ?? null,
-      lastMarketCents: item.lastMarketCents ?? null,
-    });
+  const unknownCost = v.unknownCost === true;
+  // When unknownCost is true, force cost_cents = 0 regardless of any value sent.
+  // The flag, not the value, is the source of truth.
+  const costCents = unknownCost
+    ? 0
+    : v.costCents ??
+      resolveCostBasis({
+        msrpCents: item.msrpCents ?? null,
+        lastMarketCents: item.lastMarketCents ?? null,
+      });
 
   const today = new Date().toISOString().slice(0, 10);
 
@@ -80,6 +84,7 @@ export async function POST(request: NextRequest) {
     purchase_date: v.purchaseDate ?? today,
     quantity: v.quantity,
     cost_cents: costCents,
+    unknown_cost: unknownCost,
     source: v.source ?? null,
     location: v.location ?? null,
     notes: v.notes ?? null,
