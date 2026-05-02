@@ -26,11 +26,12 @@ describe('pokemontcg.searchCards', () => {
     expect(results[0].setCode).toBe('sv3pt5');
   });
 
-  it('matches the exact head when full XXX/YYY form is given (no leading-zero OR fallback)', async () => {
-    // Full form is precise — user typing "074/088" wants Pokémon TCG API
-    // cards numbered exactly "074" in 88-card sets, NOT cards numbered "74"
-    // in Gym-era 88-card sets. The set-printedTotal post-filter narrows
-    // further; here we only verify the upstream query.
+  it('strips leading zeros and ORs both forms for either partial or full queries', async () => {
+    // Pokémon TCG API stores `number` without leading zeros even when the
+    // physical card prints with them (e.g., Mega Evolution Ivysaur prints
+    // "002/132" but the API has it as `number: "2"`). The upstream query
+    // OR-widens so we don't miss the actual card. The leading-zero
+    // discrimination happens in search.ts via regulationMark.
     let lastUrl = '';
     server.use(
       http.get('https://api.pokemontcg.io/v2/cards', ({ request }) => {
@@ -40,14 +41,10 @@ describe('pokemontcg.searchCards', () => {
     );
     await searchCards({ cardNumberFull: '074/088' });
     const decoded = decodeURIComponent(lastUrl).replaceAll('+', ' ');
-    expect(decoded).toContain('number:074');
-    expect(decoded).not.toContain('OR number:74');
+    expect(decoded).toContain('(number:074 OR number:74)');
   });
 
-  it('still strips leading zeros for partial-number queries (XXX alone)', async () => {
-    // Partial form ("074" without the slash) is ambiguous — the user might
-    // mean a card whose printed number is "074" OR "74". Keep the OR widening
-    // so they find it either way.
+  it('partial-number queries also widen across leading-zero variants', async () => {
     let lastUrl = '';
     server.use(
       http.get('https://api.pokemontcg.io/v2/cards', ({ request }) => {

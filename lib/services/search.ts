@@ -246,18 +246,32 @@ export async function searchCardsWithImport(
     warnings.push({ source: 'pokemontcg', message: (e as Error).message });
   }
 
-  // When the user typed a full XXX/YYY card number, the upstream API only
-  // narrowed by XXX (its `number` field is the printed string without the
-  // slash). Filter post-fetch by set printed total so "002/132" returns
-  // only cards in 132-card sets, not every card numbered 002 in the entire
-  // catalog (~200+ rows otherwise).
+  // When the user typed a full XXX/YYY card number, narrow further. The
+  // upstream API only filtered by the head ("002" → also matches stripped
+  // "2"); we still need to filter by set total and printing-convention era.
   if (tokens.cardNumberFull) {
+    const head = tokens.cardNumberFull.split('/')[0];
     const slashRight = tokens.cardNumberFull.split('/')[1];
     const targetTotal = Number.parseInt(slashRight ?? '', 10);
+
+    // 1. Set printed total must match (drops cards in non-132 sets when user
+    //    typed "002/132").
     if (Number.isFinite(targetTotal)) {
       pokemonCards = pokemonCards.filter(
         (c) => c.setPrintedTotal === targetTotal
       );
+    }
+
+    // 2. Leading-zero discriminator. If the user typed the head with a
+    //    leading zero ("002/132"), they're using the modern (Sword & Shield
+    //    era 2020+ and later) printing convention. Keep only cards whose
+    //    sets carry a `regulationMark`, which is essentially perfectly
+    //    correlated with leading-zero printing. This is what excludes Gym
+    //    Heroes Blaine's Charizard (`gym1-2`, no regulationMark, prints as
+    //    "2/132") while keeping Mega Evolution Ivysaur (`me1-2`,
+    //    regulationMark "I", prints as "002/132").
+    if (head.startsWith('0')) {
+      pokemonCards = pokemonCards.filter((c) => c.regulationMark != null);
     }
   }
 

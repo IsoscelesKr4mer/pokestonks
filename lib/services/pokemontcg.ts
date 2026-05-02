@@ -9,6 +9,11 @@ export type PokemonTcgCard = {
   setName: string | null;
   setCode: string | null;    // 'sv3pt5'
   setPrintedTotal: number | null; // 132 for a 132-card set; null when API doesn't say
+  // Sword & Shield era (2020+) and later cards carry a regulation mark like
+  // "D"/"E"/"F"/"G"/"H"/"I". Pre-2020 sets don't. We use its presence as a
+  // proxy for "uses modern leading-zero printing convention" so a search for
+  // "002/132" doesn't pick up Gym-era cards that print as "2/132".
+  regulationMark: string | null;
   releaseDate: string | null;// 'YYYY-MM-DD'
   imageUrl: string | null;   // images.large
   // Map from tcgplayer variant key ('normal', 'holofoil', 'reverseHolofoil', etc.)
@@ -21,6 +26,7 @@ type RawCard = {
   name: string;
   rarity?: string;
   number: string;
+  regulationMark?: string;
   set: {
     id: string;
     name: string;
@@ -54,6 +60,7 @@ function mapRawCard(c: RawCard): PokemonTcgCard {
         : typeof c.set.total === 'number'
         ? c.set.total
         : null,
+    regulationMark: typeof c.regulationMark === 'string' ? c.regulationMark : null,
     releaseDate: c.set.releaseDate ? c.set.releaseDate.replaceAll('/', '-') : null,
     imageUrl: c.images.large ?? c.images.small ?? null,
     pricesByVariant,
@@ -79,19 +86,17 @@ export async function searchCards(args: {
   for (const t of args.text ?? []) {
     parts.push(`(name:*${t}* OR set.name:*${t}*)`);
   }
-  // Pokémon TCG API stores `number` as the printed string. Some sets print
-  // a card number with leading zeros (modern: "002") while others don't
-  // (Gym-era: "2"). When the user typed only a partial number ("2" or "002"),
-  // we widen with the OR so they find their card regardless of which form
-  // the printed number uses. When the user typed the FULL XXX/YYY form,
-  // they're being precise and almost always referring to a specific
-  // modern-set printing — match the typed form exactly so a search for
-  // "002/132" doesn't pick up Gym Heroes "2/132" cards.
-  if (args.cardNumberFull) {
-    const head = args.cardNumberFull.split('/')[0];
-    parts.push(`number:${head}`);
-  } else if (args.cardNumberPartial) {
-    const numberFromQuery = args.cardNumberPartial;
+  // Pokémon TCG API stores `number` WITHOUT leading zeros even when the card
+  // is printed with them. Mega Evolution Ivysaur prints as "002/132" but the
+  // API stores it as `number: "2"`. So for either partial ("002" or "2") or
+  // full ("002/132" or "2/132") forms, query both stripped and unstripped
+  // variants. The leading-zero discrimination — keeping modern Mega Evolution
+  // Ivysaur but excluding Gym-era Blaine's Charizard for a "002/132" query —
+  // happens later in search.ts via the `regulationMark` post-filter.
+  const numberFromQuery = args.cardNumberFull
+    ? args.cardNumberFull.split('/')[0]
+    : args.cardNumberPartial ?? null;
+  if (numberFromQuery) {
     const stripped = numberFromQuery.replace(/^0+/, '') || '0';
     if (stripped !== numberFromQuery) {
       parts.push(`(number:${numberFromQuery} OR number:${stripped})`);

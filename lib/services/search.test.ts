@@ -197,11 +197,16 @@ describe('searchCardsWithImport', () => {
     expect(warnings.find((w) => w.source === 'pokemontcg')).toBeDefined();
   });
 
-  it('full XXX/YYY card-number narrows by set printedTotal so foreign-set 002 cards are excluded', async () => {
-    // Pokémon TCG API search for `number:002` returns matches across many
-    // sets when the user doesn't narrow by set. We simulate that here:
-    // two cards numbered 002 in a 132-card set, plus three matching the
-    // same number from unrelated sets the user did NOT mean.
+  it('full XXX/YYY with leading zero narrows to modern-era cards only (regulationMark filter)', async () => {
+    // Reproduces the real API shape: Pokémon TCG API returns 4 cards for
+    // "number:2 set.printedTotal:132" — three legacy (Blastoise dp3,
+    // Brock's Rhydon gym1, Blaine's Charizard gym2; all stored as
+    // `number: "2"` with NO regulationMark, printed as "2/132") and one
+    // modern (Mega Evolution Ivysaur me1-2, also `number: "2"` but with
+    // regulationMark "I", printed as "002/132").
+    //
+    // When the user types "002/132" (leading zero), they mean the modern
+    // printing convention. Filter to regulationMark != null.
     server.use(
       http.get('https://api.pokemontcg.io/v2/cards', ({ request }) => {
         const page = new URL(request.url).searchParams.get('page');
@@ -209,59 +214,95 @@ describe('searchCardsWithImport', () => {
         return HttpResponse.json({
           data: [
             {
-              id: 'asc-002',
-              name: 'Bulbasaur',
+              id: 'me1-2',
+              name: 'Ivysaur',
               rarity: 'Common',
-              number: '002',
-              set: { id: 'asc', name: 'Ascended Heroes', releaseDate: '2026/01/30', printedTotal: 132 },
-              images: { large: 'https://example/asc/002.png' },
+              number: '2',
+              regulationMark: 'I',
+              set: { id: 'me1', name: 'Mega Evolution', releaseDate: '2025/09/26', printedTotal: 132 },
+              images: { large: 'https://example/me1/2.png' },
             },
             {
-              id: 'asc-002b',
-              name: 'Bulbasaur',
-              rarity: 'Holo Rare',
-              number: '002',
-              set: { id: 'asc', name: 'Ascended Heroes', releaseDate: '2026/01/30', printedTotal: 132 },
-              images: { large: 'https://example/asc/002b.png' },
+              id: 'gym1-2',
+              name: "Brock's Rhydon",
+              rarity: 'Rare Holo',
+              number: '2',
+              set: { id: 'gym1', name: 'Gym Heroes', releaseDate: '2000/08/14', printedTotal: 132 },
+              images: { large: 'https://example/gym1/2.png' },
             },
             {
-              id: 'bkp-002',
+              id: 'gym2-2',
+              name: "Blaine's Charizard",
+              rarity: 'Rare Holo',
+              number: '2',
+              set: { id: 'gym2', name: 'Gym Challenge', releaseDate: '2000/10/16', printedTotal: 132 },
+              images: { large: 'https://example/gym2/2.png' },
+            },
+            {
+              id: 'dp3-2',
+              name: 'Blastoise',
+              rarity: 'Rare Holo',
+              number: '2',
+              set: { id: 'dp3', name: 'Secret Wonders', releaseDate: '2007/11/01', printedTotal: 132 },
+              images: { large: 'https://example/dp3/2.png' },
+            },
+            {
+              id: 'bkp-2',
               name: 'Pikachu BK',
               rarity: 'Promo',
-              number: '002',
+              number: '2',
               set: { id: 'bkp', name: 'Burger King Promos', releaseDate: '1999/06/01', printedTotal: 30 },
-              images: { large: 'https://example/bkp/002.png' },
-            },
-            {
-              id: 'pwcp-002',
-              name: 'Snorlax',
-              rarity: 'Promo',
-              number: '002',
-              set: { id: 'pwcp', name: 'Pikachu World Promos', releaseDate: '2010/07/01', printedTotal: 12 },
-              images: { large: 'https://example/pwcp/002.png' },
-            },
-            {
-              id: 'sm5-002',
-              name: 'Pidgey',
-              rarity: 'Common',
-              number: '002',
-              set: { id: 'sm5', name: 'Ultra Prism', releaseDate: '2018/02/02', printedTotal: 173 },
-              images: { large: 'https://example/sm5/002.png' },
+              images: { large: 'https://example/bkp/2.png' },
             },
           ],
         });
       })
     );
     const { results } = await searchCardsWithImport('002/132', 20);
-    // Only the two Ascended Heroes cards (both 132-total set) should remain.
-    // Burger King (30), Pikachu World (12), Ultra Prism (173) are filtered out.
+    // Only Mega Evolution Ivysaur survives:
+    //   - Burger King is filtered by setPrintedTotal (30, not 132).
+    //   - Gym Heroes / Gym Challenge / Secret Wonders are filtered by
+    //     missing regulationMark (legacy printing, prints as "2/132").
+    //   - Mega Evolution carries regulationMark "I" → modern printing,
+    //     prints as "002/132".
     const setCodes = new Set(results.map((r) => r.setCode));
-    expect(setCodes).toEqual(new Set(['asc']));
-    // Two distinct card NAMES (one was duplicated as a different variant) —
-    // pre-filter the raw cardCount would have been 5; after filter it's 2.
-    expect(results.length).toBeGreaterThanOrEqual(2);
-    expect(results.every((r) => r.cardNumber === '002')).toBe(true);
-    expect(results.every((r) => r.setCode === 'asc')).toBe(true);
+    expect(setCodes).toEqual(new Set(['me1']));
+    expect(results.every((r) => r.setCode === 'me1')).toBe(true);
+  });
+
+  it('full X/YYY without leading zero returns all matching cards across eras', async () => {
+    // No leading zero in the head ("2/132") = no era filter. Both legacy
+    // and modern cards survive the printedTotal filter.
+    server.use(
+      http.get('https://api.pokemontcg.io/v2/cards', ({ request }) => {
+        const page = new URL(request.url).searchParams.get('page');
+        if (page && page !== '1') return HttpResponse.json({ data: [] });
+        return HttpResponse.json({
+          data: [
+            {
+              id: 'me1-2',
+              name: 'Ivysaur',
+              rarity: 'Common',
+              number: '2',
+              regulationMark: 'I',
+              set: { id: 'me1', name: 'Mega Evolution', releaseDate: '2025/09/26', printedTotal: 132 },
+              images: { large: 'https://example/me1/2.png' },
+            },
+            {
+              id: 'gym2-2',
+              name: "Blaine's Charizard",
+              rarity: 'Rare Holo',
+              number: '2',
+              set: { id: 'gym2', name: 'Gym Challenge', releaseDate: '2000/10/16', printedTotal: 132 },
+              images: { large: 'https://example/gym2/2.png' },
+            },
+          ],
+        });
+      })
+    );
+    const { results } = await searchCardsWithImport('2/132', 20);
+    const setCodes = new Set(results.map((r) => r.setCode));
+    expect(setCodes).toEqual(new Set(['me1', 'gym2']));
   });
 });
 
