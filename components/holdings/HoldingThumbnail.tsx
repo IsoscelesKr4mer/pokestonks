@@ -43,6 +43,14 @@ export function HoldingThumbnail({
         src={getImageUrl({ imageStoragePath, imageUrl })}
         alt={name}
         loading="lazy"
+        // TCGCSV references CDN URLs for products that were never uploaded
+        // (CloudFront 403s on missing S3 keys). Swap to the placeholder so
+        // the grid shows a clean chamber instead of the broken-image icon.
+        onError={(e) => {
+          const img = e.currentTarget;
+          if (img.src.endsWith('/placeholder.svg')) return;
+          img.src = '/placeholder.svg';
+        }}
         className="size-full object-contain"
       />
       {exhibitTag && (

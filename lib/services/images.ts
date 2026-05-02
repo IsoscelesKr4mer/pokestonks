@@ -39,7 +39,19 @@ async function doDownload(catalogItemId: number): Promise<void> {
     } finally {
       clearTimeout(timer);
     }
-    if (!res.ok) return;
+    if (!res.ok) {
+      // TCGCSV references CDN URLs for products that were never uploaded.
+      // Clear imageUrl on 4xx so future searches stop serving the dead URL
+      // (frontend renders /placeholder.svg when imageUrl is null). Leave 5xx
+      // alone — those are transient and worth retrying next time.
+      if (res.status >= 400 && res.status < 500) {
+        await db
+          .update(schema.catalogItems)
+          .set({ imageUrl: null })
+          .where(eq(schema.catalogItems.id, catalogItemId));
+      }
+      return;
+    }
 
     const upstream = Buffer.from(await res.arrayBuffer());
     const webp = await sharp(upstream).resize({ width: 800, withoutEnlargement: true }).webp({ quality: 85 }).toBuffer();

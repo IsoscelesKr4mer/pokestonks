@@ -1,6 +1,6 @@
 'use client';
-import { useEffect, useMemo, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { Search } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { SearchResultCard, type SearchResultItem } from './SearchResultCard';
@@ -112,6 +112,7 @@ export function SearchBox() {
     staleTime: 5 * 60 * 1000,
   });
 
+  const queryClient = useQueryClient();
   const { data: holdingsData } = useHoldings();
 
   // Build a map of catalogItemId -> total quantity held
@@ -151,20 +152,31 @@ export function SearchBox() {
   const staleCount = filteredItems.filter((r) => r.stale).length;
   const ownedCount = filteredItems.filter((r) => (ownedQtyByCatalogId.get(r.id) ?? 0) > 0).length;
 
-  // Image pre-cache for items without a local storage path
+  // Image pre-cache for items without a local storage path. Once the cache
+  // call resolves, invalidate ['search'] so the next render picks up the
+  // freshly-stored Supabase URLs (and any imageUrl values nulled out by
+  // upstream 4xx during downloadIfMissing). Without invalidation, the RQ
+  // staleTime keeps the first-render upstream URLs in place for 5 min.
+  // Track posted IDs in a ref so the post-invalidate refetch (which yields
+  // a new `visible` array reference) doesn't re-fire the same request, and
+  // so items that 4xx'd upstream don't loop forever.
+  const cachedIdsRef = useRef<Set<number>>(new Set());
   useEffect(() => {
     if (visible.length === 0) return;
     const ids = visible
-      .filter((r) => !r.imageStoragePath)
+      .filter((r) => !r.imageStoragePath && !cachedIdsRef.current.has(r.id))
       .map((r) => r.id)
       .slice(0, 24);
     if (ids.length === 0) return;
+    for (const id of ids) cachedIdsRef.current.add(id);
     fetch('/api/cache-images', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ ids }),
-    }).catch(() => {});
-  }, [visible]);
+    })
+      .then(() => queryClient.invalidateQueries({ queryKey: ['search'] }))
+      .catch(() => {});
+  }, [visible, queryClient]);
 
   return (
     <div className="space-y-4">
