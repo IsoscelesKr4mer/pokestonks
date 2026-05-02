@@ -21,6 +21,7 @@ export type RawPurchaseRow = {
   catalog_item: RawCatalogItem;
   quantity: number;
   cost_cents: number;
+  unknown_cost: boolean;
   deleted_at: string | null;
   created_at: string;
 };
@@ -52,6 +53,8 @@ export type Holding = {
   lastMarketCents: number | null;
   lastMarketAt: string | null;
   qtyHeld: number;
+  qtyHeldTracked: number;
+  qtyHeldCollection: number;
   totalInvestedCents: number;
 };
 
@@ -101,10 +104,17 @@ export function aggregateHoldings(
     const remaining = p.quantity - consumed;
     if (remaining <= 0) continue;
 
+    const isCollection = p.unknown_cost === true;
+    const trackedDelta = isCollection ? 0 : remaining;
+    const collectionDelta = isCollection ? remaining : 0;
+    const investedDelta = isCollection ? 0 : p.cost_cents * remaining;
+
     const existing = byCatalogItem.get(p.catalog_item_id);
     if (existing) {
       existing.holding.qtyHeld += remaining;
-      existing.holding.totalInvestedCents += p.cost_cents * remaining;
+      existing.holding.qtyHeldTracked += trackedDelta;
+      existing.holding.qtyHeldCollection += collectionDelta;
+      existing.holding.totalInvestedCents += investedDelta;
       if (p.created_at > existing.latestCreatedAt) {
         existing.latestCreatedAt = p.created_at;
       }
@@ -121,7 +131,9 @@ export function aggregateHoldings(
           lastMarketCents: p.catalog_item.last_market_cents,
           lastMarketAt: p.catalog_item.last_market_at,
           qtyHeld: remaining,
-          totalInvestedCents: p.cost_cents * remaining,
+          qtyHeldTracked: trackedDelta,
+          qtyHeldCollection: collectionDelta,
+          totalInvestedCents: investedDelta,
         },
         latestCreatedAt: p.created_at,
       });

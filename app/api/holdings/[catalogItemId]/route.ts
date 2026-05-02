@@ -140,6 +140,7 @@ export async function GET(
     catalog_item_id: l.catalogItemId,
     quantity: l.quantity,
     cost_cents: l.costCents,
+    unknown_cost: l.unknownCost,
     deleted_at: l.deletedAt ? l.deletedAt.toISOString() : null,
     created_at: l.createdAt.toISOString(),
     catalog_item: {

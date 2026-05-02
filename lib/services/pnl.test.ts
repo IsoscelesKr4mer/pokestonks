@@ -7,7 +7,7 @@ const RECENT = '2026-04-27T00:00:00Z';   // 1 day ago, fresh
 const STALE_AT = '2026-04-15T00:00:00Z'; // 13 days ago, stale (> 7d)
 
 function makeHolding(overrides: Partial<Holding> = {}): Holding {
-  return {
+  const base: Holding = {
     catalogItemId: 1,
     kind: 'sealed',
     name: 'ETB',
@@ -18,9 +18,17 @@ function makeHolding(overrides: Partial<Holding> = {}): Holding {
     lastMarketCents: 6000,
     lastMarketAt: RECENT,
     qtyHeld: 1,
+    qtyHeldTracked: 1,
+    qtyHeldCollection: 0,
     totalInvestedCents: 5000,
     ...overrides,
   };
+  // Keep derived fields in sync when caller overrides qtyHeld without specifying splits.
+  if (overrides.qtyHeld !== undefined && overrides.qtyHeldTracked === undefined) {
+    base.qtyHeldTracked = overrides.qtyHeld;
+    base.qtyHeldCollection = 0;
+  }
+  return base;
 }
 
 describe('computeHoldingPnL', () => {

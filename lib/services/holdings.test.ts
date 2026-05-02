@@ -11,6 +11,7 @@ function makePurchase(overrides: Partial<RawPurchaseRow>): RawPurchaseRow {
     catalog_item: sealed,
     quantity: 1,
     cost_cents: 5000,
+    unknown_cost: false,
     deleted_at: null,
     created_at: '2026-04-25T00:00:00Z',
     ...overrides,
@@ -165,5 +166,40 @@ describe('aggregateHoldings', () => {
     const purchases = [makePurchase({ id: 10, quantity: 2 })];
     const sales: RawSaleRow[] = [{ id: 1, purchase_id: 10, quantity: 2 }];
     expect(aggregateHoldings(purchases, [], [], sales)).toEqual([]);
+  });
+
+  it('splits qtyHeld into tracked vs. collection by unknown_cost flag', () => {
+    const purchases = [
+      makePurchase({ id: 1, catalog_item_id: 1, quantity: 2, cost_cents: 5000, unknown_cost: false }),
+      makePurchase({ id: 2, catalog_item_id: 1, quantity: 3, cost_cents: 0, unknown_cost: true }),
+    ];
+    const result = aggregateHoldings(purchases, [], [], []);
+    expect(result).toHaveLength(1);
+    expect(result[0].qtyHeld).toBe(5);
+    expect(result[0].qtyHeldTracked).toBe(2);
+    expect(result[0].qtyHeldCollection).toBe(3);
+    expect(result[0].totalInvestedCents).toBe(10000);
+  });
+
+  it('all-collection holding has qtyHeldTracked=0 and totalInvestedCents=0', () => {
+    const purchases = [
+      makePurchase({ id: 1, catalog_item_id: 1, quantity: 4, cost_cents: 0, unknown_cost: true }),
+    ];
+    const result = aggregateHoldings(purchases, [], [], []);
+    expect(result[0].qtyHeldTracked).toBe(0);
+    expect(result[0].qtyHeldCollection).toBe(4);
+    expect(result[0].totalInvestedCents).toBe(0);
+  });
+
+  it('does not accumulate cost basis for unknown_cost rows even if cost_cents > 0', () => {
+    // Defensive guard: storage convention is unknown_cost => cost_cents=0,
+    // but the flag must win if the value is bad.
+    const purchases = [
+      makePurchase({ id: 1, catalog_item_id: 1, quantity: 1, cost_cents: 9999, unknown_cost: true }),
+    ];
+    const result = aggregateHoldings(purchases, [], [], []);
+    expect(result[0].totalInvestedCents).toBe(0);
+    expect(result[0].qtyHeldTracked).toBe(0);
+    expect(result[0].qtyHeldCollection).toBe(1);
   });
 });
