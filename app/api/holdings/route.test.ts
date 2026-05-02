@@ -40,6 +40,7 @@ type Purchase = {
   catalog_item_id: number;
   quantity: number;
   cost_cents: number;
+  unknown_cost: boolean;
   deleted_at: string | null;
   created_at: string;
   catalog_item: {
@@ -127,6 +128,7 @@ describe('GET /api/holdings', () => {
         catalog_item_id: 10,
         quantity: 2,
         cost_cents: 5000,
+        unknown_cost: false,
         deleted_at: null,
         created_at: '2026-04-01T00:00:00Z',
         catalog_item: {
@@ -166,6 +168,7 @@ describe('GET /api/holdings', () => {
         catalog_item_id: 10,
         quantity: 1,
         cost_cents: 4000,
+        unknown_cost: false,
         deleted_at: null,
         created_at: '2026-04-01T00:00:00Z',
         catalog_item: {
@@ -211,6 +214,7 @@ describe('GET /api/holdings', () => {
         catalog_item_id: 20,
         quantity: 1,
         cost_cents: 3000,
+        unknown_cost: false,
         deleted_at: null,
         created_at: '2026-04-01T00:00:00Z',
         catalog_item: {
@@ -251,6 +255,7 @@ describe('GET /api/holdings', () => {
         catalog_item_id: 30,
         quantity: 1,
         cost_cents: 3000,
+        unknown_cost: false,
         deleted_at: null,
         created_at: '2026-04-01T00:00:00Z',
         catalog_item: {
