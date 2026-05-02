@@ -157,6 +157,13 @@ function normalizeTcgcsvSubType(subType: string): string {
   return s.replace(/\s+/g, '_');
 }
 
+function stripLeadingZeros(s: string): string {
+  // Purely numeric: strip leading zeros so "057" === "57". Alphanumeric
+  // (e.g. "SWSH001"): leave alone, the prefix carries meaning.
+  if (/^\d+$/.test(s)) return String(parseInt(s, 10));
+  return s;
+}
+
 // Look up a card on TCGCSV by its Pokémon TCG API set name + card number.
 // Returns prices keyed by our internal variant strings, in cents.
 async function findTcgcsvCardPrices(args: {
@@ -178,9 +185,19 @@ async function findTcgcsvCardPrices(args: {
   } catch {
     return {};
   }
+  // Pokémon TCG API stores card numbers unpadded ("55", "57"); TCGCSV
+  // stores them zero-padded to the set width ("055/217", "057/217").
+  // Naive startsWith() only matched when the digit count happened to line
+  // up — i.e. cards numbered >=100 in a 3-digit-padded set worked, but
+  // 1-99 silently missed. Strip leading zeros from both sides before
+  // comparing, with an alphanumeric fallback for promo-style numbers
+  // ("TG01", "SWSH001") where stripping might lose information.
+  const target = stripLeadingZeros(args.cardNumber);
   const product = products.find((p) => {
     const num = (p.extendedData ?? []).find((d) => d.name === 'Number')?.value;
-    return num?.startsWith(`${args.cardNumber}/`);
+    if (!num) return false;
+    const head = num.split('/')[0];
+    return stripLeadingZeros(head) === target;
   });
   if (!product) return {};
   let priceRows: TcgcsvPriceRow[];
