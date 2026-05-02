@@ -196,6 +196,73 @@ describe('searchCardsWithImport', () => {
     expect(results).toEqual([]);
     expect(warnings.find((w) => w.source === 'pokemontcg')).toBeDefined();
   });
+
+  it('full XXX/YYY card-number narrows by set printedTotal so foreign-set 002 cards are excluded', async () => {
+    // Pokémon TCG API search for `number:002` returns matches across many
+    // sets when the user doesn't narrow by set. We simulate that here:
+    // two cards numbered 002 in a 132-card set, plus three matching the
+    // same number from unrelated sets the user did NOT mean.
+    server.use(
+      http.get('https://api.pokemontcg.io/v2/cards', ({ request }) => {
+        const page = new URL(request.url).searchParams.get('page');
+        if (page && page !== '1') return HttpResponse.json({ data: [] });
+        return HttpResponse.json({
+          data: [
+            {
+              id: 'asc-002',
+              name: 'Bulbasaur',
+              rarity: 'Common',
+              number: '002',
+              set: { id: 'asc', name: 'Ascended Heroes', releaseDate: '2026/01/30', printedTotal: 132 },
+              images: { large: 'https://example/asc/002.png' },
+            },
+            {
+              id: 'asc-002b',
+              name: 'Bulbasaur',
+              rarity: 'Holo Rare',
+              number: '002',
+              set: { id: 'asc', name: 'Ascended Heroes', releaseDate: '2026/01/30', printedTotal: 132 },
+              images: { large: 'https://example/asc/002b.png' },
+            },
+            {
+              id: 'bkp-002',
+              name: 'Pikachu BK',
+              rarity: 'Promo',
+              number: '002',
+              set: { id: 'bkp', name: 'Burger King Promos', releaseDate: '1999/06/01', printedTotal: 30 },
+              images: { large: 'https://example/bkp/002.png' },
+            },
+            {
+              id: 'pwcp-002',
+              name: 'Snorlax',
+              rarity: 'Promo',
+              number: '002',
+              set: { id: 'pwcp', name: 'Pikachu World Promos', releaseDate: '2010/07/01', printedTotal: 12 },
+              images: { large: 'https://example/pwcp/002.png' },
+            },
+            {
+              id: 'sm5-002',
+              name: 'Pidgey',
+              rarity: 'Common',
+              number: '002',
+              set: { id: 'sm5', name: 'Ultra Prism', releaseDate: '2018/02/02', printedTotal: 173 },
+              images: { large: 'https://example/sm5/002.png' },
+            },
+          ],
+        });
+      })
+    );
+    const { results } = await searchCardsWithImport('002/132', 20);
+    // Only the two Ascended Heroes cards (both 132-total set) should remain.
+    // Burger King (30), Pikachu World (12), Ultra Prism (173) are filtered out.
+    const setCodes = new Set(results.map((r) => r.setCode));
+    expect(setCodes).toEqual(new Set(['asc']));
+    // Two distinct card NAMES (one was duplicated as a different variant) —
+    // pre-filter the raw cardCount would have been 5; after filter it's 2.
+    expect(results.length).toBeGreaterThanOrEqual(2);
+    expect(results.every((r) => r.cardNumber === '002')).toBe(true);
+    expect(results.every((r) => r.setCode === 'asc')).toBe(true);
+  });
 });
 
 import { searchAll } from './search';

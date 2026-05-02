@@ -246,6 +246,21 @@ export async function searchCardsWithImport(
     warnings.push({ source: 'pokemontcg', message: (e as Error).message });
   }
 
+  // When the user typed a full XXX/YYY card number, the upstream API only
+  // narrowed by XXX (its `number` field is the printed string without the
+  // slash). Filter post-fetch by set printed total so "002/132" returns
+  // only cards in 132-card sets, not every card numbered 002 in the entire
+  // catalog (~200+ rows otherwise).
+  if (tokens.cardNumberFull) {
+    const slashRight = tokens.cardNumberFull.split('/')[1];
+    const targetTotal = Number.parseInt(slashRight ?? '', 10);
+    if (Number.isFinite(targetTotal)) {
+      pokemonCards = pokemonCards.filter(
+        (c) => c.setPrintedTotal === targetTotal
+      );
+    }
+  }
+
   // Merge prices from two sources (TCGCSV preferred for freshness, Pokémon
   // TCG API embedded as fallback). TCGCSV is matched by set name (case-
   // insensitive substring + prefix-stripping) since group abbreviations

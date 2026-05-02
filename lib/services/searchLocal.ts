@@ -65,14 +65,13 @@ function buildConditions(
   }
 
   if (tokens.cardNumberFull) {
-    const head = tokens.cardNumberFull.split('/')[0];
-    clauses.push(
-      orRequired(
-        eq(schema.catalogItems.cardNumber, tokens.cardNumberFull),
-        ilike(schema.catalogItems.cardNumber, `${head}/%`)
-      )
-    );
+    // Full form like "002/132" — user is being precise. Match only that exact
+    // card_number across all sets. (Earlier code also matched `${head}/%` here
+    // which produced 200+ hits for any card numbered 002 across the catalog.)
+    clauses.push(eq(schema.catalogItems.cardNumber, tokens.cardNumberFull));
   } else if (tokens.cardNumberPartial) {
+    // Partial form like "002" — user gave only a position; widen to any set
+    // that has a card numbered 002.
     const n = tokens.cardNumberPartial;
     clauses.push(
       orRequired(

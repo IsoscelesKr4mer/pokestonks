@@ -8,6 +8,7 @@ export type PokemonTcgCard = {
   number: string;            // '199'
   setName: string | null;
   setCode: string | null;    // 'sv3pt5'
+  setPrintedTotal: number | null; // 132 for a 132-card set; null when API doesn't say
   releaseDate: string | null;// 'YYYY-MM-DD'
   imageUrl: string | null;   // images.large
   // Map from tcgplayer variant key ('normal', 'holofoil', 'reverseHolofoil', etc.)
@@ -20,7 +21,13 @@ type RawCard = {
   name: string;
   rarity?: string;
   number: string;
-  set: { id: string; name: string; releaseDate?: string };
+  set: {
+    id: string;
+    name: string;
+    releaseDate?: string;
+    printedTotal?: number;
+    total?: number;
+  };
   images: { small?: string; large?: string };
   tcgplayer?: {
     prices?: Record<string, { market?: number | null } | null>;
@@ -41,6 +48,12 @@ function mapRawCard(c: RawCard): PokemonTcgCard {
     number: c.number,
     setName: c.set.name ?? null,
     setCode: c.set.id ?? null,
+    setPrintedTotal:
+      typeof c.set.printedTotal === 'number'
+        ? c.set.printedTotal
+        : typeof c.set.total === 'number'
+        ? c.set.total
+        : null,
     releaseDate: c.set.releaseDate ? c.set.releaseDate.replaceAll('/', '-') : null,
     imageUrl: c.images.large ?? c.images.small ?? null,
     pricesByVariant,
