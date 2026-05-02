@@ -4,10 +4,12 @@ import { useDashboardTotals } from '@/lib/query/hooks/useDashboardTotals';
 import { HoldingThumbnail } from '@/components/holdings/HoldingThumbnail';
 import { formatCents, formatPct } from '@/lib/utils/format';
 import { DeltaPill } from '@/components/prices/DeltaPill';
+import { usePrivacyMode } from '@/lib/utils/privacy';
 import { ManualPriceBadge } from '@/components/prices/ManualPriceBadge';
 
 export function PerformersStrip() {
   const { data } = useDashboardTotals();
+  const { enabled: privacy } = usePrivacyMode();
   if (!data) return null;
   const top = (data.bestPerformers ?? []).slice(0, 4);
   if (top.length === 0) return null;
@@ -42,7 +44,7 @@ export function PerformersStrip() {
                 {h.lastMarketCents !== null ? formatCents(h.lastMarketCents) : '—'}
                 {h.manualMarketCents != null && <ManualPriceBadge setAt={null} />}
               </span>
-              {h.pnlPct !== null && (
+              {h.pnlPct !== null && !privacy && (
                 <span className={h.pnlPct >= 0 ? 'text-positive' : 'text-negative'}>
                   {formatPct(h.pnlPct)}
                 </span>

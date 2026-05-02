@@ -9,6 +9,7 @@ import { KebabMenu, KebabMenuItem } from '@/components/ui/kebab-menu';
 import { SellDialog } from '@/components/sales/SellDialog';
 import { DeltaPill } from '@/components/prices/DeltaPill';
 import { ManualPriceBadge } from '@/components/prices/ManualPriceBadge';
+import { usePrivacyMode } from '@/lib/utils/privacy';
 
 type SortKey = 'marketPrice' | 'value' | 'pnl' | 'pnlPct' | 'cost' | 'qty' | 'name' | 'recent';
 
@@ -62,6 +63,7 @@ function sortHoldings(holdings: readonly HoldingPnL[], key: SortKey): HoldingPnL
 
 export function HoldingsGrid({ initialHoldings }: { initialHoldings: HoldingPnL[] }) {
   const { data } = useHoldings();
+  const { enabled: privacy } = usePrivacyMode();
   const holdings = data?.holdings ?? initialHoldings;
   const [sortKey, setSortKey] = useState<SortKey>('marketPrice');
   const [sellTarget, setSellTarget] = useState<HoldingPnL | null>(null);
@@ -118,7 +120,7 @@ export function HoldingsGrid({ initialHoldings }: { initialHoldings: HoldingPnL[
                     {h.lastMarketCents !== null ? formatCents(h.lastMarketCents) : <span className="text-meta">--</span>}
                   </div>
                 </div>
-                {h.priced ? (
+                {h.priced && !privacy ? (
                   <div className="font-mono text-[12px] tabular-nums text-right">
                     <div className={h.pnlCents! >= 0 ? 'text-positive font-semibold' : 'text-negative font-semibold'}>
                       {formatCentsSigned(h.pnlCents!)}
@@ -127,12 +129,14 @@ export function HoldingsGrid({ initialHoldings }: { initialHoldings: HoldingPnL[
                       {formatPct(h.pnlPct!)}
                     </div>
                   </div>
-                ) : (
+                ) : !h.priced ? (
                   <div className="text-[10px] uppercase tracking-[0.08em] text-stale font-mono">Unpriced</div>
-                )}
+                ) : null}
               </div>
               <div className="text-[10px] font-mono text-meta">
-                {formatCents(h.currentValueCents ?? 0)} value · {formatCents(h.totalInvestedCents)} cost
+                {privacy
+                  ? `${formatCents(h.currentValueCents ?? 0)} value`
+                  : `${formatCents(h.currentValueCents ?? 0)} value · ${formatCents(h.totalInvestedCents)} cost`}
               </div>
               <DeltaPill deltaCents={h.delta7dCents ?? null} deltaPct={h.delta7dPct ?? null} size="sm" />
             </Link>

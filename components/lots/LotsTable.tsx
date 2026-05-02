@@ -1,6 +1,7 @@
 'use client';
 import { KebabMenu, KebabMenuItem } from '@/components/ui/kebab-menu';
 import { formatCents, formatCentsSigned, formatPct } from '@/lib/utils/format';
+import { usePrivacyMode } from '@/lib/utils/privacy';
 
 export interface LotsTableRow {
   purchaseId: number;
@@ -27,15 +28,19 @@ export interface LotsTableProps {
 }
 
 export function LotsTable({ rows, onEdit, onDelete, onSell, onRip, onOpen }: LotsTableProps) {
+  const { enabled: privacy } = usePrivacyMode();
   if (rows.length === 0) {
     return <div className="bg-vault border border-divider rounded-2xl p-6 text-center text-[13px] font-mono text-meta">No open lots.</div>;
   }
+  const gridCols = privacy
+    ? 'grid-cols-[100px_1fr_100px_120px_36px]'
+    : 'grid-cols-[100px_1fr_100px_100px_120px_36px]';
   return (
     <div className="bg-vault border border-divider rounded-2xl overflow-hidden">
       {rows.map((row, i) => (
         <div
           key={row.purchaseId}
-          className={`grid grid-cols-[100px_1fr_100px_100px_120px_36px] gap-4 items-center px-[18px] py-[14px] hover:bg-hover transition-colors ${
+          className={`grid ${gridCols} gap-4 items-center px-[18px] py-[14px] hover:bg-hover transition-colors ${
             i < rows.length - 1 ? 'border-b border-divider' : ''
           }`}
         >
@@ -52,18 +57,33 @@ export function LotsTable({ rows, onEdit, onDelete, onSell, onRip, onOpen }: Lot
               <div>{row.qtyRemaining}</div>
             )}
           </div>
-          <div className="text-right tabular-nums text-[13px]">
-            <div className="text-[9px] uppercase tracking-[0.14em] text-meta font-mono mb-[2px]">Cost / ea</div>
-            <div>{formatCents(row.perUnitCostCents)}</div>
-          </div>
+          {!privacy && (
+            <div className="text-right tabular-nums text-[13px]">
+              <div className="text-[9px] uppercase tracking-[0.14em] text-meta font-mono mb-[2px]">Cost / ea</div>
+              <div>{formatCents(row.perUnitCostCents)}</div>
+            </div>
+          )}
           <div className="text-right tabular-nums text-[13px] font-mono">
-            <div className="text-[9px] uppercase tracking-[0.14em] text-meta mb-[2px]">P&amp;L</div>
-            {row.pnlCents === null ? (
-              <div className="text-stale">unpriced</div>
+            {privacy ? (
+              <>
+                <div className="text-[9px] uppercase tracking-[0.14em] text-meta mb-[2px]">Market / ea</div>
+                {row.perUnitMarketCents !== null ? (
+                  <div>{formatCents(row.perUnitMarketCents)}</div>
+                ) : (
+                  <div className="text-stale">unpriced</div>
+                )}
+              </>
             ) : (
-              <div className={row.pnlCents >= 0 ? 'text-positive' : 'text-negative'}>
-                {formatCentsSigned(row.pnlCents)} {row.pnlPct !== null ? formatPct(row.pnlPct) : ''}
-              </div>
+              <>
+                <div className="text-[9px] uppercase tracking-[0.14em] text-meta mb-[2px]">P&amp;L</div>
+                {row.pnlCents === null ? (
+                  <div className="text-stale">unpriced</div>
+                ) : (
+                  <div className={row.pnlCents >= 0 ? 'text-positive' : 'text-negative'}>
+                    {formatCentsSigned(row.pnlCents)} {row.pnlPct !== null ? formatPct(row.pnlPct) : ''}
+                  </div>
+                )}
+              </>
             )}
           </div>
           <KebabMenu label={`Actions for lot ${row.purchaseId}`}>

@@ -18,9 +18,11 @@ import type { HoldingDetailDto, HoldingDetailLot } from '@/lib/api/holdingDetail
 import { DeltaPill } from '@/components/prices/DeltaPill';
 import { PriceChart } from '@/components/charts/PriceChart';
 import { SetManualPriceDialog } from '@/components/prices/SetManualPriceDialog';
+import { usePrivacyMode } from '@/lib/utils/privacy';
 
 export function HoldingDetailClient({ initial }: { initial: HoldingDetailDto }) {
   const { data } = useHolding(initial.item.id);
+  const { enabled: privacy } = usePrivacyMode();
   const dto = data ?? initial;
   const item = dto.item;
   const summary = dto.holding;
@@ -237,10 +239,13 @@ export function HoldingDetailClient({ initial }: { initial: HoldingDetailDto }) 
               <div className="text-[20px] font-semibold tabular-nums">
                 {summary.currentValueCents !== null ? formatCents(summary.currentValueCents) : '--'}
               </div>
-              <div className="text-[11px] font-mono text-meta">
-                {formatCents(summary.totalInvestedCents)} invested
-              </div>
+              {!privacy && (
+                <div className="text-[11px] font-mono text-meta">
+                  {formatCents(summary.totalInvestedCents)} invested
+                </div>
+              )}
             </div>
+            {!privacy && (
             <div className="grid gap-1">
               <div className="text-[9px] uppercase tracking-[0.16em] text-meta font-mono">Unrealized P&amp;L</div>
               {summary.pnlCents !== null ? (
@@ -264,6 +269,7 @@ export function HoldingDetailClient({ initial }: { initial: HoldingDetailDto }) 
                 <div className="text-[20px] text-meta">--</div>
               )}
             </div>
+            )}
           </div>
 
           {/* Action buttons */}

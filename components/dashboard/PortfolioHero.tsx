@@ -6,6 +6,8 @@ import { formatCents, formatCentsSigned, formatPct } from '@/lib/utils/format';
 import { animateNumber, attachHologramParallax } from '@/lib/motion';
 import { DeltaPill } from '@/components/prices/DeltaPill';
 import { RefreshHeldButton } from '@/components/prices/RefreshHeldButton';
+import { usePrivacyMode } from '@/lib/utils/privacy';
+import { PrivacyModeBanner } from '@/components/privacy/PrivacyToggle';
 
 function HologramTotal({ cents }: { cents: number }) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -50,6 +52,7 @@ export function PortfolioHero({
   if (isLoading) {
     return <div className="vault-card p-8 animate-pulse h-[180px]" />;
   }
+  const { enabled: privacy } = usePrivacyMode();
   if (!data || data.lotCount === 0) return null;
   const nothingPriced = data.pricedInvestedCents === 0;
 
@@ -58,8 +61,11 @@ export function PortfolioHero({
       <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-8 items-end">
         <div className="grid gap-3">
           <div className="flex items-center justify-between gap-4">
-            <div className="text-[10px] uppercase tracking-[0.18em] text-meta font-mono">
-              Vault total · {new Date().toISOString().slice(0, 10)}
+            <div className="flex items-center gap-3">
+              <div className="text-[10px] uppercase tracking-[0.18em] text-meta font-mono">
+                Vault total · {new Date().toISOString().slice(0, 10)}
+              </div>
+              <PrivacyModeBanner />
             </div>
             <RefreshHeldButton />
           </div>
@@ -68,7 +74,7 @@ export function PortfolioHero({
           ) : (
             <HologramTotal cents={data.totalCurrentValueCents} />
           )}
-          {!nothingPriced && (
+          {!nothingPriced && !privacy && (
             <div className="flex gap-[18px] items-baseline font-mono text-[12px] text-text-muted">
               <span>
                 <span
@@ -115,27 +121,37 @@ export function PortfolioHero({
           )}
         </div>
 
-        <div className="vault-card grid grid-cols-3 gap-[14px] p-[18px]">
-          <Stat
-            label="Invested"
-            value={formatCents(data.totalInvestedCents)}
-            sub={`${data.lotCount} ${data.lotCount === 1 ? 'lot' : 'lots'}`}
-          />
-          <Stat
-            label="Unrealized"
-            value={nothingPriced ? '--' : formatCentsSigned(data.unrealizedPnLCents)}
-            sub={nothingPriced ? '' : formatPct(data.unrealizedPnLPct ?? 0)}
-            tone={
-              nothingPriced ? 'muted' : data.unrealizedPnLCents >= 0 ? 'positive' : 'negative'
-            }
-          />
-          <Stat
-            label="Realized"
-            value={formatCentsSigned(data.realizedPnLCents)}
-            sub={`${data.saleEventCount} ${data.saleEventCount === 1 ? 'sale' : 'sales'}`}
-            tone={data.realizedPnLCents >= 0 ? 'positive' : 'negative'}
-          />
-        </div>
+        {privacy ? (
+          <div className="vault-card grid grid-cols-1 gap-[14px] p-[18px]">
+            <Stat
+              label="Lots held"
+              value={`${data.lotCount}`}
+              sub={`${data.pricedCount} priced · ${data.unpricedCount} unpriced`}
+            />
+          </div>
+        ) : (
+          <div className="vault-card grid grid-cols-3 gap-[14px] p-[18px]">
+            <Stat
+              label="Invested"
+              value={formatCents(data.totalInvestedCents)}
+              sub={`${data.lotCount} ${data.lotCount === 1 ? 'lot' : 'lots'}`}
+            />
+            <Stat
+              label="Unrealized"
+              value={nothingPriced ? '--' : formatCentsSigned(data.unrealizedPnLCents)}
+              sub={nothingPriced ? '' : formatPct(data.unrealizedPnLPct ?? 0)}
+              tone={
+                nothingPriced ? 'muted' : data.unrealizedPnLCents >= 0 ? 'positive' : 'negative'
+              }
+            />
+            <Stat
+              label="Realized"
+              value={formatCentsSigned(data.realizedPnLCents)}
+              sub={`${data.saleEventCount} ${data.saleEventCount === 1 ? 'sale' : 'sales'}`}
+              tone={data.realizedPnLCents >= 0 ? 'positive' : 'negative'}
+            />
+          </div>
+        )}
       </div>
 
       {nothingPriced && (

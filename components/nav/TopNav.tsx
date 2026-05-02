@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import { SignOutButton } from '@/components/auth/SignOutButton';
+import { PrivacyToggle } from '@/components/privacy/PrivacyToggle';
 import { flipUnderline } from '@/lib/motion';
 
 const links = [
@@ -64,6 +65,7 @@ export function TopNav() {
           <div ref={indicatorRef} className="absolute bg-accent transition-opacity" style={{ opacity: 0 }} />
         </nav>
         <div className="flex items-center gap-2">
+          <PrivacyToggle />
           <SignOutButton />
         </div>
       </div>
