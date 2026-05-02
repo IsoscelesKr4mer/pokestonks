@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
     .from('sales')
     .select(
       'id, sale_group_id, sale_date, purchase_id, quantity, sale_price_cents, fees_cents, matched_cost_cents, platform, notes, ' +
-        'purchase:purchases!inner(purchase_date, cost_cents, catalog_item:catalog_items!inner(name, set_name, product_type, kind))'
+        'purchase:purchases!inner(purchase_date, cost_cents, unknown_cost, catalog_item:catalog_items!inner(name, set_name, product_type, kind))'
     )
     .order('sale_date', { ascending: false })
     .order('sale_group_id', { ascending: true })
@@ -52,6 +52,7 @@ export async function GET(request: NextRequest) {
     purchase: {
       purchase_date: string;
       cost_cents: number;
+      unknown_cost: boolean;
       catalog_item: {
         name: string;
         set_name: string | null;

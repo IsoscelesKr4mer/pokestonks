@@ -114,13 +114,13 @@ describe('GET /api/sales', () => {
         id: 1, sale_group_id: 'g1', purchase_id: 100, sale_date: '2026-04-20',
         quantity: 2, sale_price_cents: 40000, fees_cents: 1600, matched_cost_cents: 11000,
         platform: 'eBay', notes: null, created_at: '2026-04-20T00:00:00Z',
-        purchase: { id: 100, purchase_date: '2026-03-01', cost_cents: 5500, catalog_item: { id: 5, name: 'ETB', set_name: 'SV151', product_type: 'ETB', kind: 'sealed', image_url: null, image_storage_path: null } },
+        purchase: { id: 100, purchase_date: '2026-03-01', cost_cents: 5500, unknown_cost: false, catalog_item: { id: 5, name: 'ETB', set_name: 'SV151', product_type: 'ETB', kind: 'sealed', image_url: null, image_storage_path: null } },
       },
       {
         id: 2, sale_group_id: 'g1', purchase_id: 200, sale_date: '2026-04-20',
         quantity: 1, sale_price_cents: 20000, fees_cents: 800, matched_cost_cents: 5500,
         platform: 'eBay', notes: null, created_at: '2026-04-20T00:00:00Z',
-        purchase: { id: 200, purchase_date: '2026-04-12', cost_cents: 5500, catalog_item: { id: 5, name: 'ETB', set_name: 'SV151', product_type: 'ETB', kind: 'sealed', image_url: null, image_storage_path: null } },
+        purchase: { id: 200, purchase_date: '2026-04-12', cost_cents: 5500, unknown_cost: false, catalog_item: { id: 5, name: 'ETB', set_name: 'SV151', product_type: 'ETB', kind: 'sealed', image_url: null, image_storage_path: null } },
       },
     ];
     mockFromBuilder.mockImplementation(() => {

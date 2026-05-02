@@ -135,7 +135,7 @@ export async function GET(request: NextRequest) {
     .from('sales')
     .select(
       'id, sale_group_id, purchase_id, sale_date, quantity, sale_price_cents, fees_cents, matched_cost_cents, platform, notes, created_at, ' +
-        'purchase:purchases!inner(id, purchase_date, cost_cents, catalog_item:catalog_items!inner(id, name, set_name, product_type, kind, image_url, image_storage_path))'
+        'purchase:purchases!inner(id, purchase_date, cost_cents, unknown_cost, catalog_item:catalog_items!inner(id, name, set_name, product_type, kind, image_url, image_storage_path))'
     )
     .order('sale_date', { ascending: false })
     .order('sale_group_id', { ascending: true })
@@ -170,6 +170,7 @@ export async function GET(request: NextRequest) {
       id: number;
       purchase_date: string;
       cost_cents: number;
+      unknown_cost: boolean;
       catalog_item: {
         id: number;
         name: string;
@@ -208,6 +209,7 @@ export async function GET(request: NextRequest) {
       saleDate: first.sale_date,
       platform: first.platform,
       notes: first.notes,
+      unknownCost: rows.some((r) => r.purchase.unknown_cost),
       catalogItem: {
         id: purchase.catalog_item.id,
         name: purchase.catalog_item.name,
@@ -228,6 +230,7 @@ export async function GET(request: NextRequest) {
           purchaseId: p.id,
           purchaseDate: p.purchase_date,
           perUnitCostCents: p.cost_cents,
+          unknownCost: p.unknown_cost,
           quantity: r.quantity,
           salePriceCents: r.sale_price_cents,
           feesCents: r.fees_cents,
