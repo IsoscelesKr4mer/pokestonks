@@ -1,3 +1,4 @@
+'use client';
 import { getImageUrl } from '@/lib/utils/images';
 
 export interface HoldingThumbnailProps {
