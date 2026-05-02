@@ -7,9 +7,6 @@ const isoDate = z
   .string()
   .regex(/^\d{4}-\d{2}-\d{2}$/, 'Use YYYY-MM-DD')
   .refine((s) => {
-    // Compare YYYY-MM-DD lexicographically against today's YYYY-MM-DD;
-    // avoids the timezone trap where "2026-04-26" parses to UTC midnight
-    // and looks future-dated in any zone west of UTC.
     const today = new Date().toISOString().slice(0, 10);
     return s <= today;
   }, 'Date cannot be in the future');
@@ -19,6 +16,7 @@ export const purchaseInputSchema = z
     catalogItemId: z.number().int().positive(),
     quantity: z.number().int().min(1).default(1),
     costCents: z.number().int().nonnegative().nullable().optional(),
+    unknownCost: z.boolean().optional(),
     purchaseDate: isoDate.optional(),
     source: z.string().max(120).nullable().optional(),
     location: z.string().max(120).nullable().optional(),
@@ -50,11 +48,11 @@ export const purchaseInputSchema = z
 
 export type PurchaseInput = z.infer<typeof purchaseInputSchema>;
 
-// PATCH: every field optional.
 export const purchasePatchSchema = z.object({
   catalogItemId: z.number().int().positive().optional(),
   quantity: z.number().int().min(1).optional(),
   costCents: z.number().int().nonnegative().nullable().optional(),
+  unknownCost: z.boolean().optional(),
   purchaseDate: isoDate.optional(),
   source: z.string().max(120).nullable().optional(),
   location: z.string().max(120).nullable().optional(),
@@ -73,4 +71,5 @@ export const HARD_FIELDS_FOR_DERIVED_CHILDREN = [
   'quantity',
   'costCents',
   'purchaseDate',
+  'unknownCost',
 ] as const satisfies readonly (keyof PurchasePatch)[];
