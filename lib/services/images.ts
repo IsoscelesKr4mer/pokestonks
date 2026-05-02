@@ -7,6 +7,17 @@ import { createAdminClient } from '@/lib/supabase/admin';
 const inflight = new Map<number, Promise<void>>();
 const USER_AGENT = 'pokestonks/0.1 (+https://github.com/IsoscelesKr4mer/pokestonks)';
 
+// TCGCSV ships the small thumbnail variant (`_200w.jpg`) which downscales
+// to 200x191 webp — visibly blurry in the Vault grid. Swap to the
+// `_in_1000x1000.jpg` variant which is reliably available across products
+// and produces a sharp 1000x1000 source for sharp() to downscale from.
+export function upgradeTcgplayerImageUrl(url: string): string {
+  if (!/^https:\/\/tcgplayer-cdn\.tcgplayer\.com\/product\//.test(url)) {
+    return url;
+  }
+  return url.replace(/_\d+w\.(jpg|png)$/i, '_in_1000x1000.jpg');
+}
+
 export function __resetInflightForTests() {
   inflight.clear();
 }
@@ -28,11 +39,12 @@ async function doDownload(catalogItemId: number): Promise<void> {
     if (row.imageStoragePath) return;
     if (!row.imageUrl) return;
 
+    const fetchUrl = upgradeTcgplayerImageUrl(row.imageUrl);
     const controller = new AbortController();
     const timer = setTimeout(() => controller.abort(), 10_000);
     let res: Response;
     try {
-      res = await fetch(row.imageUrl, {
+      res = await fetch(fetchUrl, {
         signal: controller.signal,
         headers: { 'User-Agent': USER_AGENT },
       });
@@ -54,7 +66,7 @@ async function doDownload(catalogItemId: number): Promise<void> {
     }
 
     const upstream = Buffer.from(await res.arrayBuffer());
-    const webp = await sharp(upstream).resize({ width: 800, withoutEnlargement: true }).webp({ quality: 85 }).toBuffer();
+    const webp = await sharp(upstream).resize({ width: 1000, withoutEnlargement: true }).webp({ quality: 85 }).toBuffer();
 
     const objectKey = `${catalogItemId}.webp`;
     const imageStoragePath = `catalog/${objectKey}`;

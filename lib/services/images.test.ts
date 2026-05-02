@@ -3,7 +3,7 @@ import { http, HttpResponse } from 'msw';
 import { server } from '../../tests/msw/server';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { __resetInflightForTests, downloadIfMissing } from './images';
+import { __resetInflightForTests, downloadIfMissing, upgradeTcgplayerImageUrl } from './images';
 
 const samplePng = readFileSync(join(__dirname, '..', '..', 'tests', 'fixtures', 'sample-card.png'));
 const samplePngArrayBuffer = samplePng.buffer.slice(samplePng.byteOffset, samplePng.byteOffset + samplePng.byteLength) as ArrayBuffer;
@@ -87,5 +87,29 @@ describe('images.downloadIfMissing', () => {
     );
     await expect(downloadIfMissing(42)).resolves.toBeUndefined();
     expect(uploads).toHaveLength(0);
+  });
+});
+
+describe('upgradeTcgplayerImageUrl', () => {
+  it('rewrites _200w.jpg to _in_1000x1000.jpg on TCGplayer CDN URLs', () => {
+    expect(
+      upgradeTcgplayerImageUrl('https://tcgplayer-cdn.tcgplayer.com/product/525830_200w.jpg')
+    ).toBe('https://tcgplayer-cdn.tcgplayer.com/product/525830_in_1000x1000.jpg');
+  });
+
+  it('rewrites any _<digits>w.<ext> width suffix', () => {
+    expect(
+      upgradeTcgplayerImageUrl('https://tcgplayer-cdn.tcgplayer.com/product/525830_400w.png')
+    ).toBe('https://tcgplayer-cdn.tcgplayer.com/product/525830_in_1000x1000.jpg');
+  });
+
+  it('leaves Pokemon TCG API URLs alone (already high-res)', () => {
+    const url = 'https://images.pokemontcg.io/sv3pt5/199_hires.png';
+    expect(upgradeTcgplayerImageUrl(url)).toBe(url);
+  });
+
+  it('returns unchanged when TCGplayer URL has no width suffix', () => {
+    const url = 'https://tcgplayer-cdn.tcgplayer.com/product/525830_in_1000x1000.jpg';
+    expect(upgradeTcgplayerImageUrl(url)).toBe(url);
   });
 });
