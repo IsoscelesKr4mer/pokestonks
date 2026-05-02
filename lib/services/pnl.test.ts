@@ -81,6 +81,78 @@ describe('computeHoldingPnL', () => {
     const r = computeHoldingPnL(makeHolding({ lastMarketAt: exactly7d }), NOW);
     expect(r.stale).toBe(false);
   });
+
+  it('mixed holding: P&L uses tracked subset only; current value totals all qty', () => {
+    const holding: Holding = {
+      catalogItemId: 1,
+      kind: 'sealed',
+      name: 'X',
+      setName: null,
+      productType: null,
+      imageUrl: null,
+      imageStoragePath: null,
+      lastMarketCents: 3000,
+      lastMarketAt: '2026-04-30T00:00:00Z',
+      qtyHeld: 5,
+      qtyHeldTracked: 2,
+      qtyHeldCollection: 3,
+      totalInvestedCents: 10000,
+    };
+    const out = computeHoldingPnL(holding, new Date('2026-05-02T00:00:00Z'));
+    expect(out.currentValueCents).toBe(15000);
+    expect(out.currentValueTrackedCents).toBe(6000);
+    expect(out.currentValueCollectionCents).toBe(9000);
+    expect(out.pnlCents).toBe(-4000);
+    expect(out.pnlPct).toBeCloseTo(-40);
+  });
+
+  it('all-collection priced holding: pnlCents and pnlPct are null; currentValueCents is full', () => {
+    const holding: Holding = {
+      catalogItemId: 1,
+      kind: 'sealed',
+      name: 'X',
+      setName: null,
+      productType: null,
+      imageUrl: null,
+      imageStoragePath: null,
+      lastMarketCents: 3000,
+      lastMarketAt: '2026-04-30T00:00:00Z',
+      qtyHeld: 4,
+      qtyHeldTracked: 0,
+      qtyHeldCollection: 4,
+      totalInvestedCents: 0,
+    };
+    const out = computeHoldingPnL(holding, new Date('2026-05-02T00:00:00Z'));
+    expect(out.currentValueCents).toBe(12000);
+    expect(out.currentValueTrackedCents).toBe(0);
+    expect(out.currentValueCollectionCents).toBe(12000);
+    expect(out.pnlCents).toBeNull();
+    expect(out.pnlPct).toBeNull();
+  });
+
+  it('all-collection unpriced holding: every value is null', () => {
+    const holding: Holding = {
+      catalogItemId: 1,
+      kind: 'sealed',
+      name: 'X',
+      setName: null,
+      productType: null,
+      imageUrl: null,
+      imageStoragePath: null,
+      lastMarketCents: null,
+      lastMarketAt: null,
+      qtyHeld: 4,
+      qtyHeldTracked: 0,
+      qtyHeldCollection: 4,
+      totalInvestedCents: 0,
+    };
+    const out = computeHoldingPnL(holding, new Date('2026-05-02T00:00:00Z'));
+    expect(out.currentValueCents).toBeNull();
+    expect(out.currentValueTrackedCents).toBeNull();
+    expect(out.currentValueCollectionCents).toBeNull();
+    expect(out.pnlCents).toBeNull();
+    expect(out.pnlPct).toBeNull();
+  });
 });
 
 describe('computePortfolioPnL', () => {

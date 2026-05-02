@@ -12,10 +12,14 @@ export type HoldingPnL = {
   imageUrl: string | null;
   imageStoragePath: string | null;
   qtyHeld: number;
+  qtyHeldTracked: number;
+  qtyHeldCollection: number;
   totalInvestedCents: number;
   lastMarketCents: number | null;
   lastMarketAt: string | null;
   currentValueCents: number | null;
+  currentValueTrackedCents: number | null;
+  currentValueCollectionCents: number | null;
   pnlCents: number | null;
   pnlPct: number | null;
   priced: boolean;
@@ -47,17 +51,26 @@ export type PortfolioPnL = {
 export function computeHoldingPnL(holding: Holding, now: Date): HoldingPnL {
   const priced = holding.lastMarketCents != null;
   let currentValueCents: number | null = null;
+  let currentValueTrackedCents: number | null = null;
+  let currentValueCollectionCents: number | null = null;
   let pnlCents: number | null = null;
   let pnlPct: number | null = null;
   let stale = false;
 
   if (priced) {
-    currentValueCents = holding.lastMarketCents! * holding.qtyHeld;
-    pnlCents = currentValueCents - holding.totalInvestedCents;
-    pnlPct =
-      holding.totalInvestedCents > 0
-        ? (pnlCents / holding.totalInvestedCents) * 100
-        : null;
+    const m = holding.lastMarketCents!;
+    currentValueCents = m * holding.qtyHeld;
+    currentValueTrackedCents = m * holding.qtyHeldTracked;
+    currentValueCollectionCents = m * holding.qtyHeldCollection;
+
+    if (holding.qtyHeldTracked > 0) {
+      pnlCents = currentValueTrackedCents - holding.totalInvestedCents;
+      pnlPct =
+        holding.totalInvestedCents > 0
+          ? (pnlCents / holding.totalInvestedCents) * 100
+          : null;
+    }
+
     if (holding.lastMarketAt == null) {
       stale = true;
     } else {
@@ -75,10 +88,14 @@ export function computeHoldingPnL(holding: Holding, now: Date): HoldingPnL {
     imageUrl: holding.imageUrl,
     imageStoragePath: holding.imageStoragePath,
     qtyHeld: holding.qtyHeld,
+    qtyHeldTracked: holding.qtyHeldTracked,
+    qtyHeldCollection: holding.qtyHeldCollection,
     totalInvestedCents: holding.totalInvestedCents,
     lastMarketCents: holding.lastMarketCents,
     lastMarketAt: holding.lastMarketAt,
     currentValueCents,
+    currentValueTrackedCents,
+    currentValueCollectionCents,
     pnlCents,
     pnlPct,
     priced,
@@ -108,8 +125,12 @@ export function emptyHoldingPnL(item: {
     lastMarketCents: item.lastMarketCents,
     lastMarketAt: item.lastMarketAt,
     qtyHeld: 0,
+    qtyHeldTracked: 0,
+    qtyHeldCollection: 0,
     totalInvestedCents: 0,
     currentValueCents: null,
+    currentValueTrackedCents: null,
+    currentValueCollectionCents: null,
     pnlCents: null,
     pnlPct: null,
     priced: false,
