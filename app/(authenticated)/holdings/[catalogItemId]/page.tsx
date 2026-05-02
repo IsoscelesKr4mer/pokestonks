@@ -196,6 +196,7 @@ export default async function HoldingDetailPage({
         saleDate: first.saleDate,
         platform: first.platform,
         notes: first.notes,
+        unknownCost: rows.some((r) => lotById.get(r.purchaseId)?.unknownCost ?? false),
         totals: {
           ...totals,
           realizedPnLCents: totals.salePriceCents - totals.feesCents - totals.matchedCostCents,
@@ -207,6 +208,7 @@ export default async function HoldingDetailPage({
             purchaseId: r.purchaseId,
             purchaseDate: lot?.purchaseDate ?? '',
             perUnitCostCents: lot?.costCents ?? 0,
+            unknownCost: lot?.unknownCost ?? false,
             quantity: r.quantity,
             salePriceCents: r.salePriceCents,
             feesCents: r.feesCents,
@@ -276,6 +278,7 @@ export default async function HoldingDetailPage({
       feesCents: s.totals.feesCents,
       platform: s.platform,
       matchedCostCents: s.totals.matchedCostCents,
+      unknownCost: s.unknownCost,
     })),
   });
 

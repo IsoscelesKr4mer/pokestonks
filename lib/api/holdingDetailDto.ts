@@ -28,6 +28,7 @@ export interface HoldingDetailSaleRow {
   purchaseId: number;
   purchaseDate: string;
   perUnitCostCents: number;
+  unknownCost: boolean;
   quantity: number;
   salePriceCents: number;
   feesCents: number;
@@ -39,6 +40,7 @@ export interface HoldingDetailSaleEvent {
   saleDate: string;
   platform: string | null;
   notes: string | null;
+  unknownCost: boolean;
   totals: {
     quantity: number;
     salePriceCents: number;
@@ -139,6 +141,7 @@ export function buildActivityEvents(input: {
     feesCents: number;
     platform: string | null;
     matchedCostCents: number;
+    unknownCost: boolean;
   }[];
 }): ActivityEvent[] {
   const events: ActivityEvent[] = [];
@@ -193,6 +196,7 @@ export function buildActivityEvents(input: {
       title: `Sold ${s.quantity}${s.platform ? ` (${s.platform})` : ''}`,
       sub: `@ ${formatPerUnit(s.salePriceCents)} net`,
       amountCents: realized,
+      noBasis: s.unknownCost,
     });
   }
 

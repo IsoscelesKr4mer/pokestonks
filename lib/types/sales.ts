@@ -9,6 +9,7 @@ export interface SaleEvent {
   saleDate: string;
   platform: string | null;
   notes: string | null;
+  unknownCost: boolean;
   catalogItem: {
     id: number;
     name: string;
@@ -30,6 +31,7 @@ export interface SaleEvent {
     purchaseId: number;
     purchaseDate: string;
     perUnitCostCents: number;
+    unknownCost: boolean;
     quantity: number;
     salePriceCents: number;
     feesCents: number;

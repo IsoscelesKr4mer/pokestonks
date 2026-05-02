@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { useSale, useDeleteSale } from '@/lib/query/hooks/useSales';
 import { formatCents, formatCentsSigned } from '@/lib/utils/format';
 import { PnLDisplay } from '@/components/holdings/PnLDisplay';
+import { NoBasisPill } from '@/components/holdings/NoBasisPill';
 import {
   VaultDialogHeader,
   FormSection,
@@ -26,7 +27,7 @@ export function SaleDetailDialog({ open, onOpenChange, saleGroupId }: Props) {
       <DialogContent className="max-w-lg">
         <VaultDialogHeader
           title={`Sale of ${data?.catalogItem.name ?? '...'}`}
-          sub={data ? `${data.saleDate}${data.platform ? ` · ${data.platform}` : ''}` : undefined}
+          sub={data ? `${data.saleDate}${data.platform ? ` · ${data.platform}` : ''}${data.unknownCost ? ' · No basis' : ''}` : undefined}
         />
 
         {isLoading || !data ? (
@@ -77,9 +78,10 @@ export function SaleDetailDialog({ open, onOpenChange, saleGroupId }: Props) {
                 Lot breakdown
               </div>
               {data.rows.map((r) => (
-                <div key={r.saleId} className="flex justify-between text-xs">
-                  <span>
-                    Lot {r.purchaseDate} -- {r.quantity}x @ {formatCents(r.perUnitCostCents)}
+                <div key={r.saleId} className="flex justify-between items-center text-xs">
+                  <span className="flex items-center gap-2">
+                    <span>Lot {r.purchaseDate} -- {r.quantity}x @ {formatCents(r.perUnitCostCents)}</span>
+                    {r.unknownCost && <NoBasisPill />}
                   </span>
                   <span>{formatCentsSigned(r.salePriceCents - r.feesCents - r.matchedCostCents)}</span>
                 </div>

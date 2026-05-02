@@ -15,6 +15,7 @@ function saleToEvent(s: SaleEvent): ActivityEvent {
     title: `Sold ${s.totals.quantity} · ${s.catalogItem.name}${s.platform ? ' (' + s.platform + ')' : ''}`,
     sub: `@ $${(s.totals.salePriceCents / s.totals.quantity / 100).toFixed(2)}/ea net`,
     amountCents: s.totals.realizedPnLCents,
+    noBasis: s.unknownCost,
   };
 }
 

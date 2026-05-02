@@ -31,4 +31,16 @@ describe('<ActivityTimelineRow>', () => {
     expect(screen.getByText('D')).toBeDefined();
     expect(screen.getByText('$0.00')).toBeDefined();
   });
+
+  it('does not render NoBasisPill on a sale event when noBasis is false', () => {
+    const event: ActivityEvent = { kind: 'sale', date: '2026-04-25', title: 'Sold 1', amountCents: 1000, noBasis: false };
+    render(<ActivityTimelineRow event={event} />);
+    expect(screen.queryByText(/no basis/i)).toBeNull();
+  });
+
+  it('renders NoBasisPill on a sale event when noBasis is true', () => {
+    const event: ActivityEvent = { kind: 'sale', date: '2026-04-25', title: 'Sold 1', amountCents: 1000, noBasis: true };
+    render(<ActivityTimelineRow event={event} />);
+    expect(screen.getByText(/no basis/i)).toBeDefined();
+  });
 });

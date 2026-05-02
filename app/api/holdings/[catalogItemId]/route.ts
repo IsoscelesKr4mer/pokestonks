@@ -331,6 +331,7 @@ export async function GET(
         saleDate: first.saleDate,
         platform: first.platform,
         notes: first.notes,
+        unknownCost: rows.some((r) => lotById.get(r.purchaseId)?.unknownCost ?? false),
         totals: {
           ...totals,
           realizedPnLCents: totals.salePriceCents - totals.feesCents - totals.matchedCostCents,
@@ -342,6 +343,7 @@ export async function GET(
             purchaseId: r.purchaseId,
             purchaseDate: lot?.purchaseDate ?? '',
             perUnitCostCents: lot?.costCents ?? 0,
+            unknownCost: lot?.unknownCost ?? false,
             quantity: r.quantity,
             salePriceCents: r.salePriceCents,
             feesCents: r.feesCents,
@@ -384,6 +386,7 @@ export async function GET(
       feesCents: s.totals.feesCents,
       platform: s.platform,
       matchedCostCents: s.totals.matchedCostCents,
+      unknownCost: s.unknownCost,
     })),
   });
 

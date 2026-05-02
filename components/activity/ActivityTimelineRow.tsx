@@ -1,9 +1,10 @@
 import Link from 'next/link';
 import { formatCents, formatCentsSigned } from '@/lib/utils/format';
+import { NoBasisPill } from '@/components/holdings/NoBasisPill';
 
 export type ActivityEvent =
   | { kind: 'purchase'; id?: string | number; date: string; title: string; sub?: string; amountCents: number; href?: string }
-  | { kind: 'sale'; id?: string | number; date: string; title: string; sub?: string; amountCents: number; href?: string }
+  | { kind: 'sale'; id?: string | number; date: string; title: string; sub?: string; amountCents: number; href?: string; noBasis?: boolean }
   | { kind: 'rip'; id?: string | number; date: string; title: string; sub?: string; amountCents: number; href?: string }
   | { kind: 'decomposition'; id?: string | number; date: string; title: string; sub?: string; amountCents: number; href?: string };
 
@@ -43,7 +44,10 @@ export function ActivityTimelineRow({ event }: { event: ActivityEvent }) {
         {PILL_LETTER[event.kind]}
       </div>
       <div className="flex flex-col gap-[2px] min-w-0">
-        <div className="text-[13px] font-medium truncate">{event.title}</div>
+        <div className="flex items-center gap-2 min-w-0">
+          <div className="text-[13px] font-medium truncate">{event.title}</div>
+          {event.kind === 'sale' && event.noBasis && <NoBasisPill />}
+        </div>
         {event.sub && <div className="text-[11px] font-mono text-meta truncate">{event.sub}</div>}
       </div>
       <div className={`font-mono text-[13px] tabular-nums text-right ${amountClass(event.kind, event.amountCents)}`}>

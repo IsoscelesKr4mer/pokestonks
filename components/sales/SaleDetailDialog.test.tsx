@@ -22,6 +22,7 @@ const fakeSale: SaleEvent = {
   saleDate: '2025-01-15',
   platform: 'eBay',
   notes: null,
+  unknownCost: false,
   catalogItem: {
     id: 42,
     name: 'SV151 Elite Trainer Box',
@@ -44,6 +45,7 @@ const fakeSale: SaleEvent = {
       purchaseId: 10,
       purchaseDate: '2024-11-01',
       perUnitCostCents: 5000,
+      unknownCost: false,
       quantity: 1,
       salePriceCents: 6500,
       feesCents: 500,
@@ -113,5 +115,29 @@ describe('<SaleDetailDialog>', () => {
       <SaleDetailDialog open saleGroupId="sg-1" onOpenChange={() => {}} />
     );
     expect(screen.getByText(/2024-11-01/)).toBeInTheDocument();
+  });
+
+  it('does not show NoBasisPill when unknownCost is false', () => {
+    withQueryClient(
+      <SaleDetailDialog open saleGroupId="sg-1" onOpenChange={() => {}} />
+    );
+    expect(screen.queryByText(/no basis/i)).not.toBeInTheDocument();
+  });
+
+  it('shows NoBasisPill on lot row when unknownCost is true', () => {
+    const saleWithNoBasis: SaleEvent = {
+      ...fakeSale,
+      unknownCost: true,
+      rows: [{ ...fakeSale.rows[0], unknownCost: true }],
+    };
+    vi.mocked(useSale).mockReturnValue({
+      data: saleWithNoBasis,
+      isLoading: false,
+      isError: false,
+    } as ReturnType<typeof useSale>);
+    withQueryClient(
+      <SaleDetailDialog open saleGroupId="sg-1" onOpenChange={() => {}} />
+    );
+    expect(screen.getAllByText(/no basis/i).length).toBeGreaterThanOrEqual(1);
   });
 });
