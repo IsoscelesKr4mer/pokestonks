@@ -2,6 +2,7 @@
 import { KebabMenu, KebabMenuItem } from '@/components/ui/kebab-menu';
 import { formatCents, formatCentsSigned, formatPct } from '@/lib/utils/format';
 import { usePrivacyMode } from '@/lib/utils/privacy';
+import { NoBasisPill } from '@/components/holdings/NoBasisPill';
 
 export interface LotsTableRow {
   purchaseId: number;
@@ -16,6 +17,7 @@ export interface LotsTableRow {
   pnlPct: number | null;
   kind: 'sealed' | 'card';
   productType: string | null;
+  unknownCost: boolean;
 }
 
 export interface LotsTableProps {
@@ -60,7 +62,11 @@ export function LotsTable({ rows, onEdit, onDelete, onSell, onRip, onOpen }: Lot
           {!privacy && (
             <div className="text-right tabular-nums text-[13px]">
               <div className="text-[9px] uppercase tracking-[0.14em] text-meta font-mono mb-[2px]">Cost / ea</div>
-              <div>{formatCents(row.perUnitCostCents)}</div>
+              {row.unknownCost ? (
+                <div><NoBasisPill /></div>
+              ) : (
+                <div>{formatCents(row.perUnitCostCents)}</div>
+              )}
             </div>
           )}
           <div className="text-right tabular-nums text-[13px] font-mono">
@@ -76,7 +82,9 @@ export function LotsTable({ rows, onEdit, onDelete, onSell, onRip, onOpen }: Lot
             ) : (
               <>
                 <div className="text-[9px] uppercase tracking-[0.14em] text-meta mb-[2px]">P&amp;L</div>
-                {row.pnlCents === null ? (
+                {row.unknownCost ? (
+                  <div className="text-meta">no basis</div>
+                ) : row.pnlCents === null ? (
                   <div className="text-stale">unpriced</div>
                 ) : (
                   <div className={row.pnlCents >= 0 ? 'text-positive' : 'text-negative'}>

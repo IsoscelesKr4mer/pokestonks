@@ -146,6 +146,7 @@ export function HoldingDetailClient({ initial }: { initial: HoldingDetailDto }) 
         : null,
     kind: item.kind,
     productType: item.productType ?? null,
+    unknownCost: l.lot.unknownCost ?? false,
   }));
 
   const openLots = lotsRows.filter((r) => r.qtyRemaining > 0);
