@@ -1,7 +1,15 @@
-# Pokestonks — Alt-Print Variants (Design Spec)
+# Plan 11 — Alt-Print Variants Design Spec
 
 **Date:** 2026-05-02
 **Status:** Brainstorming notes for a future session. Not yet approved. No code yet.
+
+**Roadmap slot:** Plan 11. Plans 1–7 shipped. Plan 8 (Collection mode) is in flight in
+another session as of 2026-05-02. Plans 9 (Decomp polish) and 10 (Sharable vault links)
+are pre-scoped backlogs ahead of this. This work slots after all three because it's
+larger than the decomp polish items, orthogonal to share-link rendering, and will
+intersect with Plan 8's catalog display work — letting Plan 8 ship first avoids merge
+conflicts on the same surfaces. Reorder if a fresh session decides correctness pressure
+outweighs the queue order.
 
 ## TL;DR for a fresh session
 
