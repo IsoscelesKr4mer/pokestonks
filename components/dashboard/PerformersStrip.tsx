@@ -44,7 +44,6 @@ export function PerformersStrip() {
               </span>
               {h.pnlPct !== null && (
                 <span className={h.pnlPct >= 0 ? 'text-positive' : 'text-negative'}>
-                  {h.pnlPct >= 0 ? '+' : ''}
                   {formatPct(h.pnlPct)}
                 </span>
               )}
