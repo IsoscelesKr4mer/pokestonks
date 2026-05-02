@@ -355,6 +355,7 @@ export default async function HoldingDetailPage({
           notes: l.notes,
           sourceRipId: l.sourceRipId,
           sourceDecompositionId: l.sourceDecompositionId,
+          unknownCost: l.unknownCost,
           createdAt: l.createdAt.toISOString(),
         },
         qtyRemaining,

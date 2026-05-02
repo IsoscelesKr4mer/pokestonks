@@ -19,6 +19,7 @@ export interface HoldingDetailLot {
   sourceRipId: number | null;
   /** Added for activity-event filtering (not previously on the DTO). */
   sourceDecompositionId: number | null;
+  unknownCost: boolean;
   createdAt: string;
 }
 
