@@ -5,6 +5,7 @@ import {
   FormSection,
   FormLabel,
   FormRow,
+  FormHint,
   DialogActions,
 } from '@/components/ui/dialog-form';
 import { Button } from '@/components/ui/button';
@@ -27,12 +28,15 @@ export function AddPurchaseDialog({
   const [costDollars, setCostDollars] = useState('');
   const [source, setSource] = useState('');
   const [location, setLocation] = useState('');
+  const [unknownCost, setUnknownCost] = useState(false);
   const create = useCreatePurchase();
+
+  const submitDisabled = create.isPending || (!unknownCost && !costDollars);
 
   return (
     <Dialog open={open} onOpenChange={(v) => !v && onClose()}>
       <DialogContent>
-        <VaultDialogHeader title="Log purchase" sub="Adds a lot to this catalog item" />
+        <VaultDialogHeader title={unknownCost ? 'Add to vault' : 'Log purchase'} sub="Adds a lot to this catalog item" />
         <FormSection>
           <FormRow>
             <div>
@@ -61,10 +65,12 @@ export function AddPurchaseDialog({
               <Input
                 type="number"
                 step="0.01"
-                placeholder="0.00"
-                value={costDollars}
+                placeholder={unknownCost ? 'Unknown' : '0.00'}
+                value={unknownCost ? '' : costDollars}
                 onChange={(e) => setCostDollars(e.target.value)}
-                required
+                disabled={unknownCost}
+                required={!unknownCost}
+                aria-label="Cost"
               />
             </div>
             <div>
@@ -76,6 +82,21 @@ export function AddPurchaseDialog({
               />
             </div>
           </FormRow>
+          <div className="flex items-start gap-2 text-[12px] text-text-muted">
+            <input
+              id="unknown-cost-cb"
+              type="checkbox"
+              className="mt-[3px] cursor-pointer"
+              checked={unknownCost}
+              onChange={(e) => setUnknownCost(e.target.checked)}
+            />
+            <label htmlFor="unknown-cost-cb" className="cursor-pointer">
+              <span className="font-medium text-text">I don&apos;t know the cost basis</span>
+              {unknownCost && (
+                <FormHint>Excluded from P&amp;L. Counts toward vault current market value.</FormHint>
+              )}
+            </label>
+          </div>
           <div>
             <FormLabel>Location (optional)</FormLabel>
             <Input
@@ -91,22 +112,24 @@ export function AddPurchaseDialog({
           </Button>
           <Button
             onClick={async () => {
-              const cents = dollarsStringToCents(costDollars);
-              if (cents === null || cents <= 0) return;
+              const cents = unknownCost ? 0 : dollarsStringToCents(costDollars);
+              if (cents === null) return;
+              if (!unknownCost && cents <= 0) return;
               await create.mutateAsync({
                 catalogItemId,
                 purchaseDate: date,
                 quantity,
                 costCents: cents,
+                unknownCost,
                 source: source || null,
                 location: location || null,
                 isGraded: false,
               });
               onClose();
             }}
-            disabled={create.isPending || !costDollars}
+            disabled={submitDisabled}
           >
-            + Log purchase
+            {unknownCost ? '+ Add to vault' : '+ Log purchase'}
           </Button>
         </DialogActions>
       </DialogContent>
