@@ -35,7 +35,7 @@ export async function PATCH(
 
   const { data: existing, error: lookupErr } = await supabase
     .from('purchases')
-    .select('id, source_rip_id, source_decomposition_id, deleted_at')
+    .select('id, source_rip_id, source_decomposition_id, deleted_at, unknown_cost')
     .eq('id', numericId)
     .is('deleted_at', null)
     .maybeSingle();
@@ -62,6 +62,17 @@ export async function PATCH(
         { status: 422 }
       );
     }
+  }
+
+  // One-way conversion only. Block known -> unknown.
+  if (
+    v.unknownCost === true &&
+    existing.unknown_cost === false
+  ) {
+    return NextResponse.json(
+      { error: 'cannot_unset_basis' },
+      { status: 422 }
+    );
   }
 
   // If quantity is being reduced, ensure it doesn't drop below total consumed
@@ -103,6 +114,7 @@ export async function PATCH(
   if (v.catalogItemId !== undefined) update.catalog_item_id = v.catalogItemId;
   if (v.quantity !== undefined) update.quantity = v.quantity;
   if (v.costCents !== undefined) update.cost_cents = v.costCents;
+  if (v.unknownCost !== undefined) update.unknown_cost = v.unknownCost;
   if (v.purchaseDate !== undefined) update.purchase_date = v.purchaseDate;
   if (v.source !== undefined) update.source = v.source;
   if (v.location !== undefined) update.location = v.location;
