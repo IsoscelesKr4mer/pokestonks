@@ -61,6 +61,7 @@ export function HoldingDetailClient({ initial }: { initial: HoldingDetailDto }) 
       purchaseDate: l.purchaseDate,
       quantity: l.quantity,
       costCents: l.costCents,
+      unknownCost: l.unknownCost ?? false,
       source: l.source,
       location: l.location,
       notes: l.notes,
@@ -70,6 +71,7 @@ export function HoldingDetailClient({ initial }: { initial: HoldingDetailDto }) 
       grade: l.grade,
       certNumber: l.certNumber,
       sourceRipId: l.sourceRipId,
+      sourceDecompositionId: l.sourceDecompositionId ?? null,
     };
     return { catalogItem, lot };
   }
