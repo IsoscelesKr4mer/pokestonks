@@ -9,6 +9,7 @@ import { KebabMenu, KebabMenuItem } from '@/components/ui/kebab-menu';
 import { SellDialog } from '@/components/sales/SellDialog';
 import { DeltaPill } from '@/components/prices/DeltaPill';
 import { ManualPriceBadge } from '@/components/prices/ManualPriceBadge';
+import { NoBasisPill } from '@/components/holdings/NoBasisPill';
 import { usePrivacyMode } from '@/lib/utils/privacy';
 
 type SortKey = 'marketPrice' | 'value' | 'pnl' | 'pnlPct' | 'cost' | 'qty' | 'name' | 'recent';
@@ -95,59 +96,75 @@ export function HoldingsGrid({ initialHoldings }: { initialHoldings: HoldingPnL[
         </select>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-[14px]">
-        {sortedHoldings.map((h) => (
-          <div key={h.catalogItemId} className="vault-card p-[14px] grid gap-3 relative group">
-            <Link href={`/holdings/${h.catalogItemId}`} className="grid gap-3">
-              <HoldingThumbnail
-                name={h.name}
-                kind={h.kind}
-                imageUrl={h.imageUrl ?? null}
-                imageStoragePath={h.imageStoragePath ?? null}
-                exhibitTag={(h.kind === 'sealed' ? (h.productType ?? 'SEALED') : 'CARD').toUpperCase()}
-                stale={h.stale}
-              />
-              <div className="grid gap-1">
-                <div className="text-[13px] font-semibold leading-[1.3] line-clamp-2">{h.name}</div>
-                <div className="text-[11px] font-mono text-meta truncate">{h.setName ?? '--'}</div>
-              </div>
-              <div className="border-t border-divider pt-[10px] grid grid-cols-[1fr_auto] gap-2 items-baseline">
-                <div className="grid gap-[2px]">
-                  <div className="flex items-center gap-1 text-[9px] uppercase tracking-[0.14em] text-meta font-mono">
-                    <span>Market · qty {h.qtyHeld}</span>
-                    {h.manualMarketCents != null && <ManualPriceBadge setAt={null} />}
-                  </div>
-                  <div className="text-[18px] font-semibold tabular-nums tracking-[-0.01em]">
-                    {h.lastMarketCents !== null ? formatCents(h.lastMarketCents) : <span className="text-meta">--</span>}
-                  </div>
+        {sortedHoldings.map((h) => {
+          const isAllCollection = h.qtyHeldTracked === 0 && h.qtyHeldCollection > 0;
+          const isMixed = h.qtyHeldTracked > 0 && h.qtyHeldCollection > 0;
+          return (
+            <div key={h.catalogItemId} className="vault-card p-[14px] grid gap-3 relative group">
+              <Link href={`/holdings/${h.catalogItemId}`} className="grid gap-3">
+                <HoldingThumbnail
+                  name={h.name}
+                  kind={h.kind}
+                  imageUrl={h.imageUrl ?? null}
+                  imageStoragePath={h.imageStoragePath ?? null}
+                  exhibitTag={(h.kind === 'sealed' ? (h.productType ?? 'SEALED') : 'CARD').toUpperCase()}
+                  stale={h.stale}
+                />
+                <div className="grid gap-1">
+                  <div className="text-[13px] font-semibold leading-[1.3] line-clamp-2">{h.name}</div>
+                  <div className="text-[11px] font-mono text-meta truncate">{h.setName ?? '--'}</div>
                 </div>
-                {h.priced && !privacy ? (
-                  <div className="font-mono text-[12px] tabular-nums text-right">
-                    <div className={h.pnlCents! >= 0 ? 'text-positive font-semibold' : 'text-negative font-semibold'}>
-                      {formatCentsSigned(h.pnlCents!)}
+                <div className="border-t border-divider pt-[10px] grid grid-cols-[1fr_auto] gap-2 items-baseline">
+                  <div className="grid gap-[2px]">
+                    <div className="flex items-center gap-1 text-[9px] uppercase tracking-[0.14em] text-meta font-mono">
+                      <span>Market · qty {h.qtyHeld}</span>
+                      {h.manualMarketCents != null && <ManualPriceBadge setAt={null} />}
+                      {(isAllCollection || isMixed) && <NoBasisPill className="ml-1" />}
                     </div>
-                    <div className={h.pnlPct! >= 0 ? 'text-positive' : 'text-negative'}>
-                      {formatPct(h.pnlPct!)}
+                    <div className="text-[18px] font-semibold tabular-nums tracking-[-0.01em]">
+                      {h.lastMarketCents !== null ? formatCents(h.lastMarketCents) : <span className="text-meta">--</span>}
                     </div>
                   </div>
-                ) : !h.priced ? (
-                  <div className="text-[10px] uppercase tracking-[0.08em] text-stale font-mono">Unpriced</div>
-                ) : null}
+                  {isAllCollection && h.priced && !privacy ? (
+                    <div className="font-mono text-[10px] uppercase tracking-[0.08em] text-meta text-right">No basis</div>
+                  ) : h.pnlCents != null && !privacy ? (
+                    <div className="font-mono text-[12px] tabular-nums text-right">
+                      <div className={h.pnlCents >= 0 ? 'text-positive font-semibold' : 'text-negative font-semibold'}>
+                        {formatCentsSigned(h.pnlCents)}
+                      </div>
+                      {h.pnlPct != null && (
+                        <div className={h.pnlPct >= 0 ? 'text-positive' : 'text-negative'}>
+                          {formatPct(h.pnlPct)}
+                        </div>
+                      )}
+                    </div>
+                  ) : !h.priced ? (
+                    <div className="text-[10px] uppercase tracking-[0.08em] text-stale font-mono">Unpriced</div>
+                  ) : null}
+                </div>
+                <div className="text-[10px] font-mono text-meta">
+                  {privacy ? (
+                    `${formatCents(h.currentValueCents ?? 0)} value`
+                  ) : isAllCollection ? (
+                    `${formatCents(h.currentValueCents ?? 0)} vault total`
+                  ) : (
+                    `${formatCents(h.currentValueCents ?? 0)} value · ${formatCents(h.totalInvestedCents)} cost`
+                  )}
+                  {isMixed && (
+                    <span className="ml-1">· +{h.qtyHeldCollection} in collection</span>
+                  )}
+                </div>
+                <DeltaPill deltaCents={h.delta7dCents ?? null} deltaPct={h.delta7dPct ?? null} size="sm" />
+              </Link>
+              <div className="absolute top-[20px] right-[20px]">
+                <KebabMenu label={`Actions for ${h.name}`}>
+                  {h.qtyHeld > 0 && <KebabMenuItem onSelect={() => setSellTarget(h)}>Sell</KebabMenuItem>}
+                  <KebabMenuItem onSelect={() => { window.location.href = `/holdings/${h.catalogItemId}`; }}>Open detail</KebabMenuItem>
+                </KebabMenu>
               </div>
-              <div className="text-[10px] font-mono text-meta">
-                {privacy
-                  ? `${formatCents(h.currentValueCents ?? 0)} value`
-                  : `${formatCents(h.currentValueCents ?? 0)} value · ${formatCents(h.totalInvestedCents)} cost`}
-              </div>
-              <DeltaPill deltaCents={h.delta7dCents ?? null} deltaPct={h.delta7dPct ?? null} size="sm" />
-            </Link>
-            <div className="absolute top-[20px] right-[20px]">
-              <KebabMenu label={`Actions for ${h.name}`}>
-                {h.qtyHeld > 0 && <KebabMenuItem onSelect={() => setSellTarget(h)}>Sell</KebabMenuItem>}
-                <KebabMenuItem onSelect={() => { window.location.href = `/holdings/${h.catalogItemId}`; }}>Open detail</KebabMenuItem>
-              </KebabMenu>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
       {sellTarget && (
         <SellDialog
