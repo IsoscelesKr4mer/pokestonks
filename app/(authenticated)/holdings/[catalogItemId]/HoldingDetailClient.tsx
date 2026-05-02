@@ -19,6 +19,7 @@ import { DeltaPill } from '@/components/prices/DeltaPill';
 import { PriceChart } from '@/components/charts/PriceChart';
 import { SetManualPriceDialog } from '@/components/prices/SetManualPriceDialog';
 import { usePrivacyMode } from '@/lib/utils/privacy';
+import { NoBasisPill } from '@/components/holdings/NoBasisPill';
 
 export function HoldingDetailClient({ initial }: { initial: HoldingDetailDto }) {
   const { data } = useHolding(initial.item.id);
@@ -234,13 +235,19 @@ export function HoldingDetailClient({ initial }: { initial: HoldingDetailDto }) 
               </div>
             </div>
             <div className="grid gap-1">
-              <div className="text-[9px] uppercase tracking-[0.16em] text-meta font-mono">
-                Position · qty {summary.qtyHeld}
+              <div className="flex items-center gap-2 text-[9px] uppercase tracking-[0.16em] text-meta font-mono">
+                <span>Position · qty {summary.qtyHeld}</span>
+                {summary.qtyHeldCollection > 0 && <NoBasisPill />}
               </div>
               <div className="text-[20px] font-semibold tabular-nums">
                 {summary.currentValueCents !== null ? formatCents(summary.currentValueCents) : '--'}
               </div>
-              {!privacy && (
+              {!privacy && summary.qtyHeldTracked > 0 && summary.qtyHeldCollection > 0 && summary.currentValueTrackedCents !== null && summary.currentValueCollectionCents !== null && (
+                <div className="text-[11px] font-mono text-meta">
+                  {formatCents(summary.currentValueTrackedCents)} tracked · {formatCents(summary.currentValueCollectionCents)} in collection
+                </div>
+              )}
+              {!privacy && summary.qtyHeldCollection === 0 && (
                 <div className="text-[11px] font-mono text-meta">
                   {formatCents(summary.totalInvestedCents)} invested
                 </div>
@@ -249,7 +256,16 @@ export function HoldingDetailClient({ initial }: { initial: HoldingDetailDto }) 
             {!privacy && (
             <div className="grid gap-1">
               <div className="text-[9px] uppercase tracking-[0.16em] text-meta font-mono">Unrealized P&amp;L</div>
-              {summary.pnlCents !== null ? (
+              {summary.qtyHeldTracked === 0 && summary.qtyHeldCollection > 0 ? (
+                <>
+                  <div className="text-[20px] font-semibold tabular-nums text-meta">No basis</div>
+                  {summary.currentValueCents !== null && (
+                    <div className="text-[11px] font-mono text-meta">
+                      vault value {formatCents(summary.currentValueCents)}
+                    </div>
+                  )}
+                </>
+              ) : summary.pnlCents !== null ? (
                 <>
                   <div
                     className={`text-[20px] font-semibold tabular-nums ${
