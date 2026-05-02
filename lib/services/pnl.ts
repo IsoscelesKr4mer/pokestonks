@@ -34,6 +34,10 @@ export type PortfolioPnL = {
   totalInvestedCents: number;
   pricedInvestedCents: number;
   totalCurrentValueCents: number;
+  totalCurrentValueTrackedCents: number;
+  totalCurrentValueCollectionCents: number;
+  qtyHeldTrackedAcrossPortfolio: number;
+  qtyHeldCollectionAcrossPortfolio: number;
   unrealizedPnLCents: number;
   unrealizedPnLPct: number | null;
   realizedPnLCents: number;          // unified: rips (sign-flipped) + sales
@@ -43,6 +47,8 @@ export type PortfolioPnL = {
   unpricedCount: number;
   staleCount: number;
   lotCount: number;
+  lotCountTracked: number;
+  lotCountCollection: number;
   perHolding: HoldingPnL[];
   bestPerformers: HoldingPnL[];
   worstPerformers: HoldingPnL[];
@@ -143,22 +149,34 @@ export function computePortfolioPnL(
   realizedRipLossCents: number,
   realizedSalesPnLCents: number,
   lotCount: number,
-  now: Date = new Date()
+  now: Date = new Date(),
+  breakdown: { lotCountTracked: number; lotCountCollection: number } = {
+    lotCountTracked: lotCount,
+    lotCountCollection: 0,
+  }
 ): PortfolioPnL {
   const perHolding = holdings.map((h) => computeHoldingPnL(h, now));
 
   let totalInvestedCents = 0;
   let pricedInvestedCents = 0;
   let totalCurrentValueCents = 0;
+  let totalCurrentValueTrackedCents = 0;
+  let totalCurrentValueCollectionCents = 0;
+  let qtyHeldTrackedAcrossPortfolio = 0;
+  let qtyHeldCollectionAcrossPortfolio = 0;
   let pricedCount = 0;
   let unpricedCount = 0;
   let staleCount = 0;
 
   for (const h of perHolding) {
     totalInvestedCents += h.totalInvestedCents;
+    qtyHeldTrackedAcrossPortfolio += h.qtyHeldTracked;
+    qtyHeldCollectionAcrossPortfolio += h.qtyHeldCollection;
     if (h.priced) {
       pricedInvestedCents += h.totalInvestedCents;
       totalCurrentValueCents += h.currentValueCents ?? 0;
+      totalCurrentValueTrackedCents += h.currentValueTrackedCents ?? 0;
+      totalCurrentValueCollectionCents += h.currentValueCollectionCents ?? 0;
       pricedCount++;
       if (h.stale) staleCount++;
     } else {
@@ -166,21 +184,21 @@ export function computePortfolioPnL(
     }
   }
 
-  const unrealizedPnLCents = totalCurrentValueCents - pricedInvestedCents;
+  const unrealizedPnLCents = totalCurrentValueTrackedCents - pricedInvestedCents;
   const unrealizedPnLPct =
     pricedInvestedCents > 0
       ? (unrealizedPnLCents / pricedInvestedCents) * 100
       : null;
 
-  const priced = perHolding.filter((h) => h.priced);
-  const sortDesc = [...priced].sort((a, b) => {
+  const rankable = perHolding.filter((h) => h.priced && h.qtyHeldTracked > 0);
+  const sortDesc = [...rankable].sort((a, b) => {
     const pa = a.pnlCents ?? 0;
     const pb = b.pnlCents ?? 0;
     if (pb !== pa) return pb - pa;
     if (b.qtyHeld !== a.qtyHeld) return b.qtyHeld - a.qtyHeld;
     return a.catalogItemId - b.catalogItemId;
   });
-  const sortAsc = [...priced].sort((a, b) => {
+  const sortAsc = [...rankable].sort((a, b) => {
     const pa = a.pnlCents ?? 0;
     const pb = b.pnlCents ?? 0;
     if (pa !== pb) return pa - pb;
@@ -196,6 +214,10 @@ export function computePortfolioPnL(
     totalInvestedCents,
     pricedInvestedCents,
     totalCurrentValueCents,
+    totalCurrentValueTrackedCents,
+    totalCurrentValueCollectionCents,
+    qtyHeldTrackedAcrossPortfolio,
+    qtyHeldCollectionAcrossPortfolio,
     unrealizedPnLCents,
     unrealizedPnLPct,
     realizedPnLCents,
@@ -205,6 +227,8 @@ export function computePortfolioPnL(
     unpricedCount,
     staleCount,
     lotCount,
+    lotCountTracked: breakdown.lotCountTracked,
+    lotCountCollection: breakdown.lotCountCollection,
     perHolding,
     bestPerformers: sortDesc.slice(0, 3),
     worstPerformers: sortAsc.slice(0, 3),

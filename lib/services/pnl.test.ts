@@ -291,6 +291,61 @@ describe('computePortfolioPnL', () => {
     expect(Object.is(r.realizedRipPnLCents, 0)).toBe(true);
     expect(Object.is(r.realizedSalesPnLCents, 0)).toBe(true);
   });
+
+  it('exposes tracked/collection portfolio totals + lot counts', () => {
+    const holdings: Holding[] = [
+      {
+        catalogItemId: 1, kind: 'sealed', name: 'A', setName: null, productType: null,
+        imageUrl: null, imageStoragePath: null,
+        lastMarketCents: 3000, lastMarketAt: '2026-04-30T00:00:00Z',
+        qtyHeld: 2, qtyHeldTracked: 2, qtyHeldCollection: 0, totalInvestedCents: 4000,
+      },
+      {
+        catalogItemId: 2, kind: 'sealed', name: 'B', setName: null, productType: null,
+        imageUrl: null, imageStoragePath: null,
+        lastMarketCents: 5000, lastMarketAt: '2026-04-30T00:00:00Z',
+        qtyHeld: 3, qtyHeldTracked: 0, qtyHeldCollection: 3, totalInvestedCents: 0,
+      },
+    ];
+    const out = computePortfolioPnL(holdings, 0, 0, 5, new Date('2026-05-02T00:00:00Z'));
+    expect(out.totalCurrentValueCents).toBe(2 * 3000 + 3 * 5000); // 21000
+    expect(out.totalCurrentValueTrackedCents).toBe(6000);
+    expect(out.totalCurrentValueCollectionCents).toBe(15000);
+    expect(out.qtyHeldTrackedAcrossPortfolio).toBe(2);
+    expect(out.qtyHeldCollectionAcrossPortfolio).toBe(3);
+    expect(out.unrealizedPnLCents).toBe(2000); // 6000 - 4000
+  });
+
+  it('best/worst performers exclude all-collection holdings', () => {
+    const holdings: Holding[] = [
+      {
+        catalogItemId: 1, kind: 'sealed', name: 'TrackedWinner', setName: null, productType: null,
+        imageUrl: null, imageStoragePath: null,
+        lastMarketCents: 5000, lastMarketAt: '2026-04-30T00:00:00Z',
+        qtyHeld: 1, qtyHeldTracked: 1, qtyHeldCollection: 0, totalInvestedCents: 1000,
+      },
+      {
+        catalogItemId: 2, kind: 'sealed', name: 'CollectionOnly', setName: null, productType: null,
+        imageUrl: null, imageStoragePath: null,
+        lastMarketCents: 9999, lastMarketAt: '2026-04-30T00:00:00Z',
+        qtyHeld: 1, qtyHeldTracked: 0, qtyHeldCollection: 1, totalInvestedCents: 0,
+      },
+    ];
+    const out = computePortfolioPnL(holdings, 0, 0, 2, new Date('2026-05-02T00:00:00Z'));
+    expect(out.bestPerformers.map((h) => h.catalogItemId)).toEqual([1]);
+    expect(out.worstPerformers.map((h) => h.catalogItemId)).toEqual([1]);
+  });
+
+  it('lotCountTracked + lotCountCollection breakdown', () => {
+    const holdings: Holding[] = [];
+    const out = computePortfolioPnL(holdings, 0, 0, 0, new Date('2026-05-02T00:00:00Z'), {
+      lotCountTracked: 7,
+      lotCountCollection: 2,
+    });
+    expect(out.lotCountTracked).toBe(7);
+    expect(out.lotCountCollection).toBe(2);
+    expect(out.lotCount).toBe(0);
+  });
 });
 
 describe('emptyHoldingPnL', () => {
