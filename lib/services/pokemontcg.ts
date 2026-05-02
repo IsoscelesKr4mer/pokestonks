@@ -79,12 +79,19 @@ export async function searchCards(args: {
   for (const t of args.text ?? []) {
     parts.push(`(name:*${t}* OR set.name:*${t}*)`);
   }
-  // Pokémon TCG API stores `number` as the printed string. Sets with totals <100
-  // print "74" not "074", so try both forms when the user typed "074/088".
-  const numberFromQuery = args.cardNumberFull
-    ? args.cardNumberFull.split('/')[0]
-    : args.cardNumberPartial ?? null;
-  if (numberFromQuery) {
+  // Pokémon TCG API stores `number` as the printed string. Some sets print
+  // a card number with leading zeros (modern: "002") while others don't
+  // (Gym-era: "2"). When the user typed only a partial number ("2" or "002"),
+  // we widen with the OR so they find their card regardless of which form
+  // the printed number uses. When the user typed the FULL XXX/YYY form,
+  // they're being precise and almost always referring to a specific
+  // modern-set printing — match the typed form exactly so a search for
+  // "002/132" doesn't pick up Gym Heroes "2/132" cards.
+  if (args.cardNumberFull) {
+    const head = args.cardNumberFull.split('/')[0];
+    parts.push(`number:${head}`);
+  } else if (args.cardNumberPartial) {
+    const numberFromQuery = args.cardNumberPartial;
     const stripped = numberFromQuery.replace(/^0+/, '') || '0';
     if (stripped !== numberFromQuery) {
       parts.push(`(number:${numberFromQuery} OR number:${stripped})`);
