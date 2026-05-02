@@ -34,6 +34,7 @@ export const purchases = pgTable(
     source: text('source'),
     location: text('location'),
     notes: text('notes'),
+    unknownCost: boolean('unknown_cost').notNull().default(false),
     deletedAt: timestamp('deleted_at', { withTimezone: true }),
     sourceRipId: bigint('source_rip_id', { mode: 'number' }),
     sourceDecompositionId: bigint('source_decomposition_id', { mode: 'number' }),
