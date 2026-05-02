@@ -56,6 +56,16 @@ export function PortfolioHero({
   if (!data || data.lotCount === 0) return null;
   const nothingPriced = data.pricedInvestedCents === 0;
 
+  const hasCollection = data.lotCountCollection > 0;
+  const lotCaptionParts: string[] = [];
+  if (data.lotCountTracked > 0 || data.lotCountCollection === 0) {
+    lotCaptionParts.push(`${data.lotCountTracked} tracked`);
+  }
+  if (data.lotCountCollection > 0) {
+    lotCaptionParts.push(`${data.lotCountCollection} in collection`);
+  }
+  const lotCaption = lotCaptionParts.join(' · ');
+
   return (
     <div className="grid gap-8">
       <div className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-8 items-end">
@@ -105,6 +115,11 @@ export function PortfolioHero({
               </span>
             </div>
           )}
+          {!nothingPriced && hasCollection && !privacy && (
+            <div className="text-[11px] font-mono text-meta">
+              {formatCents(data.totalCurrentValueTrackedCents)} tracked · {formatCents(data.totalCurrentValueCollectionCents)} in collection
+            </div>
+          )}
           {!nothingPriced && (
             <div>
               <DeltaPill
@@ -134,7 +149,7 @@ export function PortfolioHero({
             <Stat
               label="Invested"
               value={formatCents(data.totalInvestedCents)}
-              sub={`${data.lotCount} ${data.lotCount === 1 ? 'lot' : 'lots'}`}
+              sub={hasCollection ? lotCaption : `${data.lotCount} ${data.lotCount === 1 ? 'lot' : 'lots'}`}
             />
             <Stat
               label="Unrealized"
@@ -163,7 +178,15 @@ export function PortfolioHero({
       )}
 
       <div className="font-mono text-[11px] text-meta flex gap-3 flex-wrap">
-        <span>{data.lotCount} lots</span>
+        {hasCollection ? (
+          <>
+            <span>{data.lotCountTracked} tracked</span>
+            <span className="text-meta-dim">&middot;</span>
+            <span>{data.lotCountCollection} in collection</span>
+          </>
+        ) : (
+          <span>{data.lotCount} lots</span>
+        )}
         <span className="text-meta-dim">&middot;</span>
         <span>{data.pricedCount} priced</span>
         <span className="text-meta-dim">&middot;</span>
