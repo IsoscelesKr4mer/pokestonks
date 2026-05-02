@@ -104,6 +104,19 @@ export async function searchCards(args: {
       parts.push(`number:${numberFromQuery}`);
     }
   }
+
+  // For the full XXX/YYY form, push the set.printedTotal filter into the
+  // upstream query as well. Without it, "(number:002 OR number:2)" returns
+  // every card numbered 2 in TCG history (thousands) and pagination times
+  // out. Adding `set.printedTotal:132` narrows server-side and the API
+  // returns only the handful that match.
+  if (args.cardNumberFull) {
+    const slashRight = args.cardNumberFull.split('/')[1];
+    const total = Number.parseInt(slashRight ?? '', 10);
+    if (Number.isFinite(total)) {
+      parts.push(`set.printedTotal:${total}`);
+    }
+  }
   if (args.setCode) {
     parts.push(`set.id:${args.setCode}`);
   }
