@@ -24,7 +24,7 @@ export async function GET() {
   const { data: purchases, error: pErr } = await supabase
     .from('purchases')
     .select(
-      'id, catalog_item_id, quantity, cost_cents, deleted_at, created_at, catalog_item:catalog_items(kind, name, set_name, product_type, image_url, image_storage_path, last_market_cents, last_market_at)'
+      'id, catalog_item_id, quantity, cost_cents, unknown_cost, deleted_at, created_at, catalog_item:catalog_items(kind, name, set_name, product_type, image_url, image_storage_path, last_market_cents, last_market_at)'
     )
     .is('deleted_at', null);
   if (pErr) return NextResponse.json({ error: pErr.message }, { status: 500 });
@@ -64,13 +64,17 @@ export async function GET() {
   // applies the rips/decomps/sales consumption logic, so its length is
   // the same lotCount the holdings page renders.
   const lotCount = holdings.length;
+  const lotCountTracked = holdings.filter((h) => h.qtyHeldTracked > 0).length;
+  const lotCountCollection = holdings.filter((h) => h.qtyHeldCollection > 0).length;
   const saleEventCount = new Set((sales ?? []).map((s) => s.sale_group_id)).size;
 
   const result = computePortfolioPnL(
     holdings,
     realizedRipLossCents,
     realizedSalesPnLCents,
-    lotCount
+    lotCount,
+    new Date(),
+    { lotCountTracked, lotCountCollection }
   );
 
   // --- Delta + manual enrichment ---
