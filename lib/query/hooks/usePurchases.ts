@@ -69,6 +69,34 @@ export function useUpdatePurchase() {
   });
 }
 
+export function useBulkAddPurchases() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (
+      items: Array<{
+        catalogItemId: number;
+        quantity?: number;
+        source?: string | null;
+        purchaseDate?: string;
+      }>
+    ) => {
+      const res = await fetch('/api/purchases/bulk', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items }),
+      });
+      const body = (await res.json().catch(() => ({}))) as {
+        created?: number;
+        ids?: number[];
+        error?: string;
+      };
+      if (!res.ok) throw new Error(body.error ?? `bulk_add_failed: ${res.status}`);
+      return { created: body.created ?? 0, ids: body.ids ?? [] };
+    },
+    onSuccess: () => invalidateAfterPurchaseMutation(qc),
+  });
+}
+
 export class DeletePurchaseError extends Error {
   ripIds?: number[];
   linkedSaleIds?: number[];

@@ -24,9 +24,13 @@ export interface SearchResultItem {
 export function SearchResultCard({
   item,
   ownedQty,
+  selected,
+  onSelectChange,
 }: {
   item: SearchResultItem;
   ownedQty: number;
+  selected?: boolean;
+  onSelectChange?: (selected: boolean) => void;
 }) {
   const tag =
     item.kind === 'sealed'
@@ -35,6 +39,16 @@ export function SearchResultCard({
 
   return (
     <div className="vault-card p-[10px] grid gap-2 relative">
+      {onSelectChange && (
+        <input
+          type="checkbox"
+          aria-label={`Select ${item.name}`}
+          checked={selected ?? false}
+          onChange={(e) => onSelectChange(e.target.checked)}
+          onClick={(e) => e.stopPropagation()}
+          className="absolute left-2 top-2 z-10 h-4 w-4 cursor-pointer accent-accent"
+        />
+      )}
       <Link href={`/catalog/${item.id}`} className="grid gap-2">
         <HoldingThumbnail
           name={item.name}

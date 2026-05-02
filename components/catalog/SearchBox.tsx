@@ -6,6 +6,8 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { SearchResultCard, type SearchResultItem } from './SearchResultCard';
 import { RefreshButton } from './RefreshButton';
 import { useHoldings } from '@/lib/query/hooks/useHoldings';
+import { useBulkAddPurchases } from '@/lib/query/hooks/usePurchases';
+import { BulkAddBar } from './BulkAddBar';
 
 type SortBy = 'price-desc' | 'price-asc' | 'rarity-desc' | 'relevance' | 'name';
 
@@ -98,6 +100,26 @@ export function SearchBox() {
   useEffect(() => {
     setRarity(ALL_RARITIES);
   }, [debounced, kind]);
+
+  const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
+  const bulkAdd = useBulkAddPurchases();
+
+  const toggleSelected = (id: number, isSelected: boolean) => {
+    setSelectedIds((prev) => {
+      const next = new Set(prev);
+      if (isSelected) next.add(id);
+      else next.delete(id);
+      return next;
+    });
+  };
+
+  const handleBulkSubmit = async () => {
+    if (selectedIds.size === 0) return;
+    await bulkAdd.mutateAsync(
+      Array.from(selectedIds).map((catalogItemId) => ({ catalogItemId, quantity: 1 }))
+    );
+    setSelectedIds(new Set());
+  };
 
   const enabled = debounced.length > 0;
   const { data, isFetching, error } = useQuery<SearchResponse>({
@@ -319,6 +341,8 @@ export function SearchBox() {
                 key={item.id}
                 item={item}
                 ownedQty={ownedQtyByCatalogId.get(item.id) ?? 0}
+                selected={selectedIds.has(item.id)}
+                onSelectChange={(checked) => toggleSelected(item.id, checked)}
               />
             ))}
           </div>
@@ -335,6 +359,12 @@ export function SearchBox() {
           )}
         </>
       )}
+      <BulkAddBar
+        count={selectedIds.size}
+        onClear={() => setSelectedIds(new Set())}
+        onSubmit={handleBulkSubmit}
+        pending={bulkAdd.isPending}
+      />
     </div>
   );
 }
