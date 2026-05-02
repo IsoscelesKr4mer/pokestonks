@@ -128,6 +128,7 @@ export async function POST(request: NextRequest) {
             gradingCompany: k.isGraded ? k.gradingCompany ?? null : null,
             grade: k.isGraded && k.grade != null ? String(k.grade) : null,
             certNumber: k.isGraded ? k.certNumber ?? null : null,
+            unknownCost: sourcePurchase.unknownCost,
             source: null,
             location: null,
             notes: k.notes ?? null,
