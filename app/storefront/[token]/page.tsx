@@ -6,7 +6,7 @@ import { db, schema } from '@/lib/db/client';
 import { eq } from 'drizzle-orm';
 import { StorefrontUnavailable } from '@/components/storefront/StorefrontUnavailable';
 import { StorefrontHeader } from '@/components/storefront/StorefrontHeader';
-import { StorefrontGrid } from '@/components/storefront/StorefrontGrid';
+import { StorefrontGridSortable } from '@/components/storefront/StorefrontGridSortable';
 
 type Params = { token: string };
 type Props = { params: Promise<Params> };
@@ -64,7 +64,7 @@ export default async function StorefrontPublicPage({ params }: Props) {
         <p className="mt-12 text-center text-[14px] text-meta">No items currently available.</p>
       ) : (
         <div className="mt-8">
-          <StorefrontGrid items={view.items} />
+          <StorefrontGridSortable items={view.items} />
         </div>
       )}
     </main>

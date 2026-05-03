@@ -378,17 +378,9 @@ export async function loadStorefrontView(userId: string): Promise<StorefrontView
   }
 
   // Step 6: sort. Manual override first by updatedAt DESC; auto by name ASC.
-  items.sort((a, b) => {
-    if (a.priceOrigin !== b.priceOrigin) {
-      return a.priceOrigin === 'manual' ? -1 : 1;
-    }
-    if (a.priceOrigin === 'manual') {
-      const at = a.updatedAt?.getTime() ?? 0;
-      const bt = b.updatedAt?.getTime() ?? 0;
-      if (at !== bt) return bt - at;
-    }
-    return a.name.localeCompare(b.name);
-  });
+  // Default sort: alphabetical by name. Buyer can re-sort client-side
+  // via the sort dropdown on the public storefront grid.
+  items.sort((a, b) => a.name.localeCompare(b.name));
 
   const lastUpdatedAt = items.reduce<Date | null>((m, i) => {
     if (i.updatedAt == null) return m;
