@@ -21,6 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // No app name. No "| Pokestonks" suffix. Hard rule.
   return {
     title,
+    description: '',
     icons: { icon: undefined },
     other: { generator: '' },
   };

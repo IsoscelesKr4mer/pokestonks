@@ -3,6 +3,12 @@ import { updateSession } from '@/lib/supabase/middleware';
 
 const PUBLIC_PATHS = ['/login', '/auth/callback'];
 
+// Public prefixes: any URL whose path starts with one of these is served
+// without the Supabase session auth gate. The /storefront/[token] public
+// buyer route lives here. Note that bare `/storefront` (admin page) is NOT
+// matched because PUBLIC_PREFIXES requires a trailing path segment.
+const PUBLIC_PREFIXES = ['/storefront/'];
+
 // Routes that authenticate via their own mechanism (e.g. CRON_SECRET bearer
 // header) and must bypass the Supabase session redirect. The route itself
 // handles auth and returns 401 if the credential is missing or wrong.
@@ -16,7 +22,9 @@ export async function middleware(request: NextRequest) {
   }
 
   const { response, user } = await updateSession(request);
-  const isPublic = PUBLIC_PATHS.some((p) => path === p || path.startsWith(`${p}/`));
+  const isPublic =
+    PUBLIC_PATHS.some((p) => path === p || path.startsWith(`${p}/`)) ||
+    PUBLIC_PREFIXES.some((p) => path.startsWith(p));
 
   if (!user && !isPublic) {
     const url = request.nextUrl.clone();
