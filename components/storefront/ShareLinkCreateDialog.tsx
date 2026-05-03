@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import {
   VaultDialogHeader,
@@ -44,6 +44,16 @@ export function ShareLinkCreateDialog({
   const createMut = useCreateShareToken();
   const updateMut = useUpdateShareToken(editTarget?.id ?? 0);
   const pending = createMut.isPending || updateMut.isPending;
+
+  useEffect(() => {
+    if (open) {
+      setLabel(editTarget?.label ?? '');
+      setHeaderTitle(editTarget?.headerTitle ?? '');
+      setHeaderSubtitle(editTarget?.headerSubtitle ?? '');
+      setContactLine(editTarget?.contactLine ?? '');
+      setError(null);
+    }
+  }, [open, editTarget?.id]);
 
   async function submit() {
     setError(null);

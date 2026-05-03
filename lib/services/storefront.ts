@@ -1,5 +1,5 @@
 import 'server-only';
-import { eq, and, isNull, desc, asc } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { db, schema } from '@/lib/db/client';
 import type { CatalogItem } from '@/lib/db/schema/catalogItems';
 

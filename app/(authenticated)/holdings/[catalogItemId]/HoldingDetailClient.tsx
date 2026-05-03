@@ -333,11 +333,12 @@ export function HoldingDetailClient({ initial }: { initial: HoldingDetailDto }) 
             {item.lastMarketCents === null && (summary.manualMarketCents ?? null) === null && (
               <Button onClick={() => setSetPriceOpen(true)}>Set price</Button>
             )}
-            {/* TODO(plan-graded-storefront): subtract qtyHeldGraded once that summary field exists */}
             <StorefrontIntegration
               catalogItemId={item.id}
               storefrontListing={dto.storefrontListing}
-              qtyHeldRaw={(summary.qtyHeldTracked ?? 0) + (summary.qtyHeldCollection ?? 0)}
+              qtyHeldRaw={dto.lots
+                .filter((entry) => !entry.lot.isGraded)
+                .reduce((sum, entry) => sum + entry.qtyRemaining, 0)}
             />
           </div>
         </div>
