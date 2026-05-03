@@ -1,11 +1,20 @@
 import 'server-only';
-import { eq } from 'drizzle-orm';
-import { db, schema } from '@/lib/db/client';
+import { db } from '@/lib/db/client';
 import type { CatalogItem } from '@/lib/db/schema/catalogItems';
 
 // ---------------------------------------------------------------------------
-// Pure helper
+// Pure helpers
 // ---------------------------------------------------------------------------
+
+/**
+ * Round cents up to the nearest step (default $5 = 500 cents). Used for
+ * the auto-priced storefront fallback so a $54.99 ETB shows as $55, a
+ * $159.99 box shows as $160, etc.
+ */
+export function roundUpToNearest(cents: number, step: number = 500): number {
+  if (cents <= 0) return 0;
+  return Math.ceil(cents / step) * step;
+}
 
 type TypeLabelItem = {
   kind: 'sealed' | 'card';
@@ -73,8 +82,11 @@ export type StorefrontViewItem = {
   imageStoragePath: string | null;
   typeLabel: string;
   qtyAvailable: number;
-  askingPriceCents: number | null;
-  updatedAt: Date;
+  /** Resolved price shown to the buyer (override if set, else rounded market). Always non-null in this output (filtered out otherwise). */
+  displayPriceCents: number;
+  priceOrigin: 'manual' | 'auto';
+  /** When the listing override (or its absence) was last touched; null if no override row. */
+  updatedAt: Date | null;
 };
 
 export type StorefrontViewSummary = {
@@ -84,57 +96,42 @@ export type StorefrontViewSummary = {
 };
 
 /**
- * Load the storefront view for a given user. Joins catalog_items with
- * storefront_listings and the user's purchases (excluding soft-deleted
- * + graded lots), then filters out zero-qty rows.
+ * Load the public-facing storefront view for a user.
  *
- * Returns items sorted by listing.updated_at DESC, name ASC.
+ * Holdings-driven (every catalog_item with raw qty > 0) instead of
+ * listings-driven. Override rows in storefront_listings can either pin a
+ * manual price OR hide an item. Items with no override and no market price
+ * are excluded (no price source).
+ *
+ * Sort: items with manual override first by override.updatedAt DESC, then
+ * auto-priced items by name ASC.
  */
 export async function loadStorefrontView(userId: string): Promise<StorefrontViewSummary> {
-  // Step 1: load all listings for user.
-  const listings = await db.query.storefrontListings.findMany({
-    where: eq(schema.storefrontListings.userId, userId),
-  });
-  if (listings.length === 0) {
-    return { items: [], itemsCount: 0, lastUpdatedAt: null };
-  }
-
-  const catalogIds = listings.map((l) => l.catalogItemId);
-
-  // Step 2: load catalog rows for those ids.
-  const catalogRows = await db.query.catalogItems.findMany({
-    where: (ci, ops) => ops.inArray(ci.id, catalogIds),
-  });
-  const catalogById = new Map<number, CatalogItem>(catalogRows.map((c) => [c.id, c]));
-
-  // Step 3: load this user's open purchase lots for those catalog ids.
+  // Step 1: load every open purchase lot for the user.
   const lots = await db.query.purchases.findMany({
     where: (p, ops) =>
       ops.and(
         ops.eq(p.userId, userId),
-        ops.inArray(p.catalogItemId, catalogIds),
         ops.isNull(p.deletedAt)
       ),
   });
+  if (lots.length === 0) {
+    return { items: [], itemsCount: 0, lastUpdatedAt: null };
+  }
 
-  // Step 4: load consumption events to compute qty remaining per lot.
   const lotIds = lots.map((l) => l.id);
+
+  // Step 2: consumption events to compute qty remaining.
   const [rips, decompositions, sales] = await Promise.all([
-    lotIds.length === 0
-      ? Promise.resolve([] as Array<{ sourcePurchaseId: number }>)
-      : db.query.rips.findMany({
-          where: (r, ops) => ops.inArray(r.sourcePurchaseId, lotIds),
-        }),
-    lotIds.length === 0
-      ? Promise.resolve([] as Array<{ sourcePurchaseId: number }>)
-      : db.query.boxDecompositions.findMany({
-          where: (d, ops) => ops.inArray(d.sourcePurchaseId, lotIds),
-        }),
-    lotIds.length === 0
-      ? Promise.resolve([] as Array<{ purchaseId: number; quantity: number }>)
-      : db.query.sales.findMany({
-          where: (s, ops) => ops.inArray(s.purchaseId, lotIds),
-        }),
+    db.query.rips.findMany({
+      where: (r, ops) => ops.inArray(r.sourcePurchaseId, lotIds),
+    }),
+    db.query.boxDecompositions.findMany({
+      where: (d, ops) => ops.inArray(d.sourcePurchaseId, lotIds),
+    }),
+    db.query.sales.findMany({
+      where: (s, ops) => ops.inArray(s.purchaseId, lotIds),
+    }),
   ]);
 
   const consumed = new Map<number, number>();
@@ -148,7 +145,8 @@ export async function loadStorefrontView(userId: string): Promise<StorefrontView
     consumed.set(s.purchaseId, (consumed.get(s.purchaseId) ?? 0) + s.quantity);
   }
 
-  // Step 5: aggregate per catalog item, raw (non-graded) only.
+  // Step 3: aggregate raw (non-graded) qty per catalog item, plus collect
+  //         lots for type-label computation.
   const aggByCatalog = new Map<
     number,
     { qtyRaw: number; lotsForLabel: TypeLabelLot[] }
@@ -156,7 +154,7 @@ export async function loadStorefrontView(userId: string): Promise<StorefrontView
   for (const lot of lots) {
     const remaining = lot.quantity - (consumed.get(lot.id) ?? 0);
     if (remaining <= 0) continue;
-    if (lot.isGraded) continue; // graded excluded from storefront
+    if (lot.isGraded) continue;
     const acc = aggByCatalog.get(lot.catalogItemId) ?? {
       qtyRaw: 0,
       lotsForLabel: [],
@@ -170,15 +168,48 @@ export async function loadStorefrontView(userId: string): Promise<StorefrontView
     aggByCatalog.set(lot.catalogItemId, acc);
   }
 
-  // Step 6: build items array, filtered by qtyRaw > 0.
+  if (aggByCatalog.size === 0) {
+    return { items: [], itemsCount: 0, lastUpdatedAt: null };
+  }
+
+  // Step 4: load catalog rows + storefront overrides for the eligible ids.
+  const eligibleIds = Array.from(aggByCatalog.keys());
+  const [catalogRows, overrides] = await Promise.all([
+    db.query.catalogItems.findMany({
+      where: (ci, ops) => ops.inArray(ci.id, eligibleIds),
+    }),
+    db.query.storefrontListings.findMany({
+      where: (sl, ops) =>
+        ops.and(ops.eq(sl.userId, userId), ops.inArray(sl.catalogItemId, eligibleIds)),
+    }),
+  ]);
+  const catalogById = new Map<number, CatalogItem>(catalogRows.map((c) => [c.id, c]));
+  const overrideByCatalog = new Map(overrides.map((o) => [o.catalogItemId, o]));
+
+  // Step 5: assemble. Filter: hidden, or no price source.
   const items: StorefrontViewItem[] = [];
-  for (const listing of listings) {
-    const agg = aggByCatalog.get(listing.catalogItemId);
-    if (!agg || agg.qtyRaw <= 0) continue;
-    const item = catalogById.get(listing.catalogItemId);
+  for (const [catalogItemId, agg] of aggByCatalog) {
+    const item = catalogById.get(catalogItemId);
     if (!item) continue;
+    const override = overrideByCatalog.get(catalogItemId);
+
+    if (override?.hidden) continue;
+
+    let displayPriceCents: number;
+    let priceOrigin: 'manual' | 'auto';
+    if (override?.askingPriceCents != null) {
+      displayPriceCents = override.askingPriceCents;
+      priceOrigin = 'manual';
+    } else if (item.lastMarketCents != null) {
+      displayPriceCents = roundUpToNearest(item.lastMarketCents);
+      priceOrigin = 'auto';
+    } else {
+      // No price source -- exclude from public storefront.
+      continue;
+    }
+
     items.push({
-      catalogItemId: listing.catalogItemId,
+      catalogItemId,
       name: item.name,
       setName: item.setName,
       imageUrl: item.imageUrl,
@@ -188,20 +219,30 @@ export async function loadStorefrontView(userId: string): Promise<StorefrontView
         agg.lotsForLabel
       ),
       qtyAvailable: agg.qtyRaw,
-      askingPriceCents: listing.askingPriceCents,
-      updatedAt: listing.updatedAt,
+      displayPriceCents,
+      priceOrigin,
+      updatedAt: override?.updatedAt ?? null,
     });
   }
 
-  // Step 7: sort by updated_at DESC, name ASC tiebreaker.
+  // Step 6: sort. Manual override first by updatedAt DESC; auto by name ASC.
   items.sort((a, b) => {
-    const t = b.updatedAt.getTime() - a.updatedAt.getTime();
-    if (t !== 0) return t;
+    if (a.priceOrigin !== b.priceOrigin) {
+      return a.priceOrigin === 'manual' ? -1 : 1;
+    }
+    if (a.priceOrigin === 'manual') {
+      const at = a.updatedAt?.getTime() ?? 0;
+      const bt = b.updatedAt?.getTime() ?? 0;
+      if (at !== bt) return bt - at;
+    }
     return a.name.localeCompare(b.name);
   });
 
-  const lastUpdatedAt =
-    items.length === 0 ? null : items.reduce((m, i) => (i.updatedAt > m ? i.updatedAt : m), items[0].updatedAt);
+  const lastUpdatedAt = items.reduce<Date | null>((m, i) => {
+    if (i.updatedAt == null) return m;
+    if (m == null) return i.updatedAt;
+    return i.updatedAt > m ? i.updatedAt : m;
+  }, null);
 
   return { items, itemsCount: items.length, lastUpdatedAt };
 }

@@ -23,7 +23,8 @@ const mkItem = (overrides: Partial<Parameters<typeof StorefrontGrid>[0]['items']
   imageStoragePath: null,
   typeLabel: 'Elite Trainer Box',
   qtyAvailable: 3,
-  askingPriceCents: 6000,
+  displayPriceCents: 6000,
+  priceOrigin: 'manual' as const,
   updatedAt: new Date(),
   ...overrides,
 });
