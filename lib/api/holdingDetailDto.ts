@@ -100,6 +100,10 @@ export interface HoldingDetailDto {
   }>;
   sales: HoldingDetailSaleEvent[];
   activity: ActivityEvent[];
+  storefrontListing: {
+    askingPriceCents: number;
+    updatedAt: string;
+  } | null;
 }
 
 // ---- Activity event builder ----

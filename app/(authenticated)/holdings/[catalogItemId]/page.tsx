@@ -282,6 +282,21 @@ export default async function HoldingDetailPage({
     })),
   });
 
+  // Storefront listing for this user + item.
+  const storefrontListingRow = await db.query.storefrontListings.findFirst({
+    where: (sl, ops) =>
+      ops.and(
+        ops.eq(sl.userId, user.id),
+        ops.eq(sl.catalogItemId, numericId)
+      ),
+  });
+  const storefrontListingDto = storefrontListingRow
+    ? {
+        askingPriceCents: storefrontListingRow.askingPriceCents,
+        updatedAt: storefrontListingRow.updatedAt.toISOString(),
+      }
+    : null;
+
   const initial: HoldingDetailDto = {
     item: {
       id: item.id,
@@ -380,6 +395,7 @@ export default async function HoldingDetailPage({
     decompositions: decompositionsSummary,
     sales: salesEvents,
     activity,
+    storefrontListing: storefrontListingDto,
   };
 
   return <HoldingDetailClient initial={initial} />;

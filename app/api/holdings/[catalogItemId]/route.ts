@@ -390,6 +390,21 @@ export async function GET(
     })),
   });
 
+  // Storefront listing for this user + item.
+  const listing = await db.query.storefrontListings.findFirst({
+    where: (sl, ops) =>
+      ops.and(
+        ops.eq(sl.userId, user.id),
+        ops.eq(sl.catalogItemId, numericId)
+      ),
+  });
+  const storefrontListingDto = listing
+    ? {
+        askingPriceCents: listing.askingPriceCents,
+        updatedAt: listing.updatedAt.toISOString(),
+      }
+    : null;
+
   const holdingBase = holding ?? emptyHoldingPnL({
     id: item.id,
     name: item.name,
@@ -431,5 +446,6 @@ export async function GET(
     decompositions: decompositionsSummary,
     sales: salesEvents,
     activity,
+    storefrontListing: storefrontListingDto,
   });
 }

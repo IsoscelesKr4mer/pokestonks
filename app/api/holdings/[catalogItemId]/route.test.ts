@@ -10,6 +10,7 @@ const {
   mockBoxDecompFindMany,
   mockSalesFindMany,
   mockMarketPricesFindMany,
+  mockStorefrontListingsFindFirst,
 } = vi.hoisted(() => ({
   mockGetUser: vi.fn(),
   mockCatalogFindFirst: vi.fn(),
@@ -19,6 +20,7 @@ const {
   mockBoxDecompFindMany: vi.fn(),
   mockSalesFindMany: vi.fn(),
   mockMarketPricesFindMany: vi.fn(),
+  mockStorefrontListingsFindFirst: vi.fn(),
 }));
 
 vi.mock('@/lib/supabase/server', () => ({
@@ -34,6 +36,7 @@ vi.mock('@/lib/db/client', () => ({
       boxDecompositions: { findMany: mockBoxDecompFindMany },
       sales: { findMany: mockSalesFindMany },
       marketPrices: { findMany: mockMarketPricesFindMany },
+      storefrontListings: { findFirst: mockStorefrontListingsFindFirst },
     },
   },
   schema: {
@@ -87,6 +90,7 @@ function setupDefaults() {
   mockSalesFindMany.mockResolvedValue([]);
   mockCatalogFindMany.mockResolvedValue([{ id: 42, manualMarketCents: null }]);
   mockMarketPricesFindMany.mockResolvedValue([]);
+  mockStorefrontListingsFindFirst.mockResolvedValue(undefined);
 }
 
 beforeEach(() => {
