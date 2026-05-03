@@ -20,6 +20,7 @@ import { PriceChart } from '@/components/charts/PriceChart';
 import { SetManualPriceDialog } from '@/components/prices/SetManualPriceDialog';
 import { usePrivacyMode } from '@/lib/utils/privacy';
 import { NoBasisPill } from '@/components/holdings/NoBasisPill';
+import { StorefrontIntegration } from './StorefrontIntegration';
 
 export function HoldingDetailClient({ initial }: { initial: HoldingDetailDto }) {
   const { data } = useHolding(initial.item.id);
@@ -332,6 +333,12 @@ export function HoldingDetailClient({ initial }: { initial: HoldingDetailDto }) 
             {item.lastMarketCents === null && (summary.manualMarketCents ?? null) === null && (
               <Button onClick={() => setSetPriceOpen(true)}>Set price</Button>
             )}
+            {/* TODO(plan-graded-storefront): subtract qtyHeldGraded once that summary field exists */}
+            <StorefrontIntegration
+              catalogItemId={item.id}
+              storefrontListing={dto.storefrontListing}
+              qtyHeldRaw={(summary.qtyHeldTracked ?? 0) + (summary.qtyHeldCollection ?? 0)}
+            />
           </div>
         </div>
       </div>
