@@ -1,4 +1,4 @@
-import { pgTable, uuid, bigint, integer, timestamp, primaryKey, index, check } from 'drizzle-orm/pg-core';
+import { pgTable, uuid, bigint, integer, boolean, timestamp, primaryKey, index, check } from 'drizzle-orm/pg-core';
 import { sql } from 'drizzle-orm';
 import { catalogItems } from './catalogItems';
 
@@ -9,7 +9,8 @@ export const storefrontListings = pgTable(
     catalogItemId: bigint('catalog_item_id', { mode: 'number' })
       .notNull()
       .references(() => catalogItems.id, { onDelete: 'cascade' }),
-    askingPriceCents: integer('asking_price_cents').notNull(),
+    askingPriceCents: integer('asking_price_cents'),
+    hidden: boolean('hidden').notNull().default(false),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
   },
@@ -18,7 +19,7 @@ export const storefrontListings = pgTable(
     userIdx: index('storefront_listings_user_idx').on(t.userId),
     askingPriceCheck: check(
       'storefront_listings_asking_price_nonneg',
-      sql`${t.askingPriceCents} >= 0`
+      sql`${t.askingPriceCents} IS NULL OR ${t.askingPriceCents} >= 0`
     ),
   })
 );

@@ -8,7 +8,7 @@ import { loadStorefrontView } from '@/lib/services/storefront';
 
 export type StorefrontListingDto = {
   catalogItemId: number;
-  askingPriceCents: number;
+  askingPriceCents: number | null;
   createdAt: string;
   updatedAt: string;
   item: {

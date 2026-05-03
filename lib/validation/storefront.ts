@@ -30,7 +30,11 @@ const MAX_ASKING_CENTS = 100_000_000; // $1,000,000
 
 export const upsertListingInputSchema = z.object({
   catalogItemId: z.number().int().positive(),
-  askingPriceCents: z.number().int().min(0).max(MAX_ASKING_CENTS),
+  askingPriceCents: z.number().int().min(0).max(MAX_ASKING_CENTS).nullable().optional(),
+  hidden: z.boolean().optional(),
+}).refine((v) => v.askingPriceCents !== undefined || v.hidden !== undefined, {
+  message: 'nothing_to_update',
+  path: ['askingPriceCents'],
 });
 
 export const MAX_ASKING_PRICE_CENTS = MAX_ASKING_CENTS;

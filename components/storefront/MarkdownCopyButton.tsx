@@ -27,7 +27,7 @@ export function buildMarkdown(
   for (const l of listings) {
     if (l.qtyHeldRaw <= 0) continue;
     lines.push(
-      `- ${l.item.name} · ${l.qtyHeldRaw} available · ${formatCents(l.askingPriceCents)}`
+      `- ${l.item.name} · ${l.qtyHeldRaw} available · ${formatCents(l.askingPriceCents ?? 0)}`
     );
   }
   if (token) {

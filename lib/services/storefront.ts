@@ -73,7 +73,7 @@ export type StorefrontViewItem = {
   imageStoragePath: string | null;
   typeLabel: string;
   qtyAvailable: number;
-  askingPriceCents: number;
+  askingPriceCents: number | null;
   updatedAt: Date;
 };
 

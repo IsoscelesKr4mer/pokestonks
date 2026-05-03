@@ -133,11 +133,11 @@ export function ListingsTable() {
                           type="button"
                           onClick={() => {
                             setEditingId(row.catalogItemId);
-                            setEditValue((row.askingPriceCents / 100).toFixed(2));
+                            setEditValue(((row.askingPriceCents ?? 0) / 100).toFixed(2));
                           }}
                           className="font-medium hover:underline"
                         >
-                          {formatCents(row.askingPriceCents)}
+                          {formatCents(row.askingPriceCents ?? 0)}
                         </button>
                       )}
                     </td>

@@ -101,7 +101,7 @@ export interface HoldingDetailDto {
   sales: HoldingDetailSaleEvent[];
   activity: ActivityEvent[];
   storefrontListing: {
-    askingPriceCents: number;
+    askingPriceCents: number | null;
     updatedAt: string;
   } | null;
 }

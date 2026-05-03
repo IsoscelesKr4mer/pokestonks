@@ -40,7 +40,7 @@ export function StorefrontGrid({ items }: StorefrontGridProps) {
             </p>
             <div className="mt-3 flex items-end justify-between">
               <p className="text-[18px] font-semibold tracking-tight">
-                {formatCents(item.askingPriceCents)}
+                {formatCents(item.askingPriceCents ?? 0)}
               </p>
               <p className="text-[11px] text-meta">
                 {item.qtyAvailable} {item.qtyAvailable === 1 ? 'available' : 'available'}

@@ -3,7 +3,7 @@ import { SetAskingPriceCta } from '@/components/storefront/SetAskingPriceCta';
 
 export type StorefrontIntegrationProps = {
   catalogItemId: number;
-  storefrontListing: { askingPriceCents: number; updatedAt: string } | null;
+  storefrontListing: { askingPriceCents: number | null; updatedAt: string } | null;
   qtyHeldRaw: number;
 };
 
