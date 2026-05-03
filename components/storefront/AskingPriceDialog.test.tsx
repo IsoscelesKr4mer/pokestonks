@@ -30,30 +30,34 @@ describe('AskingPriceDialog', () => {
     mockRemove.mockReset();
   });
 
-  it('shows "Add to storefront" title when not listed', () => {
+  it('shows "Storefront entry" title when not listed', () => {
     wrap(
       <AskingPriceDialog
         catalogItemId={1}
         open={true}
         onOpenChange={() => {}}
-        initialCents={null}
+        initialAskingCents={null}
+        initialHidden={false}
+        autoPriceCents={null}
       />
     );
-    expect(screen.getByText(/Add to storefront/i)).toBeTruthy();
-    expect(screen.queryByRole('button', { name: /Remove from storefront/i })).toBeNull();
+    expect(screen.getByText(/Storefront entry/i)).toBeTruthy();
+    expect(screen.queryByRole('button', { name: /Reset to default/i })).toBeNull();
   });
 
-  it('shows "Edit asking price" title and Remove button when listed', () => {
+  it('shows "Edit storefront entry" title and Reset button when listed', () => {
     wrap(
       <AskingPriceDialog
         catalogItemId={1}
         open={true}
         onOpenChange={() => {}}
-        initialCents={6000}
+        initialAskingCents={6000}
+        initialHidden={false}
+        autoPriceCents={null}
       />
     );
-    expect(screen.getByText(/Edit asking price/i)).toBeTruthy();
-    expect(screen.getByRole('button', { name: /Remove from storefront/i })).toBeTruthy();
+    expect(screen.getByText(/Edit storefront entry/i)).toBeTruthy();
+    expect(screen.getByRole('button', { name: /Reset to default/i })).toBeTruthy();
   });
 
   it('upserts on Save', async () => {
@@ -63,7 +67,9 @@ describe('AskingPriceDialog', () => {
         catalogItemId={42}
         open={true}
         onOpenChange={() => {}}
-        initialCents={null}
+        initialAskingCents={null}
+        initialHidden={false}
+        autoPriceCents={null}
       />
     );
     const input = screen.getByLabelText(/Asking price/i);
@@ -80,7 +86,9 @@ describe('AskingPriceDialog', () => {
         catalogItemId={1}
         open={true}
         onOpenChange={() => {}}
-        initialCents={null}
+        initialAskingCents={null}
+        initialHidden={false}
+        autoPriceCents={null}
       />
     );
     const input = screen.getByLabelText(/Asking price/i);
@@ -89,5 +97,39 @@ describe('AskingPriceDialog', () => {
     await new Promise((r) => setTimeout(r, 0));
     expect(screen.getByText(/cannot exceed \$1,000,000/i)).toBeTruthy();
     expect(mockUpsert).not.toHaveBeenCalled();
+  });
+
+  it('shows hidden state and Reset button when initialHidden is true', () => {
+    wrap(
+      <AskingPriceDialog
+        catalogItemId={1}
+        open={true}
+        onOpenChange={() => {}}
+        initialAskingCents={null}
+        initialHidden={true}
+      />
+    );
+    // The Reset button shows because hasOverride is true (hidden flag is an override).
+    expect(screen.getByRole('button', { name: /Reset to default/i })).toBeTruthy();
+    const checkbox = screen.getByRole('checkbox', { name: /Hide from storefront/i }) as HTMLInputElement;
+    expect(checkbox.checked).toBe(true);
+  });
+
+  it('submits hidden=true when user toggles the checkbox', async () => {
+    mockUpsert.mockResolvedValueOnce({ listing: {} });
+    wrap(
+      <AskingPriceDialog
+        catalogItemId={42}
+        open={true}
+        onOpenChange={() => {}}
+        initialAskingCents={null}
+        initialHidden={false}
+      />
+    );
+    const checkbox = screen.getByRole('checkbox', { name: /Hide from storefront/i });
+    fireEvent.click(checkbox);
+    fireEvent.click(screen.getByRole('button', { name: /^Save$/i }));
+    await new Promise((r) => setTimeout(r, 0));
+    expect(mockUpsert).toHaveBeenCalledWith({ catalogItemId: 42, hidden: true });
   });
 });

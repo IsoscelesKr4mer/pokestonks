@@ -5,20 +5,44 @@ import { formatCents } from '@/lib/utils/format';
 
 export type SetAskingPriceCtaProps = {
   catalogItemId: number;
-  initialCents: number | null;
+  /** Current override row (or null if none). */
+  override: { askingPriceCents: number | null; hidden: boolean } | null;
+  /** Last market cents (raw, unrounded) — used to compute the auto fallback. */
+  lastMarketCents: number | null;
   qtyHeldRaw: number;
 };
 
-export function SetAskingPriceCta({ catalogItemId, initialCents, qtyHeldRaw }: SetAskingPriceCtaProps) {
+const AUTO_STEP = 500; // $5
+
+function roundUpToNearest(cents: number, step: number = AUTO_STEP): number {
+  if (cents <= 0) return 0;
+  return Math.ceil(cents / step) * step;
+}
+
+export function SetAskingPriceCta({
+  catalogItemId,
+  override,
+  lastMarketCents,
+  qtyHeldRaw,
+}: SetAskingPriceCtaProps) {
   const [open, setOpen] = useState(false);
 
-  // If no raw qty (only graded held or nothing held), hide the CTA entirely.
-  if (qtyHeldRaw <= 0 && initialCents == null) return null;
+  if (qtyHeldRaw <= 0 && override == null) return null;
 
-  const label =
-    initialCents != null
-      ? `Edit asking price · ${formatCents(initialCents)}`
-      : 'Add to storefront';
+  const autoPrice = lastMarketCents != null ? roundUpToNearest(lastMarketCents) : null;
+  const isHidden = override?.hidden ?? false;
+  const overridePrice = override?.askingPriceCents ?? null;
+
+  let label: string;
+  if (isHidden) {
+    label = 'Hidden from storefront';
+  } else if (overridePrice != null) {
+    label = `On storefront · ${formatCents(overridePrice)}`;
+  } else if (autoPrice != null) {
+    label = `Auto-priced for storefront · ~${formatCents(autoPrice)}`;
+  } else {
+    label = 'Storefront: no market price · set one';
+  }
 
   return (
     <>
@@ -33,7 +57,9 @@ export function SetAskingPriceCta({ catalogItemId, initialCents, qtyHeldRaw }: S
         catalogItemId={catalogItemId}
         open={open}
         onOpenChange={setOpen}
-        initialCents={initialCents}
+        initialAskingCents={overridePrice}
+        initialHidden={isHidden}
+        autoPriceCents={autoPrice}
       />
     </>
   );

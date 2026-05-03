@@ -336,6 +336,7 @@ export function HoldingDetailClient({ initial }: { initial: HoldingDetailDto }) 
             <StorefrontIntegration
               catalogItemId={item.id}
               storefrontListing={dto.storefrontListing}
+              lastMarketCents={item.lastMarketCents ?? null}
               qtyHeldRaw={dto.lots
                 .filter((entry) => !entry.lot.isGraded)
                 .reduce((sum, entry) => sum + entry.qtyRemaining, 0)}
