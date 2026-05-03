@@ -67,6 +67,7 @@ export function OpenBoxDialog({
   const [searchQuery, setSearchQuery] = useState('');
   const [showPicker, setShowPicker] = useState(false);
   const [confirmingClear, setConfirmingClear] = useState(false);
+  const [searchAllSets, setSearchAllSets] = useState(false);
 
   const createMutation = useCreateDecomposition();
   const clearMutation = useClearCatalogComposition();
@@ -91,18 +92,27 @@ export function OpenBoxDialog({
     }
   }, [composition.data]);
 
-  // Default-scope the picker to the source's set so a Mega Meganium ex Box
-  // searching for "meganium" surfaces the Ascended Heroes promo, not every
-  // Mega Meganium ex print across all sets. Prefer setName over setCode:
-  // sealed products use TCGplayer setCodes (e.g. "ME") while cards use
-  // Pokemon TCG API setCodes (different convention), so setCode rarely
-  // matches across both. setName is bidirectional-substring matched in the
-  // search service and works across the conventions.
-  const setScope = source.setName
-    ? `&setName=${encodeURIComponent(source.setName)}`
-    : source.setCode
-    ? `&setCode=${encodeURIComponent(source.setCode)}`
-    : '';
+  // Reset the "search all sets" toggle whenever the picker closes.
+  useEffect(() => {
+    if (!showPicker) {
+      setSearchAllSets(false);
+    }
+  }, [showPicker]);
+
+  // Source's set scopes the picker by default so a single-set product like
+  // Mega Meganium ex Box surfaces Ascended Heroes packs (not every Meganium
+  // print across history). Cross-set products (Knock Out Collection,
+  // Premium Collection, etc.) contain packs from DIFFERENT sets — the user
+  // turns the toggle on and the scope drops.
+  const hasScope = source.setName != null || source.setCode != null;
+  const setScope =
+    searchAllSets || !hasScope
+      ? ''
+      : source.setName
+      ? `&setName=${encodeURIComponent(source.setName)}`
+      : source.setCode
+      ? `&setCode=${encodeURIComponent(source.setCode)}`
+      : '';
 
   const search = useQuery({
     queryKey: ['contentsSearch', searchQuery, setScope],
@@ -399,12 +409,22 @@ export function OpenBoxDialog({
                   Cancel
                 </Button>
               </div>
+              {hasScope && (
+                <button
+                  type="button"
+                  onClick={() => setSearchAllSets((s) => !s)}
+                  className="text-xs text-muted-foreground hover:text-foreground underline-offset-2 hover:underline self-start"
+                >
+                  {searchAllSets ? 'Searching all sets · click to scope to this set' : 'Searching this set only · click to search all sets'}
+                </button>
+              )}
               {search.isLoading && (
                 <p className="text-xs text-muted-foreground">Searching...</p>
               )}
               {searchQuery.length >= 2 && !search.isLoading && searchResults.length === 0 && (
                 <p className="text-xs text-muted-foreground">
-                  No matches. Try a different search term.
+                  No matches.
+                  {hasScope && !searchAllSets ? ' This source is scoped to its own set; toggle "Searching all sets" above if the item is from a different set.' : ' Try a different search term.'}
                 </p>
               )}
               {searchResults.length > 0 && (
