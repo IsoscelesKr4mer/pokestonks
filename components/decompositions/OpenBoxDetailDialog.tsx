@@ -31,14 +31,14 @@ export function OpenBoxDetailDialog({
     if (!data) return;
     if (
       !confirm(
-        'Undo this decomposition? The pack lot will be soft-deleted and the box qty will be re-credited.'
+        'Undo this decomposition? All resulting lots will be soft-deleted and the source qty re-credited.'
       )
     ) {
       return;
     }
     const affected = [
       ...(data.sourceCatalogItem ? [data.sourceCatalogItem.id] : []),
-      ...(data.packCatalogItem ? [data.packCatalogItem.id] : []),
+      ...data.childCatalogItems.map((c) => c.id),
     ];
     try {
       await undoMutation.mutateAsync({
@@ -65,7 +65,7 @@ export function OpenBoxDetailDialog({
           <div className="space-y-4">
             <FormSection>
               <div className="rounded-md border p-3 text-sm">
-                <div className="text-xs uppercase tracking-wide text-muted-foreground">Box</div>
+                <div className="text-xs uppercase tracking-wide text-muted-foreground">Source</div>
                 <div className="font-medium">{data.sourceCatalogItem?.name ?? '(deleted)'}</div>
                 <div className="mt-1 text-xs text-muted-foreground">
                   Opened {data.decomposition.decomposeDate} · Cost basis{' '}
@@ -77,13 +77,36 @@ export function OpenBoxDetailDialog({
             <FormSection>
               <div className="rounded-md border p-3 text-sm">
                 <div className="text-xs uppercase tracking-wide text-muted-foreground">
-                  Resulting pack lot
+                  Resulting lots
                 </div>
-                <div className="font-medium">
-                  {data.decomposition.packCount} x {data.packCatalogItem?.name ?? '(deleted)'}
+                <div className="mt-1 space-y-1">
+                  {data.childPurchases.length === 0 && (
+                    <div className="text-muted-foreground">(no children)</div>
+                  )}
+                  {data.childPurchases.map((child) => {
+                    const item = data.childCatalogItems.find(
+                      (c) => c.id === child.catalogItemId
+                    );
+                    const isCard = item?.kind === 'card';
+                    return (
+                      <div key={child.id} className="font-medium">
+                        {child.quantity} x {item?.name ?? '(deleted)'}
+                        {isCard ? (
+                          <span className="ml-2 text-xs font-normal text-muted-foreground">
+                            promo
+                          </span>
+                        ) : (
+                          <span className="ml-2 text-xs font-normal text-muted-foreground">
+                            at {formatCents(child.costCents)} each
+                          </span>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
-                <div className="mt-1 text-xs text-muted-foreground">
-                  at {formatCents(data.decomposition.perPackCostCents)} each · rounding residual{' '}
+                <div className="mt-2 text-xs text-muted-foreground">
+                  Cost-split divisor: {data.decomposition.packCount} · per-unit{' '}
+                  {formatCents(data.decomposition.perPackCostCents)} · rounding residual{' '}
                   {formatCentsSigned(data.decomposition.roundingResidualCents)}
                 </div>
               </div>

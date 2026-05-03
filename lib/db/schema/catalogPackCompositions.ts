@@ -9,7 +9,7 @@ export const catalogPackCompositions = pgTable(
     sourceCatalogItemId: bigint('source_catalog_item_id', { mode: 'number' })
       .notNull()
       .references(() => catalogItems.id, { onDelete: 'cascade' }),
-    packCatalogItemId: bigint('pack_catalog_item_id', { mode: 'number' })
+    contentsCatalogItemId: bigint('contents_catalog_item_id', { mode: 'number' })
       .notNull()
       .references(() => catalogItems.id, { onDelete: 'restrict' }),
     quantity: integer('quantity').notNull(),
@@ -17,9 +17,9 @@ export const catalogPackCompositions = pgTable(
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   },
   (t) => ({
-    sourcePackIdx: uniqueIndex('catalog_pack_compositions_source_pack_idx').on(
+    sourceContentsIdx: uniqueIndex('catalog_pack_compositions_source_contents_idx').on(
       t.sourceCatalogItemId,
-      t.packCatalogItemId
+      t.contentsCatalogItemId
     ),
     sourceIdx: index('catalog_pack_compositions_source_idx').on(
       t.sourceCatalogItemId,

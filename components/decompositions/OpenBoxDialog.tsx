@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import {
   useCreateDecomposition,
   useCatalogComposition,
+  useClearCatalogComposition,
 } from '@/lib/query/hooks/useDecompositions';
 import { computePerPackCost } from '@/lib/services/decompositions';
 import { formatCents, formatCentsSigned } from '@/lib/utils/format';
@@ -33,18 +34,21 @@ export type OpenBoxSourceLot = {
 };
 
 type RecipeRowState = {
-  packCatalogItemId: number;
-  packName: string;
-  packSetName: string | null;
-  packImageUrl: string | null;
+  contentsCatalogItemId: number;
+  contentsName: string;
+  contentsSetName: string | null;
+  contentsImageUrl: string | null;
+  contentsKind: 'sealed' | 'card';
+  contentsProductType: string | null;
   quantity: number;
 };
 
-type PackSearchResult = {
+type SearchResult = {
   catalogItemId: number;
   name: string;
   setName: string | null;
   productType: string | null;
+  kind: 'sealed' | 'card';
   imageUrl: string | null;
 };
 
@@ -62,19 +66,23 @@ export function OpenBoxDialog({
   const [recipe, setRecipe] = useState<RecipeRowState[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [showPicker, setShowPicker] = useState(false);
+  const [confirmingClear, setConfirmingClear] = useState(false);
 
   const createMutation = useCreateDecomposition();
+  const clearMutation = useClearCatalogComposition();
   const composition = useCatalogComposition(source.catalogItemId);
 
-  // Pre-populate recipe from saved/suggested composition
+  // Pre-populate recipe from saved/suggested composition.
   useEffect(() => {
     if (composition.data?.recipe) {
       setRecipe(
         composition.data.recipe.map((r) => ({
-          packCatalogItemId: r.packCatalogItemId,
-          packName: r.packName,
-          packSetName: r.packSetName,
-          packImageUrl: r.packImageUrl,
+          contentsCatalogItemId: r.contentsCatalogItemId,
+          contentsName: r.contentsName,
+          contentsSetName: r.contentsSetName,
+          contentsImageUrl: r.contentsImageUrl,
+          contentsKind: r.contentsKind,
+          contentsProductType: r.contentsProductType,
           quantity: r.quantity,
         }))
       );
@@ -84,25 +92,24 @@ export function OpenBoxDialog({
   }, [composition.data]);
 
   const search = useQuery({
-    queryKey: ['packSearch', searchQuery],
+    queryKey: ['contentsSearch', searchQuery],
     queryFn: async () => {
-      const res = await fetch(`/api/search?q=${encodeURIComponent(searchQuery)}&kind=sealed`);
+      const res = await fetch(
+        `/api/search?q=${encodeURIComponent(searchQuery)}&kind=all`
+      );
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return res.json() as Promise<{
-        results: Array<PackSearchResult>;
-      }>;
+      return res.json() as Promise<{ results: Array<SearchResult> }>;
     },
     enabled: showPicker && searchQuery.length >= 2,
     staleTime: 30_000,
   });
 
-  const packResults = (search.data?.results ?? []).filter(
-    (r) => r.productType === 'Booster Pack'
-  );
+  // No client-side filter -- the API returns mixed kinds and we accept all.
+  const searchResults = search.data?.results ?? [];
 
-  const addPack = (hit: PackSearchResult) => {
+  const addContents = (hit: SearchResult) => {
     setRecipe((prev) => {
-      const existing = prev.findIndex((r) => r.packCatalogItemId === hit.catalogItemId);
+      const existing = prev.findIndex((r) => r.contentsCatalogItemId === hit.catalogItemId);
       if (existing !== -1) {
         return prev.map((r, i) =>
           i === existing ? { ...r, quantity: r.quantity + 1 } : r
@@ -111,10 +118,12 @@ export function OpenBoxDialog({
       return [
         ...prev,
         {
-          packCatalogItemId: hit.catalogItemId,
-          packName: hit.name,
-          packSetName: hit.setName,
-          packImageUrl: hit.imageUrl,
+          contentsCatalogItemId: hit.catalogItemId,
+          contentsName: hit.name,
+          contentsSetName: hit.setName,
+          contentsImageUrl: hit.imageUrl,
+          contentsKind: hit.kind,
+          contentsProductType: hit.productType,
           quantity: 1,
         },
       ];
@@ -132,21 +141,34 @@ export function OpenBoxDialog({
     setRecipe((prev) => prev.filter((_, i) => i !== idx));
   };
 
-  const totalPacks = recipe.reduce((s, r) => s + r.quantity, 0);
+  const totalItems = recipe.reduce((s, r) => s + r.quantity, 0);
+  const costSplitTotal = recipe
+    .filter((r) => r.contentsKind === 'sealed')
+    .reduce((s, r) => s + r.quantity, 0);
   const { perPackCostCents, roundingResidualCents } =
-    totalPacks > 0
-      ? computePerPackCost(source.sourceCostCents, totalPacks)
+    costSplitTotal > 0
+      ? computePerPackCost(source.sourceCostCents, costSplitTotal)
       : { perPackCostCents: 0, roundingResidualCents: 0 };
 
   const compositionLoaded = !composition.isLoading;
-  const noSavedRecipe = compositionLoaded && !composition.data?.recipe;
+  const isPersisted = compositionLoaded && composition.data?.persisted === true;
+  const isSuggested = compositionLoaded && composition.data?.suggested === true;
+
   const isSubmitDisabled =
-    recipe.length === 0 || createMutation.isPending || composition.isLoading;
+    recipe.length === 0 ||
+    costSplitTotal === 0 ||
+    createMutation.isPending ||
+    composition.isLoading ||
+    clearMutation.isPending;
 
   const handleSubmit = async () => {
     setError(null);
     if (recipe.length === 0) {
-      setError('Add at least one booster pack to the recipe.');
+      setError('Add at least one item to the recipe.');
+      return;
+    }
+    if (costSplitTotal === 0) {
+      setError('Recipe must contain at least one sealed item (e.g., a Booster Pack).');
       return;
     }
     try {
@@ -154,11 +176,10 @@ export function OpenBoxDialog({
         sourcePurchaseId: source.purchaseId,
         notes: notes || null,
         recipe: recipe.map((r) => ({
-          packCatalogItemId: r.packCatalogItemId,
+          contentsCatalogItemId: r.contentsCatalogItemId,
           quantity: r.quantity,
         })),
         _sourceCatalogItemId: source.catalogItemId,
-        _packCatalogItemId: 0, // legacy field; broad cache invalidation covers it
       });
       onOpenChange(false);
     } catch (err) {
@@ -166,12 +187,28 @@ export function OpenBoxDialog({
     }
   };
 
+  const handleClear = async () => {
+    setError(null);
+    try {
+      await clearMutation.mutateAsync(source.catalogItemId);
+      setConfirmingClear(false);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'clear recipe failed');
+    }
+  };
+
+  const banner = isPersisted
+    ? 'Saved recipe - your edits update future opens'
+    : isSuggested
+    ? 'Suggested recipe - first edit will save'
+    : 'Build the recipe - first save sticks for future opens';
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
         <VaultDialogHeader
           title="Open box"
-          sub="Pick the booster pack(s) inside; the cost basis splits evenly across them."
+          sub="Pick the items inside; the cost basis splits evenly across sealed contents."
         />
 
         {/* Source info card */}
@@ -186,8 +223,8 @@ export function OpenBoxDialog({
             <div className="font-medium">{source.name}</div>
             <div className="text-xs text-muted-foreground">
               {source.productType}
-              {totalPacks > 0
-                ? ` · ${totalPacks} pack${totalPacks === 1 ? '' : 's'} in recipe`
+              {totalItems > 0
+                ? ` · ${totalItems} item${totalItems === 1 ? '' : 's'} in recipe`
                 : ''}
             </div>
             <div className="text-xs text-muted-foreground">
@@ -196,28 +233,75 @@ export function OpenBoxDialog({
           </div>
         </div>
 
-        {/* Pack contents section */}
+        {/* Recipe state banner */}
+        {compositionLoaded && (
+          <p className="text-xs text-muted-foreground">{banner}</p>
+        )}
+
+        {/* Contents section */}
         <FormSection>
           <div className="flex items-center justify-between">
-            <FormLabel>Pack contents</FormLabel>
-            {recipe.length > 0 && !showPicker && (
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                className="h-6 px-2 text-xs"
-                onClick={() => setShowPicker(true)}
-              >
-                Edit pack contents
-              </Button>
-            )}
+            <FormLabel>Contents</FormLabel>
+            <div className="flex items-center gap-1">
+              {recipe.length > 0 && !showPicker && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="h-6 px-2 text-xs"
+                  onClick={() => setShowPicker(true)}
+                >
+                  Edit contents
+                </Button>
+              )}
+              {isPersisted && !confirmingClear && (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  className="h-6 px-2 text-xs"
+                  onClick={() => setConfirmingClear(true)}
+                  disabled={clearMutation.isPending}
+                >
+                  Clear saved recipe
+                </Button>
+              )}
+            </div>
           </div>
 
+          {/* Inline confirm bar for Clear */}
+          {confirmingClear && (
+            <div className="flex items-center justify-between rounded-md border border-destructive/40 bg-destructive/5 px-3 py-2 text-sm">
+              <span>
+                Clear the saved recipe? Existing decompositions and lots are unaffected.
+              </span>
+              <div className="flex items-center gap-1">
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setConfirmingClear(false)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  type="button"
+                  variant="destructive"
+                  size="sm"
+                  onClick={handleClear}
+                  disabled={clearMutation.isPending}
+                >
+                  {clearMutation.isPending ? 'Clearing...' : 'Clear'}
+                </Button>
+              </div>
+            </div>
+          )}
+
           {/* Empty state */}
-          {recipe.length === 0 && noSavedRecipe && !showPicker && (
+          {recipe.length === 0 && !isSuggested && !isPersisted && !showPicker && (
             <div className="rounded-md border border-dashed p-4 text-center text-sm text-muted-foreground">
               <p>
-                This is the first time opening this product. Add the booster pack(s) it contains:
+                This is the first time opening this product. Add the items it contains:
               </p>
               <Button
                 type="button"
@@ -226,7 +310,7 @@ export function OpenBoxDialog({
                 className="mt-2"
                 onClick={() => setShowPicker(true)}
               >
-                Search for a booster pack
+                Search for an item
               </Button>
             </div>
           )}
@@ -236,21 +320,24 @@ export function OpenBoxDialog({
             <div className="space-y-1">
               {recipe.map((row, idx) => (
                 <div
-                  key={row.packCatalogItemId}
+                  key={row.contentsCatalogItemId}
                   className="flex items-center gap-2 rounded-md border px-3 py-2 text-sm"
                 >
-                  {row.packImageUrl && (
+                  {row.contentsImageUrl && (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
-                      src={row.packImageUrl}
-                      alt={row.packName}
+                      src={row.contentsImageUrl}
+                      alt={row.contentsName}
                       className="h-8 w-8 rounded object-contain"
                     />
                   )}
                   <div className="min-w-0 flex-1">
-                    <div className="truncate font-medium">{row.packName}</div>
-                    {row.packSetName && (
-                      <div className="text-xs text-muted-foreground">{row.packSetName}</div>
+                    <div className="truncate font-medium">{row.contentsName}</div>
+                    {row.contentsSetName && (
+                      <div className="text-xs text-muted-foreground">
+                        {row.contentsSetName}
+                        {row.contentsKind === 'card' ? ' · promo' : ''}
+                      </div>
                     )}
                   </div>
                   <input
@@ -260,13 +347,13 @@ export function OpenBoxDialog({
                     value={row.quantity}
                     onChange={(e) => updateQuantity(idx, parseInt(e.target.value, 10) || 1)}
                     className="w-14 rounded-md border bg-background px-2 py-1 text-center text-sm"
-                    aria-label={`Quantity for ${row.packName}`}
+                    aria-label={`Quantity for ${row.contentsName}`}
                   />
                   <button
                     type="button"
                     onClick={() => removeRow(idx)}
                     className="ml-1 rounded p-1 text-muted-foreground hover:bg-muted hover:text-destructive"
-                    aria-label={`Remove ${row.packName}`}
+                    aria-label={`Remove ${row.contentsName}`}
                   >
                     x
                   </button>
@@ -275,7 +362,7 @@ export function OpenBoxDialog({
             </div>
           )}
 
-          {/* Pack search picker */}
+          {/* Search picker */}
           {showPicker && (
             <div className="space-y-2 rounded-md border p-3">
               <div className="flex items-center gap-2">
@@ -283,7 +370,7 @@ export function OpenBoxDialog({
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search for a booster pack..."
+                  placeholder="Search for a pack, box, or card..."
                   className="flex-1 rounded-md border bg-background px-3 py-1.5 text-sm"
                   autoFocus
                 />
@@ -302,18 +389,18 @@ export function OpenBoxDialog({
               {search.isLoading && (
                 <p className="text-xs text-muted-foreground">Searching...</p>
               )}
-              {searchQuery.length >= 2 && !search.isLoading && packResults.length === 0 && (
+              {searchQuery.length >= 2 && !search.isLoading && searchResults.length === 0 && (
                 <p className="text-xs text-muted-foreground">
-                  No booster packs found. Try a different search term.
+                  No matches. Try a different search term.
                 </p>
               )}
-              {packResults.length > 0 && (
+              {searchResults.length > 0 && (
                 <ul className="max-h-48 space-y-1 overflow-y-auto">
-                  {packResults.map((hit) => (
+                  {searchResults.map((hit) => (
                     <li key={hit.catalogItemId}>
                       <button
                         type="button"
-                        onClick={() => addPack(hit)}
+                        onClick={() => addContents(hit)}
                         className="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-left text-sm hover:bg-muted"
                       >
                         {hit.imageUrl && (
@@ -327,7 +414,14 @@ export function OpenBoxDialog({
                         <div className="min-w-0 flex-1">
                           <div className="truncate font-medium">{hit.name}</div>
                           {hit.setName && (
-                            <div className="text-xs text-muted-foreground">{hit.setName}</div>
+                            <div className="text-xs text-muted-foreground">
+                              {hit.setName}
+                              {hit.kind === 'card'
+                                ? ' · card'
+                                : hit.productType
+                                ? ` · ${hit.productType}`
+                                : ''}
+                            </div>
                           )}
                         </div>
                       </button>
@@ -347,19 +441,35 @@ export function OpenBoxDialog({
             </div>
             <div className="mt-1 space-y-0.5">
               {recipe.map((row) => (
-                <div key={row.packCatalogItemId} className="font-medium">
-                  {row.quantity} x {row.packName}
-                  {row.packSetName ? ` (${row.packSetName})` : ''}
+                <div key={row.contentsCatalogItemId} className="font-medium">
+                  {row.quantity} x {row.contentsName}
+                  {row.contentsSetName ? ` (${row.contentsSetName})` : ''}
+                  {' - '}
+                  {row.contentsKind === 'card' ? (
+                    <span className="font-normal text-muted-foreground">promo (no cost)</span>
+                  ) : (
+                    <span className="font-normal" data-testid="decomp-per-pack">
+                      at {formatCents(perPackCostCents)} each
+                    </span>
+                  )}
                 </div>
               ))}
             </div>
-            <div className="mt-1 text-xs">
-              at <span data-testid="decomp-per-pack">{formatCents(perPackCostCents)}</span> each
-              {' - rounding residual: '}
-              <span data-testid="decomp-residual">{formatCentsSigned(roundingResidualCents)}</span>
-            </div>
-            {totalPacks > 0 && (
-              <FormHint>Source: {totalPacks} pack{totalPacks === 1 ? '' : 's'} in recipe</FormHint>
+            {costSplitTotal > 0 && (
+              <div className="mt-1 text-xs">
+                rounding residual:{' '}
+                <span data-testid="decomp-residual">
+                  {formatCentsSigned(roundingResidualCents)}
+                </span>
+              </div>
+            )}
+            {totalItems > 0 && (
+              <FormHint>
+                Source: {totalItems} item{totalItems === 1 ? '' : 's'} in recipe
+                {costSplitTotal !== totalItems
+                  ? ` (${costSplitTotal} cost-split)`
+                  : ''}
+              </FormHint>
             )}
           </div>
         )}

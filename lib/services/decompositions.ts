@@ -24,3 +24,27 @@ export function computePerPackCost(
   const residual = sourceCostCents - perPack * packCount;
   return { perPackCostCents: perPack, roundingResidualCents: residual };
 }
+
+/**
+ * Sum the quantities of recipe rows whose contents catalog item is kind='sealed'.
+ * Card-kind rows are excluded -- they're freebies at $0 cost basis.
+ *
+ * Throws if a row references a catalog item not present in the lookup map.
+ *
+ * Used by POST /api/decompositions to compute the cost-split divisor and by
+ * OpenBoxDialog to render the live preview.
+ */
+export function computeCostSplitTotal(
+  recipe: Array<{ contentsCatalogItemId: number; quantity: number }>,
+  contentsCatalogByItemId: Map<number, { id: number; kind: 'sealed' | 'card' }>
+): number {
+  let total = 0;
+  for (const row of recipe) {
+    const item = contentsCatalogByItemId.get(row.contentsCatalogItemId);
+    if (!item) {
+      throw new Error(`missing catalog item for contentsCatalogItemId ${row.contentsCatalogItemId}`);
+    }
+    if (item.kind === 'sealed') total += row.quantity;
+  }
+  return total;
+}

@@ -35,17 +35,21 @@ export type DecompositionDetailDto = {
     setName: string | null;
     productType: string | null;
   } | null;
-  packPurchase: {
+  childPurchases: Array<{
     id: number;
     catalogItemId: number;
     quantity: number;
     costCents: number;
-  } | null;
-  packCatalogItem: {
+    unknownCost: boolean;
+  }>;
+  childCatalogItems: Array<{
     id: number;
     name: string;
     imageUrl: string | null;
-  } | null;
+    setName: string | null;
+    kind: 'sealed' | 'card';
+    productType: string | null;
+  }>;
 };
 
 export function useDecomposition(id: number | null) {
@@ -78,13 +82,13 @@ export function useCreateDecomposition() {
   return useMutation({
     mutationFn: async (
       payload: DecompositionInput & {
-        // Caller passes the source container's catalog id + the resulting pack
-        // catalog id so we invalidate the right per-item holding caches.
+        // Caller passes the source container's catalog id. The created
+        // children's catalog ids are returned by the API and used for
+        // per-holding cache invalidation in onSuccess.
         _sourceCatalogItemId: number;
-        _packCatalogItemId: number;
       }
     ) => {
-      const { _sourceCatalogItemId: _src, _packCatalogItemId: _pack, ...body } = payload;
+      const { _sourceCatalogItemId: _src, ...body } = payload;
       const res = await fetch('/api/decompositions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -92,13 +96,14 @@ export function useCreateDecomposition() {
       });
       return json<{
         decomposition: { id: number };
-        packPurchase: { id: number; catalogItemId: number };
+        packPurchases: Array<{ id: number; catalogItemId: number }>;
       }>(res);
     },
-    onSuccess: (_data, variables) => {
+    onSuccess: (data, variables) => {
+      const childIds = data.packPurchases.map((p) => p.catalogItemId);
       invalidateAfterDecompositionMutation(qc, [
         variables._sourceCatalogItemId,
-        variables._packCatalogItemId,
+        ...childIds,
       ]);
     },
   });
@@ -110,11 +115,13 @@ export type CatalogCompositionDto = {
   sourcePackCount: number | null;
   sourceProductType: string | null;
   recipe: Array<{
-    packCatalogItemId: number;
+    contentsCatalogItemId: number;
     quantity: number;
-    packName: string;
-    packSetName: string | null;
-    packImageUrl: string | null;
+    contentsName: string;
+    contentsSetName: string | null;
+    contentsImageUrl: string | null;
+    contentsKind: 'sealed' | 'card';
+    contentsProductType: string | null;
   }> | null;
   persisted: boolean;
   suggested: boolean;
@@ -131,12 +138,26 @@ export function useCatalogComposition(catalogItemId: number | null) {
   });
 }
 
+export function useClearCatalogComposition() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (catalogItemId: number) => {
+      const res = await fetch(`/api/catalog/${catalogItemId}/composition`, {
+        method: 'DELETE',
+      });
+      return json<{ deleted: number }>(res);
+    },
+    onSuccess: (_data, catalogItemId) => {
+      qc.invalidateQueries({ queryKey: ['catalogComposition', catalogItemId] });
+    },
+  });
+}
+
 export function useDeleteDecomposition() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async ({
       id,
-      affectedCatalogItemIds,
     }: {
       id: number;
       affectedCatalogItemIds: number[];

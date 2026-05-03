@@ -29,7 +29,6 @@ export async function GET(
     return NextResponse.json({ error: 'catalog item not found' }, { status: 404 });
   }
 
-  // 1. Saved recipe?
   const saved = await db.query.catalogPackCompositions.findMany({
     where: eq(schema.catalogPackCompositions.sourceCatalogItemId, numericId),
     orderBy: [
@@ -39,30 +38,34 @@ export async function GET(
   });
 
   let recipe: Array<{
-    packCatalogItemId: number;
+    contentsCatalogItemId: number;
     quantity: number;
-    packName: string;
-    packSetName: string | null;
-    packImageUrl: string | null;
+    contentsName: string;
+    contentsSetName: string | null;
+    contentsImageUrl: string | null;
+    contentsKind: 'sealed' | 'card';
+    contentsProductType: string | null;
   }> | null = null;
   let persisted = false;
   let suggested = false;
 
   if (saved.length > 0) {
     persisted = true;
-    const packIds = saved.map((r) => r.packCatalogItemId);
-    const packs = await db.query.catalogItems.findMany({
-      where: (ci, ops) => ops.inArray(ci.id, packIds),
+    const contentsIds = saved.map((r) => r.contentsCatalogItemId);
+    const contents = await db.query.catalogItems.findMany({
+      where: (ci, ops) => ops.inArray(ci.id, contentsIds),
     });
-    const byId = new Map(packs.map((p) => [p.id, p]));
+    const byId = new Map(contents.map((c) => [c.id, c]));
     recipe = saved.map((r) => {
-      const p = byId.get(r.packCatalogItemId)!;
+      const c = byId.get(r.contentsCatalogItemId)!;
       return {
-        packCatalogItemId: r.packCatalogItemId,
+        contentsCatalogItemId: r.contentsCatalogItemId,
         quantity: r.quantity,
-        packName: p.name,
-        packSetName: p.setName,
-        packImageUrl: p.imageUrl,
+        contentsName: c.name,
+        contentsSetName: c.setName,
+        contentsImageUrl: c.imageUrl,
+        contentsKind: c.kind as 'sealed' | 'card',
+        contentsProductType: c.productType,
       };
     });
   } else if (
@@ -71,11 +74,6 @@ export async function GET(
     DETERMINISTIC_DECOMPOSITION_TYPES.has(sourceItem.productType) &&
     sourceItem.packCount != null
   ) {
-    // Auto-derive: same-set Booster Pack with qty = packCount.
-    // Only for product types where this is universally correct. If multiple
-    // Booster Pack rows exist for the set (art variants, signed variants,
-    // etc.), prefer the shortest name — that's almost always the bare
-    // "{Set} Booster Pack".
     const packCandidates = await db.query.catalogItems.findMany({
       where: (ci, ops) =>
         ops.and(
@@ -94,11 +92,13 @@ export async function GET(
       suggested = true;
       recipe = [
         {
-          packCatalogItemId: packCatalog.id,
+          contentsCatalogItemId: packCatalog.id,
           quantity: sourceItem.packCount,
-          packName: packCatalog.name,
-          packSetName: packCatalog.setName,
-          packImageUrl: packCatalog.imageUrl,
+          contentsName: packCatalog.name,
+          contentsSetName: packCatalog.setName,
+          contentsImageUrl: packCatalog.imageUrl,
+          contentsKind: packCatalog.kind as 'sealed' | 'card',
+          contentsProductType: packCatalog.productType,
         },
       ];
     }
@@ -113,4 +113,37 @@ export async function GET(
     persisted,
     suggested,
   });
+}
+
+export async function DELETE(
+  _req: NextRequest,
+  ctx: { params: Promise<{ id: string }> }
+) {
+  const { id } = await ctx.params;
+  const numericId = Number(id);
+  if (!Number.isFinite(numericId)) {
+    return NextResponse.json({ error: 'invalid id' }, { status: 400 });
+  }
+
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
+  }
+
+  const sourceItem = await db.query.catalogItems.findFirst({
+    where: eq(schema.catalogItems.id, numericId),
+  });
+  if (!sourceItem) {
+    return NextResponse.json({ error: 'catalog item not found' }, { status: 404 });
+  }
+
+  const result = await db
+    .delete(schema.catalogPackCompositions)
+    .where(eq(schema.catalogPackCompositions.sourceCatalogItemId, numericId))
+    .returning({ id: schema.catalogPackCompositions.id });
+
+  return NextResponse.json({ deleted: result.length });
 }

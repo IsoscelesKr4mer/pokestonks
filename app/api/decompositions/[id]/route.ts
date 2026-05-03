@@ -40,24 +40,27 @@ export async function GET(
       })
     : null;
 
-  const packPurchase = await db.query.purchases.findFirst({
+  const childPurchases = await db.query.purchases.findMany({
     where: and(
       eq(schema.purchases.sourceDecompositionId, decomposition.id),
       isNull(schema.purchases.deletedAt)
     ),
+    orderBy: (p, ops) => [ops.asc(p.id)],
   });
-  const packCatalogItem = packPurchase
-    ? await db.query.catalogItems.findFirst({
-        where: eq(schema.catalogItems.id, packPurchase.catalogItemId),
-      })
-    : null;
+  const childCatalogIds = childPurchases.map((p) => p.catalogItemId);
+  const childCatalogItems =
+    childCatalogIds.length > 0
+      ? await db.query.catalogItems.findMany({
+          where: (ci, ops) => ops.inArray(ci.id, childCatalogIds),
+        })
+      : [];
 
   return NextResponse.json({
     decomposition,
     sourcePurchase,
     sourceCatalogItem,
-    packPurchase,
-    packCatalogItem,
+    childPurchases,
+    childCatalogItems,
   });
 }
 
@@ -89,42 +92,41 @@ export async function DELETE(
     return NextResponse.json({ error: 'decomposition not found' }, { status: 404 });
   }
 
-  // Find the child pack purchase id (used for the linked-rips and linked-sales checks below).
-  const packChild = await db.query.purchases.findFirst({
+  // Find ALL child purchases of this decomposition (was findFirst -- bug).
+  const children = await db.query.purchases.findMany({
     where: eq(schema.purchases.sourceDecompositionId, numericId),
   });
+  const childIds = children.map((c) => c.id);
 
-  if (packChild) {
-    // Block if any rips reference the pack child (the user has already started ripping packs).
+  if (childIds.length > 0) {
     const { data: linkedRips, error: ripsErr } = await supabase
       .from('rips')
       .select('id')
-      .eq('source_purchase_id', packChild.id);
+      .in('source_purchase_id', childIds);
     if (ripsErr) {
       return NextResponse.json({ error: ripsErr.message }, { status: 500 });
     }
     if (linkedRips && linkedRips.length > 0) {
       return NextResponse.json(
         {
-          error: 'decomposition has linked rips on its packs',
+          error: 'decomposition has linked rips on its children',
           linkedRipIds: linkedRips.map((r) => r.id),
         },
         { status: 409 }
       );
     }
 
-    // Defensive Plan 5 check: block if any sales reference the pack child.
     const { data: linkedSales, error: salesErr } = await supabase
       .from('sales')
       .select('id')
-      .eq('purchase_id', packChild.id);
+      .in('purchase_id', childIds);
     if (salesErr) {
       return NextResponse.json({ error: salesErr.message }, { status: 500 });
     }
     if (linkedSales && linkedSales.length > 0) {
       return NextResponse.json(
         {
-          error: 'decomposition has linked sales on its packs',
+          error: 'decomposition has linked sales on its children',
           linkedSaleIds: linkedSales.map((s) => s.id),
         },
         { status: 409 }

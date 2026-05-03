@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { computePerPackCost } from './decompositions';
+import { computePerPackCost, computeCostSplitTotal } from './decompositions';
 
 describe('computePerPackCost', () => {
   it('splits $50 across 9 packs with rounding residual', () => {
@@ -62,5 +62,62 @@ describe('computePerPackCost', () => {
 
   it('throws on negative packCount', () => {
     expect(() => computePerPackCost(500, -1)).toThrow('packCount must be > 0');
+  });
+});
+
+describe('computeCostSplitTotal', () => {
+  type Catalog = { id: number; kind: 'sealed' | 'card' };
+  const catalog = (rows: Catalog[]) => new Map(rows.map((r) => [r.id, r]));
+
+  it('sums quantities for all-sealed recipes', () => {
+    const c = catalog([
+      { id: 1, kind: 'sealed' },
+      { id: 2, kind: 'sealed' },
+    ]);
+    const total = computeCostSplitTotal(
+      [
+        { contentsCatalogItemId: 1, quantity: 3 },
+        { contentsCatalogItemId: 2, quantity: 2 },
+      ],
+      c
+    );
+    expect(total).toBe(5);
+  });
+
+  it('excludes card rows from the divisor', () => {
+    const c = catalog([
+      { id: 1, kind: 'sealed' },
+      { id: 2, kind: 'card' },
+    ]);
+    const total = computeCostSplitTotal(
+      [
+        { contentsCatalogItemId: 1, quantity: 3 },
+        { contentsCatalogItemId: 2, quantity: 1 },
+      ],
+      c
+    );
+    expect(total).toBe(3);
+  });
+
+  it('returns 0 when all rows are cards', () => {
+    const c = catalog([
+      { id: 1, kind: 'card' },
+      { id: 2, kind: 'card' },
+    ]);
+    const total = computeCostSplitTotal(
+      [
+        { contentsCatalogItemId: 1, quantity: 1 },
+        { contentsCatalogItemId: 2, quantity: 2 },
+      ],
+      c
+    );
+    expect(total).toBe(0);
+  });
+
+  it('throws when a recipe row references a missing catalog item', () => {
+    const c = catalog([{ id: 1, kind: 'sealed' }]);
+    expect(() =>
+      computeCostSplitTotal([{ contentsCatalogItemId: 99, quantity: 1 }], c)
+    ).toThrow(/missing catalog item/);
   });
 });

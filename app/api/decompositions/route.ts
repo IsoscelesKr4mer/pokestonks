@@ -3,7 +3,7 @@ import { eq, and, count, asc } from 'drizzle-orm';
 import { createClient } from '@/lib/supabase/server';
 import { db, schema } from '@/lib/db/client';
 import { decompositionInputSchema } from '@/lib/validation/decomposition';
-import { computePerPackCost } from '@/lib/services/decompositions';
+import { computePerPackCost, computeCostSplitTotal } from '@/lib/services/decompositions';
 import { DETERMINISTIC_DECOMPOSITION_TYPES } from '@/lib/services/tcgcsv';
 import type { RecipeRow } from '@/lib/validation/decomposition';
 
@@ -36,7 +36,7 @@ async function resolveRecipe(
   });
   if (saved.length > 0) {
     return {
-      recipe: saved.map((r) => ({ packCatalogItemId: r.packCatalogItemId, quantity: r.quantity })),
+      recipe: saved.map((r) => ({ contentsCatalogItemId: r.contentsCatalogItemId, quantity: r.quantity })),
       persisted: true,
       usedBody: false,
     };
@@ -48,8 +48,6 @@ async function resolveRecipe(
     DETERMINISTIC_DECOMPOSITION_TYPES.has(sourceItem.productType) &&
     sourceItem.packCount != null
   ) {
-    // Prefer the shortest-named Booster Pack — that's almost always the bare
-    // "{Set} Booster Pack" when art/signed/etc variants also exist.
     const packCandidates = await db.query.catalogItems.findMany({
       where: (ci, ops) =>
         ops.and(
@@ -66,14 +64,13 @@ async function resolveRecipe(
         : null;
     if (packCatalog) {
       return {
-        recipe: [{ packCatalogItemId: packCatalog.id, quantity: sourceItem.packCount }],
+        recipe: [{ contentsCatalogItemId: packCatalog.id, quantity: sourceItem.packCount }],
         persisted: false,
         usedBody: false,
       };
     }
   }
 
-  // No saved recipe, no auto-derive applicable: caller must supply a recipe.
   return { recipe: [], persisted: false, usedBody: false };
 }
 
@@ -82,7 +79,6 @@ async function resolveRecipe(
 // ---------------------------------------------------------------------------
 
 export async function POST(request: NextRequest) {
-  // 1. Auth.
   const supabase = await createClient();
   const {
     data: { user },
@@ -91,7 +87,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
   }
 
-  // 2. Validate.
   const json = await request.json().catch(() => null);
   const parsed = decompositionInputSchema.safeParse(json);
   if (!parsed.success) {
@@ -102,7 +97,6 @@ export async function POST(request: NextRequest) {
   }
   const v = parsed.data;
 
-  // 3. Lookup source purchase. Drizzle bypasses RLS -- verify user_id manually.
   const sourcePurchase = await db.query.purchases.findFirst({
     where: and(
       eq(schema.purchases.id, v.sourcePurchaseId),
@@ -113,7 +107,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'source purchase not found' }, { status: 404 });
   }
 
-  // 4. Lookup source catalog item.
   const sourceItem = await db.query.catalogItems.findFirst({
     where: eq(schema.catalogItems.id, sourcePurchase.catalogItemId),
   });
@@ -121,7 +114,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: 'source catalog item not found' }, { status: 404 });
   }
 
-  // 5. Gate: must be a sealed product and not a Booster Pack itself.
   if (sourceItem.kind !== 'sealed') {
     return NextResponse.json(
       { error: 'decompose source must be a sealed lot' },
@@ -134,11 +126,7 @@ export async function POST(request: NextRequest) {
       { status: 422 }
     );
   }
-  // No packCount gate. Decomposability is determined by productType (any
-  // sealed product that isn't a Booster Pack). The recipe table is the
-  // source of truth for what's inside.
 
-  // 6. qty_remaining = quantity - count(rips) - count(decompositions).
   const [{ ripped }] = await db
     .select({ ripped: count() })
     .from(schema.rips)
@@ -155,7 +143,6 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  // 7. Resolve effective recipe.
   const { recipe, persisted, usedBody } = await resolveRecipe(sourceItem, v.recipe);
 
   if (recipe.length === 0) {
@@ -168,38 +155,45 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  // 8. Validate all pack catalog items exist and are kind='sealed'.
-  const packCatalogMap = new Map<number, { id: number; name: string }>();
+  // Validate every row's contents catalog item exists. Allow kind='sealed' OR
+  // kind='card'. Reject self-referencing rows.
+  const contentsCatalogMap = new Map<number, { id: number; name: string; kind: 'sealed' | 'card' }>();
   for (const row of recipe) {
-    if (!packCatalogMap.has(row.packCatalogItemId)) {
-      const packItem = await db.query.catalogItems.findFirst({
-        where: eq(schema.catalogItems.id, row.packCatalogItemId),
+    if (row.contentsCatalogItemId === sourceItem.id) {
+      return NextResponse.json({ error: 'circular_recipe' }, { status: 422 });
+    }
+    if (!contentsCatalogMap.has(row.contentsCatalogItemId)) {
+      const item = await db.query.catalogItems.findFirst({
+        where: eq(schema.catalogItems.id, row.contentsCatalogItemId),
       });
-      if (!packItem || packItem.kind !== 'sealed') {
+      if (!item || (item.kind !== 'sealed' && item.kind !== 'card')) {
         return NextResponse.json(
-          { error: 'invalid_pack_catalog', packCatalogItemId: row.packCatalogItemId },
+          { error: 'invalid_contents_catalog', contentsCatalogItemId: row.contentsCatalogItemId },
           { status: 422 }
         );
       }
-      packCatalogMap.set(packItem.id, packItem);
+      contentsCatalogMap.set(item.id, { id: item.id, name: item.name, kind: item.kind });
     }
   }
 
-  // 9. Compute totals.
-  const totalPacks = recipe.reduce((sum, r) => sum + r.quantity, 0);
+  // Cost split: only sealed-kind rows enter the divisor.
+  const costSplitTotal = computeCostSplitTotal(recipe, contentsCatalogMap);
+  if (costSplitTotal === 0) {
+    return NextResponse.json({ error: 'recipe_must_contain_sealed_row' }, { status: 422 });
+  }
   const sourceCostCents = sourcePurchase.costCents;
   const { perPackCostCents, roundingResidualCents } = computePerPackCost(
     sourceCostCents,
-    totalPacks
+    costSplitTotal
   );
 
-  // 10. Transaction: persist recipe if needed, insert decomposition, insert N child purchases.
   const today = new Date().toISOString().slice(0, 10);
   const decomposeDate = v.decomposeDate ?? today;
 
   try {
     const result = await db.transaction(async (tx) => {
-      // Persist recipe when: caller supplied it (usedBody) or auto-derived (not yet persisted).
+      // Persist recipe when: caller supplied it (usedBody) OR auto-derived
+      // (not yet persisted).
       if (usedBody || (!usedBody && !persisted)) {
         await tx
           .delete(schema.catalogPackCompositions)
@@ -209,7 +203,7 @@ export async function POST(request: NextRequest) {
         for (let i = 0; i < recipe.length; i++) {
           await tx.insert(schema.catalogPackCompositions).values({
             sourceCatalogItemId: sourceItem.id,
-            packCatalogItemId: recipe[i].packCatalogItemId,
+            contentsCatalogItemId: recipe[i].contentsCatalogItemId,
             quantity: recipe[i].quantity,
             displayOrder: i,
           });
@@ -223,7 +217,7 @@ export async function POST(request: NextRequest) {
           sourcePurchaseId: sourcePurchase.id,
           decomposeDate,
           sourceCostCents,
-          packCount: totalPacks,
+          packCount: costSplitTotal,
           perPackCostCents,
           roundingResidualCents,
           notes: v.notes ?? null,
@@ -232,14 +226,16 @@ export async function POST(request: NextRequest) {
 
       const packPurchases = [];
       for (const row of recipe) {
-        const [packPurchase] = await tx
+        const contents = contentsCatalogMap.get(row.contentsCatalogItemId)!;
+        const childCostCents = contents.kind === 'card' ? 0 : perPackCostCents;
+        const [child] = await tx
           .insert(schema.purchases)
           .values({
             userId: user.id,
-            catalogItemId: row.packCatalogItemId,
+            catalogItemId: row.contentsCatalogItemId,
             purchaseDate: decomposeDate,
             quantity: row.quantity,
-            costCents: perPackCostCents,
+            costCents: childCostCents,
             condition: null,
             isGraded: false,
             gradingCompany: null,
@@ -252,7 +248,7 @@ export async function POST(request: NextRequest) {
             sourceDecompositionId: decomposition.id,
           })
           .returning();
-        packPurchases.push(packPurchase);
+        packPurchases.push(child);
       }
 
       return { decomposition, packPurchases };

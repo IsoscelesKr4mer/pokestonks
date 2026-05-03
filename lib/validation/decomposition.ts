@@ -9,7 +9,7 @@ const isoDate = z
   }, 'Date cannot be in the future');
 
 export const recipeRowSchema = z.object({
-  packCatalogItemId: z.number().int().positive(),
+  contentsCatalogItemId: z.number().int().positive(),
   quantity: z.number().int().positive(),
 });
 
