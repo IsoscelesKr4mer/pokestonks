@@ -71,6 +71,158 @@ export function computeTypeLabel(item: TypeLabelItem, lots: TypeLabelLot[]): str
 }
 
 // ---------------------------------------------------------------------------
+// Admin view loader (all eligible holdings + override metadata)
+// ---------------------------------------------------------------------------
+
+export type StorefrontAdminItem = {
+  catalogItemId: number;
+  /** The override row if one exists (NULL means no override). */
+  override: {
+    askingPriceCents: number | null;
+    hidden: boolean;
+    createdAt: Date;
+    updatedAt: Date;
+  } | null;
+  /** Display price for the buyer if not hidden -- the override-or-rounded-market chain. NULL when no source available, OR when the item is hidden (admin display still shows the would-be-render via priceOrigin). */
+  displayPriceCents: number | null;
+  /** Which source produced displayPriceCents (or, if hidden, what would have). */
+  priceOrigin: 'manual' | 'auto' | 'none';
+  item: {
+    id: number;
+    name: string;
+    setName: string | null;
+    kind: 'sealed' | 'card';
+    productType: string | null;
+    imageUrl: string | null;
+    imageStoragePath: string | null;
+    lastMarketCents: number | null;
+    lastMarketAt: Date | null;
+  };
+  qtyHeldRaw: number;
+  typeLabel: string;
+};
+
+export async function loadStorefrontAdminView(userId: string): Promise<StorefrontAdminItem[]> {
+  const lots = await db.query.purchases.findMany({
+    where: (p, ops) =>
+      ops.and(ops.eq(p.userId, userId), ops.isNull(p.deletedAt)),
+  });
+  if (lots.length === 0) return [];
+  const lotIds = lots.map((l) => l.id);
+
+  const [rips, decompositions, sales] = await Promise.all([
+    db.query.rips.findMany({ where: (r, ops) => ops.inArray(r.sourcePurchaseId, lotIds) }),
+    db.query.boxDecompositions.findMany({ where: (d, ops) => ops.inArray(d.sourcePurchaseId, lotIds) }),
+    db.query.sales.findMany({ where: (s, ops) => ops.inArray(s.purchaseId, lotIds) }),
+  ]);
+
+  const consumed = new Map<number, number>();
+  for (const r of rips) consumed.set(r.sourcePurchaseId, (consumed.get(r.sourcePurchaseId) ?? 0) + 1);
+  for (const d of decompositions) consumed.set(d.sourcePurchaseId, (consumed.get(d.sourcePurchaseId) ?? 0) + 1);
+  for (const s of sales) consumed.set(s.purchaseId, (consumed.get(s.purchaseId) ?? 0) + s.quantity);
+
+  const aggByCatalog = new Map<number, { qtyRaw: number; lotsForLabel: TypeLabelLot[] }>();
+  for (const lot of lots) {
+    const remaining = lot.quantity - (consumed.get(lot.id) ?? 0);
+    if (remaining <= 0) continue;
+    if (lot.isGraded) continue;
+    const acc = aggByCatalog.get(lot.catalogItemId) ?? { qtyRaw: 0, lotsForLabel: [] };
+    acc.qtyRaw += remaining;
+    acc.lotsForLabel.push({
+      quantity: remaining,
+      condition: lot.condition,
+      isGraded: lot.isGraded,
+    });
+    aggByCatalog.set(lot.catalogItemId, acc);
+  }
+  if (aggByCatalog.size === 0) return [];
+
+  const eligibleIds = Array.from(aggByCatalog.keys());
+  const [catalogRows, overrides] = await Promise.all([
+    db.query.catalogItems.findMany({ where: (ci, ops) => ops.inArray(ci.id, eligibleIds) }),
+    db.query.storefrontListings.findMany({
+      where: (sl, ops) => ops.and(ops.eq(sl.userId, userId), ops.inArray(sl.catalogItemId, eligibleIds)),
+    }),
+  ]);
+  const catalogById = new Map<number, CatalogItem>(catalogRows.map((c) => [c.id, c]));
+  const overrideByCatalog = new Map(overrides.map((o) => [o.catalogItemId, o]));
+
+  const items: StorefrontAdminItem[] = [];
+  for (const [catalogItemId, agg] of aggByCatalog) {
+    const item = catalogById.get(catalogItemId);
+    if (!item) continue;
+    const override = overrideByCatalog.get(catalogItemId);
+
+    let priceOrigin: 'manual' | 'auto' | 'none';
+    let displayPriceCents: number | null;
+    if (override?.askingPriceCents != null) {
+      priceOrigin = 'manual';
+      displayPriceCents = override.askingPriceCents;
+    } else if (item.lastMarketCents != null) {
+      priceOrigin = 'auto';
+      displayPriceCents = roundUpToNearest(item.lastMarketCents);
+    } else {
+      priceOrigin = 'none';
+      displayPriceCents = null;
+    }
+    if (override?.hidden) {
+      // Admin still shows the row, but display price = null to communicate "not visible to buyer"
+      displayPriceCents = null;
+    }
+
+    items.push({
+      catalogItemId,
+      override: override
+        ? {
+            askingPriceCents: override.askingPriceCents,
+            hidden: override.hidden,
+            createdAt: override.createdAt,
+            updatedAt: override.updatedAt,
+          }
+        : null,
+      displayPriceCents,
+      priceOrigin,
+      item: {
+        id: item.id,
+        name: item.name,
+        setName: item.setName,
+        kind: item.kind as 'sealed' | 'card',
+        productType: item.productType,
+        imageUrl: item.imageUrl,
+        imageStoragePath: item.imageStoragePath,
+        lastMarketCents: item.lastMarketCents,
+        lastMarketAt: item.lastMarketAt,
+      },
+      qtyHeldRaw: agg.qtyRaw,
+      typeLabel: computeTypeLabel(
+        { kind: item.kind as 'sealed' | 'card', productType: item.productType },
+        agg.lotsForLabel
+      ),
+    });
+  }
+
+  // Sort: visible+manual first (override.updatedAt DESC), visible+auto next (name ASC), hidden last (name ASC).
+  items.sort((a, b) => {
+    const aHidden = !!a.override?.hidden;
+    const bHidden = !!b.override?.hidden;
+    if (aHidden !== bHidden) return aHidden ? 1 : -1;
+    if (!aHidden) {
+      const aManual = a.priceOrigin === 'manual';
+      const bManual = b.priceOrigin === 'manual';
+      if (aManual !== bManual) return aManual ? -1 : 1;
+      if (aManual) {
+        const at = a.override?.updatedAt.getTime() ?? 0;
+        const bt = b.override?.updatedAt.getTime() ?? 0;
+        if (at !== bt) return bt - at;
+      }
+    }
+    return a.item.name.localeCompare(b.item.name);
+  });
+
+  return items;
+}
+
+// ---------------------------------------------------------------------------
 // Public-route view loader
 // ---------------------------------------------------------------------------
 

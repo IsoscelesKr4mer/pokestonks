@@ -6,8 +6,11 @@ const mkListing = (id: number, name: string, qty: number, price: number) =>
   ({
     catalogItemId: id,
     askingPriceCents: price,
-    createdAt: '',
-    updatedAt: '',
+    hidden: false,
+    createdAt: null,
+    updatedAt: null,
+    displayPriceCents: price,
+    priceOrigin: 'manual' as const,
     item: {
       id,
       name,

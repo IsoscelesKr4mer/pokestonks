@@ -44,6 +44,7 @@ export async function DELETE(_req: Request, ctx: Ctx) {
     listing: {
       catalogItemId: deleted.catalogItemId,
       askingPriceCents: deleted.askingPriceCents,
+      hidden: deleted.hidden,
       createdAt: deleted.createdAt.toISOString(),
       updatedAt: deleted.updatedAt.toISOString(),
     },

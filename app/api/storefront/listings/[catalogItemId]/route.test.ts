@@ -63,6 +63,7 @@ describe('DELETE /api/storefront/listings/[catalogItemId]', () => {
         userId: 'u1',
         catalogItemId: 100,
         askingPriceCents: 6000,
+        hidden: false,
         createdAt: now,
         updatedAt: now,
       },
@@ -72,5 +73,6 @@ describe('DELETE /api/storefront/listings/[catalogItemId]', () => {
     const body = await res.json();
     expect(body.listing.catalogItemId).toBe(100);
     expect(body.listing.askingPriceCents).toBe(6000);
+    expect(body.listing.hidden).toBe(false);
   });
 });

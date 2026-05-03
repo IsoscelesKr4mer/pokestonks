@@ -4,13 +4,16 @@ import { eq, sql } from 'drizzle-orm';
 import { createClient } from '@/lib/supabase/server';
 import { db, schema } from '@/lib/db/client';
 import { upsertListingInputSchema } from '@/lib/validation/storefront';
-import { loadStorefrontView } from '@/lib/services/storefront';
+import { loadStorefrontAdminView } from '@/lib/services/storefront';
 
 export type StorefrontListingDto = {
   catalogItemId: number;
   askingPriceCents: number | null;
-  createdAt: string;
-  updatedAt: string;
+  hidden: boolean;
+  createdAt: string | null;
+  updatedAt: string | null;
+  displayPriceCents: number | null;
+  priceOrigin: 'manual' | 'auto' | 'none';
   item: {
     id: number;
     name: string;
@@ -28,9 +31,7 @@ export type StorefrontListingDto = {
 
 async function authOrError() {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { data: { user } } = await supabase.auth.getUser();
   return user;
 }
 
@@ -38,50 +39,29 @@ export async function GET() {
   const user = await authOrError();
   if (!user) return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
 
-  // Reuse loadStorefrontView for the qty + typeLabel computation, but join
-  // the full catalog row for admin-table display fields.
-  const view = await loadStorefrontView(user.id);
-
-  const allListings = await db.query.storefrontListings.findMany({
-    where: eq(schema.storefrontListings.userId, user.id),
-  });
-  const itemIds = allListings.map((l) => l.catalogItemId);
-  const catalogRows = itemIds.length
-    ? await db.query.catalogItems.findMany({
-        where: (ci, ops) => ops.inArray(ci.id, itemIds),
-      })
-    : [];
-  const catalogById = new Map(catalogRows.map((c) => [c.id, c]));
-
-  // Map view items by catalog id for quick qty/typeLabel lookup.
-  const viewByCatalog = new Map(view.items.map((v) => [v.catalogItemId, v]));
-
-  const listings: StorefrontListingDto[] = allListings.map((l) => {
-    const item = catalogById.get(l.catalogItemId)!;
-    const v = viewByCatalog.get(l.catalogItemId);
-    return {
-      catalogItemId: l.catalogItemId,
-      askingPriceCents: l.askingPriceCents,
-      createdAt: l.createdAt.toISOString(),
-      updatedAt: l.updatedAt.toISOString(),
-      item: {
-        id: item.id,
-        name: item.name,
-        setName: item.setName,
-        kind: item.kind as 'sealed' | 'card',
-        productType: item.productType,
-        imageUrl: item.imageUrl,
-        imageStoragePath: item.imageStoragePath,
-        lastMarketCents: item.lastMarketCents,
-        lastMarketAt: item.lastMarketAt ? item.lastMarketAt.toISOString() : null,
-      },
-      qtyHeldRaw: v?.qtyAvailable ?? 0,
-      typeLabel: v?.typeLabel ?? (item.kind === 'sealed' ? item.productType ?? 'Sealed' : 'Card'),
-    };
-  });
-
-  // Sort by listing.updatedAt DESC.
-  listings.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+  const adminView = await loadStorefrontAdminView(user.id);
+  const listings: StorefrontListingDto[] = adminView.map((row) => ({
+    catalogItemId: row.catalogItemId,
+    askingPriceCents: row.override?.askingPriceCents ?? null,
+    hidden: row.override?.hidden ?? false,
+    createdAt: row.override?.createdAt.toISOString() ?? null,
+    updatedAt: row.override?.updatedAt.toISOString() ?? null,
+    displayPriceCents: row.displayPriceCents,
+    priceOrigin: row.priceOrigin,
+    item: {
+      id: row.item.id,
+      name: row.item.name,
+      setName: row.item.setName,
+      kind: row.item.kind,
+      productType: row.item.productType,
+      imageUrl: row.item.imageUrl,
+      imageStoragePath: row.item.imageStoragePath,
+      lastMarketCents: row.item.lastMarketCents,
+      lastMarketAt: row.item.lastMarketAt ? row.item.lastMarketAt.toISOString() : null,
+    },
+    qtyHeldRaw: row.qtyHeldRaw,
+    typeLabel: row.typeLabel,
+  }));
 
   return NextResponse.json({ listings });
 }
@@ -111,20 +91,29 @@ export async function POST(req: Request) {
   });
   if (!item) return NextResponse.json({ error: 'catalog_item_not_found' }, { status: 404 });
 
+  // Build the partial update set. Only fields the client supplied.
+  const insertValues: typeof schema.storefrontListings.$inferInsert = {
+    userId: user.id,
+    catalogItemId: v.catalogItemId,
+    askingPriceCents: v.askingPriceCents ?? null,
+    hidden: v.hidden ?? false,
+    updatedAt: new Date(),
+  };
+
+  const updateSet: Record<string, unknown> = { updatedAt: sql`excluded.updated_at` };
+  if (v.askingPriceCents !== undefined) {
+    updateSet.askingPriceCents = sql`excluded.asking_price_cents`;
+  }
+  if (v.hidden !== undefined) {
+    updateSet.hidden = sql`excluded.hidden`;
+  }
+
   const [row] = await db
     .insert(schema.storefrontListings)
-    .values({
-      userId: user.id,
-      catalogItemId: v.catalogItemId,
-      askingPriceCents: v.askingPriceCents,
-      updatedAt: new Date(),
-    })
+    .values(insertValues)
     .onConflictDoUpdate({
       target: [schema.storefrontListings.userId, schema.storefrontListings.catalogItemId],
-      set: {
-        askingPriceCents: sql`excluded.asking_price_cents`,
-        updatedAt: sql`excluded.updated_at`,
-      },
+      set: updateSet,
     })
     .returning();
 
@@ -132,6 +121,7 @@ export async function POST(req: Request) {
     listing: {
       catalogItemId: row.catalogItemId,
       askingPriceCents: row.askingPriceCents,
+      hidden: row.hidden,
       createdAt: row.createdAt.toISOString(),
       updatedAt: row.updatedAt.toISOString(),
     },
