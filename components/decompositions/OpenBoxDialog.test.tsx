@@ -278,6 +278,74 @@ describe('<OpenBoxDialog>', () => {
     expect(screen.getByText(/promo \(no cost\)/i)).toBeInTheDocument();
   });
 
+  it('picker hit with type=sealed feeds cost-split (regression: hit.type not hit.kind)', async () => {
+    // Reproduces the bug where the dialog read `hit.kind` but the API returns
+    // `type`. Result: contentsKind was undefined, costSplitTotal was 0, and
+    // every child got $0 cost basis even when packs were in the recipe.
+    mockComposition({ recipe: null, persisted: false, suggested: false });
+
+    const fetchSpy = vi.spyOn(global, 'fetch').mockImplementation(async (url) => {
+      const u = String(url);
+      if (u.startsWith('/api/search')) {
+        return new Response(
+          JSON.stringify({
+            results: [
+              {
+                catalogItemId: 42,
+                name: 'Ascended Heroes Booster Pack',
+                setName: 'Ascended Heroes',
+                productType: 'Booster Pack',
+                type: 'sealed',
+                imageUrl: null,
+              },
+            ],
+          }),
+          { status: 200, headers: { 'Content-Type': 'application/json' } }
+        );
+      }
+      return new Response('{}', { status: 200 });
+    });
+
+    wrap(<OpenBoxDialogHarness />);
+    await userEvent.click(screen.getByRole('button', { name: /search for an item/i }));
+    await userEvent.type(screen.getByPlaceholderText(/search for a pack/i), 'pack');
+    const hit = await screen.findByRole('button', {
+      name: /Ascended Heroes Booster Pack/,
+    });
+    await userEvent.click(hit);
+
+    // Source cost is $50.00 (from etb fixture) split across 1 pack (qty: 1).
+    // If contentsKind was undefined, costSplitTotal would be 0 and the
+    // preview would say "$0.00 each". With the fix, it should say $50.00.
+    expect(await screen.findByText(/at \$50\.00 each/)).toBeInTheDocument();
+
+    fetchSpy.mockRestore();
+  });
+
+  it('picker scopes search to source set via setCode query param', async () => {
+    mockComposition({ recipe: null, persisted: false, suggested: false });
+    let capturedUrl: string | null = null;
+    const fetchSpy = vi.spyOn(global, 'fetch').mockImplementation(async (url) => {
+      const u = String(url);
+      if (u.startsWith('/api/search')) {
+        capturedUrl = u;
+        return new Response(JSON.stringify({ results: [] }), {
+          status: 200,
+          headers: { 'Content-Type': 'application/json' },
+        });
+      }
+      return new Response('{}', { status: 200 });
+    });
+
+    wrap(<OpenBoxDialogHarness />);
+    await userEvent.click(screen.getByRole('button', { name: /search for an item/i }));
+    await userEvent.type(screen.getByPlaceholderText(/search for a pack/i), 'meganium');
+    await waitFor(() => expect(capturedUrl).not.toBeNull());
+    expect(capturedUrl).toContain('setCode=AH');
+
+    fetchSpy.mockRestore();
+  });
+
   it('submit is disabled when all recipe rows are cards (costSplitTotal === 0)', () => {
     const cardOnlyRecipe = [
       {

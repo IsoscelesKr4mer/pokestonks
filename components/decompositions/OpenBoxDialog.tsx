@@ -47,8 +47,8 @@ type SearchResult = {
   catalogItemId: number;
   name: string;
   setName: string | null;
-  productType: string | null;
-  kind: 'sealed' | 'card';
+  productType?: string | null;
+  type: 'sealed' | 'card';
   imageUrl: string | null;
 };
 
@@ -91,11 +91,20 @@ export function OpenBoxDialog({
     }
   }, [composition.data]);
 
+  // Default-scope the picker to the source's set so a Mega Meganium ex Box
+  // searching for "meganium" surfaces the Ascended Heroes promo, not every
+  // Mega Meganium ex print across all sets.
+  const setScope = source.setCode
+    ? `&setCode=${encodeURIComponent(source.setCode)}`
+    : source.setName
+    ? `&setName=${encodeURIComponent(source.setName)}`
+    : '';
+
   const search = useQuery({
-    queryKey: ['contentsSearch', searchQuery],
+    queryKey: ['contentsSearch', searchQuery, setScope],
     queryFn: async () => {
       const res = await fetch(
-        `/api/search?q=${encodeURIComponent(searchQuery)}&kind=all`
+        `/api/search?q=${encodeURIComponent(searchQuery)}&kind=all${setScope}`
       );
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       return res.json() as Promise<{ results: Array<SearchResult> }>;
@@ -122,8 +131,8 @@ export function OpenBoxDialog({
           contentsName: hit.name,
           contentsSetName: hit.setName,
           contentsImageUrl: hit.imageUrl,
-          contentsKind: hit.kind,
-          contentsProductType: hit.productType,
+          contentsKind: hit.type,
+          contentsProductType: hit.productType ?? null,
           quantity: 1,
         },
       ];
@@ -416,7 +425,7 @@ export function OpenBoxDialog({
                           {hit.setName && (
                             <div className="text-xs text-muted-foreground">
                               {hit.setName}
-                              {hit.kind === 'card'
+                              {hit.type === 'card'
                                 ? ' · card'
                                 : hit.productType
                                 ? ` · ${hit.productType}`
