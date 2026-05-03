@@ -1,9 +1,9 @@
 import { createClient } from '@/lib/supabase/server';
 import { redirect } from 'next/navigation';
 import { HoldingsGrid } from './HoldingsGrid';
+import { HoldingsHeaderCaption } from './HoldingsHeaderCaption';
 import { aggregateHoldings, type RawPurchaseRow, type RawRipRow, type RawDecompositionRow, type RawSaleRow } from '@/lib/services/holdings';
 import { computeHoldingPnL } from '@/lib/services/pnl';
-import { formatCents } from '@/lib/utils/format';
 import { RefreshHeldButton } from '@/components/prices/RefreshHeldButton';
 
 export default async function HoldingsPage() {
@@ -51,9 +51,12 @@ export default async function HoldingsPage() {
       <div className="flex items-end justify-between gap-4 pb-[18px] border-b border-divider">
         <div className="grid gap-1">
           <h1 className="text-[32px] font-semibold tracking-[-0.02em] leading-none">Holdings</h1>
-          <div className="text-[12px] font-mono text-meta">
-            {totals.lotCount} LOTS · {totals.pricedCount} PRICED · {totals.unpricedCount} UNPRICED · {formatCents(totals.totalInvestedCents)} INVESTED
-          </div>
+          <HoldingsHeaderCaption
+            lotCount={totals.lotCount}
+            pricedCount={totals.pricedCount}
+            unpricedCount={totals.unpricedCount}
+            totalInvestedCents={totals.totalInvestedCents}
+          />
         </div>
         <RefreshHeldButton />
       </div>

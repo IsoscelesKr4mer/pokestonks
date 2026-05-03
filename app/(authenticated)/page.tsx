@@ -25,17 +25,6 @@ export default async function DashboardPage() {
         <>
           <PortfolioHeroLive />
           <PerformersStrip />
-          <div className="grid gap-3">
-            <div className="flex justify-between items-baseline">
-              <h3 className="text-[14px] font-semibold uppercase tracking-[0.04em]">
-                Value over time
-              </h3>
-              <span className="text-[11px] text-meta font-mono">RESERVED FOR PLAN 7</span>
-            </div>
-            <div className="rounded-2xl border border-dashed border-accent/20 bg-vault min-h-[180px] flex items-center justify-center text-[12px] font-mono text-meta">
-              Chart slot &mdash; time-series &middot; 1M / 3M / 6M / 12M / MAX
-            </div>
-          </div>
         </>
       ) : (
         <Card>
