@@ -97,14 +97,26 @@ export function useStorefrontListings() {
   });
 }
 
-export type UpsertListingInput = { catalogItemId: number; askingPriceCents: number };
+export type UpsertListingInput = {
+  catalogItemId: number;
+  /** Set to a number to pin a manual price; null to clear override; omit to leave price unchanged. */
+  askingPriceCents?: number | null;
+  /** Set true to hide; false to unhide; omit to leave unchanged. */
+  hidden?: boolean;
+};
 
 export function useUpsertStorefrontListing() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: (input: UpsertListingInput) =>
       jsonFetch<{
-        listing: { catalogItemId: number; askingPriceCents: number; createdAt: string; updatedAt: string };
+        listing: {
+          catalogItemId: number;
+          askingPriceCents: number | null;
+          hidden: boolean;
+          createdAt: string;
+          updatedAt: string;
+        };
       }>('/api/storefront/listings', {
         method: 'POST',
         body: JSON.stringify(input),
@@ -122,7 +134,13 @@ export function useRemoveStorefrontListing() {
   return useMutation({
     mutationFn: (catalogItemId: number) =>
       jsonFetch<{
-        listing: { catalogItemId: number; askingPriceCents: number; createdAt: string; updatedAt: string };
+        listing: {
+          catalogItemId: number;
+          askingPriceCents: number | null;
+          hidden: boolean;
+          createdAt: string;
+          updatedAt: string;
+        };
       }>(`/api/storefront/listings/${catalogItemId}`, { method: 'DELETE' }),
     onSuccess: (_data, catalogItemId) => {
       qc.invalidateQueries({ queryKey: LISTINGS_KEY });

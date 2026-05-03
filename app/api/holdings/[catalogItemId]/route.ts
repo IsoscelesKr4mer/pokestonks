@@ -401,6 +401,7 @@ export async function GET(
   const storefrontListingDto = listing
     ? {
         askingPriceCents: listing.askingPriceCents,
+        hidden: listing.hidden,
         updatedAt: listing.updatedAt.toISOString(),
       }
     : null;

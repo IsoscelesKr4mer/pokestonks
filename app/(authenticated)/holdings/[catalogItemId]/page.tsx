@@ -293,6 +293,7 @@ export default async function HoldingDetailPage({
   const storefrontListingDto = storefrontListingRow
     ? {
         askingPriceCents: storefrontListingRow.askingPriceCents,
+        hidden: storefrontListingRow.hidden,
         updatedAt: storefrontListingRow.updatedAt.toISOString(),
       }
     : null;

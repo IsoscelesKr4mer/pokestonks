@@ -102,6 +102,7 @@ export interface HoldingDetailDto {
   activity: ActivityEvent[];
   storefrontListing: {
     askingPriceCents: number | null;
+    hidden: boolean;
     updatedAt: string;
   } | null;
 }
