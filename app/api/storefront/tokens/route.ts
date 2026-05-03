@@ -1,6 +1,6 @@
 import 'server-only';
 import { NextResponse } from 'next/server';
-import { eq, asc, isNull, desc } from 'drizzle-orm';
+import { eq, asc, desc } from 'drizzle-orm';
 import { createClient } from '@/lib/supabase/server';
 import { db, schema } from '@/lib/db/client';
 import { generateShareToken } from '@/lib/services/share-tokens';

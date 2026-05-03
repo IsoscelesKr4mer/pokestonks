@@ -1,6 +1,6 @@
 import 'server-only';
 import { NextResponse } from 'next/server';
-import { eq, and } from 'drizzle-orm';
+import { eq } from 'drizzle-orm';
 import { createClient } from '@/lib/supabase/server';
 import { db, schema } from '@/lib/db/client';
 import { updateTokenInputSchema } from '@/lib/validation/storefront';

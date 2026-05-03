@@ -4,7 +4,6 @@ import { Dialog, DialogContent } from '@/components/ui/dialog';
 import {
   VaultDialogHeader,
   FormSection,
-  FormLabel,
   FormRow,
   DialogActions,
 } from '@/components/ui/dialog-form';
