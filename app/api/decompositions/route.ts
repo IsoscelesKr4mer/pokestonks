@@ -157,23 +157,23 @@ export async function POST(request: NextRequest) {
 
   // Validate every row's contents catalog item exists. Allow kind='sealed' OR
   // kind='card'. Reject self-referencing rows.
+  const uniqueContentsIds = [...new Set(recipe.map((r) => r.contentsCatalogItemId))];
+  if (uniqueContentsIds.includes(sourceItem.id)) {
+    return NextResponse.json({ error: 'circular_recipe' }, { status: 422 });
+  }
+  const contentsRows = await db.query.catalogItems.findMany({
+    where: (ci, ops) => ops.inArray(ci.id, uniqueContentsIds),
+  });
   const contentsCatalogMap = new Map<number, { id: number; name: string; kind: 'sealed' | 'card' }>();
-  for (const row of recipe) {
-    if (row.contentsCatalogItemId === sourceItem.id) {
-      return NextResponse.json({ error: 'circular_recipe' }, { status: 422 });
+  for (const id of uniqueContentsIds) {
+    const item = contentsRows.find((r) => r.id === id);
+    if (!item || (item.kind !== 'sealed' && item.kind !== 'card')) {
+      return NextResponse.json(
+        { error: 'invalid_contents_catalog', contentsCatalogItemId: id },
+        { status: 422 }
+      );
     }
-    if (!contentsCatalogMap.has(row.contentsCatalogItemId)) {
-      const item = await db.query.catalogItems.findFirst({
-        where: eq(schema.catalogItems.id, row.contentsCatalogItemId),
-      });
-      if (!item || (item.kind !== 'sealed' && item.kind !== 'card')) {
-        return NextResponse.json(
-          { error: 'invalid_contents_catalog', contentsCatalogItemId: row.contentsCatalogItemId },
-          { status: 422 }
-        );
-      }
-      contentsCatalogMap.set(item.id, { id: item.id, name: item.name, kind: item.kind });
-    }
+    contentsCatalogMap.set(item.id, { id: item.id, name: item.name, kind: item.kind });
   }
 
   // Cost split: only sealed-kind rows enter the divisor.
@@ -194,7 +194,7 @@ export async function POST(request: NextRequest) {
     const result = await db.transaction(async (tx) => {
       // Persist recipe when: caller supplied it (usedBody) OR auto-derived
       // (not yet persisted).
-      if (usedBody || (!usedBody && !persisted)) {
+      if (usedBody || !persisted) {
         await tx
           .delete(schema.catalogPackCompositions)
           .where(

@@ -10,6 +10,7 @@ const mockGetUser = vi.fn();
 const mockTransaction = vi.fn();
 const mockPurchasesFindFirst = vi.fn();
 const mockCatalogItemsFindFirst = vi.fn();
+const mockCatalogItemsFindMany = vi.fn();
 const mockCompositionsFindMany = vi.fn();
 // The select chain is used to count rips and decompositions.
 // We set up a call counter to distinguish the two calls.
@@ -42,7 +43,10 @@ vi.mock('@/lib/db/client', () => ({
   db: {
     query: {
       purchases: { findFirst: (a: unknown) => mockPurchasesFindFirst(a) },
-      catalogItems: { findFirst: (a: unknown) => mockCatalogItemsFindFirst(a) },
+      catalogItems: {
+        findFirst: (a: unknown) => mockCatalogItemsFindFirst(a),
+        findMany: (a: unknown) => mockCatalogItemsFindMany(a),
+      },
       catalogPackCompositions: { findMany: (a: unknown) => mockCompositionsFindMany(a) },
     },
     select: () => mockSelectChain,
@@ -64,6 +68,7 @@ vi.mock('drizzle-orm', () => ({
   and: (...args: unknown[]) => ({ _op: 'and', args }),
   count: () => ({ _col: 'count' }),
   asc: (x: unknown) => x,
+  inArray: (a: unknown, b: unknown) => ({ _op: 'inArray', a, b }),
 }));
 
 vi.mock('@/lib/services/tcgcsv', () => ({
@@ -182,10 +187,8 @@ describe('POST /api/decompositions', () => {
     const cardItem = { id: 30, kind: 'card' as const, productType: null, name: 'Test Promo' };
 
     mockPurchasesFindFirst.mockResolvedValue(basePurchase);
-    mockCatalogItemsFindFirst
-      .mockResolvedValueOnce(baseSourceItem) // sourceItem
-      .mockResolvedValueOnce(packItem)       // contents lookup for packItem
-      .mockResolvedValueOnce(cardItem);      // contents lookup for cardItem
+    mockCatalogItemsFindFirst.mockResolvedValueOnce(baseSourceItem); // sourceItem
+    mockCatalogItemsFindMany.mockResolvedValue([packItem, cardItem]); // contents bulk lookup
     mockCompositionsFindMany.mockResolvedValue([]);
 
     mockTransaction.mockImplementation(makeTxMock({
@@ -220,10 +223,8 @@ describe('POST /api/decompositions', () => {
     const cardB = { id: 31, kind: 'card' as const, productType: null, name: 'Card B' };
 
     mockPurchasesFindFirst.mockResolvedValue({ ...basePurchase, costCents: 2000 });
-    mockCatalogItemsFindFirst
-      .mockResolvedValueOnce(baseSourceItem)
-      .mockResolvedValueOnce(cardA)
-      .mockResolvedValueOnce(cardB);
+    mockCatalogItemsFindFirst.mockResolvedValueOnce(baseSourceItem);
+    mockCatalogItemsFindMany.mockResolvedValue([cardA, cardB]);
     mockCompositionsFindMany.mockResolvedValue([]);
 
     const res = await POST(makeReq({
@@ -263,10 +264,8 @@ describe('POST /api/decompositions', () => {
     const cardItem = { id: 30, kind: 'card' as const, productType: null, name: 'Test Promo' };
 
     mockPurchasesFindFirst.mockResolvedValue({ ...basePurchase, costCents: 0, unknownCost: true });
-    mockCatalogItemsFindFirst
-      .mockResolvedValueOnce(baseSourceItem)
-      .mockResolvedValueOnce(packItem)
-      .mockResolvedValueOnce(cardItem);
+    mockCatalogItemsFindFirst.mockResolvedValueOnce(baseSourceItem);
+    mockCatalogItemsFindMany.mockResolvedValue([packItem, cardItem]);
     mockCompositionsFindMany.mockResolvedValue([]);
 
     mockTransaction.mockImplementation(makeTxMock({
@@ -299,9 +298,8 @@ describe('POST /api/decompositions', () => {
     const caseItem = { id: 60, kind: 'sealed' as const, productType: 'Booster Box Case', setCode: null, setName: null, packCount: null };
 
     mockPurchasesFindFirst.mockResolvedValue(casePurchase);
-    mockCatalogItemsFindFirst
-      .mockResolvedValueOnce(caseItem)
-      .mockResolvedValueOnce(boxItem);
+    mockCatalogItemsFindFirst.mockResolvedValueOnce(caseItem);
+    mockCatalogItemsFindMany.mockResolvedValue([boxItem]);
     mockCompositionsFindMany.mockResolvedValue([]);
 
     mockTransaction.mockImplementation(makeTxMock({
