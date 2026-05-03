@@ -11,8 +11,9 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
-import { useCreatePurchase } from '@/lib/query/hooks/usePurchases';
+import { useCreatePurchase, usePurchaseSources } from '@/lib/query/hooks/usePurchases';
 import { dollarsStringToCents } from '@/lib/utils/cents';
+import { SourceChipPicker } from './SourceChipPicker';
 
 export function AddPurchaseDialog({
   open,
@@ -26,10 +27,12 @@ export function AddPurchaseDialog({
   const [date, setDate] = useState(() => new Date().toISOString().slice(0, 10));
   const [quantity, setQuantity] = useState(1);
   const [costDollars, setCostDollars] = useState('');
-  const [source, setSource] = useState('');
+  const [source, setSource] = useState<string | null>(null);
   const [location, setLocation] = useState('');
   const [unknownCost, setUnknownCost] = useState(false);
   const create = useCreatePurchase();
+  const sourcesQuery = usePurchaseSources();
+  const sourceSuggestions = sourcesQuery.data?.sources ?? [];
 
   const submitDisabled = create.isPending || (!unknownCost && !costDollars);
 
@@ -73,15 +76,15 @@ export function AddPurchaseDialog({
                 aria-label="Cost"
               />
             </div>
-            <div>
-              <FormLabel>Source</FormLabel>
-              <Input
-                value={source}
-                onChange={(e) => setSource(e.target.value)}
-                placeholder="Walmart vending"
-              />
-            </div>
           </FormRow>
+          <div>
+            <FormLabel>Source</FormLabel>
+            <SourceChipPicker
+              value={source}
+              onChange={setSource}
+              suggestions={sourceSuggestions}
+            />
+          </div>
           <div className="flex items-start gap-2 text-[12px] text-text-muted">
             <input
               id="unknown-cost-cb"
@@ -121,7 +124,7 @@ export function AddPurchaseDialog({
                 quantity,
                 costCents: cents,
                 unknownCost,
-                source: source || null,
+                source: source,
                 location: location || null,
                 isGraded: false,
               });

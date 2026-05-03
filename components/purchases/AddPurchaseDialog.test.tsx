@@ -7,6 +7,7 @@ const mutateAsync = vi.fn(async () => ({ id: 1 }));
 
 vi.mock('@/lib/query/hooks/usePurchases', () => ({
   useCreatePurchase: () => ({ mutateAsync, isPending: false }),
+  usePurchaseSources: () => ({ data: { sources: ['Walmart vending', 'Target', 'Costco'] }, isLoading: false }),
 }));
 
 import { AddPurchaseDialog } from './AddPurchaseDialog';
