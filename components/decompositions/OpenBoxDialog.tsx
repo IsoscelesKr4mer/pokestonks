@@ -93,11 +93,15 @@ export function OpenBoxDialog({
 
   // Default-scope the picker to the source's set so a Mega Meganium ex Box
   // searching for "meganium" surfaces the Ascended Heroes promo, not every
-  // Mega Meganium ex print across all sets.
-  const setScope = source.setCode
-    ? `&setCode=${encodeURIComponent(source.setCode)}`
-    : source.setName
+  // Mega Meganium ex print across all sets. Prefer setName over setCode:
+  // sealed products use TCGplayer setCodes (e.g. "ME") while cards use
+  // Pokemon TCG API setCodes (different convention), so setCode rarely
+  // matches across both. setName is bidirectional-substring matched in the
+  // search service and works across the conventions.
+  const setScope = source.setName
     ? `&setName=${encodeURIComponent(source.setName)}`
+    : source.setCode
+    ? `&setCode=${encodeURIComponent(source.setCode)}`
     : '';
 
   const search = useQuery({

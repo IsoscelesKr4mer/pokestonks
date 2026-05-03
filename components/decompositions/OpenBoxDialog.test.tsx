@@ -322,7 +322,7 @@ describe('<OpenBoxDialog>', () => {
     fetchSpy.mockRestore();
   });
 
-  it('picker scopes search to source set via setCode query param', async () => {
+  it('picker scopes search to source set via setName (preferred over setCode)', async () => {
     mockComposition({ recipe: null, persisted: false, suggested: false });
     let capturedUrl: string | null = null;
     const fetchSpy = vi.spyOn(global, 'fetch').mockImplementation(async (url) => {
@@ -341,7 +341,10 @@ describe('<OpenBoxDialog>', () => {
     await userEvent.click(screen.getByRole('button', { name: /search for an item/i }));
     await userEvent.type(screen.getByPlaceholderText(/search for a pack/i), 'meganium');
     await waitFor(() => expect(capturedUrl).not.toBeNull());
-    expect(capturedUrl).toContain('setCode=AH');
+    // setName is preferred — works across sealed (TCGplayer) and card
+    // (Pokemon TCG API) setCode conventions via bidirectional substring.
+    expect(capturedUrl).toContain('setName=Ascended');
+    expect(capturedUrl).not.toContain('setCode=');
 
     fetchSpy.mockRestore();
   });
