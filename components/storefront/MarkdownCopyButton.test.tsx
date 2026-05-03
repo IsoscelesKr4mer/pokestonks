@@ -84,4 +84,24 @@ describe('buildMarkdown', () => {
       'Full menu: https://pokestonks.app/storefront/abc123',
     ]);
   });
+
+  it('omits hidden rows', () => {
+    const md = buildMarkdown(
+      [mkListing(1, 'Visible', 1, 1000), { ...mkListing(2, 'Hidden', 2, 2000), hidden: true }],
+      mkToken(),
+      'https://pokestonks.app'
+    );
+    expect(md).toContain('Visible');
+    expect(md).not.toContain('Hidden');
+  });
+
+  it('omits rows with no displayPriceCents', () => {
+    const md = buildMarkdown(
+      [mkListing(1, 'Priced', 1, 1000), { ...mkListing(2, 'Unpriced', 1, 0), displayPriceCents: null, priceOrigin: 'none' as const }],
+      mkToken(),
+      'https://pokestonks.app'
+    );
+    expect(md).toContain('Priced');
+    expect(md).not.toContain('Unpriced');
+  });
 });

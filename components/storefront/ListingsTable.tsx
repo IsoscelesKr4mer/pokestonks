@@ -13,6 +13,8 @@ import { getImageUrl } from '@/lib/utils/images';
 import { AddListingFromHoldingsDialog } from './AddListingFromHoldingsDialog';
 import { MarkdownCopyButton } from './MarkdownCopyButton';
 
+const DELTA_STEP = 100; // cents threshold to show direction badge
+
 export function ListingsTable() {
   const listings = useStorefrontListings();
   const tokens = useShareTokens();
@@ -46,15 +48,15 @@ export function ListingsTable() {
       <header className="px-6 py-4 border-b border-divider flex items-center justify-between">
         <h2 className="text-[16px] font-medium">Listings</h2>
         <span className="text-[11px] font-mono text-meta">
-          {rows.length} {rows.length === 1 ? 'listing' : 'listings'}
+          {rows.length} {rows.length === 1 ? 'item' : 'items'}
         </span>
       </header>
 
       {rows.length === 0 ? (
         <div className="px-6 py-10 text-center">
-          <p className="text-[13px] text-meta">No items priced yet.</p>
+          <p className="text-[13px] text-meta">No holdings yet.</p>
           <p className="mt-2 text-[12px] text-meta">
-            Set an asking price on a holding to add it to your storefront.
+            Log a purchase to start populating your storefront.
           </p>
         </div>
       ) : (
@@ -65,9 +67,9 @@ export function ListingsTable() {
                 <th className="text-left px-6 py-2 w-[44px]"></th>
                 <th className="text-left px-2 py-2">Item</th>
                 <th className="text-right px-2 py-2 w-[100px]">Market</th>
-                <th className="text-right px-2 py-2 w-[140px]">Asking</th>
+                <th className="text-right px-2 py-2 w-[160px]">Asking</th>
                 <th className="text-right px-2 py-2 w-[80px]">Qty</th>
-                <th className="text-right px-6 py-2 w-[40px]"></th>
+                <th className="text-right px-6 py-2 w-[88px]">Visible</th>
               </tr>
             </thead>
             <tbody>
@@ -77,8 +79,14 @@ export function ListingsTable() {
                   imageUrl: row.item.imageUrl,
                 });
                 const isEditing = editingId === row.catalogItemId;
+                const market = row.item.lastMarketCents;
+                const hasOverride = row.priceOrigin === 'manual' || row.hidden;
+
                 return (
-                  <tr key={row.catalogItemId} className="border-b border-divider last:border-b-0">
+                  <tr
+                    key={row.catalogItemId}
+                    className={`border-b border-divider last:border-b-0 ${row.hidden ? 'opacity-60' : ''}`}
+                  >
                     <td className="px-6 py-3">
                       <div className="w-9 h-9 rounded-md overflow-hidden bg-canvas flex items-center justify-center">
                         {src ? (
@@ -99,10 +107,11 @@ export function ListingsTable() {
                       <div className="font-medium leading-tight line-clamp-1">{row.item.name}</div>
                       <div className="text-[11px] text-meta line-clamp-1">
                         {[row.item.setName, row.typeLabel].filter(Boolean).join(' · ')}
+                        {row.hidden ? ' · hidden from storefront' : ''}
                       </div>
                     </td>
                     <td className="px-2 py-3 text-right text-meta">
-                      {row.item.lastMarketCents != null ? formatCents(row.item.lastMarketCents) : '—'}
+                      {market != null ? formatCents(market) : '—'}
                     </td>
                     <td className="px-2 py-3 text-right">
                       {isEditing ? (
@@ -111,10 +120,25 @@ export function ListingsTable() {
                           type="text"
                           inputMode="decimal"
                           value={editValue}
+                          placeholder={
+                            row.priceOrigin === 'auto' && row.displayPriceCents != null
+                              ? (row.displayPriceCents / 100).toFixed(2)
+                              : ''
+                          }
                           onChange={(e) => setEditValue(e.target.value)}
                           onKeyDown={async (e) => {
                             if (e.key === 'Enter') {
-                              const cents = dollarsStringToCents(editValue);
+                              const trimmed = editValue.trim();
+                              if (trimmed === '') {
+                                // Clear override (revert to auto)
+                                await upsert.mutateAsync({
+                                  catalogItemId: row.catalogItemId,
+                                  askingPriceCents: null,
+                                });
+                                setEditingId(null);
+                                return;
+                              }
+                              const cents = dollarsStringToCents(trimmed);
                               if (cents == null || cents < 0 || cents > 100_000_000) return;
                               await upsert.mutateAsync({
                                 catalogItemId: row.catalogItemId,
@@ -126,31 +150,77 @@ export function ListingsTable() {
                             }
                           }}
                           onBlur={() => setEditingId(null)}
-                          className="w-[100px] text-right border border-divider rounded px-2 py-1 bg-canvas"
+                          className="w-[120px] text-right border border-divider rounded px-2 py-1 bg-canvas"
                         />
                       ) : (
                         <button
                           type="button"
                           onClick={() => {
                             setEditingId(row.catalogItemId);
-                            setEditValue(((row.askingPriceCents ?? 0) / 100).toFixed(2));
+                            setEditValue(
+                              row.askingPriceCents != null
+                                ? (row.askingPriceCents / 100).toFixed(2)
+                                : ''
+                            );
                           }}
-                          className="font-medium hover:underline"
+                          className="hover:underline"
                         >
-                          {formatCents(row.askingPriceCents ?? 0)}
+                          {row.priceOrigin === 'manual' && row.askingPriceCents != null ? (
+                            <span className="font-medium">
+                              {formatCents(row.askingPriceCents)}
+                              {market != null &&
+                                Math.abs(row.askingPriceCents - market) >= DELTA_STEP && (
+                                  <span className="ml-1 text-[10px] text-meta">
+                                    {row.askingPriceCents > market ? '▲' : '▼'}{' '}
+                                    {formatCents(Math.abs(row.askingPriceCents - market))}
+                                  </span>
+                                )}
+                            </span>
+                          ) : row.priceOrigin === 'auto' && row.displayPriceCents != null ? (
+                            <span className="text-meta">auto {formatCents(row.displayPriceCents)}</span>
+                          ) : (
+                            <span className="italic text-meta">no price set</span>
+                          )}
                         </button>
                       )}
                     </td>
                     <td className="px-2 py-3 text-right text-meta">{row.qtyHeldRaw}</td>
                     <td className="px-6 py-3 text-right">
-                      <button
-                        type="button"
-                        onClick={() => remove.mutate(row.catalogItemId)}
-                        className="text-meta hover:text-rose-500 text-[16px] leading-none"
-                        aria-label={`Remove ${row.item.name} from storefront`}
-                      >
-                        ×
-                      </button>
+                      <div className="flex items-center justify-end gap-1">
+                        <button
+                          type="button"
+                          onClick={() =>
+                            upsert.mutate({
+                              catalogItemId: row.catalogItemId,
+                              hidden: !row.hidden,
+                            })
+                          }
+                          className="text-[11px] font-mono px-2 py-1 rounded-md border border-divider hover:bg-hover"
+                          aria-label={
+                            row.hidden
+                              ? `Show ${row.item.name} on storefront`
+                              : `Hide ${row.item.name} from storefront`
+                          }
+                          title={
+                            row.hidden
+                              ? 'Hidden from buyers — click to show'
+                              : 'Visible to buyers — click to hide'
+                          }
+                        >
+                          {row.hidden ? '🚫 Hidden' : '👁 Visible'}
+                        </button>
+                        {hasOverride && (
+                          <button
+                            type="button"
+                            onClick={() => remove.mutate(row.catalogItemId)}
+                            className="text-meta hover:text-rose-500 text-[14px] leading-none px-1"
+                            aria-label={`Reset ${row.item.name} to default storefront state`}
+                            title="Reset to default (clear override + unhide)"
+                          >
+                            ↺
+                          </button>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 );
