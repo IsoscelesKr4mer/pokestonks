@@ -72,18 +72,19 @@ const svg = `<?xml version="1.0" encoding="UTF-8"?>
     <circle cx="0" cy="0" r="4"/>
   </g>
 
-  <!-- headline -->
-  <g font-family="Arial Black, 'Segoe UI', Impact, system-ui, sans-serif" fill="#ffffff" text-anchor="middle">
-    <text x="540" y="220" font-size="86" font-weight="900" letter-spacing="-1">SEALED POKÉMON TCG</text>
+  <!-- headline split to 2 lines so it always fits regardless of font fallback -->
+  <g font-family="Arial Black, 'Segoe UI', Impact, system-ui, sans-serif" font-weight="900" letter-spacing="-1" text-anchor="middle">
+    <text x="540" y="180" font-size="84" fill="#ffffff">SEALED POKÉMON</text>
+    <text x="540" y="280" font-size="100" fill="#f5d27c">TCG</text>
   </g>
 
   <!-- gold rule centered -->
-  <rect x="380" y="252" width="320" height="3" fill="url(#rule)"/>
+  <rect x="380" y="312" width="320" height="3" fill="url(#rule)"/>
 
   <!-- categories under headline -->
   <g font-family="'Segoe UI', Arial, system-ui, sans-serif" fill="#d8d4ff" text-anchor="middle">
-    <text x="540" y="320" font-size="28" font-weight="600">Booster Boxes · ETBs · Bundles · Tins</text>
-    <text x="540" y="358" font-size="28" font-weight="600">Premium Collections · Promos</text>
+    <text x="540" y="358" font-size="26" font-weight="600">Booster Boxes · ETBs · Bundles · Tins</text>
+    <text x="540" y="392" font-size="26" font-weight="600">Premium Collections · Promos</text>
   </g>
 
   <!-- "Full live menu" header above QR -->
