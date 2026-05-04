@@ -59,6 +59,7 @@
     "happy-dom": "^20.9.0",
     "jsdom": "^27.0.1",
     "msw": "^2.13.6",
+    "qrcode": "^1.5.4",
     "tailwindcss": "^4",
     "tsx": "^4.21.0",
     "typescript": "^5",
