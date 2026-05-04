@@ -24,10 +24,14 @@ export function buildMarkdown(
   if (contact) lines.push(contact);
   lines.push('');
   lines.push('Available:');
-  for (const l of listings) {
-    if (l.qtyHeldRaw <= 0) continue;
-    if (l.hidden) continue;
-    if (l.displayPriceCents == null) continue;
+  const eligible = listings
+    .filter(
+      (l): l is StorefrontListingDto & { displayPriceCents: number } =>
+        l.qtyHeldRaw > 0 && !l.hidden && l.displayPriceCents != null
+    )
+    .slice()
+    .sort((a, b) => a.item.name.localeCompare(b.item.name));
+  for (const l of eligible) {
     lines.push(
       `- ${l.item.name} · ${l.qtyHeldRaw} available · ${formatCents(l.displayPriceCents)}`
     );

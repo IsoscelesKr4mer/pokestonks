@@ -104,4 +104,25 @@ describe('buildMarkdown', () => {
     expect(md).toContain('Priced');
     expect(md).not.toContain('Unpriced');
   });
+
+  it('sorts items alphabetically regardless of input order', () => {
+    const md = buildMarkdown(
+      [
+        mkListing(1, 'Surging Sparks Booster Box', 1, 16000),
+        mkListing(2, 'Paldean Fates Bundle', 1, 3000),
+        mkListing(3, 'Charizard ex Premium Collection', 1, 5000),
+      ],
+      mkToken(),
+      'https://pokestonks.app'
+    );
+    const itemLines = md
+      .split('\n')
+      .filter((line) => line.startsWith('- '))
+      .map((line) => line.replace(/^- /, '').split(' · ')[0]);
+    expect(itemLines).toEqual([
+      'Charizard ex Premium Collection',
+      'Paldean Fates Bundle',
+      'Surging Sparks Booster Box',
+    ]);
+  });
 });
