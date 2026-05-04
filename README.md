@@ -2,13 +2,13 @@
 
 Personal Pokémon TCG portfolio tracker plus a public storefront for selling sealed product. Tracks cost basis vs. current market value, computes realized + unrealized P&L, and produces a buyer-facing menu at `/storefront/[token]` that you can post to Facebook Marketplace, Craigslist, etc.
 
-Single-user app (Michael), but the API is multi-user-ready via Supabase RLS.
+Designed for single-user use, but the API is multi-user-ready via Supabase RLS.
 
 Spec lives in `docs/superpowers/specs/`. Per-phase implementation plans in `docs/superpowers/plans/`.
 
 ## Status
 
-All planned phases shipped (deployed at https://pokestonks.vercel.app):
+All planned phases shipped:
 
 | Plan | Feature | Spec / Plan |
 |---|---|---|
