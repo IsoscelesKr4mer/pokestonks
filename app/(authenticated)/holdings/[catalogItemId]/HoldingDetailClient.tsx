@@ -13,6 +13,7 @@ import { EditPurchaseDialog, type EditableLot } from '@/components/purchases/Edi
 import type { PurchaseFormCatalogItem } from '@/components/purchases/PurchaseForm';
 import { SellDialog } from '@/components/sales/SellDialog';
 import { RipPackDialog, type RipPackSourceLot } from '@/components/rips/RipPackDialog';
+import { RipDetailDialog } from '@/components/rips/RipDetailDialog';
 import { OpenBoxDialog, type OpenBoxSourceLot } from '@/components/decompositions/OpenBoxDialog';
 import type { HoldingDetailDto, HoldingDetailLot } from '@/lib/api/holdingDetailDto';
 import { DeltaPill } from '@/components/prices/DeltaPill';
@@ -34,6 +35,7 @@ export function HoldingDetailClient({ initial }: { initial: HoldingDetailDto }) 
   const [sellOpen, setSellOpen] = useState(false);
   const [editTarget, setEditTarget] = useState<number | null>(null);
   const [ripTarget, setRipTarget] = useState<RipPackSourceLot | null>(null);
+  const [ripDetailId, setRipDetailId] = useState<number | null>(null);
   const [openBoxTarget, setOpenBoxTarget] = useState<OpenBoxSourceLot | null>(null);
   const [setPriceOpen, setSetPriceOpen] = useState(false);
 
@@ -114,7 +116,7 @@ export function HoldingDetailClient({ initial }: { initial: HoldingDetailDto }) 
     } catch (err) {
       if (err instanceof DeletePurchaseError) {
         if (err.ripIds && err.ripIds.length > 0) {
-          alert(`${err.message}. Undo rip #${err.ripIds.join(', #')} on the source pack first.`);
+          setRipDetailId(err.ripIds[0]);
           return;
         }
         if (err.decompositionIds && err.decompositionIds.length > 0) {
@@ -406,6 +408,12 @@ export function HoldingDetailClient({ initial }: { initial: HoldingDetailDto }) 
           searchCard={(q) => searchCardsInSet(q)}
         />
       )}
+      <RipDetailDialog
+        open={ripDetailId !== null}
+        onOpenChange={(v) => { if (!v) setRipDetailId(null); }}
+        ripId={ripDetailId}
+      />
+
       {openBoxTarget !== null && (
         <OpenBoxDialog
           open
