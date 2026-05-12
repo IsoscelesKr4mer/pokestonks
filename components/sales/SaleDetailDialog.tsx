@@ -22,11 +22,18 @@ export function SaleDetailDialog({ open, onOpenChange, saleGroupId }: Props) {
   const { data, isLoading } = useSale(saleGroupId);
   const del = useDeleteSale();
 
+  const isBundle = (data?.items.length ?? 0) > 1;
+  const title = !data
+    ? '...'
+    : isBundle
+      ? `Bundle sale · ${data.items.length} items`
+      : `Sale of ${data.items[0]?.catalogItem.name ?? '...'}`;
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg">
         <VaultDialogHeader
-          title={`Sale of ${data?.catalogItem.name ?? '...'}`}
+          title={title}
           sub={data ? `${data.saleDate}${data.platform ? ` · ${data.platform}` : ''}${data.unknownCost ? ' · No basis' : ''}` : undefined}
         />
 
@@ -73,20 +80,42 @@ export function SaleDetailDialog({ open, onOpenChange, saleGroupId }: Props) {
               </FormSection>
             ) : null}
 
-            <FormSection>
-              <div className="text-xs uppercase tracking-wide text-muted-foreground">
-                Lot breakdown
-              </div>
-              {data.rows.map((r) => (
-                <div key={r.saleId} className="flex justify-between items-center text-xs">
-                  <span className="flex items-center gap-2">
-                    <span>Lot {r.purchaseDate} -- {r.quantity}x @ {formatCents(r.perUnitCostCents)}</span>
-                    {r.unknownCost && <NoBasisPill />}
-                  </span>
-                  <span>{formatCentsSigned(r.salePriceCents - r.feesCents - r.matchedCostCents)}</span>
+            {data.items.map((item) => (
+              <FormSection key={item.catalogItem.id}>
+                <div className="text-xs uppercase tracking-wide text-muted-foreground">
+                  {isBundle ? item.catalogItem.name : 'Lot breakdown'}
                 </div>
-              ))}
-            </FormSection>
+                {isBundle && (
+                  <div className="flex justify-between items-center text-xs text-muted-foreground mb-1">
+                    <span>
+                      Qty {item.totals.quantity} · Gross {formatCents(item.totals.salePriceCents)} ·
+                      Fees {formatCents(item.totals.feesCents)} ·
+                      Cost {formatCents(item.totals.matchedCostCents)}
+                    </span>
+                    <span
+                      className={
+                        item.totals.realizedPnLCents > 0
+                          ? 'text-positive'
+                          : item.totals.realizedPnLCents < 0
+                            ? 'text-negative'
+                            : 'text-muted-foreground'
+                      }
+                    >
+                      {formatCentsSigned(item.totals.realizedPnLCents)}
+                    </span>
+                  </div>
+                )}
+                {item.rows.map((r) => (
+                  <div key={r.saleId} className="flex justify-between items-center text-xs">
+                    <span className="flex items-center gap-2">
+                      <span>Lot {r.purchaseDate} -- {r.quantity}x @ {formatCents(r.perUnitCostCents)}</span>
+                      {r.unknownCost && <NoBasisPill />}
+                    </span>
+                    <span>{formatCentsSigned(r.salePriceCents - r.feesCents - r.matchedCostCents)}</span>
+                  </div>
+                ))}
+              </FormSection>
+            ))}
           </div>
         )}
 
@@ -102,7 +131,7 @@ export function SaleDetailDialog({ open, onOpenChange, saleGroupId }: Props) {
               del.mutate(
                 {
                   saleGroupId: data.saleGroupId,
-                  catalogItemIdForInvalidation: data.catalogItem.id,
+                  catalogItemIdForInvalidation: data.items.map((i) => i.catalogItem.id),
                 },
                 { onSuccess: () => onOpenChange(false) }
               );

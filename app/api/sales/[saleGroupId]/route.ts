@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { and, eq } from 'drizzle-orm';
 import { createClient } from '@/lib/supabase/server';
 import { db, schema } from '@/lib/db/client';
+import { buildSaleEvent } from '@/lib/api/saleEvent';
 
 export async function GET(
   _req: NextRequest,
@@ -64,53 +65,7 @@ export async function GET(
     return NextResponse.json({ error: 'sale not found' }, { status: 404 });
   }
 
-  const first = data[0];
-  const purchase = first.purchase;
-  const totals = data.reduce(
-    (acc, r) => ({
-      quantity: acc.quantity + r.quantity,
-      salePriceCents: acc.salePriceCents + r.sale_price_cents,
-      feesCents: acc.feesCents + r.fees_cents,
-      matchedCostCents: acc.matchedCostCents + r.matched_cost_cents,
-    }),
-    { quantity: 0, salePriceCents: 0, feesCents: 0, matchedCostCents: 0 }
-  );
-
-  return NextResponse.json({
-    saleGroupId,
-    saleDate: first.sale_date,
-    platform: first.platform,
-    notes: first.notes,
-    unknownCost: data.some((r) => r.purchase.unknown_cost),
-    catalogItem: {
-      id: purchase.catalog_item.id,
-      name: purchase.catalog_item.name,
-      setName: purchase.catalog_item.set_name,
-      productType: purchase.catalog_item.product_type,
-      kind: purchase.catalog_item.kind,
-      imageUrl: purchase.catalog_item.image_url,
-      imageStoragePath: purchase.catalog_item.image_storage_path,
-    },
-    totals: {
-      ...totals,
-      realizedPnLCents: totals.salePriceCents - totals.feesCents - totals.matchedCostCents,
-    },
-    rows: data.map((r) => {
-      const p = r.purchase;
-      return {
-        saleId: r.id,
-        purchaseId: p.id,
-        purchaseDate: p.purchase_date,
-        perUnitCostCents: p.cost_cents,
-        unknownCost: p.unknown_cost,
-        quantity: r.quantity,
-        salePriceCents: r.sale_price_cents,
-        feesCents: r.fees_cents,
-        matchedCostCents: r.matched_cost_cents,
-      };
-    }),
-    createdAt: first.created_at,
-  });
+  return NextResponse.json(buildSaleEvent(saleGroupId, data));
 }
 
 export async function DELETE(

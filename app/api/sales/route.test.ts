@@ -139,9 +139,14 @@ describe('GET /api/sales', () => {
 
     const res = await GET(new Request('http://localhost/api/sales') as never);
     expect(res.status).toBe(200);
-    const body = (await res.json()) as { sales: { saleGroupId: string; rows: unknown[] }[] };
+    const body = (await res.json()) as {
+      sales: { saleGroupId: string; items: { rows: unknown[] }[] }[];
+    };
     expect(body.sales).toHaveLength(1);
     expect(body.sales[0].saleGroupId).toBe('g1');
-    expect(body.sales[0].rows).toHaveLength(2);
+    // Both fixture rows share the same catalog_item (id 7 per fixture), so they
+    // group into one item with two FIFO-matched rows.
+    expect(body.sales[0].items).toHaveLength(1);
+    expect(body.sales[0].items[0].rows).toHaveLength(2);
   });
 });

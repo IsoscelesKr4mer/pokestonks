@@ -19,3 +19,23 @@ export const saleCreateSchema = z.object({
 });
 
 export type SaleCreateInput = z.infer<typeof saleCreateSchema>;
+
+// Bundle: one sale_group_id spanning multiple catalog items.
+// Each item carries its own allocated price/fees (caller may compute proportional
+// to market value, or set manually). Per-item FIFO matching across that item's lots.
+export const bundleSaleItemSchema = z.object({
+  catalogItemId: z.number().int().positive(),
+  totalQty: z.number().int().positive(),
+  salePriceCents: z.number().int().nonnegative(),
+  feesCents: z.number().int().nonnegative(),
+});
+
+export const bundleSaleCreateSchema = z.object({
+  items: z.array(bundleSaleItemSchema).min(1).max(50),
+  saleDate: isoDate,
+  platform: z.string().max(100).nullable().optional(),
+  notes: z.string().max(1000).nullable().optional(),
+});
+
+export type BundleSaleItemInput = z.infer<typeof bundleSaleItemSchema>;
+export type BundleSaleCreateInput = z.infer<typeof bundleSaleCreateSchema>;

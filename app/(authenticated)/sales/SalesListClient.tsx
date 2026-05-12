@@ -4,15 +4,24 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import { useSales } from '@/lib/query/hooks/useSales';
 import { ActivityTimelineRow } from '@/components/activity/ActivityTimelineRow';
 import { SaleDetailDialog } from '@/components/sales/SaleDetailDialog';
+import { BundleSellDialog } from '@/components/sales/BundleSellDialog';
+import { Button } from '@/components/ui/button';
 import type { ActivityEvent } from '@/components/activity/ActivityTimelineRow';
 import type { SaleEvent } from '@/lib/types/sales';
 
 function saleToEvent(s: SaleEvent): ActivityEvent {
+  const isBundle = s.items.length > 1;
+  const itemSummary = isBundle
+    ? `Bundle · ${s.items.length} items (${s.items
+        .map((i) => i.catalogItem.name)
+        .slice(0, 2)
+        .join(', ')}${s.items.length > 2 ? `, +${s.items.length - 2}` : ''})`
+    : s.items[0]?.catalogItem.name ?? '(unknown)';
   return {
     kind: 'sale' as const,
     id: s.saleGroupId,
     date: s.saleDate,
-    title: `Sold ${s.totals.quantity} · ${s.catalogItem.name}${s.platform ? ' (' + s.platform + ')' : ''}`,
+    title: `Sold ${s.totals.quantity} · ${itemSummary}${s.platform ? ' (' + s.platform + ')' : ''}`,
     sub: `@ $${(s.totals.salePriceCents / s.totals.quantity / 100).toFixed(2)}/ea net`,
     amountCents: s.totals.realizedPnLCents,
     noBasis: s.unknownCost,
@@ -55,6 +64,7 @@ export function SalesListClient() {
   const q = params.get('q') ?? '';
 
   const [selected, setSelected] = useState<string | null>(null);
+  const [bundleOpen, setBundleOpen] = useState(false);
 
   const setParam = (key: string, value: string) => {
     const next = new URLSearchParams(params.toString());
@@ -85,7 +95,10 @@ export function SalesListClient() {
   return (
     <div className="mx-auto w-full max-w-[1200px] px-6 md:px-8 py-10 space-y-6">
       <div className="grid gap-1 pb-[14px] border-b border-divider">
-        <h1 className="text-[28px] font-semibold tracking-[-0.02em] leading-none">Sales</h1>
+        <div className="flex items-center justify-between gap-3">
+          <h1 className="text-[28px] font-semibold tracking-[-0.02em] leading-none">Sales</h1>
+          <Button onClick={() => setBundleOpen(true)}>+ Bundle sale</Button>
+        </div>
         <div className="text-[11px] font-mono text-meta">
           {sales.length} EVENTS
           {sales.length > 0 && (
@@ -169,6 +182,7 @@ export function SalesListClient() {
         onOpenChange={(o) => { if (!o) setSelected(null); }}
         saleGroupId={selected}
       />
+      <BundleSellDialog open={bundleOpen} onOpenChange={setBundleOpen} />
     </div>
   );
 }

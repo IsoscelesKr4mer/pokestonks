@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server';
 import { db, schema } from '@/lib/db/client';
 import { saleCreateSchema } from '@/lib/validation/sale';
 import { matchFifo, type OpenLot } from '@/lib/services/sales';
+import { buildSaleEvent } from '@/lib/api/saleEvent';
 import { randomUUID } from 'crypto';
 
 export async function POST(request: NextRequest) {
@@ -192,54 +193,9 @@ export async function GET(request: NextRequest) {
     groups.set(r.sale_group_id, arr);
   }
 
-  const sales = Array.from(groups.entries()).map(([saleGroupId, rows]) => {
-    const first = rows[0];
-    const purchase = first.purchase;
-    const totals = rows.reduce(
-      (acc, r) => ({
-        quantity: acc.quantity + r.quantity,
-        salePriceCents: acc.salePriceCents + r.sale_price_cents,
-        feesCents: acc.feesCents + r.fees_cents,
-        matchedCostCents: acc.matchedCostCents + r.matched_cost_cents,
-      }),
-      { quantity: 0, salePriceCents: 0, feesCents: 0, matchedCostCents: 0 }
-    );
-    return {
-      saleGroupId,
-      saleDate: first.sale_date,
-      platform: first.platform,
-      notes: first.notes,
-      unknownCost: rows.some((r) => r.purchase.unknown_cost),
-      catalogItem: {
-        id: purchase.catalog_item.id,
-        name: purchase.catalog_item.name,
-        setName: purchase.catalog_item.set_name,
-        productType: purchase.catalog_item.product_type,
-        kind: purchase.catalog_item.kind,
-        imageUrl: purchase.catalog_item.image_url,
-        imageStoragePath: purchase.catalog_item.image_storage_path,
-      },
-      totals: {
-        ...totals,
-        realizedPnLCents: totals.salePriceCents - totals.feesCents - totals.matchedCostCents,
-      },
-      rows: rows.map((r) => {
-        const p = r.purchase;
-        return {
-          saleId: r.id,
-          purchaseId: p.id,
-          purchaseDate: p.purchase_date,
-          perUnitCostCents: p.cost_cents,
-          unknownCost: p.unknown_cost,
-          quantity: r.quantity,
-          salePriceCents: r.sale_price_cents,
-          feesCents: r.fees_cents,
-          matchedCostCents: r.matched_cost_cents,
-        };
-      }),
-      createdAt: first.created_at,
-    };
-  });
+  const sales = Array.from(groups.entries()).map(([saleGroupId, rows]) =>
+    buildSaleEvent(saleGroupId, rows)
+  );
 
   const nextOffset = data.length === limit ? offset + limit : null;
   return NextResponse.json({ sales, nextOffset });

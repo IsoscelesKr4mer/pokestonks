@@ -6,6 +6,95 @@ export type OpenLot = {
   qtyAvailable: number;        // purchase.quantity - rips - decomps - prior sales
 };
 
+export type OpenLotWithSource = OpenLot & { source: string | null };
+
+/**
+ * Load open lots for one or more catalog items, with consumption from rips,
+ * decompositions, and prior sales subtracted. Returns lots keyed by
+ * catalog_item_id so bundle callers can iterate by item.
+ *
+ * The caller passes in a server-scoped Supabase client; RLS scopes results
+ * to the current user.
+ */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function loadOpenLotsByCatalogItem(
+  // Supabase types are deep generics that explode here; treat as any locally.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  supabase: any,
+  catalogItemIds: readonly number[]
+): Promise<
+  | { ok: true; lotsByCatalog: Map<number, OpenLotWithSource[]> }
+  | { ok: false; error: string }
+> {
+  if (catalogItemIds.length === 0) return { ok: true, lotsByCatalog: new Map() };
+
+  type PurchaseRow = {
+    id: number;
+    catalog_item_id: number;
+    quantity: number;
+    cost_cents: number;
+    purchase_date: string;
+    created_at: string;
+    source: string | null;
+  };
+
+  const { data: lotsRaw, error: lotsErr } = await supabase
+    .from('purchases')
+    .select('id, catalog_item_id, quantity, cost_cents, purchase_date, created_at, source')
+    .in('catalog_item_id', catalogItemIds as number[])
+    .is('deleted_at', null);
+  if (lotsErr) return { ok: false, error: lotsErr.message };
+  const lots: PurchaseRow[] = (lotsRaw ?? []) as PurchaseRow[];
+  const lotIds = lots.map((l) => l.id);
+
+  const ripCounts = new Map<number, number>();
+  const decompCounts = new Map<number, number>();
+  const saleCounts = new Map<number, number>();
+  if (lotIds.length > 0) {
+    const { data: rips } = await supabase
+      .from('rips')
+      .select('source_purchase_id')
+      .in('source_purchase_id', lotIds);
+    for (const r of (rips ?? []) as { source_purchase_id: number }[]) {
+      ripCounts.set(r.source_purchase_id, (ripCounts.get(r.source_purchase_id) ?? 0) + 1);
+    }
+    const { data: decomps } = await supabase
+      .from('box_decompositions')
+      .select('source_purchase_id')
+      .in('source_purchase_id', lotIds);
+    for (const d of (decomps ?? []) as { source_purchase_id: number }[]) {
+      decompCounts.set(d.source_purchase_id, (decompCounts.get(d.source_purchase_id) ?? 0) + 1);
+    }
+    const { data: priorSales } = await supabase
+      .from('sales')
+      .select('purchase_id, quantity')
+      .in('purchase_id', lotIds);
+    for (const s of (priorSales ?? []) as { purchase_id: number; quantity: number }[]) {
+      saleCounts.set(s.purchase_id, (saleCounts.get(s.purchase_id) ?? 0) + s.quantity);
+    }
+  }
+
+  const lotsByCatalog = new Map<number, OpenLotWithSource[]>();
+  for (const l of lots) {
+    const lot: OpenLotWithSource = {
+      purchaseId: l.id,
+      purchaseDate: l.purchase_date,
+      createdAt: l.created_at,
+      costCents: l.cost_cents,
+      qtyAvailable:
+        l.quantity -
+        (ripCounts.get(l.id) ?? 0) -
+        (decompCounts.get(l.id) ?? 0) -
+        (saleCounts.get(l.id) ?? 0),
+      source: l.source,
+    };
+    const arr = lotsByCatalog.get(l.catalog_item_id) ?? [];
+    arr.push(lot);
+    lotsByCatalog.set(l.catalog_item_id, arr);
+  }
+  return { ok: true, lotsByCatalog };
+}
+
 export type SaleRequest = {
   totalQty: number;
   totalSalePriceCents: number; // gross

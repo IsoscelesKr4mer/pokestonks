@@ -17,21 +17,49 @@ function withQueryClient(ui: React.ReactNode) {
   return render(<QueryClientProvider client={qc}>{ui}</QueryClientProvider>);
 }
 
+const fakeCatalogItem = {
+  id: 42,
+  name: 'SV151 Elite Trainer Box',
+  setName: 'Scarlet & Violet 151',
+  productType: 'Elite Trainer Box',
+  kind: 'sealed' as const,
+  imageUrl: null,
+  imageStoragePath: null,
+};
+
+const fakeRow = {
+  saleId: 1,
+  purchaseId: 10,
+  purchaseDate: '2024-11-01',
+  perUnitCostCents: 5000,
+  unknownCost: false,
+  quantity: 1,
+  salePriceCents: 6500,
+  feesCents: 500,
+  matchedCostCents: 5000,
+};
+
 const fakeSale: SaleEvent = {
   saleGroupId: 'sg-1',
   saleDate: '2025-01-15',
   platform: 'eBay',
   notes: null,
   unknownCost: false,
-  catalogItem: {
-    id: 42,
-    name: 'SV151 Elite Trainer Box',
-    setName: 'Scarlet & Violet 151',
-    productType: 'Elite Trainer Box',
-    kind: 'sealed',
-    imageUrl: null,
-    imageStoragePath: null,
-  },
+  catalogItem: fakeCatalogItem,
+  items: [
+    {
+      catalogItem: fakeCatalogItem,
+      totals: {
+        quantity: 1,
+        salePriceCents: 6500,
+        feesCents: 500,
+        matchedCostCents: 5000,
+        realizedPnLCents: 1000,
+      },
+      unknownCost: false,
+      rows: [fakeRow],
+    },
+  ],
   totals: {
     quantity: 1,
     salePriceCents: 6500,
@@ -39,19 +67,6 @@ const fakeSale: SaleEvent = {
     matchedCostCents: 5000,
     realizedPnLCents: 1000,
   },
-  rows: [
-    {
-      saleId: 1,
-      purchaseId: 10,
-      purchaseDate: '2024-11-01',
-      perUnitCostCents: 5000,
-      unknownCost: false,
-      quantity: 1,
-      salePriceCents: 6500,
-      feesCents: 500,
-      matchedCostCents: 5000,
-    },
-  ],
   createdAt: '2025-01-15T12:00:00Z',
 };
 
@@ -128,7 +143,13 @@ describe('<SaleDetailDialog>', () => {
     const saleWithNoBasis: SaleEvent = {
       ...fakeSale,
       unknownCost: true,
-      rows: [{ ...fakeSale.rows[0], unknownCost: true }],
+      items: [
+        {
+          ...fakeSale.items[0],
+          unknownCost: true,
+          rows: [{ ...fakeRow, unknownCost: true }],
+        },
+      ],
     };
     vi.mocked(useSale).mockReturnValue({
       data: saleWithNoBasis,

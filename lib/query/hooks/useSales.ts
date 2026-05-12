@@ -1,6 +1,6 @@
 'use client';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { SaleCreateInput } from '@/lib/validation/sale';
+import type { SaleCreateInput, BundleSaleCreateInput } from '@/lib/validation/sale';
 import type { SaleEvent } from '@/lib/types/sales';
 
 export type { SaleEvent };
@@ -102,12 +102,18 @@ export function useFifoPreview(input: SaleCreateInput | null) {
   });
 }
 
-function invalidateAfterSaleMutation(qc: ReturnType<typeof useQueryClient>, catalogItemId: number) {
+function invalidateAfterSaleMutation(
+  qc: ReturnType<typeof useQueryClient>,
+  catalogItemIds: number | readonly number[]
+) {
   qc.invalidateQueries({ queryKey: ['holdings'] });
-  qc.invalidateQueries({ queryKey: ['holding', catalogItemId] });
   qc.invalidateQueries({ queryKey: ['dashboardTotals'] });
   qc.invalidateQueries({ queryKey: ['sales'] });
   qc.invalidateQueries({ queryKey: ['purchases'] });
+  const ids = Array.isArray(catalogItemIds) ? catalogItemIds : [catalogItemIds as number];
+  for (const id of ids) {
+    qc.invalidateQueries({ queryKey: ['holding', id] });
+  }
 }
 
 export function useCreateSale() {
@@ -127,15 +133,86 @@ export function useCreateSale() {
   });
 }
 
+export type BundleFifoPreviewItem = {
+  catalogItemId: number;
+  catalogItem: {
+    id: number;
+    name: string;
+    setName: string | null;
+    imageUrl: string | null;
+    lastMarketCents: number | null;
+  } | null;
+  rows: FifoPreviewRow[];
+  totals: {
+    totalQty: number;
+    totalSalePriceCents: number;
+    totalFeesCents: number;
+    totalMatchedCostCents: number;
+    realizedPnLCents: number;
+    qtyAvailable: number;
+  };
+};
+
+export type BundleFifoPreviewResponse =
+  | {
+      ok: true;
+      items: BundleFifoPreviewItem[];
+      bundleTotals: {
+        totalSalePriceCents: number;
+        totalFeesCents: number;
+        totalMatchedCostCents: number;
+        realizedPnLCents: number;
+      };
+    }
+  | { ok: false; reason: 'insufficient_qty'; catalogItemId: number; totalAvailable: number };
+
+export function useBundleFifoPreview(input: BundleSaleCreateInput | null) {
+  return useQuery({
+    queryKey: ['sales', 'bundle-preview', input],
+    queryFn: async () => {
+      const res = await fetch('/api/sales/bundle/preview', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(input),
+      });
+      const body = await res.json();
+      if (res.status === 422 && body.ok === false) return body as BundleFifoPreviewResponse;
+      if (!res.ok) throw new Error(body.error ?? `HTTP ${res.status}`);
+      return body as BundleFifoPreviewResponse;
+    },
+    enabled:
+      input != null &&
+      input.items.length > 0 &&
+      input.items.every((i) => i.totalQty > 0 && i.catalogItemId > 0),
+    staleTime: 0,
+  });
+}
+
+export function useCreateBundleSale() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async (payload: BundleSaleCreateInput) => {
+      const res = await fetch('/api/sales/bundle', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      return json<{ saleGroupId: string; saleIds: number[]; totals: unknown }>(res);
+    },
+    onSuccess: (_data, variables) => {
+      invalidateAfterSaleMutation(qc, variables.items.map((i) => i.catalogItemId));
+    },
+  });
+}
+
 export function useDeleteSale() {
   const qc = useQueryClient();
   return useMutation({
     mutationFn: async ({
       saleGroupId,
-      catalogItemIdForInvalidation,
     }: {
       saleGroupId: string;
-      catalogItemIdForInvalidation: number;
+      catalogItemIdForInvalidation: number | readonly number[];
     }) => {
       const res = await fetch(`/api/sales/${saleGroupId}`, { method: 'DELETE' });
       if (res.status === 204) return { saleGroupId };
