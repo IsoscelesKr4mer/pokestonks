@@ -1,10 +1,12 @@
 'use client';
+import { useState } from 'react';
 import { Dialog, DialogContent } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { useSale, useDeleteSale } from '@/lib/query/hooks/useSales';
 import { formatCents, formatCentsSigned } from '@/lib/utils/format';
 import { PnLDisplay } from '@/components/holdings/PnLDisplay';
 import { NoBasisPill } from '@/components/holdings/NoBasisPill';
+import { EditSaleDialog } from './EditSaleDialog';
 import {
   VaultDialogHeader,
   FormSection,
@@ -21,6 +23,7 @@ type Props = {
 export function SaleDetailDialog({ open, onOpenChange, saleGroupId }: Props) {
   const { data, isLoading } = useSale(saleGroupId);
   const del = useDeleteSale();
+  const [editOpen, setEditOpen] = useState(false);
 
   const isBundle = (data?.items.length ?? 0) > 1;
   const title = !data
@@ -124,6 +127,13 @@ export function SaleDetailDialog({ open, onOpenChange, saleGroupId }: Props) {
             Close
           </Button>
           <Button
+            variant="outline"
+            disabled={!data}
+            onClick={() => setEditOpen(true)}
+          >
+            Edit
+          </Button>
+          <Button
             variant="destructive"
             disabled={!data || del.isPending}
             onClick={() => {
@@ -141,6 +151,9 @@ export function SaleDetailDialog({ open, onOpenChange, saleGroupId }: Props) {
           </Button>
         </DialogActions>
       </DialogContent>
+      {data && (
+        <EditSaleDialog open={editOpen} onOpenChange={setEditOpen} sale={data} />
+      )}
     </Dialog>
   );
 }

@@ -1,6 +1,10 @@
 'use client';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import type { SaleCreateInput, BundleSaleCreateInput } from '@/lib/validation/sale';
+import type {
+  SaleCreateInput,
+  BundleSaleCreateInput,
+  SaleUpdateInput,
+} from '@/lib/validation/sale';
 import type { SaleEvent } from '@/lib/types/sales';
 
 export type { SaleEvent };
@@ -201,6 +205,34 @@ export function useCreateBundleSale() {
     },
     onSuccess: (_data, variables) => {
       invalidateAfterSaleMutation(qc, variables.items.map((i) => i.catalogItemId));
+    },
+  });
+}
+
+export function useUpdateSale() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: async ({
+      saleGroupId,
+      patch,
+    }: {
+      saleGroupId: string;
+      patch: SaleUpdateInput;
+      catalogItemIdForInvalidation: number | readonly number[];
+    }) => {
+      const res = await fetch(`/api/sales/${saleGroupId}`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(patch),
+      });
+      if (res.status === 204) return { saleGroupId };
+      const body = await res.json();
+      if (!res.ok) throw new Error(body.error ?? `HTTP ${res.status}`);
+      return body;
+    },
+    onSuccess: (_data, variables) => {
+      invalidateAfterSaleMutation(qc, variables.catalogItemIdForInvalidation);
+      qc.invalidateQueries({ queryKey: ['sale', variables.saleGroupId] });
     },
   });
 }

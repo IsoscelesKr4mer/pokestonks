@@ -7,9 +7,10 @@ import { SaleDetailDialog } from './SaleDetailDialog';
 vi.mock('@/lib/query/hooks/useSales', () => ({
   useSale: vi.fn(),
   useDeleteSale: vi.fn(),
+  useUpdateSale: vi.fn(),
 }));
 
-import { useSale, useDeleteSale } from '@/lib/query/hooks/useSales';
+import { useSale, useDeleteSale, useUpdateSale } from '@/lib/query/hooks/useSales';
 import type { SaleEvent } from '@/lib/types/sales';
 
 function withQueryClient(ui: React.ReactNode) {
@@ -83,6 +84,9 @@ beforeEach(() => {
   } as ReturnType<typeof useSale>);
   vi.mocked(useDeleteSale).mockReturnValue(
     mockDeleteMutation as unknown as ReturnType<typeof useDeleteSale>
+  );
+  vi.mocked(useUpdateSale).mockReturnValue(
+    { mutate: vi.fn(), isPending: false } as unknown as ReturnType<typeof useUpdateSale>
   );
 });
 
