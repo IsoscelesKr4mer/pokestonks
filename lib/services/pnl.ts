@@ -43,6 +43,13 @@ export type PortfolioPnL = {
   realizedPnLCents: number;          // unified: rips (sign-flipped) + sales
   realizedRipPnLCents: number;       // signed; preserved on wire for forward compat
   realizedSalesPnLCents: number;     // signed; preserved on wire for forward compat
+  // Sales-only aggregates so the dashboard can show ROI %. Rips don't carry
+  // a meaningful margin %, so they're excluded from these.
+  realizedSalesGrossRevenueCents: number;   // sum of sales.sale_price_cents
+  realizedSalesFeesCents: number;           // sum of sales.fees_cents
+  realizedSalesMatchedCostCents: number;    // sum of sales.matched_cost_cents
+  realizedSalesPnLPct: number | null;       // sales pnl / matched cost (ROI)
+  realizedSalesMarginPct: number | null;    // sales pnl / gross revenue (net margin)
   pricedCount: number;
   unpricedCount: number;
   staleCount: number;
@@ -153,7 +160,12 @@ export function computePortfolioPnL(
   breakdown: { lotCountTracked: number; lotCountCollection: number } = {
     lotCountTracked: lotCount,
     lotCountCollection: 0,
-  }
+  },
+  salesAggregates: {
+    grossRevenueCents: number;
+    feesCents: number;
+    matchedCostCents: number;
+  } = { grossRevenueCents: 0, feesCents: 0, matchedCostCents: 0 }
 ): PortfolioPnL {
   const perHolding = holdings.map((h) => computeHoldingPnL(h, now));
 
@@ -210,6 +222,15 @@ export function computePortfolioPnL(
   const sumRealized = realizedRipPnLCents + realizedSalesPnLCents;
   const realizedPnLCents = sumRealized === 0 ? 0 : sumRealized;
 
+  const realizedSalesPnLPct =
+    salesAggregates.matchedCostCents > 0
+      ? (realizedSalesPnLCents / salesAggregates.matchedCostCents) * 100
+      : null;
+  const realizedSalesMarginPct =
+    salesAggregates.grossRevenueCents > 0
+      ? (realizedSalesPnLCents / salesAggregates.grossRevenueCents) * 100
+      : null;
+
   return {
     totalInvestedCents,
     pricedInvestedCents,
@@ -223,6 +244,11 @@ export function computePortfolioPnL(
     realizedPnLCents,
     realizedRipPnLCents,
     realizedSalesPnLCents: realizedSalesPnLCents === 0 ? 0 : realizedSalesPnLCents,
+    realizedSalesGrossRevenueCents: salesAggregates.grossRevenueCents,
+    realizedSalesFeesCents: salesAggregates.feesCents,
+    realizedSalesMatchedCostCents: salesAggregates.matchedCostCents,
+    realizedSalesPnLPct,
+    realizedSalesMarginPct,
     pricedCount,
     unpricedCount,
     staleCount,

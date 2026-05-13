@@ -110,6 +110,9 @@ export function PortfolioHero({
                   }
                 >
                   {formatCentsSigned(data.realizedPnLCents)}
+                  {data.realizedSalesPnLPct != null && (
+                    <>{' '}&middot;{' '}{formatPct(data.realizedSalesPnLPct)}</>
+                  )}
                 </span>{' '}
                 realized
               </span>
@@ -162,7 +165,11 @@ export function PortfolioHero({
             <Stat
               label="Realized"
               value={formatCentsSigned(data.realizedPnLCents)}
-              sub={`${data.saleEventCount} ${data.saleEventCount === 1 ? 'sale' : 'sales'}`}
+              sub={
+                data.realizedSalesPnLPct != null
+                  ? `${formatPct(data.realizedSalesPnLPct)} ROI · ${data.saleEventCount} ${data.saleEventCount === 1 ? 'sale' : 'sales'}`
+                  : `${data.saleEventCount} ${data.saleEventCount === 1 ? 'sale' : 'sales'}`
+              }
               tone={data.realizedPnLCents >= 0 ? 'positive' : 'negative'}
             />
           </div>

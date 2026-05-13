@@ -55,10 +55,18 @@ export async function GET() {
     (acc, r) => acc + ((r as { realized_loss_cents: number }).realized_loss_cents ?? 0),
     0
   );
-  const realizedSalesPnLCents = (sales ?? []).reduce(
-    (acc, s) => acc + (s.sale_price_cents - s.fees_cents - s.matched_cost_cents),
-    0
+  const salesAggregates = (sales ?? []).reduce(
+    (acc, s) => ({
+      grossRevenueCents: acc.grossRevenueCents + s.sale_price_cents,
+      feesCents: acc.feesCents + s.fees_cents,
+      matchedCostCents: acc.matchedCostCents + s.matched_cost_cents,
+    }),
+    { grossRevenueCents: 0, feesCents: 0, matchedCostCents: 0 }
   );
+  const realizedSalesPnLCents =
+    salesAggregates.grossRevenueCents -
+    salesAggregates.feesCents -
+    salesAggregates.matchedCostCents;
   // Count OPEN holdings (matches /holdings page exactly): one row per
   // distinct catalog item with qty_held > 0. aggregateHoldings already
   // applies the rips/decomps/sales consumption logic, so its length is
@@ -74,7 +82,8 @@ export async function GET() {
     realizedSalesPnLCents,
     lotCount,
     new Date(),
-    { lotCountTracked, lotCountCollection }
+    { lotCountTracked, lotCountCollection },
+    salesAggregates
   );
 
   // --- Delta + manual enrichment ---
