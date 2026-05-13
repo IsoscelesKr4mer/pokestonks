@@ -162,15 +162,12 @@ export function PortfolioHero({
                 nothingPriced ? 'muted' : data.unrealizedPnLCents >= 0 ? 'positive' : 'negative'
               }
             />
-            <Stat
-              label="Realized"
-              value={formatCentsSigned(data.realizedPnLCents)}
-              sub={
-                data.realizedSalesPnLPct != null
-                  ? `${formatPct(data.realizedSalesPnLPct)} ROI · ${data.saleEventCount} ${data.saleEventCount === 1 ? 'sale' : 'sales'}`
-                  : `${data.saleEventCount} ${data.saleEventCount === 1 ? 'sale' : 'sales'}`
-              }
-              tone={data.realizedPnLCents >= 0 ? 'positive' : 'negative'}
+            <RealizedStat
+              revenueCents={data.realizedSalesGrossRevenueCents}
+              feesCents={data.realizedSalesFeesCents}
+              profitCents={data.realizedPnLCents}
+              roiPct={data.realizedSalesPnLPct ?? null}
+              saleEventCount={data.saleEventCount}
             />
           </div>
         )}
@@ -245,6 +242,65 @@ function Stat({
         {value}
       </div>
       {sub && <div className="text-[11px] font-mono text-meta">{sub}</div>}
+    </div>
+  );
+}
+
+function RealizedStat({
+  revenueCents,
+  feesCents,
+  profitCents,
+  roiPct,
+  saleEventCount,
+}: {
+  revenueCents: number;
+  feesCents: number;
+  profitCents: number;
+  roiPct: number | null;
+  saleEventCount: number;
+}) {
+  // If no sales yet, fall back to the simple display.
+  if (saleEventCount === 0) {
+    return (
+      <Stat
+        label="Realized"
+        value={formatCentsSigned(profitCents)}
+        sub="0 sales"
+        tone={profitCents >= 0 ? 'positive' : 'negative'}
+      />
+    );
+  }
+  const profitClass = profitCents >= 0 ? 'text-positive' : 'text-negative';
+  return (
+    <div className="grid gap-[6px]">
+      <div className="text-[9px] uppercase tracking-[0.16em] text-meta font-mono">
+        Realized
+      </div>
+      <div className="flex items-baseline gap-[6px]">
+        <span className="text-[10px] uppercase tracking-[0.1em] text-meta-dim font-mono">
+          Revenue
+        </span>
+        <span className="text-[18px] font-semibold tabular-nums">
+          {formatCents(revenueCents)}
+        </span>
+      </div>
+      <div className="flex items-baseline gap-[6px] flex-wrap">
+        <span className="text-[10px] uppercase tracking-[0.1em] text-meta-dim font-mono">
+          Profit
+        </span>
+        <span className={`text-[18px] font-semibold tabular-nums ${profitClass}`}>
+          {formatCentsSigned(profitCents)}
+        </span>
+        {roiPct != null && (
+          <span className={`text-[11px] font-mono ${profitClass}`}>
+            ({formatPct(roiPct)} ROI)
+          </span>
+        )}
+      </div>
+      <div className="text-[10px] font-mono text-meta">
+        {formatCents(feesCents)} fees · {saleEventCount}{' '}
+        {saleEventCount === 1 ? 'sale' : 'sales'}
+      </div>
     </div>
   );
 }
