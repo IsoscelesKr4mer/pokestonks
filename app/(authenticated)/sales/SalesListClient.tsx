@@ -5,6 +5,7 @@ import { useSales } from '@/lib/query/hooks/useSales';
 import { ActivityTimelineRow } from '@/components/activity/ActivityTimelineRow';
 import { SaleDetailDialog } from '@/components/sales/SaleDetailDialog';
 import { BundleSellDialog } from '@/components/sales/BundleSellDialog';
+import { EbaySyncDialog } from '@/components/sales/EbaySyncDialog';
 import { Button } from '@/components/ui/button';
 import type { ActivityEvent } from '@/components/activity/ActivityTimelineRow';
 import type { SaleEvent } from '@/lib/types/sales';
@@ -65,6 +66,7 @@ export function SalesListClient() {
 
   const [selected, setSelected] = useState<string | null>(null);
   const [bundleOpen, setBundleOpen] = useState(false);
+  const [ebaySyncOpen, setEbaySyncOpen] = useState(false);
 
   const setParam = (key: string, value: string) => {
     const next = new URLSearchParams(params.toString());
@@ -97,7 +99,12 @@ export function SalesListClient() {
       <div className="grid gap-1 pb-[14px] border-b border-divider">
         <div className="flex items-center justify-between gap-3">
           <h1 className="text-[28px] font-semibold tracking-[-0.02em] leading-none">Sales</h1>
-          <Button onClick={() => setBundleOpen(true)}>+ Bundle sale</Button>
+          <div className="flex gap-2">
+            <Button variant="ghost" onClick={() => setEbaySyncOpen(true)}>
+              Sync from eBay
+            </Button>
+            <Button onClick={() => setBundleOpen(true)}>+ Bundle sale</Button>
+          </div>
         </div>
         <div className="text-[11px] font-mono text-meta">
           {sales.length} EVENTS
@@ -183,6 +190,7 @@ export function SalesListClient() {
         saleGroupId={selected}
       />
       <BundleSellDialog open={bundleOpen} onOpenChange={setBundleOpen} />
+      <EbaySyncDialog open={ebaySyncOpen} onOpenChange={setEbaySyncOpen} />
     </div>
   );
 }
