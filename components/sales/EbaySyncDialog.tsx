@@ -21,10 +21,9 @@ type OrderDecision = 'confirm' | 'skip';
 
 /**
  * Main sync dialog. Pulls new orders since the last sync, lets the user
- * confirm or skip each, and posts the result to /api/ebay/sync-confirm.
- *
- * Orders with unmapped line items show a mapping wizard inline; once mapped,
- * the preview refreshes and the order is confirmable.
+ * confirm or skip each. Unmapped orders can be skipped without first
+ * mapping their listings; if the user wants to actually sync them, the
+ * mapping wizard appears in a top section, collapsed by default.
  */
 export function EbaySyncDialog({ open, onOpenChange }: Props) {
   const preview = useEbaySyncPreview(open);
@@ -43,33 +42,25 @@ export function EbaySyncDialog({ open, onOpenChange }: Props) {
     >
   >(new Map());
 
-  // Default new mapped orders to 'confirm'.
+  // Default unmapped orders to 'skip', fully-mapped to 'confirm'.
   useEffect(() => {
     if (!preview.data) return;
     setDecisions((prev) => {
       const next = new Map(prev);
       for (const o of preview.data!.orders) {
-        if (!next.has(o.ebayOrderId) && o.isFullyMapped && !o.alreadySynced) {
-          next.set(o.ebayOrderId, 'confirm');
-        }
+        if (next.has(o.ebayOrderId)) continue;
+        if (o.alreadySynced) continue;
+        next.set(o.ebayOrderId, o.isFullyMapped ? 'confirm' : 'skip');
       }
       return next;
     });
   }, [preview.data]);
 
-  const orders = preview.data?.orders ?? [];
-  const fullyMappedOrders = orders.filter(
-    (o) => o.isFullyMapped && !o.alreadySynced
-  );
-  const unmappedOrders = orders.filter(
-    (o) => !o.isFullyMapped && !o.alreadySynced
-  );
+  const orders = (preview.data?.orders ?? []).filter((o) => !o.alreadySynced);
 
-  // Surface unique unmapped listings (across all orders) so the user can map
-  // each one once, even if it appears in multiple orders.
   const uniqueUnmappedListings = useMemo(() => {
     const map = new Map<string, { ebayItemId: string; title: string }>();
-    for (const o of unmappedOrders) {
+    for (const o of orders) {
       for (const li of o.lineItems) {
         if (!li.mapped && !map.has(li.ebayItemId)) {
           map.set(li.ebayItemId, { ebayItemId: li.ebayItemId, title: li.title });
@@ -77,18 +68,44 @@ export function EbaySyncDialog({ open, onOpenChange }: Props) {
       }
     }
     return Array.from(map.values());
-  }, [unmappedOrders]);
+  }, [orders]);
 
-  const numToConfirm = fullyMappedOrders.filter(
-    (o) => decisions.get(o.ebayOrderId) === 'confirm'
-  ).length;
+  // Counts for the action button.
+  const confirmableOrders = orders.filter(
+    (o) => o.isFullyMapped && decisions.get(o.ebayOrderId) === 'confirm'
+  );
+  const skipOrders = orders.filter(
+    (o) => decisions.get(o.ebayOrderId) === 'skip'
+  );
+
+  const skipAllUnmapped = () => {
+    setDecisions((prev) => {
+      const next = new Map(prev);
+      for (const o of orders) {
+        if (!o.isFullyMapped) next.set(o.ebayOrderId, 'skip');
+      }
+      return next;
+    });
+  };
+
+  const skipAll = () => {
+    setDecisions((prev) => {
+      const next = new Map(prev);
+      for (const o of orders) next.set(o.ebayOrderId, 'skip');
+      return next;
+    });
+  };
 
   const handleSync = async () => {
     const payload: EbaySyncConfirmOrder[] = [];
-    for (const o of fullyMappedOrders) {
-      const d = decisions.get(o.ebayOrderId) ?? 'confirm';
+    for (const o of orders) {
+      const d = decisions.get(o.ebayOrderId) ?? (o.isFullyMapped ? 'confirm' : 'skip');
       if (d === 'skip') {
         payload.push({ action: 'skip', ebayOrderId: o.ebayOrderId });
+        continue;
+      }
+      if (!o.isFullyMapped) {
+        // Defensive — UI should prevent this, but skip rather than error.
         continue;
       }
       payload.push({
@@ -121,22 +138,23 @@ export function EbaySyncDialog({ open, onOpenChange }: Props) {
 
   const handleClose = () => {
     onOpenChange(false);
-    // Clear local state on close so reopening starts fresh.
     setTimeout(() => {
       setDecisions(new Map());
       setResults(new Map());
     }, 200);
   };
 
+  const totalActions = confirmableOrders.length + skipOrders.length;
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-3xl max-h-[85vh] overflow-y-auto">
+      <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
         <VaultDialogHeader
           title="Sync from eBay"
           sub={
             preview.data?.lastSyncedAt
               ? `Pulling orders since ${new Date(preview.data.lastSyncedAt).toLocaleString()}`
-              : 'Pulling orders since you connected'
+              : 'Pulling all eBay orders'
           }
         />
 
@@ -148,11 +166,11 @@ export function EbaySyncDialog({ open, onOpenChange }: Props) {
           <div className="vault-card p-4 text-[12px] font-mono text-negative">
             Could not load preview: {preview.error.message}
             <div className="mt-2 text-meta">
-              If you have not connected eBay yet, click{' '}
+              If eBay is not connected,{' '}
               <a className="underline" href="/api/ebay/auth/init">
-                Connect eBay
-              </a>{' '}
-              first.
+                connect now
+              </a>
+              .
             </div>
           </div>
         )}
@@ -163,44 +181,75 @@ export function EbaySyncDialog({ open, onOpenChange }: Props) {
           </div>
         )}
 
-        {uniqueUnmappedListings.length > 0 && (
-          <div className="grid gap-3">
-            <div className="text-[11px] font-mono text-meta uppercase tracking-[0.06em]">
-              Map {uniqueUnmappedListings.length} listing
-              {uniqueUnmappedListings.length === 1 ? '' : 's'} first
+        {orders.length > 0 && (
+          <>
+            {/* Quick actions bar */}
+            <div className="flex items-center justify-between gap-3 flex-wrap">
+              <div className="text-[11px] font-mono text-meta">
+                {orders.length} order{orders.length === 1 ? '' : 's'}
+                {uniqueUnmappedListings.length > 0
+                  ? ` · ${uniqueUnmappedListings.length} listing${uniqueUnmappedListings.length === 1 ? '' : 's'} unmapped`
+                  : ''}
+              </div>
+              <div className="flex gap-2">
+                {uniqueUnmappedListings.length > 0 && (
+                  <button
+                    type="button"
+                    onClick={skipAllUnmapped}
+                    className="text-[11px] font-mono uppercase tracking-[0.06em] text-meta hover:text-text"
+                  >
+                    Skip unmapped
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={skipAll}
+                  className="text-[11px] font-mono uppercase tracking-[0.06em] text-meta hover:text-text"
+                >
+                  Skip all
+                </button>
+              </div>
             </div>
-            {uniqueUnmappedListings.map((u) => (
-              <EbayMappingRow
-                key={u.ebayItemId}
-                ebayItemId={u.ebayItemId}
-                title={u.title}
-              />
-            ))}
-          </div>
-        )}
 
-        {fullyMappedOrders.length > 0 && (
-          <div className="grid gap-3">
-            <div className="text-[11px] font-mono text-meta uppercase tracking-[0.06em]">
-              {fullyMappedOrders.length} order
-              {fullyMappedOrders.length === 1 ? '' : 's'} ready to sync
+            {uniqueUnmappedListings.length > 0 && (
+              <div className="grid gap-2">
+                <div className="text-[10px] font-mono text-meta uppercase tracking-[0.06em]">
+                  Map a listing (only needed if you want to sync that order)
+                </div>
+                {uniqueUnmappedListings.map((u) => (
+                  <EbayMappingRow
+                    key={u.ebayItemId}
+                    ebayItemId={u.ebayItemId}
+                    title={u.title}
+                  />
+                ))}
+              </div>
+            )}
+
+            <div className="grid gap-2">
+              <div className="text-[10px] font-mono text-meta uppercase tracking-[0.06em]">
+                Orders
+              </div>
+              {orders.map((o) => (
+                <OrderCard
+                  key={o.ebayOrderId}
+                  order={o}
+                  decision={
+                    decisions.get(o.ebayOrderId) ??
+                    (o.isFullyMapped ? 'confirm' : 'skip')
+                  }
+                  result={results.get(o.ebayOrderId)}
+                  onDecisionChange={(d) =>
+                    setDecisions((prev) => {
+                      const next = new Map(prev);
+                      next.set(o.ebayOrderId, d);
+                      return next;
+                    })
+                  }
+                />
+              ))}
             </div>
-            {fullyMappedOrders.map((o) => (
-              <OrderCard
-                key={o.ebayOrderId}
-                order={o}
-                decision={decisions.get(o.ebayOrderId) ?? 'confirm'}
-                result={results.get(o.ebayOrderId)}
-                onDecisionChange={(d) =>
-                  setDecisions((prev) => {
-                    const next = new Map(prev);
-                    next.set(o.ebayOrderId, d);
-                    return next;
-                  })
-                }
-              />
-            ))}
-          </div>
+          </>
         )}
 
         {confirmMut.error && (
@@ -215,15 +264,15 @@ export function EbaySyncDialog({ open, onOpenChange }: Props) {
           </Button>
           <Button
             onClick={handleSync}
-            disabled={
-              confirmMut.isPending ||
-              fullyMappedOrders.length === 0 ||
-              numToConfirm === 0
-            }
+            disabled={confirmMut.isPending || totalActions === 0}
           >
             {confirmMut.isPending
-              ? 'Syncing…'
-              : `Sync ${numToConfirm} order${numToConfirm === 1 ? '' : 's'}`}
+              ? 'Applying…'
+              : confirmableOrders.length > 0
+              ? `Sync ${confirmableOrders.length}${
+                  skipOrders.length > 0 ? `, skip ${skipOrders.length}` : ''
+                }`
+              : `Skip ${skipOrders.length}`}
           </Button>
         </DialogActions>
       </DialogContent>
@@ -252,44 +301,55 @@ function OrderCard({
       0
     );
   return (
-    <div className="vault-card p-4 grid gap-3">
+    <div className="vault-card p-3 grid gap-2">
       <div className="flex justify-between items-start gap-2">
-        <div className="grid gap-1">
-          <div className="text-[12px] font-mono text-meta">
+        <div className="grid gap-0.5 min-w-0">
+          <div className="text-[10px] font-mono text-meta uppercase tracking-[0.06em]">
             {order.saleDate}
             {order.buyerUsername ? ` · ${order.buyerUsername}` : ''}
           </div>
-          <div className="text-[13px] font-medium">
-            {order.proposedItems.length === 1
-              ? order.proposedItems[0].catalogName ?? '(unknown)'
-              : `Bundle · ${order.proposedItems.length} items`}
+          <div className="text-[13px] font-medium truncate">
+            {order.isFullyMapped && order.proposedItems[0]
+              ? order.proposedItems.length === 1
+                ? order.proposedItems[0].catalogName ?? '(unknown)'
+                : `Bundle · ${order.proposedItems.length} items`
+              : order.lineItems[0]?.title ?? '(unknown)'}
           </div>
-          <div className="text-[11px] font-mono text-meta">
-            eBay order #{order.ebayOrderId}
+          <div className="text-[10px] font-mono text-meta truncate">
+            #{order.ebayOrderId}
           </div>
         </div>
-        <div className="grid gap-1 text-right">
-          <div className="text-[13px] font-mono">
-            {formatCentsSigned(realizedFromPreview)} net
-          </div>
-          <div className="text-[11px] font-mono text-meta">
-            {formatCents(order.subtotalCents)} · fees {formatCents(order.feesCents)}
-          </div>
+        <div className="grid gap-0.5 text-right shrink-0">
+          {order.isFullyMapped ? (
+            <>
+              <div className="text-[13px] font-mono">
+                {formatCentsSigned(realizedFromPreview)}
+              </div>
+              <div className="text-[10px] font-mono text-meta">
+                {formatCents(order.subtotalCents)} · fees{' '}
+                {formatCents(order.feesCents)}
+              </div>
+            </>
+          ) : (
+            <div className="text-[10px] font-mono text-negative">
+              Needs mapping
+            </div>
+          )}
         </div>
       </div>
 
-      {order.proposedItems.length > 1 && (
-        <div className="grid gap-1 border-t border-dashed border-divider pt-2">
+      {order.isFullyMapped && order.proposedItems.length > 1 && (
+        <div className="grid gap-1 border-t border-dashed border-divider pt-1">
           {order.proposedItems.map((p) => (
             <div
               key={p.catalogItemId}
-              className="flex justify-between text-[12px] font-mono"
+              className="flex justify-between text-[11px] font-mono"
             >
-              <span className="text-meta">
+              <span className="text-meta truncate pr-2">
                 {p.quantity}× {p.catalogName ?? '(unknown)'}
               </span>
-              <span className="text-text-muted">
-                {formatCents(p.salePriceCents - p.feesCents)} net
+              <span className="text-text-muted shrink-0">
+                {formatCents(p.salePriceCents - p.feesCents)}
               </span>
             </div>
           ))}
@@ -297,7 +357,7 @@ function OrderCard({
       )}
 
       {result ? (
-        <div className="text-[11px] font-mono">
+        <div className="text-[11px] font-mono pt-1">
           {result.status === 'created' && (
             <span className="text-positive">✓ Created</span>
           )}
@@ -312,11 +372,23 @@ function OrderCard({
           )}
         </div>
       ) : (
-        <div className="flex gap-2 items-center text-[11px] font-mono">
-          <label className="flex gap-1 items-center cursor-pointer">
+        <div className="flex gap-3 items-center text-[11px] font-mono pt-1">
+          <label
+            className={`flex gap-1 items-center ${
+              order.isFullyMapped
+                ? 'cursor-pointer'
+                : 'cursor-not-allowed opacity-40'
+            }`}
+            title={
+              order.isFullyMapped
+                ? undefined
+                : 'Map the listing above to sync this order'
+            }
+          >
             <input
               type="radio"
               checked={decision === 'confirm'}
+              disabled={!order.isFullyMapped}
               onChange={() => onDecisionChange('confirm')}
             />
             <span>Sync</span>
@@ -334,4 +406,3 @@ function OrderCard({
     </div>
   );
 }
-
