@@ -10,9 +10,15 @@ const PUBLIC_PATHS = ['/login', '/auth/callback'];
 const PUBLIC_PREFIXES = ['/storefront/'];
 
 // Routes that authenticate via their own mechanism (e.g. CRON_SECRET bearer
-// header) and must bypass the Supabase session redirect. The route itself
-// handles auth and returns 401 if the credential is missing or wrong.
-const AUTH_BYPASS_PREFIXES = ['/api/cron/'];
+// header, signed webhooks) and must bypass the Supabase session redirect.
+// The route itself handles auth and returns 401 if the credential is missing
+// or wrong. eBay's marketplace-account-deletion endpoint is a GDPR webhook
+// that must be publicly reachable so eBay can deliver verification + deletion
+// notifications; the verification-token hash is what proves the caller is eBay.
+const AUTH_BYPASS_PREFIXES = [
+  '/api/cron/',
+  '/api/ebay/marketplace-account-deletion',
+];
 
 export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
