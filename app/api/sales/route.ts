@@ -129,7 +129,14 @@ export async function GET(request: NextRequest) {
   const end = url.searchParams.get('end');
   const platform = url.searchParams.get('platform');
   const q = url.searchParams.get('q');
-  const limit = Math.min(200, Math.max(1, Number(url.searchParams.get('limit') ?? '50')));
+  // Pagination is by sale ROWS, not sale groups. One bundle sale spanning
+  // multiple catalog items, or one sale FIFO-split across multiple purchase
+  // lots, produces several rows per group. 18 sale_groups already produced
+  // 63 rows in this user's data, so the old default of 50 cropped recent
+  // sales out of the /sales page UI even though they existed in the DB.
+  // Single-user app: bump the default and max way up to avoid the cliff.
+  // Proper fix (paginate by sale_group_id) is more code than is justified.
+  const limit = Math.min(5000, Math.max(1, Number(url.searchParams.get('limit') ?? '2000')));
   const offset = Math.max(0, Number(url.searchParams.get('offset') ?? '0'));
 
   let query = supabase
