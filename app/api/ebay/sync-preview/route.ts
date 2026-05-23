@@ -165,7 +165,11 @@ export async function GET() {
     const feesCents = dollarsToCents(
       o.totalMarketplaceFee?.value ?? o.pricingSummary.fee?.value
     );
-    const netRevenueCents = subtotalCents + shippingCents - feesCents;
+    // Shipping is a wash for the seller: buyer pays shipping, seller pays the
+    // same amount for the label. So pokestonks revenue is just the item subtotal,
+    // NOT subtotal + shipping. Fees include eBay's FVF on the full order (which
+    // includes a small fee on the shipping portion) — we keep that conservative.
+    const netRevenueCents = subtotalCents - feesCents;
 
     const lineItems: PreviewLineItem[] = [];
     const perCatalog = new Map<
@@ -223,8 +227,8 @@ export async function GET() {
       }
     }
 
-    // Allocate (fees + shipping passthrough is included in revenue, fees are
-    // subtracted) across catalogs in proportion to their revenue share.
+    // Allocate fees across catalogs in proportion to their revenue share.
+    // Shipping is EXCLUDED from per-item salePriceCents (wash for the seller).
     const proposedItems: ProposedSaleItem[] = [];
     let totalRev = 0;
     for (const v of perCatalog.values()) totalRev += v.revenueCents;
@@ -233,12 +237,6 @@ export async function GET() {
     catalogIds.forEach((cid, idx) => {
       const v = perCatalog.get(cid)!;
       const isLast = idx === catalogIds.length - 1;
-      // Add shipping into revenue allocation proportionally too.
-      const shippingShare =
-        totalRev > 0
-          ? Math.round((v.revenueCents / totalRev) * shippingCents)
-          : 0;
-      const rev = v.revenueCents + shippingShare;
       const fee = isLast
         ? feesCents - feesAllocated
         : totalRev > 0
@@ -249,7 +247,7 @@ export async function GET() {
         catalogItemId: cid,
         catalogName: catalogNameById.get(cid) ?? null,
         quantity: v.qty,
-        salePriceCents: rev,
+        salePriceCents: v.revenueCents,
         feesCents: Math.max(0, fee),
       });
     });
