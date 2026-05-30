@@ -180,7 +180,12 @@ export async function GET() {
 
     for (const li of o.lineItems) {
       const mapping = mappingByEbayItem.get(li.legacyItemId);
-      const lineRevenueCents = dollarsToCents(li.total?.value);
+      // eBay's lineItem.total = lineItemCost + per-line shipping + tax. Using
+      // it directly bakes shipping into the seller's revenue, which the
+      // shipping-is-a-wash rule says we must not do. Use lineItemCost (the
+      // pre-shipping, pre-tax line value) so per-catalog allocations sum to
+      // pricingSummary.priceSubtotal across all lines.
+      const lineRevenueCents = dollarsToCents(li.lineItemCost?.value);
       lineItems.push({
         ebayItemId: li.legacyItemId,
         title: li.title,

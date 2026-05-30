@@ -182,7 +182,13 @@ export type EbayOrderLineItem = {
   title: string;
   quantity: number;
   lineItemCost: { value: string; currency: string };
+  // eBay's lineItem.total = lineItemCost + per-line deliveryCost.shippingCost + tax.
+  // Use lineItemCost (or subtract deliveryCost.shippingCost from total) to get
+  // the seller-side revenue for that line. Don't use `total` directly — it
+  // includes shipping the seller doesn't keep.
   total: { value: string; currency: string };
+  deliveryCost?: { shippingCost?: { value: string; currency: string } };
+  tax?: { value: string; currency: string };
 };
 
 export type EbayOrder = {

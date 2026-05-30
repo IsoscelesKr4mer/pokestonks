@@ -34,7 +34,7 @@ export function SaleDetailDialog({ open, onOpenChange, saleGroupId }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-lg">
+      <DialogContent className="max-w-lg max-h-[85vh] !grid-cols-1 grid-rows-[auto_minmax(0,1fr)_auto]">
         <VaultDialogHeader
           title={title}
           sub={data ? `${data.saleDate}${data.platform ? ` · ${data.platform}` : ''}${data.unknownCost ? ' · No basis' : ''}` : undefined}
@@ -43,7 +43,7 @@ export function SaleDetailDialog({ open, onOpenChange, saleGroupId }: Props) {
         {isLoading || !data ? (
           <div className="h-32 animate-pulse rounded bg-muted" />
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-4 overflow-y-auto pr-1 -mr-1">
             <DialogPreview
               rows={[
                 { label: 'Quantity', value: String(data.totals.quantity) },
