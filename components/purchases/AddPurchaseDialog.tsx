@@ -117,7 +117,10 @@ export function AddPurchaseDialog({
             onClick={async () => {
               const cents = unknownCost ? 0 : dollarsStringToCents(costDollars);
               if (cents === null) return;
-              if (!unknownCost && cents <= 0) return;
+              // Allow an explicit $0 (e.g. a gift) — it's a known cost basis that
+              // belongs in P&L. Only reject negatives. "I don't know" (unknownCost)
+              // remains the separate, P&L-excluded path.
+              if (!unknownCost && cents < 0) return;
               await create.mutateAsync({
                 catalogItemId,
                 purchaseDate: date,

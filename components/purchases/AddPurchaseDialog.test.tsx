@@ -64,6 +64,22 @@ describe('<AddPurchaseDialog>', () => {
     });
   });
 
+  it('submits costCents 0 (a gift) without unknownCost when 0 is entered', async () => {
+    wrap(<AddPurchaseDialog open onClose={() => {}} catalogItemId={42} />);
+    const costInput = screen.getByLabelText('Cost');
+    fireEvent.change(costInput, { target: { value: '0' } });
+    fireEvent.click(screen.getByRole('button', { name: /\+ log purchase/i }));
+    await waitFor(() => {
+      expect(mutateAsync).toHaveBeenCalledWith(
+        expect.objectContaining({ catalogItemId: 42, costCents: 0 })
+      );
+    });
+    // A known $0 (gift) must NOT be flagged unknownCost — it belongs in P&L.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const call = (mutateAsync.mock.calls as any)[0][0] as { unknownCost?: boolean };
+    expect(call.unknownCost === true).toBe(false);
+  });
+
   it('submits with the entered cost in normal mode', async () => {
     wrap(<AddPurchaseDialog open onClose={() => {}} catalogItemId={42} />);
     const costInput = screen.getByLabelText('Cost');
