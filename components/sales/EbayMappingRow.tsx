@@ -80,8 +80,13 @@ export function EbayMappingRow({ ebayItemId, title, defaultOpen = false }: Props
 
       {isOpen && (
         <div className="px-3 pb-3 grid gap-2 border-t border-divider">
-          <div className="text-[10px] font-mono text-meta uppercase tracking-[0.06em] pt-2">
-            One {title.length > 30 ? 'unit' : 'listing unit'} contains:
+          <div className="pt-2">
+            <div className="text-[10px] font-mono text-meta uppercase tracking-[0.06em]">
+              What is inside ONE of this listing?
+            </div>
+            <div className="text-[11px] text-meta mt-0.5">
+              Not how many you sold. The buyer&apos;s quantity is applied automatically, so a single item is 1.
+            </div>
           </div>
           {rows.map((row) => {
             const searchLower = row.search.toLowerCase().trim();
@@ -230,6 +235,23 @@ export function EbayMappingRow({ ebayItemId, title, defaultOpen = false }: Props
               </div>
             );
           })}
+
+          {rows.some((r) => r.catalogItemId != null) && (
+            <div className="rounded-lg bg-canvas border border-divider px-3 py-2 text-[11px] font-mono text-meta">
+              Each unit of this listing sold removes from inventory:{' '}
+              {rows
+                .filter((r) => r.catalogItemId != null)
+                .map((r, i) => (
+                  <span key={r.rowId}>
+                    {i > 0 ? ', ' : ''}
+                    <span className="text-text">
+                      {r.qty}× {nameById.get(r.catalogItemId!) ?? `#${r.catalogItemId}`}
+                    </span>
+                  </span>
+                ))}
+              . The buyer&apos;s order quantity is applied on top, so keep these at the count in a single unit (usually 1).
+            </div>
+          )}
 
           <div className="flex items-center justify-between gap-2 pt-1">
             <button
