@@ -154,7 +154,7 @@ export function EbayMappingRow({ ebayItemId, title, defaultOpen = false }: Props
                         }}
                       />
                       {row.pickerOpen && (
-                        <div className="absolute z-20 mt-1 w-full max-h-[220px] overflow-auto bg-canvas border border-divider rounded-lg shadow-lg">
+                        <div className="mt-1 w-full max-h-[220px] overflow-auto bg-canvas border border-divider rounded-lg">
                           {filtered.length === 0 ? (
                             <div className="px-3 py-2 text-[12px] text-meta">
                               No matches in your held inventory.
