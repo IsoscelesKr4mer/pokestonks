@@ -148,7 +148,7 @@ export function PortfolioHero({
             />
           </div>
         ) : (
-          <div className="vault-card grid grid-cols-3 gap-[14px] p-[18px]">
+          <div className="vault-card grid grid-cols-1 gap-4 p-[18px] sm:grid-cols-3 sm:gap-[14px]">
             <Stat
               label="Invested"
               value={formatCents(data.totalInvestedCents)}
