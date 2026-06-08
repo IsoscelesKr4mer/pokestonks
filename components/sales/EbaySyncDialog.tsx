@@ -148,7 +148,7 @@ export function EbaySyncDialog({ open, onOpenChange }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto">
+      <DialogContent className="sm:max-w-3xl max-h-[85vh] overflow-y-auto">
         <VaultDialogHeader
           title="Sync from eBay"
           sub={
@@ -308,7 +308,7 @@ function OrderCard({
             {order.saleDate}
             {order.buyerUsername ? ` · ${order.buyerUsername}` : ''}
           </div>
-          <div className="text-[13px] font-medium truncate">
+          <div className="text-[13px] font-medium leading-snug">
             {order.isFullyMapped && order.proposedItems[0]
               ? order.proposedItems.length === 1
                 ? order.proposedItems[0].catalogName ?? '(unknown)'

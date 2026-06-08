@@ -74,8 +74,8 @@ export function EbayMappingRow({ ebayItemId, title, defaultOpen = false }: Props
         >
           ▶
         </span>
-        <span className="flex-1 text-[13px] truncate">{title}</span>
-        <span className="text-[10px] font-mono text-meta">#{ebayItemId}</span>
+        <span className="flex-1 text-[13px] leading-snug">{title}</span>
+        <span className="text-[10px] font-mono text-meta shrink-0">#{ebayItemId}</span>
       </button>
 
       {isOpen && (
