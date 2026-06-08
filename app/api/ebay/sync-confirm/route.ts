@@ -9,7 +9,7 @@ import {
   loadOpenLotsByCatalogItem,
   type OpenLot,
 } from '@/lib/services/sales';
-import { setLastSyncedAt } from '@/lib/services/ebay';
+import { getLastSyncedAt, setLastSyncedAt } from '@/lib/services/ebay';
 
 const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 
@@ -223,15 +223,22 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  // Advance the watermark even on partial failures — the failed orders are
-  // recorded in ebay_synced_orders via the user's next attempt. Failed-now
-  // orders WILL re-appear in the next preview because they're not in
-  // ebay_synced_orders yet, which is the intended UX.
-  const now = new Date();
-  await setLastSyncedAt(user.id, now);
+  // Only advance the watermark when NO order failed. getOrdersSince filters by
+  // date, so advancing past a failed order strands it: it falls behind the
+  // watermark and never reappears in a future preview. Leaving the watermark in
+  // place on failure keeps the failed order in the fetch window; the orders that
+  // did succeed are deduped via ebay_synced_orders, so they won't double-log.
+  const hadFailure = results.some((r) => r.status === 'failed');
+  let effectiveSyncedAt: Date | null;
+  if (hadFailure) {
+    effectiveSyncedAt = await getLastSyncedAt(user.id);
+  } else {
+    effectiveSyncedAt = new Date();
+    await setLastSyncedAt(user.id, effectiveSyncedAt);
+  }
 
   return NextResponse.json({
     results,
-    lastSyncedAt: now.toISOString(),
+    lastSyncedAt: effectiveSyncedAt ? effectiveSyncedAt.toISOString() : null,
   });
 }

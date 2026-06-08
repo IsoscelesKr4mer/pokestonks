@@ -97,7 +97,7 @@ export function useEbaySyncConfirm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ orders }),
       });
-      return json<{ results: EbaySyncConfirmResult[]; lastSyncedAt: string }>(
+      return json<{ results: EbaySyncConfirmResult[]; lastSyncedAt: string | null }>(
         res
       );
     },
