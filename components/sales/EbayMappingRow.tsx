@@ -3,12 +3,21 @@ import { useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useHoldings } from '@/lib/query/hooks/useHoldings';
-import { useUpsertEbayMapping } from '@/lib/query/hooks/useEbay';
+import {
+  useUpsertEbayMapping,
+  useDeleteEbayMapping,
+} from '@/lib/query/hooks/useEbay';
 
 type Props = {
   ebayItemId: string;
   title: string;
   defaultOpen?: boolean;
+  /**
+   * When provided, the wizard opens in EDIT mode: rows are pre-seeded with the
+   * listing's current mapping and a Delete control is shown. Saving replaces
+   * the mapping entirely (the POST endpoint upserts on (user, ebayItemId)).
+   */
+  initialMappings?: { catalogItemId: number; qty: number }[];
 };
 
 type Row = {
@@ -21,35 +30,53 @@ type Row = {
   pickerOpen: boolean;
 };
 
-function newRow(): Row {
+let rowSeq = 0;
+function newRow(seed?: { catalogItemId: number; qty: number }): Row {
+  rowSeq += 1;
   return {
-    rowId: Math.random().toString(36).slice(2),
-    catalogItemId: null,
-    qty: 1,
+    rowId: `row-${rowSeq}`,
+    catalogItemId: seed?.catalogItemId ?? null,
+    qty: seed?.qty ?? 1,
     search: '',
     pickerOpen: false,
   };
 }
 
 /**
- * Inline wizard for mapping one unmapped eBay listing → pokestonks catalog items.
- * Collapsed by default to keep the parent dialog scannable. Click the header
- * to expand. Each sub-row's catalog picker tracks its own focus state so
- * dropdowns don't pop open globally.
+ * Inline wizard for mapping one eBay listing → pokestonks catalog items.
+ * In CREATE mode (no initialMappings) it starts with one empty row. In EDIT
+ * mode it seeds from the existing mapping and exposes Delete. Collapsed by
+ * default to keep the parent dialog scannable. Each sub-row's catalog picker
+ * tracks its own focus state so dropdowns don't pop open globally.
  */
-export function EbayMappingRow({ ebayItemId, title, defaultOpen = false }: Props) {
+export function EbayMappingRow({
+  ebayItemId,
+  title,
+  defaultOpen = false,
+  initialMappings,
+}: Props) {
+  const isEdit = !!initialMappings && initialMappings.length > 0;
   const [isOpen, setIsOpen] = useState(defaultOpen);
-  const [rows, setRows] = useState<Row[]>(() => [newRow()]);
+  const [rows, setRows] = useState<Row[]>(() =>
+    isEdit ? initialMappings!.map((m) => newRow(m)) : [newRow()]
+  );
   const upsert = useUpsertEbayMapping();
+  const del = useDeleteEbayMapping();
   const holdings = useHoldings();
 
-  const heldItems = useMemo(
-    () => (holdings.data?.holdings ?? []).filter((h) => h.qtyHeld > 0),
+  const allHoldings = useMemo(
+    () => holdings.data?.holdings ?? [],
     [holdings.data]
   );
+  // Picker only offers items you currently hold; name lookup spans everything
+  // (an already-mapped item may now be at zero held but still needs its label).
+  const heldItems = useMemo(
+    () => allHoldings.filter((h) => h.qtyHeld > 0),
+    [allHoldings]
+  );
   const nameById = useMemo(
-    () => new Map(heldItems.map((h) => [h.catalogItemId, h.name])),
-    [heldItems]
+    () => new Map(allHoldings.map((h) => [h.catalogItemId, h.name])),
+    [allHoldings]
   );
 
   const handleSave = async () => {
@@ -58,7 +85,19 @@ export function EbayMappingRow({ ebayItemId, title, defaultOpen = false }: Props
       .map((r) => ({ catalogItemId: r.catalogItemId!, qty: r.qty }));
     if (mappings.length === 0) return;
     await upsert.mutateAsync({ ebayItemId, mappings });
+    setIsOpen(false);
   };
+
+  const handleDelete = async () => {
+    await del.mutateAsync(ebayItemId);
+    setIsOpen(false);
+  };
+
+  const mappedSummary = isEdit
+    ? initialMappings!
+        .map((m) => `${m.qty}× ${nameById.get(m.catalogItemId) ?? `#${m.catalogItemId}`}`)
+        .join(', ')
+    : null;
 
   return (
     <div className="border border-divider rounded-xl bg-vault overflow-hidden">
@@ -74,7 +113,14 @@ export function EbayMappingRow({ ebayItemId, title, defaultOpen = false }: Props
         >
           ▶
         </span>
-        <span className="flex-1 text-[13px] leading-snug">{title}</span>
+        <span className="flex-1 min-w-0">
+          <span className="block text-[13px] leading-snug">{title}</span>
+          {mappedSummary && !isOpen && (
+            <span className="block text-[10px] font-mono text-meta truncate mt-0.5">
+              → {mappedSummary}
+            </span>
+          )}
+        </span>
         <span className="text-[10px] font-mono text-meta shrink-0">#{ebayItemId}</span>
       </button>
 
@@ -85,7 +131,9 @@ export function EbayMappingRow({ ebayItemId, title, defaultOpen = false }: Props
               What is inside ONE of this listing?
             </div>
             <div className="text-[11px] text-meta mt-0.5">
-              Not how many you sold. The buyer&apos;s quantity is applied automatically, so a single item is 1.
+              Not how many you sold, and not everything in the order. Just the
+              contents of this one listing. The buyer&apos;s quantity is applied
+              automatically, so a single item is 1.
             </div>
           </div>
           {rows.map((row) => {
@@ -104,7 +152,7 @@ export function EbayMappingRow({ ebayItemId, title, defaultOpen = false }: Props
                   {row.catalogItemId != null ? (
                     <div className="flex items-center gap-2 px-3 py-2 bg-canvas border border-divider rounded-lg text-[13px]">
                       <span className="flex-1 truncate">
-                        {nameById.get(row.catalogItemId)}
+                        {nameById.get(row.catalogItemId) ?? `#${row.catalogItemId}`}
                       </span>
                       <button
                         type="button"
@@ -261,18 +309,36 @@ export function EbayMappingRow({ ebayItemId, title, defaultOpen = false }: Props
             >
               + Add item
             </button>
-            <Button
-              onClick={handleSave}
-              disabled={
-                upsert.isPending || rows.every((r) => r.catalogItemId == null)
-              }
-            >
-              {upsert.isPending ? 'Saving…' : 'Save mapping'}
-            </Button>
+            <div className="flex items-center gap-2">
+              {isEdit && (
+                <button
+                  type="button"
+                  onClick={handleDelete}
+                  disabled={del.isPending || upsert.isPending}
+                  className="text-[11px] font-mono text-meta hover:text-negative uppercase tracking-[0.06em] disabled:opacity-50"
+                >
+                  {del.isPending ? 'Removing…' : 'Delete mapping'}
+                </button>
+              )}
+              <Button
+                onClick={handleSave}
+                disabled={
+                  upsert.isPending ||
+                  del.isPending ||
+                  rows.every((r) => r.catalogItemId == null)
+                }
+              >
+                {upsert.isPending
+                  ? 'Saving…'
+                  : isEdit
+                  ? 'Save changes'
+                  : 'Save mapping'}
+              </Button>
+            </div>
           </div>
-          {upsert.error && (
+          {(upsert.error || del.error) && (
             <div className="text-[11px] font-mono text-negative">
-              {upsert.error.message}
+              {(upsert.error ?? del.error)!.message}
             </div>
           )}
         </div>

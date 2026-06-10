@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import {
   useEbaySyncPreview,
   useEbaySyncConfirm,
+  useEbayMappings,
   type EbaySyncPreviewOrder,
   type EbaySyncConfirmOrder,
 } from '@/lib/query/hooks/useEbay';
@@ -28,6 +29,7 @@ type OrderDecision = 'confirm' | 'skip';
 export function EbaySyncDialog({ open, onOpenChange }: Props) {
   const preview = useEbaySyncPreview(open);
   const confirmMut = useEbaySyncConfirm();
+  const mappingsQuery = useEbayMappings();
 
   const [decisions, setDecisions] = useState<Map<string, OrderDecision>>(
     new Map()
@@ -69,6 +71,37 @@ export function EbaySyncDialog({ open, onOpenChange }: Props) {
     }
     return Array.from(map.values());
   }, [orders]);
+
+  // Mapped listings appearing in these orders, paired with their current
+  // mapping so the user can correct a wrong one in place (the only way to edit
+  // or delete an existing mapping).
+  const mappingByItem = useMemo(() => {
+    const m = new Map<string, { catalogItemId: number; qty: number }[]>();
+    for (const row of mappingsQuery.data?.mappings ?? []) {
+      m.set(row.ebayItemId, row.mappings);
+    }
+    return m;
+  }, [mappingsQuery.data]);
+
+  const mappedListingsInOrders = useMemo(() => {
+    const map = new Map<
+      string,
+      {
+        ebayItemId: string;
+        title: string;
+        mappings: { catalogItemId: number; qty: number }[];
+      }
+    >();
+    for (const o of orders) {
+      for (const li of o.lineItems) {
+        if (!li.mapped || map.has(li.ebayItemId)) continue;
+        const mappings = mappingByItem.get(li.ebayItemId);
+        if (!mappings) continue;
+        map.set(li.ebayItemId, { ebayItemId: li.ebayItemId, title: li.title, mappings });
+      }
+    }
+    return Array.from(map.values());
+  }, [orders, mappingByItem]);
 
   // Counts for the action button.
   const confirmableOrders = orders.filter(
@@ -224,6 +257,24 @@ export function EbaySyncDialog({ open, onOpenChange }: Props) {
                   />
                 ))}
               </div>
+            )}
+
+            {mappedListingsInOrders.length > 0 && (
+              <details className="grid gap-2">
+                <summary className="text-[10px] font-mono text-meta uppercase tracking-[0.06em] cursor-pointer hover:text-text list-none">
+                  Wrong amounts deducted? Fix a saved mapping ▾
+                </summary>
+                <div className="grid gap-2 pt-1">
+                  {mappedListingsInOrders.map((u) => (
+                    <EbayMappingRow
+                      key={`edit-${u.ebayItemId}`}
+                      ebayItemId={u.ebayItemId}
+                      title={u.title}
+                      initialMappings={u.mappings}
+                    />
+                  ))}
+                </div>
+              </details>
             )}
 
             <div className="grid gap-2">
