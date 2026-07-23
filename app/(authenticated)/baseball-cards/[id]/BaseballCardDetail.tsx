@@ -10,7 +10,7 @@ import {
 } from '@/lib/query/hooks/useBaseballCards';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { StatusBadge, KeepBadge, NeedsBackBadge } from '@/components/baseball/StatusBadge';
+import { StatusBadge, PcBadge, NeedsBackBadge } from '@/components/baseball/StatusBadge';
 import { STATUS_ORDER, STATUS_META } from '@/components/baseball/status';
 import { leadPhoto } from '@/components/baseball/leadPhoto';
 import { getImageUrl } from '@/lib/utils/images';
@@ -123,7 +123,7 @@ export function BaseballCardDetail({ card: initialCard }: { card: BaseballCardRo
         <div className="space-y-5">
           <div className="grid gap-2">
             <div className="flex flex-wrap items-center gap-2">
-              {!card.for_sale && <KeepBadge />}
+              {!card.for_sale && <PcBadge />}
               <StatusBadge status={card.status} />
               {card.for_sale && card.needs_back_photo && <NeedsBackBadge />}
             </div>
@@ -175,7 +175,7 @@ export function BaseballCardDetail({ card: initialCard }: { card: BaseballCardRo
 
             <label className="flex items-center gap-2 text-[13px] text-text">
               <input type="checkbox" checked={!forSale} onChange={(e) => setForSale(!e.target.checked)} />
-              Keeper (not for sale)
+              PC (personal collection, not for sale)
             </label>
 
             <label className="flex items-center gap-2 text-[13px] text-text">

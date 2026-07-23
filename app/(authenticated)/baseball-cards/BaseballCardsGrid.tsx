@@ -3,24 +3,28 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useBaseballCards, type BaseballCardRow } from '@/lib/query/hooks/useBaseballCards';
 import { formatCents } from '@/lib/utils/format';
-import { StatusBadge, KeepBadge, NeedsBackBadge } from '@/components/baseball/StatusBadge';
+import { StatusBadge, PcBadge, NeedsBackBadge } from '@/components/baseball/StatusBadge';
 import { STATUS_ORDER, STATUS_META } from '@/components/baseball/status';
 import { leadPhoto } from '@/components/baseball/leadPhoto';
 import { AddCardDialog } from './AddCardDialog';
 import type { BaseballCardStatus } from '@/lib/validation/baseballCard';
 
-type Filter = 'all' | 'keep' | 'needs_back' | BaseballCardStatus;
+type Mode = 'selling' | 'pc';
+type SellFilter = 'all' | 'needs_back' | BaseballCardStatus;
 
 export function BaseballCardsGrid({ initialCards }: { initialCards: BaseballCardRow[] }) {
   const { data } = useBaseballCards();
   const cards = data?.cards ?? initialCards;
-  const [filter, setFilter] = useState<Filter>('all');
+  const [mode, setMode] = useState<Mode>('selling');
+  const [sellFilter, setSellFilter] = useState<SellFilter>('all');
 
-  // Sell-flow counts exclude keepers (for_sale = false).
+  const sellable = useMemo(() => cards.filter((c) => c.for_sale), [cards]);
+  const pcCards = useMemo(() => cards.filter((c) => !c.for_sale), [cards]);
+
+  // Sell-flow counts are over sellable cards only (PC lives in its own tab).
   const counts = useMemo(() => {
-    const c: Record<Filter, number> = {
-      all: cards.length,
-      keep: 0,
+    const c: Record<SellFilter, number> = {
+      all: sellable.length,
       needs_back: 0,
       needs_photos: 0,
       photographed: 0,
@@ -28,29 +32,30 @@ export function BaseballCardsGrid({ initialCards }: { initialCards: BaseballCard
       listed: 0,
       sold: 0,
     };
-    for (const card of cards) {
-      if (!card.for_sale) {
-        c.keep += 1;
-        continue;
-      }
+    for (const card of sellable) {
       c[card.status] += 1;
       if (card.needs_back_photo) c.needs_back += 1;
     }
     return c;
-  }, [cards]);
+  }, [sellable]);
 
-  const filtered = useMemo(() => {
-    if (filter === 'all') return cards;
-    if (filter === 'keep') return cards.filter((c) => !c.for_sale);
-    if (filter === 'needs_back') return cards.filter((c) => c.for_sale && c.needs_back_photo);
-    return cards.filter((c) => c.for_sale && c.status === filter);
-  }, [cards, filter]);
+  const sellFiltered = useMemo(() => {
+    if (sellFilter === 'all') return sellable;
+    if (sellFilter === 'needs_back') return sellable.filter((c) => c.needs_back_photo);
+    return sellable.filter((c) => c.status === sellFilter);
+  }, [sellable, sellFilter]);
 
-  const chips: { key: Filter; label: string; count: number }[] = [
+  const shown = mode === 'pc' ? pcCards : sellFiltered;
+
+  const chips: { key: SellFilter; label: string; count: number }[] = [
     { key: 'all', label: 'All', count: counts.all },
-    ...STATUS_ORDER.map((s) => ({ key: s as Filter, label: STATUS_META[s].label, count: counts[s] })),
+    ...STATUS_ORDER.map((s) => ({ key: s as SellFilter, label: STATUS_META[s].label, count: counts[s] })),
     { key: 'needs_back', label: 'Needs Back', count: counts.needs_back },
-    { key: 'keep', label: 'Keep', count: counts.keep },
+  ];
+
+  const modes: { key: Mode; label: string; count: number }[] = [
+    { key: 'selling', label: 'Selling', count: sellable.length },
+    { key: 'pc', label: 'PC', count: pcCards.length },
   ];
 
   return (
@@ -59,44 +64,67 @@ export function BaseballCardsGrid({ initialCards }: { initialCards: BaseballCard
         <div className="grid gap-1">
           <h1 className="text-[32px] font-semibold tracking-[-0.02em] leading-none">Cards</h1>
           <p className="text-[13px] text-text-muted">
-            Baseball singles inventory. See at a glance what needs photos and what is priced or listed.
+            Baseball singles inventory. Selling vs your personal collection (PC).
           </p>
         </div>
         <AddCardDialog />
       </div>
 
-      <div className="flex flex-wrap gap-2">
-        {chips.map((chip) => {
-          const active = filter === chip.key;
+      <div className="inline-flex rounded-full border border-divider bg-vault p-1">
+        {modes.map((m) => {
+          const active = mode === m.key;
           return (
             <button
-              key={chip.key}
+              key={m.key}
               type="button"
-              onClick={() => setFilter(chip.key)}
-              className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-[6px] text-[12px] font-mono transition-colors ${
-                active
-                  ? 'border-accent bg-accent/10 text-text'
-                  : 'border-divider bg-vault text-text-muted hover:bg-hover'
+              onClick={() => setMode(m.key)}
+              className={`inline-flex items-center gap-1.5 rounded-full px-4 py-[6px] text-[13px] font-medium transition-colors ${
+                active ? 'bg-accent/15 text-text' : 'text-text-muted hover:text-text'
               }`}
             >
-              <span>{chip.label}</span>
-              <span className={`tabular-nums ${active ? 'text-accent' : 'text-meta'}`}>{chip.count}</span>
+              <span>{m.label}</span>
+              <span className={`tabular-nums text-[12px] ${active ? 'text-accent' : 'text-meta'}`}>{m.count}</span>
             </button>
           );
         })}
       </div>
 
-      {filtered.length === 0 ? (
+      {mode === 'selling' && (
+        <div className="flex flex-wrap gap-2">
+          {chips.map((chip) => {
+            const active = sellFilter === chip.key;
+            return (
+              <button
+                key={chip.key}
+                type="button"
+                onClick={() => setSellFilter(chip.key)}
+                className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-[6px] text-[12px] font-mono transition-colors ${
+                  active
+                    ? 'border-accent bg-accent/10 text-text'
+                    : 'border-divider bg-vault text-text-muted hover:bg-hover'
+                }`}
+              >
+                <span>{chip.label}</span>
+                <span className={`tabular-nums ${active ? 'text-accent' : 'text-meta'}`}>{chip.count}</span>
+              </button>
+            );
+          })}
+        </div>
+      )}
+
+      {shown.length === 0 ? (
         <div className="bg-vault border border-divider rounded-2xl p-8 text-center">
           <p className="text-[13px] text-text-muted">
             {cards.length === 0
               ? 'No cards yet. Add your first baseball single to start tracking.'
-              : 'No cards match this filter.'}
+              : mode === 'pc'
+                ? 'No cards in your personal collection yet.'
+                : 'No cards match this filter.'}
           </p>
         </div>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-[14px]">
-          {filtered.map((card) => (
+          {shown.map((card) => (
             <CardTile key={card.id} card={card} />
           ))}
         </div>
@@ -121,18 +149,17 @@ function CardTile({ card }: { card: BaseballCardRow }) {
             <span className="text-[10px] text-meta">Needs a shot</span>
           </div>
         )}
-        <div className="absolute left-2 right-2 top-2 flex flex-wrap gap-1">
-          {!card.for_sale && <KeepBadge />}
+      </div>
+      <div className="grid gap-1.5">
+        {/* Badges live below the image so they never clip the card art or wash out over it. */}
+        <div className="flex flex-wrap gap-1">
+          {!card.for_sale && <PcBadge />}
           <StatusBadge status={card.status} />
           {card.for_sale && card.needs_back_photo && <NeedsBackBadge />}
         </div>
-      </div>
-      <div className="grid gap-1">
         <div className="text-[13px] font-semibold leading-[1.3] line-clamp-2">{card.player}</div>
         <div className="text-[11px] font-mono text-meta truncate">{subtitle || '--'}</div>
-        {card.parallel && (
-          <div className="text-[11px] text-text-muted truncate">{card.parallel}</div>
-        )}
+        {card.parallel && <div className="text-[11px] text-text-muted truncate">{card.parallel}</div>}
       </div>
       {card.asking_price_cents != null && (
         <div className="border-t border-divider pt-[10px] text-[16px] font-semibold tabular-nums tracking-[-0.01em]">
