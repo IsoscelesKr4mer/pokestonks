@@ -17,6 +17,7 @@ export type BaseballCardRow = {
   sport: string;
   status: 'needs_photos' | 'photographed' | 'priced' | 'listed' | 'sold';
   for_sale: boolean;
+  needs_back_photo: boolean;
   asking_price_cents: number | null;
   comp_note: string | null;
   photo_urls: string[];

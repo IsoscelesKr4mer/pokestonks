@@ -48,6 +48,7 @@ export async function PATCH(request: NextRequest, ctx: Ctx) {
     sport: 'sport',
     status: 'status',
     forSale: 'for_sale',
+    needsBackPhoto: 'needs_back_photo',
     askingPriceCents: 'asking_price_cents',
     compNote: 'comp_note',
     photoUrls: 'photo_urls',

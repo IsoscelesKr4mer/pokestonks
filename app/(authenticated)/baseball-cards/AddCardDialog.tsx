@@ -62,6 +62,7 @@ export function AddCardDialog() {
         sport: 'Baseball',
         status,
         forSale,
+        needsBackPhoto: true,
         askingPriceCents: askNum,
         photoUrls: [],
       });

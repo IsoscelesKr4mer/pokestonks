@@ -3,13 +3,13 @@ import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useBaseballCards, type BaseballCardRow } from '@/lib/query/hooks/useBaseballCards';
 import { formatCents } from '@/lib/utils/format';
-import { StatusBadge, KeepBadge } from '@/components/baseball/StatusBadge';
+import { StatusBadge, KeepBadge, NeedsBackBadge } from '@/components/baseball/StatusBadge';
 import { STATUS_ORDER, STATUS_META } from '@/components/baseball/status';
 import { leadPhoto } from '@/components/baseball/leadPhoto';
 import { AddCardDialog } from './AddCardDialog';
 import type { BaseballCardStatus } from '@/lib/validation/baseballCard';
 
-type Filter = 'all' | 'keep' | BaseballCardStatus;
+type Filter = 'all' | 'keep' | 'needs_back' | BaseballCardStatus;
 
 export function BaseballCardsGrid({ initialCards }: { initialCards: BaseballCardRow[] }) {
   const { data } = useBaseballCards();
@@ -21,6 +21,7 @@ export function BaseballCardsGrid({ initialCards }: { initialCards: BaseballCard
     const c: Record<Filter, number> = {
       all: cards.length,
       keep: 0,
+      needs_back: 0,
       needs_photos: 0,
       photographed: 0,
       priced: 0,
@@ -33,6 +34,7 @@ export function BaseballCardsGrid({ initialCards }: { initialCards: BaseballCard
         continue;
       }
       c[card.status] += 1;
+      if (card.needs_back_photo) c.needs_back += 1;
     }
     return c;
   }, [cards]);
@@ -40,12 +42,14 @@ export function BaseballCardsGrid({ initialCards }: { initialCards: BaseballCard
   const filtered = useMemo(() => {
     if (filter === 'all') return cards;
     if (filter === 'keep') return cards.filter((c) => !c.for_sale);
+    if (filter === 'needs_back') return cards.filter((c) => c.for_sale && c.needs_back_photo);
     return cards.filter((c) => c.for_sale && c.status === filter);
   }, [cards, filter]);
 
   const chips: { key: Filter; label: string; count: number }[] = [
     { key: 'all', label: 'All', count: counts.all },
     ...STATUS_ORDER.map((s) => ({ key: s as Filter, label: STATUS_META[s].label, count: counts[s] })),
+    { key: 'needs_back', label: 'Needs Back', count: counts.needs_back },
     { key: 'keep', label: 'Keep', count: counts.keep },
   ];
 
@@ -117,9 +121,10 @@ function CardTile({ card }: { card: BaseballCardRow }) {
             <span className="text-[10px] text-meta">Needs a shot</span>
           </div>
         )}
-        <div className="absolute left-2 top-2 flex flex-wrap gap-1">
+        <div className="absolute left-2 right-2 top-2 flex flex-wrap gap-1">
           {!card.for_sale && <KeepBadge />}
           <StatusBadge status={card.status} />
+          {card.for_sale && card.needs_back_photo && <NeedsBackBadge />}
         </div>
       </div>
       <div className="grid gap-1">

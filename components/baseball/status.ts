@@ -44,3 +44,5 @@ export const STATUS_ORDER: BaseballCardStatus[] = [
 ];
 
 export const KEEP_BADGE_CLASS = 'border-teal-500/40 bg-teal-500/10 text-teal-300';
+
+export const NEEDS_BACK_BADGE_CLASS = 'border-orange-500/50 bg-orange-500/15 text-orange-300';

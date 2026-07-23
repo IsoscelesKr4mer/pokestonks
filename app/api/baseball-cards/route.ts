@@ -68,6 +68,7 @@ export async function POST(request: NextRequest) {
     sport: v.sport,
     status: v.status,
     for_sale: v.forSale,
+    needs_back_photo: v.needsBackPhoto,
     asking_price_cents: v.askingPriceCents ?? null,
     comp_note: v.compNote ?? null,
     photo_urls: v.photoUrls,

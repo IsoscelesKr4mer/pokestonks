@@ -10,7 +10,7 @@ import {
 } from '@/lib/query/hooks/useBaseballCards';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { StatusBadge, KeepBadge } from '@/components/baseball/StatusBadge';
+import { StatusBadge, KeepBadge, NeedsBackBadge } from '@/components/baseball/StatusBadge';
 import { STATUS_ORDER, STATUS_META } from '@/components/baseball/status';
 import { leadPhoto } from '@/components/baseball/leadPhoto';
 import { getImageUrl } from '@/lib/utils/images';
@@ -36,6 +36,7 @@ export function BaseballCardDetail({ card: initialCard }: { card: BaseballCardRo
 
   const [status, setStatus] = useState<BaseballCardStatus>(card.status);
   const [forSale, setForSale] = useState(card.for_sale);
+  const [needsBack, setNeedsBack] = useState(card.needs_back_photo);
   const [askingPrice, setAskingPrice] = useState(
     card.asking_price_cents != null ? (card.asking_price_cents / 100).toFixed(2) : ''
   );
@@ -60,6 +61,7 @@ export function BaseballCardDetail({ card: initialCard }: { card: BaseballCardRo
       await update.mutateAsync({
         status,
         forSale,
+        needsBackPhoto: needsBack,
         askingPriceCents: askNum,
         compNote: compNote.trim() || null,
         notes: notes.trim() || null,
@@ -123,6 +125,7 @@ export function BaseballCardDetail({ card: initialCard }: { card: BaseballCardRo
             <div className="flex flex-wrap items-center gap-2">
               {!card.for_sale && <KeepBadge />}
               <StatusBadge status={card.status} />
+              {card.for_sale && card.needs_back_photo && <NeedsBackBadge />}
             </div>
             <h1 className="text-[26px] font-semibold tracking-[-0.02em] leading-tight">{card.player}</h1>
             <div className="text-[13px] font-mono text-meta">{subtitle || '--'}</div>
@@ -173,6 +176,11 @@ export function BaseballCardDetail({ card: initialCard }: { card: BaseballCardRo
             <label className="flex items-center gap-2 text-[13px] text-text">
               <input type="checkbox" checked={!forSale} onChange={(e) => setForSale(!e.target.checked)} />
               Keeper (not for sale)
+            </label>
+
+            <label className="flex items-center gap-2 text-[13px] text-text">
+              <input type="checkbox" checked={needsBack} onChange={(e) => setNeedsBack(e.target.checked)} />
+              Still needs a back photo
             </label>
 
             <div className="grid gap-1">

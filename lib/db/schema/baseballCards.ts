@@ -35,6 +35,7 @@ export const baseballCards = pgTable(
     sport: text('sport').notNull().default('Baseball'),
     status: text('status').notNull().default('needs_photos'),
     forSale: boolean('for_sale').notNull().default(true),
+    needsBackPhoto: boolean('needs_back_photo').notNull().default(true),
     askingPriceCents: integer('asking_price_cents'),
     compNote: text('comp_note'),
     photoUrls: jsonb('photo_urls').$type<string[]>().notNull().default(sql`'[]'::jsonb`),
