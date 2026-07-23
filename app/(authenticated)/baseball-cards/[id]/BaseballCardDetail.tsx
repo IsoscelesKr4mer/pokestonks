@@ -34,6 +34,11 @@ export function BaseballCardDetail({ card: initialCard }: { card: BaseballCardRo
   const update = useUpdateBaseballCard(card.id);
   const del = useDeleteBaseballCard();
 
+  const [player, setPlayer] = useState(card.player);
+  const [setName, setSetName] = useState(card.set_name ?? '');
+  const [year, setYear] = useState(card.year != null ? String(card.year) : '');
+  const [cardNumber, setCardNumber] = useState(card.card_number ?? '');
+  const [parallel, setParallel] = useState(card.parallel ?? '');
   const [status, setStatus] = useState<BaseballCardStatus>(card.status);
   const [forSale, setForSale] = useState(card.for_sale);
   const [needsBack, setNeedsBack] = useState(card.needs_back_photo);
@@ -52,6 +57,15 @@ export function BaseballCardDetail({ card: initialCard }: { card: BaseballCardRo
   async function save() {
     setError(null);
     setMessage(null);
+    if (player.trim().length === 0) {
+      setError('Player is required.');
+      return;
+    }
+    const yearNum = year.trim() === '' ? null : Number(year);
+    if (yearNum !== null && !Number.isInteger(yearNum)) {
+      setError('Year must be a whole number.');
+      return;
+    }
     const askNum = askingPrice.trim() === '' ? null : Math.round(Number(askingPrice) * 100);
     if (askNum !== null && (!Number.isFinite(askNum) || askNum < 0)) {
       setError('Asking price must be a positive dollar amount.');
@@ -59,6 +73,11 @@ export function BaseballCardDetail({ card: initialCard }: { card: BaseballCardRo
     }
     try {
       await update.mutateAsync({
+        player: player.trim(),
+        setName: setName.trim() || null,
+        year: yearNum,
+        cardNumber: cardNumber.trim() || null,
+        parallel: parallel.trim() || null,
         status,
         forSale,
         needsBackPhoto: needsBack,
@@ -147,6 +166,28 @@ export function BaseballCardDetail({ card: initialCard }: { card: BaseballCardRo
           </div>
 
           <div className="space-y-4 border-t border-divider pt-5">
+            <div className="grid gap-3 sm:grid-cols-2">
+              <div className="grid gap-1 sm:col-span-2">
+                <label className={labelClass} htmlFor="d-player">Player</label>
+                <Input id="d-player" value={player} onChange={(e) => setPlayer(e.target.value)} placeholder="Player name" />
+              </div>
+              <div className="grid gap-1">
+                <label className={labelClass} htmlFor="d-set">Set</label>
+                <Input id="d-set" value={setName} onChange={(e) => setSetName(e.target.value)} placeholder="2026 Topps Chrome" />
+              </div>
+              <div className="grid gap-1">
+                <label className={labelClass} htmlFor="d-year">Year</label>
+                <Input id="d-year" inputMode="numeric" value={year} onChange={(e) => setYear(e.target.value)} placeholder="2026" />
+              </div>
+              <div className="grid gap-1">
+                <label className={labelClass} htmlFor="d-num">Card #</label>
+                <Input id="d-num" value={cardNumber} onChange={(e) => setCardNumber(e.target.value)} placeholder="16" />
+              </div>
+              <div className="grid gap-1">
+                <label className={labelClass} htmlFor="d-parallel">Parallel</label>
+                <Input id="d-parallel" value={parallel} onChange={(e) => setParallel(e.target.value)} placeholder="RayWave Refractor" />
+              </div>
+            </div>
             <div className="grid gap-3 sm:grid-cols-2">
               <div className="grid gap-1">
                 <label className={labelClass} htmlFor="d-status">Status</label>
