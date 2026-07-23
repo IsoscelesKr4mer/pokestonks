@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 const tabs = [
   { href: '/', label: 'Vault', match: (p: string) => p === '/' },
   { href: '/holdings', label: 'Holdings', match: (p: string) => p.startsWith('/holdings') },
+  { href: '/baseball-cards', label: 'Cards', match: (p: string) => p.startsWith('/baseball-cards') },
   { href: '/catalog', label: 'Search', match: (p: string) => p.startsWith('/catalog') },
   { href: '/sales', label: 'Sales', match: (p: string) => p.startsWith('/sales') },
   { href: '/settings', label: 'Settings', match: (p: string) => p.startsWith('/settings') },
@@ -13,7 +14,7 @@ const tabs = [
 export function BottomTabBar() {
   const pathname = usePathname();
   return (
-    <nav className="md:hidden fixed bottom-0 inset-x-0 z-30 border-t border-divider bg-vault grid grid-cols-5">
+    <nav className="md:hidden fixed bottom-0 inset-x-0 z-30 border-t border-divider bg-vault grid grid-cols-6">
       {tabs.map((tab) => {
         const active = tab.match(pathname);
         return (

@@ -10,6 +10,7 @@ const links = [
   { href: '/', label: 'Vault', match: (p: string) => p === '/' },
   { href: '/catalog', label: 'Search', match: (p: string) => p.startsWith('/catalog') },
   { href: '/holdings', label: 'Holdings', match: (p: string) => p.startsWith('/holdings') },
+  { href: '/baseball-cards', label: 'Cards', match: (p: string) => p.startsWith('/baseball-cards') },
   { href: '/sales', label: 'Sales', match: (p: string) => p.startsWith('/sales') },
   { href: '/storefront', label: 'Storefront', match: (p: string) => p.startsWith('/storefront') },
   { href: '/settings', label: 'Settings', match: (p: string) => p.startsWith('/settings') },
