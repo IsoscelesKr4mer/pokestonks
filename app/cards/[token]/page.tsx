@@ -4,7 +4,7 @@ import { eq } from 'drizzle-orm';
 import { resolveShareToken } from '@/lib/services/share-tokens';
 import { loadPublicBaseballView } from '@/lib/services/baseball-share';
 import { db, schema } from '@/lib/db/client';
-import { StorefrontHeader } from '@/components/storefront/StorefrontHeader';
+import { formatRelativeTime } from '@/lib/utils/time';
 import { PublicCollectionGrid } from '@/components/baseball/PublicCollectionGrid';
 import { CollectionUnavailable } from '@/components/baseball/CollectionUnavailable';
 
@@ -43,16 +43,19 @@ export default async function PublicCollectionPage({ params }: Props) {
   }
 
   const view = await loadPublicBaseballView(row.userId);
+  const updated = view.lastUpdatedAt ? formatRelativeTime(view.lastUpdatedAt) : null;
 
   return (
     <main className="mx-auto w-full max-w-[1100px] px-4 py-8 sm:px-6">
-      <StorefrontHeader
-        title={row.headerTitle || DEFAULT_TITLE}
-        subtitle={row.headerSubtitle}
-        contactLine={row.contactLine}
-        itemsCount={view.itemsCount}
-        lastUpdatedAt={view.lastUpdatedAt}
-      />
+      <header className="border-b border-divider pb-6">
+        <h1 className="text-[24px] font-medium tracking-tight">{row.headerTitle || DEFAULT_TITLE}</h1>
+        {row.headerSubtitle && <p className="mt-2 text-[14px] text-meta">{row.headerSubtitle}</p>}
+        {row.contactLine && <p className="mt-3 text-[13px] text-text">{row.contactLine}</p>}
+        <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.08em] text-meta">
+          {view.itemsCount} {view.itemsCount === 1 ? 'card' : 'cards'}
+          {updated ? ` · ${updated}` : ''}
+        </p>
+      </header>
       {view.items.length === 0 ? (
         <p className="mt-12 text-center text-[14px] text-meta">No cards to show yet.</p>
       ) : (
