@@ -24,7 +24,7 @@ export function generateShareToken(): string {
  */
 export async function resolveShareToken(
   token: string,
-  kind: 'storefront'
+  kind: 'storefront' | 'baseball'
 ): Promise<ShareToken | null> {
   const row = await db.query.shareTokens.findFirst({
     where: eq(schema.shareTokens.token, token),

@@ -17,7 +17,7 @@ export const shareTokens = pgTable(
   },
   (t) => ({
     userIdx: index('share_tokens_user_idx').on(t.userId, t.revokedAt),
-    kindCheck: check('share_tokens_kind_check', sql`${t.kind} IN ('storefront')`),
+    kindCheck: check('share_tokens_kind_check', sql`${t.kind} IN ('storefront', 'baseball')`),
   })
 );
 

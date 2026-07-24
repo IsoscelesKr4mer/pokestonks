@@ -7,7 +7,7 @@ const PUBLIC_PATHS = ['/login', '/auth/callback'];
 // without the Supabase session auth gate. The /storefront/[token] public
 // buyer route lives here. Note that bare `/storefront` (admin page) is NOT
 // matched because PUBLIC_PREFIXES requires a trailing path segment.
-const PUBLIC_PREFIXES = ['/storefront/'];
+const PUBLIC_PREFIXES = ['/storefront/', '/cards/'];
 
 // Routes that authenticate via their own mechanism (e.g. CRON_SECRET bearer
 // header, signed webhooks) and must bypass the Supabase session redirect.
