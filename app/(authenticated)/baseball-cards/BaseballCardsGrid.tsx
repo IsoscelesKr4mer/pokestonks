@@ -6,6 +6,7 @@ import { formatCents } from '@/lib/utils/format';
 import { StatusBadge, PcBadge, NeedsBackBadge } from '@/components/baseball/StatusBadge';
 import { STATUS_ORDER, STATUS_META } from '@/components/baseball/status';
 import { leadPhoto } from '@/components/baseball/leadPhoto';
+import { Input } from '@/components/ui/input';
 import { AddCardDialog } from './AddCardDialog';
 import type { BaseballCardStatus } from '@/lib/validation/baseballCard';
 
@@ -17,6 +18,7 @@ export function BaseballCardsGrid({ initialCards }: { initialCards: BaseballCard
   const cards = data?.cards ?? initialCards;
   const [mode, setMode] = useState<Mode>('selling');
   const [sellFilter, setSellFilter] = useState<SellFilter>('all');
+  const [q, setQ] = useState('');
 
   const sellable = useMemo(() => cards.filter((c) => c.for_sale), [cards]);
   const pcCards = useMemo(() => cards.filter((c) => !c.for_sale), [cards]);
@@ -45,7 +47,17 @@ export function BaseballCardsGrid({ initialCards }: { initialCards: BaseballCard
     return sellable.filter((c) => c.status === sellFilter);
   }, [sellable, sellFilter]);
 
-  const shown = mode === 'pc' ? pcCards : sellFiltered;
+  const query = q.trim().toLowerCase();
+  // A search spans the whole collection (both tabs); clearing it returns to the mode + chip view.
+  const shown = query
+    ? cards.filter((c) =>
+        `${c.player} ${c.set_name ?? ''} ${c.parallel ?? ''} ${c.card_number ?? ''}`
+          .toLowerCase()
+          .includes(query)
+      )
+    : mode === 'pc'
+      ? pcCards
+      : sellFiltered;
 
   const chips: { key: SellFilter; label: string; count: number }[] = [
     { key: 'all', label: 'All', count: counts.all },
@@ -69,6 +81,13 @@ export function BaseballCardsGrid({ initialCards }: { initialCards: BaseballCard
         </div>
         <AddCardDialog />
       </div>
+
+      <Input
+        value={q}
+        onChange={(e) => setQ(e.target.value)}
+        placeholder="Search player, set, or parallel (e.g. finest, ohtani, refractor)"
+        className="max-w-md"
+      />
 
       <div className="inline-flex rounded-full border border-divider bg-vault p-1">
         {modes.map((m) => {
@@ -117,9 +136,11 @@ export function BaseballCardsGrid({ initialCards }: { initialCards: BaseballCard
           <p className="text-[13px] text-text-muted">
             {cards.length === 0
               ? 'No cards yet. Add your first baseball single to start tracking.'
-              : mode === 'pc'
-                ? 'No cards in your personal collection yet.'
-                : 'No cards match this filter.'}
+              : query
+                ? `No cards match "${q.trim()}".`
+                : mode === 'pc'
+                  ? 'No cards in your personal collection yet.'
+                  : 'No cards match this filter.'}
           </p>
         </div>
       ) : (
