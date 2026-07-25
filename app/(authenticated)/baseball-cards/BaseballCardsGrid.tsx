@@ -8,12 +8,13 @@ import { STATUS_ORDER, STATUS_META } from '@/components/baseball/status';
 import { leadPhoto } from '@/components/baseball/leadPhoto';
 import { Input } from '@/components/ui/input';
 import { AddCardDialog } from './AddCardDialog';
+import { ShareCollectionButton } from './ShareCollectionButton';
 import type { BaseballCardStatus } from '@/lib/validation/baseballCard';
 
 type Mode = 'selling' | 'pc';
 type SellFilter = 'all' | 'needs_back' | BaseballCardStatus;
 
-export function BaseballCardsGrid({ initialCards }: { initialCards: BaseballCardRow[] }) {
+export function BaseballCardsGrid({ initialCards, shareToken }: { initialCards: BaseballCardRow[]; shareToken?: string | null }) {
   const { data } = useBaseballCards();
   const cards = data?.cards ?? initialCards;
   const [mode, setMode] = useState<Mode>('selling');
@@ -79,7 +80,10 @@ export function BaseballCardsGrid({ initialCards }: { initialCards: BaseballCard
             Baseball singles inventory. Selling vs your personal collection (PC).
           </p>
         </div>
-        <AddCardDialog />
+        <div className="flex items-center gap-2">
+          <ShareCollectionButton token={shareToken ?? null} />
+          <AddCardDialog />
+        </div>
       </div>
 
       <Input
