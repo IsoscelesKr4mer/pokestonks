@@ -69,3 +69,26 @@ export async function loadPublicBaseballView(userId: string): Promise<PublicBase
 
   return { items, itemsCount: items.length, lastUpdatedAt };
 }
+
+/**
+ * Resolve the cover/preview (Open Graph) image for a user's public share.
+ * Prefers a card explicitly flagged is_share_cover; falls back to the
+ * highest-priced for-sale card's photo, then any card with a photo.
+ */
+export async function getShareCoverImage(userId: string): Promise<string | null> {
+  const rows = await db.query.baseballCards.findMany({
+    where: and(
+      eq(schema.baseballCards.userId, userId),
+      ne(schema.baseballCards.status, 'sold'),
+      eq(schema.baseballCards.hiddenFromShare, false),
+    ),
+  });
+  const withPhoto = rows.filter((r) => Array.isArray(r.photoUrls) && r.photoUrls.length > 0);
+  const cover = withPhoto.find((r) => r.isShareCover);
+  if (cover) return cover.photoUrls[0];
+  const priced = withPhoto
+    .filter((r) => r.forSale && r.askingPriceCents != null)
+    .sort((a, b) => (b.askingPriceCents ?? 0) - (a.askingPriceCents ?? 0))[0];
+  if (priced) return priced.photoUrls[0];
+  return withPhoto[0]?.photoUrls[0] ?? null;
+}

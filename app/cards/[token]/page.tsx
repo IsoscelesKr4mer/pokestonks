@@ -2,7 +2,7 @@ import 'server-only';
 import type { Metadata } from 'next';
 import { eq } from 'drizzle-orm';
 import { resolveShareToken } from '@/lib/services/share-tokens';
-import { loadPublicBaseballView } from '@/lib/services/baseball-share';
+import { loadPublicBaseballView, getShareCoverImage } from '@/lib/services/baseball-share';
 import { db, schema } from '@/lib/db/client';
 import { formatRelativeTime } from '@/lib/utils/time';
 import { PublicCollectionClient } from '@/components/baseball/PublicCollectionClient';
@@ -16,12 +16,17 @@ const DEFAULT_TITLE = 'Baseball Card Collection';
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { token } = await params;
   const row = await resolveShareToken(token, 'baseball').catch(() => null);
+  const title = row?.headerTitle || DEFAULT_TITLE;
+  // Cover/preview image so the shared link renders a card thumbnail, not a blank box.
+  const cover = row ? await getShareCoverImage(row.userId).catch(() => null) : null;
   // No app name, no "| Pokestonks" suffix. White-label hard rule.
   return {
-    title: row?.headerTitle || DEFAULT_TITLE,
+    title,
     description: '',
     icons: { icon: undefined },
     other: { generator: '' },
+    openGraph: { title, images: cover ? [{ url: cover }] : [] },
+    twitter: cover ? { card: 'summary_large_image', title, images: [cover] } : undefined,
   };
 }
 

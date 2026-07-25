@@ -37,6 +37,7 @@ export const baseballCards = pgTable(
     forSale: boolean('for_sale').notNull().default(true),
     needsBackPhoto: boolean('needs_back_photo').notNull().default(true),
     hiddenFromShare: boolean('hidden_from_share').notNull().default(false),
+    isShareCover: boolean('is_share_cover').notNull().default(false),
     askingPriceCents: integer('asking_price_cents'),
     compNote: text('comp_note'),
     photoUrls: jsonb('photo_urls').$type<string[]>().notNull().default(sql`'[]'::jsonb`),
