@@ -12,7 +12,9 @@ export type PublicBaseballCard = {
   cardNumber: string | null;
   parallel: string | null;
   photo: string | null;
+  forSale: boolean;
   priceCents: number | null; // only present when the card is for sale + priced
+  createdAt: string | null;
 };
 
 export type PublicBaseballView = {
@@ -31,7 +33,11 @@ export type PublicBaseballView = {
  */
 export async function loadPublicBaseballView(userId: string): Promise<PublicBaseballView> {
   const rows = await db.query.baseballCards.findMany({
-    where: and(eq(schema.baseballCards.userId, userId), ne(schema.baseballCards.status, 'sold')),
+    where: and(
+      eq(schema.baseballCards.userId, userId),
+      ne(schema.baseballCards.status, 'sold'),
+      eq(schema.baseballCards.hiddenFromShare, false),
+    ),
   });
 
   const items: PublicBaseballCard[] = rows
@@ -44,7 +50,9 @@ export async function loadPublicBaseballView(userId: string): Promise<PublicBase
       cardNumber: r.cardNumber,
       parallel: r.parallel,
       photo: r.photoUrls[0] ?? null,
+      forSale: r.forSale,
       priceCents: r.forSale && r.askingPriceCents != null ? r.askingPriceCents : null,
+      createdAt: r.createdAt ? new Date(r.createdAt).toISOString() : null,
     }));
 
   items.sort((a, b) => {

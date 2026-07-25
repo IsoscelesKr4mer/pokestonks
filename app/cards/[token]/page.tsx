@@ -5,7 +5,7 @@ import { resolveShareToken } from '@/lib/services/share-tokens';
 import { loadPublicBaseballView } from '@/lib/services/baseball-share';
 import { db, schema } from '@/lib/db/client';
 import { formatRelativeTime } from '@/lib/utils/time';
-import { PublicCollectionGrid } from '@/components/baseball/PublicCollectionGrid';
+import { PublicCollectionClient } from '@/components/baseball/PublicCollectionClient';
 import { CollectionUnavailable } from '@/components/baseball/CollectionUnavailable';
 
 type Params = { token: string };
@@ -60,7 +60,7 @@ export default async function PublicCollectionPage({ params }: Props) {
         <p className="mt-12 text-center text-[14px] text-meta">No cards to show yet.</p>
       ) : (
         <div className="mt-8">
-          <PublicCollectionGrid items={view.items} />
+          <PublicCollectionClient items={view.items} />
         </div>
       )}
     </main>
