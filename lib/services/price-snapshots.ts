@@ -5,7 +5,11 @@ import { and, eq, inArray, isNotNull, isNull } from 'drizzle-orm';
 import type { ArchivePriceRow } from './tcgcsv-archive';
 import { fetchAllPrices } from './tcgcsv-live';
 
-const POKEMON_CATEGORY_IDS = [3, 50];
+// TCGCSV categories the daily snapshot walks. 3 = Pokemon, 50 = Pokemon Japan,
+// 68 = One Piece Card Game. Groups inside each category are still filtered down
+// to those whose abbreviation matches a set_code we hold, so adding a category
+// costs one extra Groups.csv fetch, not a full walk.
+const SNAPSHOT_CATEGORY_IDS = [3, 50, 68];
 
 export type PersistOptions = {
   source: 'tcgcsv' | 'manual';
@@ -122,7 +126,7 @@ export async function snapshotForItems(catalogItemIds: number[]): Promise<Snapsh
     )
   );
 
-  const fetchResult = await fetchAllPrices(POKEMON_CATEGORY_IDS, { setCodes });
+  const fetchResult = await fetchAllPrices(SNAPSHOT_CATEGORY_IDS, { setCodes });
 
   const result = await persistSnapshot(todayUtc, fetchResult.prices, items, {
     source: 'tcgcsv',
@@ -159,7 +163,7 @@ export async function snapshotAllCatalogItems(): Promise<SnapshotResult> {
     `[price-snapshots] cron items=${items.length} distinctSetCodes=${setCodes.length}`
   );
 
-  const fetchResult = await fetchAllPrices(POKEMON_CATEGORY_IDS, { setCodes });
+  const fetchResult = await fetchAllPrices(SNAPSHOT_CATEGORY_IDS, { setCodes });
 
   const result = await persistSnapshot(todayUtc, fetchResult.prices, items, {
     source: 'tcgcsv',
