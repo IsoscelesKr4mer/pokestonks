@@ -13,6 +13,7 @@ import { Input } from '@/components/ui/input';
 import { StatusBadge, PcBadge, NeedsBackBadge } from '@/components/baseball/StatusBadge';
 import { STATUS_ORDER, STATUS_META } from '@/components/baseball/status';
 import { leadPhoto } from '@/components/baseball/leadPhoto';
+import { PhotoLightbox } from '@/components/baseball/PhotoLightbox';
 import { getImageUrl } from '@/lib/utils/images';
 import { formatCents } from '@/lib/utils/format';
 import type { BaseballCardStatus } from '@/lib/validation/baseballCard';
@@ -49,6 +50,7 @@ export function BaseballCardDetail({ card: initialCard }: { card: BaseballCardRo
   const [notes, setNotes] = useState(card.notes ?? '');
   const [message, setMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [lightbox, setLightbox] = useState<number | null>(null);
 
   const photos = allPhotos(card);
   const lead = leadPhoto(card);
@@ -114,29 +116,44 @@ export function BaseballCardDetail({ card: initialCard }: { card: BaseballCardRo
 
       <div className="grid gap-6 md:grid-cols-[300px_1fr]">
         <div className="space-y-3">
-          <div className="relative aspect-[3/4] w-full overflow-hidden rounded-xl border border-divider bg-chamber">
-            {lead ? (
-              // eslint-disable-next-line @next/next/no-img-element
+          {lead ? (
+            <button
+              type="button"
+              onClick={() => setLightbox(Math.max(0, photos.indexOf(lead)))}
+              aria-label={`View ${card.player} photo full size`}
+              className="relative aspect-[3/4] w-full overflow-hidden rounded-xl border border-divider bg-chamber cursor-zoom-in"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={lead} alt={card.player} className="h-full w-full object-cover" />
-            ) : (
+            </button>
+          ) : (
+            <div className="relative aspect-[3/4] w-full overflow-hidden rounded-xl border border-divider bg-chamber">
               <div className="flex h-full w-full items-center justify-center">
                 <span className="text-[11px] font-mono uppercase tracking-[0.14em] text-meta">No photo yet</span>
               </div>
-            )}
-          </div>
+            </div>
+          )}
           {photos.length > 1 && (
             <div className="grid grid-cols-4 gap-2">
               {photos.map((url, i) => (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
+                <button
                   key={`${url}-${i}`}
-                  src={url}
-                  alt={`${card.player} photo ${i + 1}`}
-                  className="aspect-[3/4] w-full rounded-md border border-divider object-cover"
-                />
+                  type="button"
+                  onClick={() => setLightbox(i)}
+                  aria-label={`View ${card.player} photo ${i + 1} full size`}
+                  className="cursor-zoom-in"
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={url}
+                    alt={`${card.player} photo ${i + 1}`}
+                    className="aspect-[3/4] w-full rounded-md border border-divider object-cover"
+                  />
+                </button>
               ))}
             </div>
           )}
+          <PhotoLightbox photos={photos} alt={card.player} index={lightbox} onIndexChange={setLightbox} />
         </div>
 
         <div className="space-y-5">

@@ -6,6 +6,7 @@ import { formatCents } from '@/lib/utils/format';
 import { StatusBadge, PcBadge, NeedsBackBadge } from '@/components/baseball/StatusBadge';
 import { STATUS_ORDER, STATUS_META } from '@/components/baseball/status';
 import { leadPhoto } from '@/components/baseball/leadPhoto';
+import { PhotoLightbox } from '@/components/baseball/PhotoLightbox';
 import { Input } from '@/components/ui/input';
 import { AddCardDialog } from './AddCardDialog';
 import { ShareCollectionButton } from './ShareCollectionButton';
@@ -160,22 +161,37 @@ export function BaseballCardsGrid({ initialCards, shareToken }: { initialCards: 
 
 function CardTile({ card }: { card: BaseballCardRow }) {
   const photo = leadPhoto(card);
+  const photos = useMemo(
+    () => (Array.isArray(card.photo_urls) ? (card.photo_urls as string[]).filter(Boolean) : []),
+    [card.photo_urls]
+  );
+  const [lightbox, setLightbox] = useState<number | null>(null);
   const subtitle = [card.set_name, card.year ? String(card.year) : null].filter(Boolean).join(' · ');
 
+  // The tile is no longer one big link: tapping the photo opens the full-size
+  // viewer, while the text block still navigates to the card detail page.
   return (
-    <Link href={`/baseball-cards/${card.id}`} className="vault-card p-[14px] grid gap-3">
-      <div className="relative aspect-[3/4] w-full overflow-hidden rounded-xl border border-divider bg-chamber">
-        {photo ? (
-          // eslint-disable-next-line @next/next/no-img-element
+    <div className="vault-card p-[14px] grid gap-3">
+      {photo ? (
+        <button
+          type="button"
+          onClick={() => setLightbox(Math.max(0, photos.indexOf(photo)))}
+          aria-label={`View ${card.player} photo full size`}
+          className="relative aspect-[3/4] w-full overflow-hidden rounded-xl border border-divider bg-chamber cursor-zoom-in"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={photo} alt={card.player} className="h-full w-full object-cover" />
-        ) : (
+        </button>
+      ) : (
+        <div className="relative aspect-[3/4] w-full overflow-hidden rounded-xl border border-divider bg-chamber">
           <div className="flex h-full w-full flex-col items-center justify-center gap-1 text-center">
             <span className="text-[11px] font-mono uppercase tracking-[0.14em] text-meta">No photo yet</span>
             <span className="text-[10px] text-meta">Needs a shot</span>
           </div>
-        )}
-      </div>
-      <div className="grid gap-1.5">
+        </div>
+      )}
+      <PhotoLightbox photos={photos} alt={card.player} index={lightbox} onIndexChange={setLightbox} />
+      <Link href={`/baseball-cards/${card.id}`} className="grid gap-1.5">
         {/* Badges live below the image so they never clip the card art or wash out over it. */}
         <div className="flex flex-wrap gap-1">
           {!card.for_sale && <PcBadge />}
@@ -185,12 +201,12 @@ function CardTile({ card }: { card: BaseballCardRow }) {
         <div className="text-[13px] font-semibold leading-[1.3] line-clamp-2">{card.player}</div>
         <div className="text-[11px] font-mono text-meta truncate">{subtitle || '--'}</div>
         {card.parallel && <div className="text-[11px] text-text-muted truncate">{card.parallel}</div>}
-      </div>
-      {card.asking_price_cents != null && (
-        <div className="border-t border-divider pt-[10px] text-[16px] font-semibold tabular-nums tracking-[-0.01em]">
-          {formatCents(card.asking_price_cents)}
-        </div>
-      )}
-    </Link>
+        {card.asking_price_cents != null && (
+          <div className="mt-[10px] border-t border-divider pt-[10px] text-[16px] font-semibold tabular-nums tracking-[-0.01em]">
+            {formatCents(card.asking_price_cents)}
+          </div>
+        )}
+      </Link>
+    </div>
   );
 }
