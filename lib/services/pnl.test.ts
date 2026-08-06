@@ -32,6 +32,46 @@ function makeHolding(overrides: Partial<Holding> = {}): Holding {
 }
 
 describe('computeHoldingPnL', () => {
+  // Regression: sports sealed and other non-TCGplayer lines have no
+  // lastMarketCents at all, so before manualMarketCents was honoured here they
+  // rendered as UNPRICED with $0.00 value despite a stored price.
+  it('uses manualMarketCents when lastMarketCents is null', () => {
+    const r = computeHoldingPnL(
+      makeHolding({ lastMarketCents: null, lastMarketAt: null, manualMarketCents: 12499, qtyHeld: 2 }),
+      NOW
+    );
+    expect(r.priced).toBe(true);
+    expect(r.stale).toBe(false);
+    expect(r.currentValueCents).toBe(24998);
+    expect(r.pnlCents).toBe(24998 - 5000);
+  });
+
+  it('manualMarketCents overrides a present lastMarketCents', () => {
+    const r = computeHoldingPnL(
+      makeHolding({ lastMarketCents: 6000, lastMarketAt: RECENT, manualMarketCents: 9000 }),
+      NOW
+    );
+    expect(r.currentValueCents).toBe(9000);
+  });
+
+  it('a manual price is never stale even with a stale lastMarketAt', () => {
+    const r = computeHoldingPnL(
+      makeHolding({ lastMarketAt: STALE_AT, manualMarketCents: 7000 }),
+      NOW
+    );
+    expect(r.stale).toBe(false);
+    expect(r.currentValueCents).toBe(7000);
+  });
+
+  it('stays unpriced when both prices are null', () => {
+    const r = computeHoldingPnL(
+      makeHolding({ lastMarketCents: null, lastMarketAt: null, manualMarketCents: null }),
+      NOW
+    );
+    expect(r.priced).toBe(false);
+    expect(r.currentValueCents).toBeNull();
+  });
+
   it('priced + fresh produces positive P&L', () => {
     const r = computeHoldingPnL(makeHolding(), NOW);
     expect(r.priced).toBe(true);

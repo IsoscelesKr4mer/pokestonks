@@ -62,7 +62,13 @@ export type PortfolioPnL = {
 };
 
 export function computeHoldingPnL(holding: Holding, now: Date): HoldingPnL {
-  const priced = holding.lastMarketCents != null;
+  // A hand-set manual price wins over the TCGCSV price. Without this, anything
+  // TCGCSV cannot reach (sports sealed, Lorcana, any non-TCGplayer line) shows
+  // as UNPRICED with $0.00 value even though a price is stored on the catalog
+  // item, because lastMarketCents is null for those.
+  const marketCents = holding.manualMarketCents ?? holding.lastMarketCents;
+  const usingManual = holding.manualMarketCents != null;
+  const priced = marketCents != null;
   let currentValueCents: number | null = null;
   let currentValueTrackedCents: number | null = null;
   let currentValueCollectionCents: number | null = null;
@@ -71,7 +77,7 @@ export function computeHoldingPnL(holding: Holding, now: Date): HoldingPnL {
   let stale = false;
 
   if (priced) {
-    const m = holding.lastMarketCents!;
+    const m = marketCents!;
     currentValueCents = m * holding.qtyHeld;
     currentValueTrackedCents = m * holding.qtyHeldTracked;
     currentValueCollectionCents = m * holding.qtyHeldCollection;
@@ -84,7 +90,12 @@ export function computeHoldingPnL(holding: Holding, now: Date): HoldingPnL {
           : null;
     }
 
-    if (holding.lastMarketAt == null) {
+    if (usingManual) {
+      // A manual price was set deliberately and has no TCGCSV refresh cycle
+      // behind it, so lastMarketAt says nothing about its freshness. Don't
+      // flag it stale on an absent timestamp.
+      stale = false;
+    } else if (holding.lastMarketAt == null) {
       stale = true;
     } else {
       const ageMs = now.getTime() - new Date(holding.lastMarketAt).getTime();

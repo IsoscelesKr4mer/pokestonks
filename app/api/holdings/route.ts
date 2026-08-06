@@ -60,15 +60,15 @@ export async function GET() {
   );
 
   const now = new Date();
-  const holdingsPnL = holdings.map((h) => computeHoldingPnL(h, now));
-
-  const catalogItemIds = holdingsPnL.map((h) => h.catalogItemId);
+  const catalogItemIds = holdings.map((h) => h.catalogItemId);
 
   let deltaMap = new Map<number, { deltaCents: number | null; deltaPct: number | null }>();
-  let manualMap = new Map<number, number | null>();
+  const manualMap = new Map<number, number | null>();
 
+  // Must be fetched BEFORE computeHoldingPnL: a manual price takes precedence
+  // over lastMarketCents, and is the only price that exists for items TCGCSV
+  // cannot reach. Loading it afterwards left those holdings valued at $0.00.
   if (catalogItemIds.length > 0) {
-    // Fetch manual_market_cents per held item
     const manuals = await db.query.catalogItems.findMany({
       where: inArray(schema.catalogItems.id, catalogItemIds),
       columns: { id: true, manualMarketCents: true },
@@ -76,7 +76,13 @@ export async function GET() {
     for (const m of manuals) {
       manualMap.set(m.id, m.manualMarketCents ?? null);
     }
+  }
 
+  const holdingsPnL = holdings.map((h) =>
+    computeHoldingPnL({ ...h, manualMarketCents: manualMap.get(h.catalogItemId) ?? null }, now)
+  );
+
+  if (catalogItemIds.length > 0) {
     // Find each item's market price at or before 7 days ago (latest qualifying row)
     const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
       .toISOString()

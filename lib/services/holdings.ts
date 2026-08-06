@@ -52,6 +52,12 @@ export type Holding = {
   imageStoragePath: string | null;
   lastMarketCents: number | null;
   lastMarketAt: string | null;
+  // Hand-set price, used when TCGCSV cannot price the item at all (sports
+  // sealed, and any line outside the TCGplayer categories). Takes precedence
+  // over lastMarketCents in computeHoldingPnL. Injected by the caller, not by
+  // aggregateHoldings, since it lives on catalog_items rather than the
+  // purchase join.
+  manualMarketCents?: number | null;
   qtyHeld: number;
   qtyHeldTracked: number;
   qtyHeldCollection: number;
