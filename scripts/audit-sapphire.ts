@@ -62,6 +62,10 @@ async function main(){
 
     // Blue is base everywhere except 2019 Draft.
     if (colour==='blue' && !(prod==='DRAFT' && yr==='2019')) { base++; continue; }
+    // Base inserts legitimately have no colour. Sapphire Selections base is
+    // the blue version; its parallels are Gold Ref /50, Orange Ref /25,
+    // Red Ref /5, Superfractor 1/1 (Beckett, 2025 Draft Sapphire).
+    if (!colour && /selections|insert/i.test(c.parallel || '')) { base++; continue; }
     if (!colour) { issues.push(`  #${c.id} ${c.player}: no colour recorded (${c.parallel})`); continue; }
     if (!yr) { issues.push(`  #${c.id} ${c.player}: no year on the record`); continue; }
     if (UNCONFIRMED.has(`${prod}:${yr}`)) { issues.push(`  #${c.id} ${yr} ${prod} ${c.player}: ladder unconfirmed for this product/year`); continue; }
