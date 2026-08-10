@@ -80,6 +80,11 @@ function shortParallel(p: string | null): string {
   // /^base/ test collapsed every seams refractor to the label "Base". That is
   // what Michael saw on the live listing: the DB knew it was a seams card and
   // the dropdown still said Base. Match the word, not the prefix.
+  // 2026 Finest base is tiered COMMON/UNCOMMON/RARE and RARE is the short
+  // print, so the tier belongs in the dropdown. Michael asked for this and it
+  // is the difference between a $1.49 card and a short print.
+  const tier = s.match(/\((COMMON|UNCOMMON|RARE)[^)]*\)/i)?.[1];
+  if (tier) return `Base ${tier.toUpperCase() === 'UNCOMMON' ? 'UNC' : tier.toUpperCase()}`;
   if (/^base(?!ball)/i.test(s) || /^base$/i.test(s)) return 'Base';
   if (/^insert$/i.test(s)) return 'Insert';
   // Strip ALL parentheticals - serials like (108/250) and qualifiers like

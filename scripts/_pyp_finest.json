@@ -11,15 +11,15 @@
  },
  "variations": [
   {
-   "label": "6 - Konnor Griffin - Base RC",
+   "label": "6 - Konnor Griffin - Base COMMON RC",
    "primary": {
     "id": "103",
     "player": "Konnor Griffin",
     "set_name": "2026 Topps Finest",
     "card_number": "6",
-    "parallel": "base",
+    "parallel": "base (COMMON tier)",
     "price": 299,
-    "itemId": "168561672968",
+    "itemId": "168602424592",
     "sku": "BBC-103",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0517.jpg",
@@ -40,7 +40,7 @@
     "card_number": "9",
     "parallel": "Pink Refractor /250 (124/250)",
     "price": 799,
-    "itemId": "168561671930",
+    "itemId": "168602424592",
     "sku": "BBC-12",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_11_justin-crawford_1.jpg",
@@ -53,15 +53,15 @@
    "price": 799
   },
   {
-   "label": "9 - Munetaka Murakami - Base RC",
+   "label": "9 - Munetaka Murakami - Base COMMON RC",
    "primary": {
     "id": "9",
     "player": "Munetaka Murakami",
     "set_name": "2026 Topps Finest",
     "card_number": "9",
-    "parallel": "base",
+    "parallel": "base (COMMON tier)",
     "price": 799,
-    "itemId": "168561671919",
+    "itemId": "168602424592",
     "sku": "BBC-9",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_08_munetaka-murakami_1.jpg",
@@ -74,15 +74,15 @@
    "price": 799
   },
   {
-   "label": "10 - Paul Skenes - Base",
+   "label": "10 - Paul Skenes - Base COMMON",
    "primary": {
     "id": "96",
     "player": "Paul Skenes",
     "set_name": "2026 Topps Finest",
     "card_number": "10",
-    "parallel": "base",
+    "parallel": "base (COMMON tier)",
     "price": 249,
-    "itemId": "168561673135",
+    "itemId": "168602424592",
     "sku": "BBC-96",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0504.jpg",
@@ -95,15 +95,15 @@
    "price": 249
   },
   {
-   "label": "15 - JJ Wetherholt - Base RC",
+   "label": "15 - JJ Wetherholt - Base COMMON RC",
    "primary": {
     "id": "114",
     "player": "JJ Wetherholt",
     "set_name": "2026 Topps Finest",
     "card_number": "15",
-    "parallel": "base",
+    "parallel": "base (COMMON tier)",
     "price": 299,
-    "itemId": "168561672955",
+    "itemId": "168602424592",
     "sku": "BBC-114",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0536.jpg",
@@ -124,7 +124,7 @@
     "card_number": "17",
     "parallel": "Mini Diamond Refractor",
     "price": 249,
-    "itemId": null,
+    "itemId": "168602424592",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1167.jpg",
@@ -145,7 +145,7 @@
     "card_number": "30",
     "parallel": "Mini Diamond Refractor (mega box)",
     "price": 349,
-    "itemId": "168561672849",
+    "itemId": "168602424592",
     "sku": "BBC-14",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_13_colson-montgomery_1.jpg",
@@ -158,15 +158,15 @@
    "price": 349
   },
   {
-   "label": "34 - Kazuma Okamoto - Base RC",
+   "label": "34 - Kazuma Okamoto - Base COMMON RC",
    "primary": {
     "id": "6",
     "player": "Kazuma Okamoto",
     "set_name": "2026 Topps Finest",
     "card_number": "34",
-    "parallel": "base",
+    "parallel": "base (COMMON tier)",
     "price": 199,
-    "itemId": "168561673256",
+    "itemId": "168602424592",
     "sku": "BBC-6",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0567.jpg",
@@ -187,7 +187,7 @@
     "card_number": "36",
     "parallel": "Blue Refractor /150 (138/150)",
     "price": 849,
-    "itemId": "168561671911",
+    "itemId": "168602424592",
     "sku": "BBC-18",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0571.jpg",
@@ -200,21 +200,21 @@
    "price": 849
   },
   {
-   "label": "38 - Zach Neto - Base",
+   "label": "38 - Zach Neto - Base COMMON RC",
    "primary": {
     "id": "120",
     "player": "Zach Neto",
     "set_name": "2026 Topps Finest",
     "card_number": "38",
-    "parallel": "base",
+    "parallel": "base (COMMON tier)",
     "price": 199,
-    "itemId": "168561673130",
+    "itemId": "168602424592",
     "sku": "BBC-120",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0551.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0552.jpg"
     ],
-    "notes": "Angels"
+    "notes": "Angels RC. Confirmed from the card front in the 2026-08-09 audit."
    },
    "extras": [],
    "qty": 1,
@@ -229,7 +229,7 @@
     "card_number": "44",
     "parallel": "Mini Diamond Refractor (mega box)",
     "price": 299,
-    "itemId": "168561672962",
+    "itemId": "168602424592",
     "sku": "BBC-116",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0543.jpg",
@@ -242,15 +242,15 @@
    "price": 299
   },
   {
-   "label": "50 - Shohei Ohtani - Base",
+   "label": "50 - Shohei Ohtani - Base COMMON",
    "primary": {
     "id": "10",
     "player": "Shohei Ohtani",
     "set_name": "2026 Topps Finest",
     "card_number": "50",
-    "parallel": "base",
+    "parallel": "base (COMMON tier)",
     "price": 399,
-    "itemId": "168561673675",
+    "itemId": "168602424592",
     "sku": "BBC-10",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_09_shohei-ohtani_1.jpg",
@@ -263,15 +263,15 @@
    "price": 399
   },
   {
-   "label": "52 - Roman Anthony - Base RC",
+   "label": "52 - Roman Anthony - Base COMMON RC",
    "primary": {
     "id": "117",
     "player": "Roman Anthony",
     "set_name": "2026 Topps Finest",
     "card_number": "52",
-    "parallel": "base",
+    "parallel": "base (COMMON tier)",
     "price": 249,
-    "itemId": "168561673123",
+    "itemId": "168602424592",
     "sku": "BBC-117",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0545.jpg",
@@ -284,15 +284,15 @@
    "price": 249
   },
   {
-   "label": "53 - Drew Gilbert - Base RC",
+   "label": "53 - Drew Gilbert - Base COMMON RC",
    "primary": {
     "id": "105",
     "player": "Drew Gilbert",
     "set_name": "2026 Topps Finest",
     "card_number": "53",
-    "parallel": "base",
+    "parallel": "base (COMMON tier)",
     "price": 199,
-    "itemId": "168561673140",
+    "itemId": "168602424592",
     "sku": "BBC-105",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0521.jpg",
@@ -305,15 +305,15 @@
    "price": 199
   },
   {
-   "label": "54 - Kyle Teel - Base RC",
+   "label": "54 - Kyle Teel - Base COMMON RC",
    "primary": {
     "id": "107",
     "player": "Kyle Teel",
     "set_name": "2026 Topps Finest",
     "card_number": "54",
-    "parallel": "base",
+    "parallel": "base (COMMON tier)",
     "price": 149,
-    "itemId": "168561673399",
+    "itemId": "168602424592",
     "sku": "BBC-107",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0525.jpg",
@@ -334,7 +334,7 @@
     "card_number": "54",
     "parallel": "Mini Diamond Refractor",
     "price": 249,
-    "itemId": null,
+    "itemId": "168602424592",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1169.jpg",
@@ -347,15 +347,15 @@
    "price": 249
   },
   {
-   "label": "56 - Connelly Early - Base RC",
+   "label": "56 - Connelly Early - Base COMMON RC",
    "primary": {
     "id": "100",
     "player": "Connelly Early",
     "set_name": "2026 Topps Finest",
     "card_number": "56",
-    "parallel": "base",
+    "parallel": "base (COMMON tier)",
     "price": 149,
-    "itemId": "168561673257",
+    "itemId": "168602424592",
     "sku": "BBC-100",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0512.jpg",
@@ -368,15 +368,15 @@
    "price": 149
   },
   {
-   "label": "57 - Cole Young - Base RC",
+   "label": "57 - Cole Young - Base COMMON RC",
    "primary": {
     "id": "133",
     "player": "Cole Young",
     "set_name": "2026 Topps Finest",
     "card_number": "57",
-    "parallel": "base",
+    "parallel": "base (COMMON tier)",
     "price": 199,
-    "itemId": "168561673141",
+    "itemId": "168602424592",
     "sku": "BBC-133",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0589.jpg",
@@ -389,15 +389,15 @@
    "price": 199
   },
   {
-   "label": "73 - Colby Thomas - Base RC",
+   "label": "73 - Colby Thomas - Base COMMON RC",
    "primary": {
     "id": "115",
     "player": "Colby Thomas",
     "set_name": "2026 Topps Finest",
     "card_number": "73",
-    "parallel": "base",
+    "parallel": "base (COMMON tier)",
     "price": 199,
-    "itemId": "168561673119",
+    "itemId": "168602424592",
     "sku": "BBC-115",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0541.jpg",
@@ -410,15 +410,15 @@
    "price": 199
   },
   {
-   "label": "74 - Kevin McGonigle - Base RC",
+   "label": "74 - Kevin McGonigle - Base COMMON RC",
    "primary": {
     "id": "119",
     "player": "Kevin McGonigle",
     "set_name": "2026 Topps Finest",
     "card_number": "74",
-    "parallel": "base",
+    "parallel": "base (COMMON tier)",
     "price": 349,
-    "itemId": "168561672840",
+    "itemId": "168602424592",
     "sku": "BBC-119",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0549.jpg",
@@ -431,15 +431,15 @@
    "price": 349
   },
   {
-   "label": "76 - Chase Burns - Base RC",
+   "label": "76 - Chase Burns - Base COMMON RC",
    "primary": {
     "id": "99",
     "player": "Chase Burns",
     "set_name": "2026 Topps Finest",
     "card_number": "76",
-    "parallel": "base",
+    "parallel": "base (COMMON tier)",
     "price": 199,
-    "itemId": "168561673131",
+    "itemId": "168602424592",
     "sku": "BBC-99",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0510.jpg",
@@ -452,15 +452,15 @@
    "price": 199
   },
   {
-   "label": "82 - Jacob Misiorowski - Base RC",
+   "label": "82 - Jacob Misiorowski - Base COMMON RC",
    "primary": {
     "id": "118",
     "player": "Jacob Misiorowski",
     "set_name": "2026 Topps Finest",
     "card_number": "82",
-    "parallel": "base",
+    "parallel": "base (COMMON tier)",
     "price": 299,
-    "itemId": "168561672965",
+    "itemId": "168602424592",
     "sku": "BBC-118",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0547.jpg",
@@ -481,7 +481,7 @@
     "card_number": "85",
     "parallel": "Mini Diamond Refractor (mega box)",
     "price": 199,
-    "itemId": "168561673122",
+    "itemId": "168602424592",
     "sku": "BBC-13",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_12_dylan-beavers_1.jpg",
@@ -494,15 +494,15 @@
    "price": 199
   },
   {
-   "label": "87 - Kyle Karros - Base RC",
+   "label": "87 - Kyle Karros - Base COMMON RC",
    "primary": {
     "id": "112",
     "player": "Kyle Karros",
     "set_name": "2026 Topps Finest",
     "card_number": "87",
-    "parallel": "base",
+    "parallel": "base (COMMON tier)",
     "price": 149,
-    "itemId": "168561674847",
+    "itemId": "168602424592",
     "sku": "BBC-112",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0534.jpg",
@@ -523,7 +523,7 @@
     "card_number": "87",
     "parallel": "Blue Refractor /150 (049/150)",
     "price": 499,
-    "itemId": "168561671926",
+    "itemId": "168602424592",
     "sku": "BBC-19",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0569.jpg",
@@ -536,15 +536,15 @@
    "price": 499
   },
   {
-   "label": "90 - Bubba Chandler - Base RC",
+   "label": "90 - Bubba Chandler - Base COMMON RC",
    "primary": {
     "id": "111",
     "player": "Bubba Chandler",
     "set_name": "2026 Topps Finest",
     "card_number": "90",
-    "parallel": "base",
+    "parallel": "base (COMMON tier)",
     "price": 199,
-    "itemId": "168561673125",
+    "itemId": "168602424592",
     "sku": "BBC-111",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0533.jpg",
@@ -557,15 +557,15 @@
    "price": 199
   },
   {
-   "label": "96 - Trey Yesavage - Base RC",
+   "label": "96 - Trey Yesavage - Base COMMON RC",
    "primary": {
     "id": "113",
     "player": "Trey Yesavage",
     "set_name": "2026 Topps Finest",
     "card_number": "96",
-    "parallel": "base",
+    "parallel": "base (COMMON tier)",
     "price": 199,
-    "itemId": "168561673133",
+    "itemId": "168602424592",
     "sku": "BBC-113",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0535.jpg",
@@ -579,9 +579,9 @@
      "player": "Trey Yesavage",
      "set_name": "2026 Topps Finest",
      "card_number": "96",
-     "parallel": "base",
+     "parallel": "base (COMMON tier)",
      "price": 199,
-     "itemId": "168561673139",
+     "itemId": "168602424592",
      "sku": "BBC-122",
      "photos": [
       "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0555.jpg",
@@ -602,7 +602,7 @@
     "card_number": "98",
     "parallel": "Mini Diamond Refractor (mega box)",
     "price": 399,
-    "itemId": "168561672854",
+    "itemId": "168602424592",
     "sku": "BBC-108",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0527.jpg",
@@ -623,7 +623,7 @@
     "card_number": "112",
     "parallel": "Mini Diamond Refractor",
     "price": 249,
-    "itemId": null,
+    "itemId": "168602424592",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1175.jpg",
@@ -644,7 +644,7 @@
     "card_number": "118",
     "parallel": "Mini Diamond Refractor (mega box)",
     "price": 349,
-    "itemId": "168561672850",
+    "itemId": "168602424592",
     "sku": "BBC-95",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0502.jpg",
@@ -665,7 +665,7 @@
     "card_number": "133",
     "parallel": "Mini Diamond Refractor (mega box)",
     "price": 449,
-    "itemId": "168561673673",
+    "itemId": "168602424592",
     "sku": "BBC-106",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0523.jpg",
@@ -678,15 +678,15 @@
    "price": 449
   },
   {
-   "label": "135 - Deyvison De Los Santos - Base RC",
+   "label": "135 - Deyvison De Los Santos - Base UNC RC",
    "primary": {
     "id": "98",
     "player": "Deyvison De Los Santos",
     "set_name": "2026 Topps Finest",
     "card_number": "135",
-    "parallel": "base",
+    "parallel": "base (UNCOMMON tier)",
     "price": 199,
-    "itemId": "168561673126",
+    "itemId": "168602424592",
     "sku": "BBC-98",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0508.jpg",
@@ -699,7 +699,7 @@
    "price": 199
   },
   {
-   "label": "136 - Trey Yesavage - Base RC",
+   "label": "136 - Trey Yesavage - Base UNC RC",
    "primary": {
     "id": "233",
     "player": "Trey Yesavage",
@@ -707,7 +707,7 @@
     "card_number": "136",
     "parallel": "base (UNCOMMON tier)",
     "price": 199,
-    "itemId": null,
+    "itemId": "168602424592",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1181.jpg",
@@ -720,15 +720,15 @@
    "price": 199
   },
   {
-   "label": "137 - Chris Sale - Base",
+   "label": "137 - Chris Sale - Base UNC",
    "primary": {
     "id": "125",
     "player": "Chris Sale",
     "set_name": "2026 Topps Finest",
     "card_number": "137",
-    "parallel": "base",
+    "parallel": "base (UNCOMMON tier)",
     "price": 249,
-    "itemId": "168561672957",
+    "itemId": "168602424592",
     "sku": "BBC-125",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0561.jpg",
@@ -741,15 +741,15 @@
    "price": 249
   },
   {
-   "label": "139 - Konnor Griffin - Base RC",
+   "label": "139 - Konnor Griffin - Base UNC RC",
    "primary": {
     "id": "17",
     "player": "Konnor Griffin",
     "set_name": "2026 Topps Finest",
     "card_number": "139",
-    "parallel": "base",
+    "parallel": "base (UNCOMMON tier)",
     "price": 599,
-    "itemId": "168561671913",
+    "itemId": "168602424592",
     "sku": "BBC-17",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0573.jpg",
@@ -762,7 +762,7 @@
    "price": 599
   },
   {
-   "label": "149 - Geraldo Perdomo - Base",
+   "label": "149 - Geraldo Perdomo - Base UNC",
    "primary": {
     "id": "231",
     "player": "Geraldo Perdomo",
@@ -770,7 +770,7 @@
     "card_number": "149",
     "parallel": "base (UNCOMMON tier)",
     "price": 149,
-    "itemId": null,
+    "itemId": "168602424592",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1177.jpg",
@@ -791,7 +791,7 @@
     "card_number": "160",
     "parallel": "Mini Diamond Refractor (mega box)",
     "price": 249,
-    "itemId": "168561672961",
+    "itemId": "168602424592",
     "sku": "BBC-101",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0514.jpg",
@@ -804,15 +804,15 @@
    "price": 249
   },
   {
-   "label": "169 - Hunter Greene - Base",
+   "label": "169 - Hunter Greene - Base UNC",
    "primary": {
     "id": "126",
     "player": "Hunter Greene",
     "set_name": "2026 Topps Finest",
     "card_number": "169",
-    "parallel": "base",
+    "parallel": "base (UNCOMMON tier)",
     "price": 199,
-    "itemId": "168561673128",
+    "itemId": "168602424592",
     "sku": "BBC-126",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0563.jpg",
@@ -825,15 +825,15 @@
    "price": 199
   },
   {
-   "label": "171 - CJ Abrams - Base",
+   "label": "171 - CJ Abrams - Base UNC",
    "primary": {
     "id": "104",
     "player": "CJ Abrams",
     "set_name": "2026 Topps Finest",
     "card_number": "171",
-    "parallel": "base",
+    "parallel": "base (UNCOMMON tier)",
     "price": 149,
-    "itemId": "168561674832",
+    "itemId": "168602424592",
     "sku": "BBC-104",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0519.jpg",
@@ -854,7 +854,7 @@
     "card_number": "174",
     "parallel": "Mini Diamond Refractor",
     "price": 349,
-    "itemId": null,
+    "itemId": "168602424592",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1173.jpg",
@@ -867,7 +867,7 @@
    "price": 349
   },
   {
-   "label": "183 - Gunnar Henderson - Base",
+   "label": "183 - Gunnar Henderson - Base UNC",
    "primary": {
     "id": "232",
     "player": "Gunnar Henderson",
@@ -875,7 +875,7 @@
     "card_number": "183",
     "parallel": "base (UNCOMMON tier)",
     "price": 249,
-    "itemId": null,
+    "itemId": "168602424592",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1179.jpg",
@@ -888,7 +888,7 @@
    "price": 249
   },
   {
-   "label": "207 - Bobby Witt Jr. - Base",
+   "label": "207 - Bobby Witt Jr. - Base RARE",
    "primary": {
     "id": "228",
     "player": "Bobby Witt Jr.",
@@ -896,7 +896,7 @@
     "card_number": "207",
     "parallel": "base (RARE tier)",
     "price": 449,
-    "itemId": null,
+    "itemId": "168602424592",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1171.jpg",
@@ -917,7 +917,7 @@
     "card_number": "A-5",
     "parallel": "insert",
     "price": 299,
-    "itemId": "168561672967",
+    "itemId": "168602424592",
     "sku": "BBC-16",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_15_chase-burns_1.jpg",
@@ -938,7 +938,7 @@
     "card_number": "WF-8",
     "parallel": "insert",
     "price": 349,
-    "itemId": "168561673674",
+    "itemId": "168602424592",
     "sku": "BBC-15",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_14_pete-crow-armstrong_1.jpg",
@@ -959,7 +959,7 @@
     "card_number": "TF-9",
     "parallel": "insert",
     "price": 249,
-    "itemId": "168561672958",
+    "itemId": "168602424592",
     "sku": "BBC-110",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0531.jpg",
@@ -980,7 +980,7 @@
     "card_number": "WF-9",
     "parallel": "insert",
     "price": 399,
-    "itemId": null,
+    "itemId": "168602424592",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1183.jpg",
@@ -1001,7 +1001,7 @@
     "card_number": "TF-10",
     "parallel": "Refractor",
     "price": 349,
-    "itemId": "168561672851",
+    "itemId": "168602424592",
     "sku": "BBC-127",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0565.jpg",
@@ -1022,7 +1022,7 @@
     "card_number": "A-11",
     "parallel": "insert",
     "price": 199,
-    "itemId": null,
+    "itemId": "168602424592",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1191.jpg",
@@ -1043,7 +1043,7 @@
     "card_number": "WF-11",
     "parallel": "insert",
     "price": 399,
-    "itemId": "168561672853",
+    "itemId": "168602424592",
     "sku": "BBC-11",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_10_bobby-witt-jr_1.jpg",
@@ -1064,7 +1064,7 @@
     "card_number": "TF-12",
     "parallel": "insert",
     "price": 349,
-    "itemId": null,
+    "itemId": "168602424592",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1185.jpg",
@@ -1085,7 +1085,7 @@
     "card_number": "A-14",
     "parallel": "Refractor",
     "price": 199,
-    "itemId": null,
+    "itemId": "168602424592",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1187.jpg",
@@ -1106,7 +1106,7 @@
     "card_number": "A-17",
     "parallel": "insert",
     "price": 349,
-    "itemId": null,
+    "itemId": "168602424592",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1189.jpg",
@@ -1127,7 +1127,7 @@
     "card_number": "FT-24",
     "parallel": "insert",
     "price": 299,
-    "itemId": "168561672845",
+    "itemId": "168602424592",
     "sku": "BBC-124",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0559.jpg",
@@ -1148,7 +1148,7 @@
     "card_number": "A-26",
     "parallel": "insert",
     "price": 749,
-    "itemId": "168561671907",
+    "itemId": "168602424592",
     "sku": "BBC-7",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_06_munetaka-murakami_1.jpg",
@@ -1169,7 +1169,7 @@
     "card_number": "FT-27",
     "parallel": "insert",
     "price": 199,
-    "itemId": "168561673124",
+    "itemId": "168602424592",
     "sku": "BBC-97",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0506.jpg",
@@ -1190,7 +1190,7 @@
     "card_number": "WF-28",
     "parallel": "Refractor",
     "price": 349,
-    "itemId": "168561673672",
+    "itemId": "168602424592",
     "sku": "BBC-123",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0557.jpg",
