@@ -108,7 +108,10 @@ async function main() {
       locale: 'en_US',
       condition: 'USED_VERY_GOOD',
       conditionDescriptors: [{ name: '40001', values: ['400010'] }],
-      packageWeightAndSize: { dimensions: { width: 4, length: 6, height: 1, unit: 'INCH' }, weight: { value: 2, unit: 'OUNCE' }, shippingIrregular: false },
+      // Calculated shipping is rejected without a packageType.
+      packageWeightAndSize: c.ask > 2000
+        ? { packageType: 'PACKAGE_THICK_ENVELOPE', dimensions: { length: 9, width: 6, height: 1, unit: 'INCH' }, weight: { value: 3, unit: 'OUNCE' }, shippingIrregular: false }
+        : { dimensions: { width: 4, length: 6, height: 1, unit: 'INCH' }, weight: { value: 2, unit: 'OUNCE' }, shippingIrregular: false },
       availability: { shipToLocationAvailability: { quantity: 1 } },
       product: {
         title, description: desc, brand: 'Topps', mpn: 'Does Not Apply',
@@ -129,7 +132,11 @@ async function main() {
       sku, marketplaceId: 'EBAY_US', format: 'FIXED_PRICE', availableQuantity: 1,
       categoryId: '261328', merchantLocationKey: 'edmonds-wa',
       listingDescription: desc, listingDuration: 'GTC',
-      listingPolicies: { paymentPolicyId: '269110704012', returnPolicyId: '269110705012', fulfillmentPolicyId: '272052757012', eBayPlusIfEligible: false },
+      // eBay Standard Envelope caps DECLARED VALUE at $20, so anything above
+      // that ships uncovered. Over $20 goes Ground Advantage. Michael caught a
+      // $42.99 Ohtani and a $59.99 Tucker both sitting on $1 envelope shipping.
+      listingPolicies: { paymentPolicyId: '269110704012', returnPolicyId: '269110705012',
+        fulfillmentPolicyId: c.ask > 2000 ? '269110723012' : '272052757012', eBayPlusIfEligible: false },
       pricingSummary: { price: { value: (c.ask / 100).toFixed(2), currency: 'USD' } }, tax: { applyTax: false },
     };
     let offerId: string;
