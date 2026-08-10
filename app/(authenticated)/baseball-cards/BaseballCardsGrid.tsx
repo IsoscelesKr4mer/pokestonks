@@ -23,7 +23,10 @@ export function BaseballCardsGrid({ initialCards, shareToken }: { initialCards: 
   const [q, setQ] = useState('');
 
   const sellable = useMemo(() => cards.filter((c) => c.for_sale), [cards]);
-  const pcCards = useMemo(() => cards.filter((c) => !c.for_sale), [cards]);
+  // PC means "kept, never offered". A sold card also carries for_sale = false,
+  // because it is no longer for sale, so filtering on that alone dragged every
+  // sale into the PC tab. Exclude sold explicitly.
+  const pcCards = useMemo(() => cards.filter((c) => !c.for_sale && c.status !== 'sold'), [cards]);
 
   // Sell-flow counts are over sellable cards only (PC lives in its own tab).
   const counts = useMemo(() => {

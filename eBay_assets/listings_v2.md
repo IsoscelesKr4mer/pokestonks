@@ -1,0 +1,822 @@
+# eBay Listings V2 — Store Model (Singles + Quantity)
+
+New approach as of 2026-06-04: list each SKU as its own multi-quantity listing (like a real store), priced to sell. Perfect Order and Chaos Rising stay bundled (slower movers). All old V1 listings on eBay were ended; this file is the clean canonical source going forward.
+
+Photos: `eBay_assets/v2_photos/` (new individual shots). Loose booster packs reuse existing spread photos in `eBay_assets/iCloud Photos/`.
+
+**Pricing rules:**
+- eBay fee 13.6% FVF + $0.30 flat per order. Net = ask × 0.864 − $0.30.
+- Priced at or just under current market to move, with a hard floor: never below cost after fees. Every listing here nets positive.
+- Money in cents discipline; prices shown to 2 decimals. No em-dashes in buyer-facing copy.
+
+**Reconciled 2026-06-05:**
+- Sheryl in-person deal **closed** (sold 1 PO Box, 1 ME Gardevoir ETB, 1 ME Lucario ETB, 1 AH Bundle). Quantities below reflect remaining stock.
+- Prices repriced against **realized eBay sales** + current TCGplayer market (see per-line notes).
+- **AH ETB** qty 1 (last one) — pull if still saving it; you've cleared two recently at $165.
+
+---
+
+## 🟢 LIVE on eBay (published 2026-06-04)
+
+All listings below are published. `https://www.ebay.com/itm/<id>`.
+
+| SKU | Item | Ask | Qty | eBay # | Offer ID |
+|---|---|---|---|---|---|
+| WF-ETB | White Flare ETB | $128.99 | 2 | 168431993935 | 181255849011 |
+| SS-36LOT | Surging Sparks 36-pack lot (box equiv) | $249.99 | 1 | 168494447539 | 194942173011 |
+| FP-ILLUS-S1 | First Partner Illust. Collection | $64.99 | 3 | 168431993996 | 181255855011 |
+| HOPS-ZACIAN-EX | Hop's Zacian ex Box | $34.99 | 2 | 168431994012 | 181255860011 |
+| AH-MEGANIUM-2BUNDLE-LOT | Custom: Meganium ex Box + 2 AH Bundles (buyer DM) | $205.00 | 1 | 168446167785 | 184428939011 |
+| AH-EMBOAR-EX | AH Emboar ex Box | $52.99 | 1 | 168431994047 | 181255867011 |
+| AH-FERALIGATR-EX | AH Feraligatr ex Box | $52.99 | 1 | 168431994069 | 181255870011 |
+| JT-18PACK | Journey Together 18-pack | $109.99 | 1 | 168431994096 | 181255883011 |
+| DR-36LOT | Destined Rivals 36-pack lot | $396.00 | 1 | 168446042994 | 184405646011 |
+| DR-36LOT-R | Destined Rivals 36-pack lot (box equiv) | $396.00 | 1 | 168483384016 | (relist, no REST offer) |
+| PB-PC-ETB-R | Pitch Black PC ETB (PRESALE, 11 packs + Zarude promo) | $199.99 | 2 | 168450876706 | 185588428011 |
+| PB-BBOX-R | Pitch Black Booster Box 36pk (PRESALE) | $239.99 | 1 | 168450876731 | 185588440011 |
+| PB-BUNDLE-R | Pitch Black Booster Bundle 6pk (PRESALE) | $54.99 | 2 | 168450876757 | 185588465011 |
+| AH-EX-LOT3 | AH ex 3-Pack (Meganium/Emboar/Feraligatr) | $144.99 | 1 | 168446043406 | 184405727011 |
+
+**Relisted via API 2026-06-10:** DR 36-pack lot and the AH ex 3-Pack were originally created in the eBay UI (flat shipping / not in the system); ended and rebuilt as proper API offers (calculated Ground Advantage, mappings added). AH Emboar/Feraligatr single ex-box listings ended (folded into the 3-pack).
+**Custom buyer lot 2026-06-09:** A returning buyer DM'd; settled $205 on eBay for 1 Meganium ex Box + 2 AH Booster Bundles. Ended the AH Meganium single listing, dropped AH-BUNDLE qty 3 to 1, and published the custom lot (AH-MEGANIUM-2BUNDLE-LOT, listing 168446167785, $205, mapped to 1x Meganium box + 2x AH bundle).
+**WF/BB bundle re-pair 2026-06-09:** Added 1 Black Bolt bundle. Ended the White Flare single listing (WF-BUNDLE) and the Black Bolt single (already sold out). The old WFBB-BUNDLE-2PACK offer (181248460011 / item 168431973454) was a zombie: its REST offer reported PUBLISHED/ACTIVE but the Trading-API listing was Completed + HideFromSearch (sold out 6/9), and republishing it did nothing ("already published"; delete wouldn't take). Created a FRESH SKU instead: WFBB-2PACK-R, item 168448266316, offer 184965375011, $134.99, qty 1, mapped to 1 WF + 1 BB. Held now: WF bundle 2 (1 in the pair, 1 saved for the next Black Bolt bundle), BB bundle 1 (in the pair).
+**Pitch Black presale 2026-06-11:** Mega Evolution: Pitch Black releases July 17, 2026. Listed Michael's preorder haul as 3 single-SKU BIN listings (no offers): PC ETB x2 @ $209.99 (11 packs + PC stamped Zarude promo), Booster Box x1 @ $239.99 (36 packs), Booster Bundle x2 @ $54.99 (6 packs). Strong presale disclaimers (ships on/after release, all sales final). Mapped to catalog #53866/#53858/#53860. First attempt (crop SKUs PB-PC-ETB/PB-BOOSTER-BOX/PB-BUNDLE) ended same day — bad composite crops. **Relisted 2026-06-11 with real photos** on fresh SKUs PB-PC-ETB-R / PB-BBOX-R / PB-BUNDLE-R (listings 168450876706 / 168450876731 / 168450876757). Set headliners are **Mega Darkrai ex + Mega Zeraora ex** (also Mega Chandelure/Excadrill); ETB promo = Zarude IR — Character aspects set accordingly (NOT Mewtwo). BIN only no offers. Preorder cost basis to log if/when sold: ETB $59.99, box ~$178, bundle ~$30.
+**DR 36-pack relist 2026-06-22:** Item 168462181168 (DR-36LOT-R) sold 6/15 at $396. Inventory rebuilt to 36 DR packs, so relisted via Trading API (RelistFixedPriceItem) as new item 168483384016, $396, 30-day GTC. Carries over photos, calculated Ground Advantage, SKU DR-36LOT-R. No REST offer (Trading relist); sync mapping set to 36x catalog #17236 (scripts/map-dr36-relist2.ts).
+**Card show cash sale 2026-06-14:** Sold 6 Prismatic Evolutions bundles + 1 White Flare bundle for $550 cash (logged in pokestonks as a "Card show (cash)" group, $340 profit / 162% ROI). Netted ~$24 over the eBay lot price after fees, plus no shipping/wait. Ended the PE-BUNDLE-LOT6 listing. Post-sale held: 1 PE bundle (unlisted). WF and BB bundles are fully sold out (the WFBB-2PACK-R pair sold on eBay 6/12; the last WF went at the show), so no WF/BB listings remain live.
+**SS + ME pack lots listed 2026-06-16:** Surging Sparks reached 18 packs → listed as SS-18LOT $139.99 (mkt $8.04/pack). Replaced the standalone ME Gardevoir ETB listing with a bundle: ETB + 18 ME packs = ME-ETB-18PACK-PAIR $219.99 (27 packs total; ETB mkt $108, ME pack mkt $7.50). 1 spare ME pack held (19 − 18).
+**Held / not listed:** Ascended Heroes ETB (qty 1, saving it); 1 spare Mega Evolution pack.
+
+---
+
+## Sealed Booster Bundles (singles, multi-qty)
+
+### Prismatic Evolutions Booster Bundle — Lot of 6
+- **Ask:** $539.99 (one lot of all 6 bundles; changed in eBay UI) · **Qty:** 1 · **Cost:** $180.00 · **Market sum-of-parts:** $558.06 · policies re-attached 2026-06-09
+- **Photos:** `v2_photos/PrismaticEvolutions_Bundle_avail6_01_front.JPEG`, `v2_photos/PrismaticEvolutions_Bundle_avail6_02_back.JPEG` (all 6 shown)
+
+**Title:** Pokemon TCG Scarlet Violet Prismatic Evolutions Booster Bundle Lot of 6 Sealed
+
+**Body:**
+```
+Sealed Pokemon TCG Scarlet & Violet: Prismatic Evolutions Booster Bundle — lot of 6.
+
+You receive 6 sealed Prismatic Evolutions Booster Bundles (6 booster packs each, 36 booster packs total).
+
+All bundles new and factory sealed, smoke-free home. Ships within 1 business day.
+
+Buy with confidence, check my feedback. Thanks for looking.
+```
+**Net:** $466.26 → **+$286.26 margin.** ONE lot of 6 at $540 (~3% under the $558 sum-of-parts). Replaced the mistaken $90 multi-qty listing, which was ended.
+
+---
+
+### White Flare + Black Bolt Booster Bundle 2-Pack  🆕 thematic pair
+- **Ask:** $134.99/each · **Qty:** 4 (4 WF + 4 BB) · **Cost:** $60.00/pair · **Market sum-of-parts:** $145.41
+- **🟢 LIVE 2026-06-04:** eBay #168431973454 · offer 181248460011 · SKU WFBB-BUNDLE-2PACK
+- **Photos:** `v2_photos/BlackBolt_WhiteFlare_BoosterBundle_pair_01_front.JPEG`, `v2_photos/BlackBolt_WhiteFlare_BoosterBundle_pair_02_back.JPEG`
+
+**Title:** Pokemon TCG Scarlet Violet White Flare + Black Bolt Booster Bundle 2-Pack
+
+**Body:**
+```
+Sealed Pokemon TCG Scarlet & Violet twin-set booster bundle pair:
+
+• 1x White Flare Booster Bundle (6 booster packs)
+• 1x Black Bolt Booster Bundle (6 booster packs)
+
+12 booster packs total. Both bundles new and factory sealed, smoke-free home.
+Ships within 1 business day.
+
+Buy with confidence, check my feedback. Thanks for looking.
+```
+**Net/each:** $116.33 → **+$56.33/pair margin.** Priced ~$10 under sum-of-parts ($145.41) and your last pair's $144.68 clear, to move faster. The White Flare/Black Bolt twin set is a desirable theme that moves better paired than split.
+
+---
+
+### Black Bolt Booster Bundle (singles)
+- **Ask:** $74.99/each · **Qty:** 2 (extras beyond the 4 paired with White Flare) · **Cost:** $30.00 · **Market:** $75.52
+- **Photos:** `v2_photos/BlackBolt_BoosterBundle_01_front.JPEG`, `v2_photos/BlackBolt_BoosterBundle_02_back.JPEG`
+
+**Title:** Pokemon TCG Scarlet Violet Black Bolt Booster Bundle 6 Packs Sealed New
+
+**Body:**
+```
+New, factory-sealed Pokemon TCG Scarlet & Violet: Black Bolt Booster Bundle.
+
+Each bundle contains 6 Black Bolt booster packs.
+
+Smoke-free home. Ships within 1 business day.
+
+Buy with confidence, check my feedback. Thanks for looking.
+```
+**Net/each:** $64.49 → **+$34.49 margin.** You hold 6 BB vs 4 WF; 4 go into the twin-set pair, these 2 list solo at market until more White Flares arrive to pair them.
+
+---
+
+### Ascended Heroes Booster Bundle
+- **Ask:** $84.99/each · **Qty:** 3 · **Cost:** $30.00 · **Market:** $92.04
+- **Photos:** `v2_photos/AscendedHeroes_BoosterBundle_01_front.JPEG`, `v2_photos/AscendedHeroes_BoosterBundle_02_back.JPEG`
+
+**Title:** Pokemon TCG Mega Evolution Ascended Heroes Booster Bundle 6 Packs Sealed New
+
+**Body:**
+```
+New, factory-sealed Pokemon TCG Mega Evolution: Ascended Heroes Booster Bundle.
+
+Each bundle contains 6 Mega Evolution: Ascended Heroes booster packs.
+
+Smoke-free home. Ships within 1 business day.
+
+Buy with confidence, check my feedback. Thanks for looking.
+```
+**Net/each:** $73.13 → **+$43.13 margin** ($84.99, qty 3; ~8% under market $92.04)
+
+---
+
+## Elite Trainer Boxes (singles, multi-qty)
+
+### White Flare Elite Trainer Box
+- **Ask:** $128.99/each · **Qty:** 2 · **Cost:** $55.00 · **Market:** $129.91
+- **Photos:** `v2_photos/WhiteFlare_ETB_01_front.JPEG`, `v2_photos/WhiteFlare_ETB_02_back.JPEG`
+
+**Title:** Pokemon TCG Scarlet Violet White Flare Elite Trainer Box ETB Sealed New
+
+**Body:**
+```
+New, factory-sealed Pokemon TCG Scarlet & Violet: White Flare Elite Trainer Box.
+
+Contains 9 White Flare booster packs, a full-art foil promo card featuring Tornadus, 65 card sleeves, 45 energy cards, a player's guide, 6 damage-counter dice, a coin-flip die, 2 condition markers, a collector's box with 4 dividers, and a code card for Pokemon TCG Live.
+
+Smoke-free home. Ships within 1 business day.
+
+Buy with confidence, check my feedback. Thanks for looking.
+```
+**Net/each:** $111.15 → **+$56.15 margin.** Repriced up from $124.99: your BB/WF ETB pairs have been climbing ($120 → $122.50 → $128.60/ea), so $128.99 tracks realized just under market.
+
+---
+
+### Ascended Heroes Elite Trainer Box  🔒 HOLD — do not list
+- Qty 1 · Cost $55.00 · Market $179.69 · Photos: `v2_photos/AscendedHeroes_ETB_01_front.JPEG`, `..._02_back.JPEG`
+- **Holding per Michael — keeping the last one for a while, not listing.** Realized comps $165 (×2 on 5/31) whenever you decide to sell.
+
+---
+
+### Mega Evolution Elite Trainer Box [Mega Gardevoir]
+- **Ask:** $99.99/each · **Qty:** 1 · **Cost:** $55.00 · **Market:** $102.84
+- **Photos:** `v2_photos/MegaEvolution_ETB_Gardevoir_01_front.JPEG`, `v2_photos/MegaEvolution_ETB_Gardevoir_02_back.JPEG`
+
+**Title:** Pokemon TCG Mega Evolution Elite Trainer Box ETB Mega Gardevoir Sealed New
+
+**Body:**
+```
+New, factory-sealed Pokemon TCG Mega Evolution Elite Trainer Box (Mega Gardevoir).
+
+Contains 9 Mega Evolution booster packs, a full-art foil promo card featuring Alakazam, 65 card sleeves, 40 energy cards, a player's guide, 6 damage-counter dice, a coin-flip die, a plastic coin, a collector's box with 6 dividers, and a code card for Pokemon TCG Live.
+
+Smoke-free home. Ships within 1 business day.
+
+Buy with confidence, check my feedback. Thanks for looking.
+```
+**Net/each:** $86.09 → **+$31.09 margin**
+
+---
+
+## Collections, ex Boxes, Tins (singles, multi-qty)
+
+### First Partner Illustration Collection (Series 1)
+- **Ask:** $65.00/each · **Qty:** 3 · **Cost:** $18.28 · **Market:** $53.26
+- **Photos:** `v2_photos/FirstPartner_IllustrationCollection_S1_01_front.JPEG`, `v2_photos/FirstPartner_IllustrationCollection_S1_02_back.JPEG`
+
+**Title:** Pokemon TCG First Partner Illustration Collection Series 1 Sealed New 3 Promos
+
+**Body:**
+```
+New, factory-sealed Pokemon TCG First Partner Illustration Collection (Series 1).
+
+Includes 3 illustration rare-style promo cards, 2 booster packs, and a sticker sheet.
+
+Smoke-free home. Ships within 1 business day.
+
+Buy with confidence, check my feedback. Thanks for looking.
+```
+**Net/each:** $55.86 → **+$37.58 margin.** $65 per your read: Series 1 print winds down as Series 2 approaches, so supply tightens and price should climb. Sits above current market ($53.26) and your last clear ($54.99), but the print-out thesis supports holding firm.
+
+---
+
+### Ascended Heroes Mega Meganium ex Box
+- **Ask:** $52.99/each · **Qty:** 2 · **Cost:** $24.75 · **Market:** $53.19
+- **Photos:** `v2_photos/AscendedHeroes_MegaMeganium_exBox_01_front.JPEG`, `v2_photos/AscendedHeroes_MegaMeganium_exBox_02_back.JPEG` (single box only — never the trio shot)
+
+**Title:** Pokemon TCG Mega Evolution Ascended Heroes Mega Meganium ex Box Sealed New
+
+**Body:**
+```
+New, factory-sealed Pokemon TCG Mega Evolution: Ascended Heroes Mega Meganium ex Box.
+
+Includes a foil Mega Meganium ex promo card, an oversize foil card, 4 Ascended Heroes booster packs, and a code card for Pokemon TCG Live.
+
+Smoke-free home. Ships within 1 business day.
+
+Buy with confidence, check my feedback. Thanks for looking.
+```
+**Net/each:** $45.48 → **+$20.73 margin**
+
+---
+
+### Ascended Heroes Mega Emboar ex Box
+- **Ask:** $52.99/each · **Qty:** 1 · **Cost:** $22.00 · **Market:** $53.34
+- **Photos:** `v2_photos/AscendedHeroes_MegaEmboar_exBox_01_front.JPEG`, `v2_photos/AscendedHeroes_MegaEmboar_exBox_02_back.JPEG` (single box only)
+
+**Title:** Pokemon TCG Mega Evolution Ascended Heroes Mega Emboar ex Box Sealed New
+
+**Body:**
+```
+New, factory-sealed Pokemon TCG Mega Evolution: Ascended Heroes Mega Emboar ex Box.
+
+Includes a foil Mega Emboar ex promo card, an oversize foil card, 4 Ascended Heroes booster packs, and a code card for Pokemon TCG Live.
+
+Smoke-free home. Ships within 1 business day.
+
+Buy with confidence, check my feedback. Thanks for looking.
+```
+**Net/each:** $45.48 → **+$23.48 margin**
+
+---
+
+### Ascended Heroes Mega Feraligatr ex Box
+- **Ask:** $52.99/each · **Qty:** 1 · **Cost:** $22.00 · **Market:** $52.89
+- **Photos:** `v2_photos/AscendedHeroes_MegaFeraligatr_exBox_01_front.JPEG`, `v2_photos/AscendedHeroes_MegaFeraligatr_exBox_02_back.JPEG` (single box only)
+
+**Title:** Pokemon TCG Mega Evolution Ascended Heroes Mega Feraligatr ex Box Sealed New
+
+**Body:**
+```
+New, factory-sealed Pokemon TCG Mega Evolution: Ascended Heroes Mega Feraligatr ex Box.
+
+Includes a foil Mega Feraligatr ex promo card, an oversize foil card, 4 Ascended Heroes booster packs, and a code card for Pokemon TCG Live.
+
+Smoke-free home. Ships within 1 business day.
+
+Buy with confidence, check my feedback. Thanks for looking.
+```
+**Net/each:** $45.48 → **+$23.48 margin**
+
+---
+
+### Hop's Zacian ex Box
+- **🔴 SOLD/ENDED 2026-07-12** (both boxes sold at card show for $55 cash, $27.50 ea at cost floor; eBay listing #168431994012 ended).
+- **Ask:** $34.99/each · **Qty:** 2 · **Cost:** $27.50 · **Market:** $34.64
+- **Photos:** `v2_photos/HopsZacian_exBox_01_front.JPEG`, `v2_photos/HopsZacian_exBox_02_back.JPEG`
+
+**Title:** Pokemon TCG Hop's Zacian ex Box Sealed New 4 Booster Packs Promo
+
+**Body:**
+```
+New, factory-sealed Pokemon TCG Hop's Zacian ex Box.
+
+Includes a foil Hop's Zacian ex promo, 2 foil cards (Hop's Wooloo and Hop's Dubwool), an oversize foil card, a photo sticker, 4 booster packs, and a code card for Pokemon TCG Live.
+
+Smoke-free home. Ships within 1 business day.
+
+Buy with confidence, check my feedback. Thanks for looking.
+```
+**Net/each:** $29.93 → **+$2.43 margin** (thin; at market)
+
+---
+
+## Blister Lot (kept as one bundle)
+
+### Sealed Blister Lot of 5 + Ascended Heroes Pikachu Mini Tin
+- **Ask:** $114.99 · **Qty:** 1 (all 5 blisters + the AH mini tin) · **Cost:** $68.50 · **Market sum-of-parts:** $113.48
+- **Photos:** `v2_photos/BlisterLot5_plus_AHMiniTin_01.JPEG`
+
+**Title:** Pokemon TCG Blister Lot 5 + Ascended Heroes Pikachu Mini Tin Sealed Promo
+
+**Body:**
+```
+Sealed Pokemon TCG lot: 5 blister packs plus an Ascended Heroes mini tin. The 5 blisters hold 10 booster packs and 9 foil promo cards (6 unique promos).
+
+Blister contents:
+• 2x 2-Pack Blister [Oddish, Gloom, Vileplume]: 3 foil promos (Oddish, Gloom, Vileplume) plus 1 Phantasmal Flames pack and 1 Mega Evolution pack each
+• 1x Mega Evolution Perfect Order Chikorita 3-Pack Blister: foil Chikorita promo plus 3 Perfect Order packs
+• 1x Mega Evolution Phantasmal Flames Raikou 2-Pack Blister: foil Raikou promo plus 1 Phantasmal Flames pack and 1 Mega Evolution pack
+• 1x Mega Evolution Phantasmal Flames Whimsicott Single-Pack Blister: foil Whimsicott promo plus 1 Phantasmal Flames pack
+
+Plus: 1x Mega Evolution: Ascended Heroes Mini Tin (Pikachu & Tepig art) containing 2 Ascended Heroes booster packs, a metallic coin, and an art card. (12 booster packs total across the lot.)
+
+Blister pack breakdown: 4 Phantasmal Flames, 3 Mega Evolution (base set), 3 Perfect Order.
+Promo breakdown: 9 foil promos across 6 unique Pokemon (2x Oddish, 2x Gloom, 2x Vileplume, 1x Chikorita, 1x Raikou, 1x Whimsicott).
+
+All items new and factory sealed, smoke-free home.
+Ships within 1 business day.
+
+Buy with confidence, check my feedback. Thanks for looking.
+```
+**Net:** $99.05 → **+$30.55 margin.** Priced AT sum-of-parts ($113.48, rounded up) per your bundle rule. Now the blisters carry real margin (~$16) instead of riding on the tin (~$14) — vs the old $99.99 where they netted almost nothing. If it sits, split rather than discount.
+
+---
+
+## Loose Booster Packs (sold ONLY as 18- or 36-pack lots, never singly)
+Packs are never listed individually. Lot sizes: 18 (half booster box) or 36 (full booster box equivalent). A set with fewer than 18 loose packs holds until it reaches a lot. Photos reuse existing spread shots in `iCloud Photos/`.
+
+### Destined Rivals 36 Sealed Booster Packs Lot — Full Booster Box Equivalent
+- **🟢 LIVE:** eBay #168519091676 · offer 201311692011 · SKU DR-36LOT-R2 (current live listing; supersedes the older DR-36LOT / DR-36LOT-R rows in the table above)
+- **Ask:** $389.99 (repriced from $396 per Michael 2026-07-24) · **Qty:** 2 · **Cost:** $190.80 (36 × $5.30) · **Market:** $312.84 sum-of-parts
+- **Photos:** `iCloud Photos/DestinedRivals_BoosterPack_36pack_01_spread.JPEG`, `iCloud Photos/DestinedRivals_BoosterPack_36pack_02_stack.JPEG`
+
+**Title:** Pokemon TCG Destined Rivals 36 Sealed Booster Packs Lot Booster Box Equivalent
+
+**Body:**
+```
+36x sealed Pokemon TCG Scarlet & Violet Destined Rivals booster packs. That's a full Booster Box (36 packs) or 4 ETBs worth of packs (9 packs each).
+
+All packs new and factory sealed, smoke-free home.
+Ships within 1 business day.
+
+Buy with confidence, check my feedback. Thanks for looking.
+```
+**Net:** $344.44 → **+$153.64 margin (80.5% ROI).** $11.08/pack — above per-pack market, but justified: a sealed DR booster box runs $500+, so a loose 36-pack at $399 still undercuts the box meaningfully while capturing DR's hot demand. Already live on eBay at this price.
+
+---
+
+### Journey Together 18 Sealed Booster Packs Lot — Half a Booster Box
+- **Ask:** $109.99 · **Qty:** 1 (18 of 21 held; 3 spare hold) · **Cost:** $90.00 (18 × $5.00) · **Market:** $115.38 sum-of-parts
+- **Photos:** `v2_photos/JourneyTogether_18pack_v2_01_spread.JPEG` (all 18 visible), `v2_photos/JourneyTogether_18pack_v2_02_stack.JPEG`
+
+**Title:** Pokemon TCG Journey Together 18 Sealed Booster Packs Lot Half Booster Box
+
+**Body:**
+```
+18x sealed Pokemon TCG Scarlet & Violet Journey Together booster packs. That's half a Booster Box (36 packs) or 2 ETBs worth of packs (9 packs each).
+
+All packs new and factory sealed, smoke-free home.
+Ships within 1 business day.
+
+Buy with confidence, check my feedback. Thanks for looking.
+```
+**Net:** $94.73 → **+$4.73 margin (5.3% ROI).** Thin (JT cost basis is high vs its soft market), but positive and undercuts market $6.41/pack at $6.11/pack to move.
+
+---
+
+### Holding (not enough for a lot yet)
+- **Mega Evolution Booster Pack** — 9 held (need 18). Realized rate ~$7.00/pack. List a 9+ lot only once it reaches 18, or fold into a cross-set combined lot.
+- **Surging Sparks Booster Pack** — 7 held (need 18). Hold.
+
+---
+
+## Perfect Order (one mega lot)
+
+### Perfect Order Mega Lot — Booster Box + 3 Booster Bundles
+- **Ask:** $339.99 · **Qty:** 1 · **Cost:** $268.94 · **Market sum-of-parts:** $339.15
+- **Photos:** `v2_photos/PerfectOrder_MegaLot_01.JPEG` (combined lead), `v2_photos/PerfectOrder_MegaLot_02.JPEG`, `v2_photos/PerfectOrder_BoosterBox_03_back.JPEG`, `v2_photos/PerfectOrder_BoosterBundle_01_front.JPEG`
+
+**Title:** Pokemon TCG Mega Evolution Perfect Order Mega Lot Booster Box + 3 Bundles
+
+**Body:**
+```
+Sealed Pokemon TCG Mega Evolution: Perfect Order mega lot:
+
+• 1x Perfect Order Booster Box (36 sealed booster packs)
+• 3x Perfect Order Booster Bundle (6 booster packs each, 18 packs total)
+
+54 booster packs total. All items new and factory sealed, smoke-free home.
+Ships within 1 business day.
+
+Buy with confidence, check my feedback. Thanks for looking.
+```
+**Net:** $293.45 → **+$24.51 margin.** All Perfect Order consolidated into one mega lot, priced at sum-of-parts ($339.15). Margin is thin only because the PO box carries a high cost basis ($178.94); bundling the slow PO bundles onto the box moves the whole set in one shot. (Chikorita blister stays in the 5-blister lot, not pulled in — say so if you'd rather it ride here.)
+
+---
+
+## Chaos Rising (kept as bundles)
+
+### Chaos Rising ETB + Booster Bundle Pair (multi-qty)
+- **Ask:** $149.99/each · **Qty:** 3 · **Cost:** $88.67/pair · **Market sum-of-parts:** $129.43/pair
+- **Photos:** `v2_photos/ChaosRising_Pair_01_front.JPEG` (combined lead — ETB + bundle), `v2_photos/ChaosRising_Pair_02_back.JPEG`, `v2_photos/ChaosRising_ETB_01_front.JPEG`, `v2_photos/ChaosRising_BoosterBundle_01_front.JPEG`
+
+**Title:** Pokemon TCG Mega Evolution Chaos Rising Elite Trainer Box ETB + Booster Bundle
+
+**Body:**
+```
+Sealed Pokemon TCG Mega Evolution: Chaos Rising pair:
+
+• 1x Mega Evolution: Chaos Rising Elite Trainer Box
+• 1x Mega Evolution: Chaos Rising Booster Bundle (6 booster packs)
+
+The Elite Trainer Box contains 9 Mega Evolution: Chaos Rising booster packs, a full-art foil promo card featuring Fennekin, 65 card sleeves, 45 energy cards, a player's guide, 6 damage-counter dice, a coin-flip die, a plastic coin, a collector's box with 6 dividers, and a code card for Pokemon TCG Live.
+
+All items new and factory sealed, smoke-free home.
+Ships within 1 business day.
+
+Buy with confidence, check my feedback. Thanks for looking.
+```
+**Net/each:** $129.29 → **+$40.62 margin/pair.** Priced to comps (exact pairs cleared $150-161 all-in over the prior 48h), not sum-of-parts. Clears all 3 CR ETBs + 3 CR bundles. Floor $129.99.
+
+---
+
+### White Flare + Black Bolt Booster Bundle 2-Pack (restock 2026-07-01)  🆕 thematic pair
+- **🔴 SOLD 2026-07-02** at $149.99 (eBay order #03-14860-14483, synced: WF $72.50 + BB $77.49). Consumed the last Black Bolt bundle (BB now 0). eBay #168509490914 · offer 198681012011 · SKU WFBB-2PACK-R2
+- **Ask:** $149.99 · **Qty:** 1 (1 WF + 1 BB) · **Cost:** $58.00/pair (WF $28 + BB $30) · **Market sum-of-parts:** $156.20 (WF $76.30 + BB $79.90)
+- **Photos:** `v2_photos/BlackBolt_WhiteFlare_BoosterBundle_pair_01_front.JPEG`, `v2_photos/BlackBolt_WhiteFlare_BoosterBundle_pair_02_back.JPEG`
+
+**Title:** Pokemon TCG Scarlet Violet White Flare + Black Bolt Booster Bundle 2-Pack
+
+**Body:**
+```
+Sealed Pokemon TCG Scarlet & Violet twin-set booster bundle pair:
+
+• 1x White Flare Booster Bundle (6 booster packs)
+• 1x Black Bolt Booster Bundle (6 booster packs)
+
+12 booster packs total. Both bundles new and factory sealed, smoke-free home.
+Ships within 1 business day.
+
+Buy with confidence, check my feedback. Thanks for looking.
+```
+**Net:** $129.29 → **+$71.29 margin/pair.** Priced $6 under sum-of-parts ($156.20) per Michael, well above the prior $134.99 clears. The White Flare/Black Bolt twin set moves better paired than split. Uses the 1 Black Bolt bundle on hand; 1 White Flare bundle remains after the pair (list solo at market ~$76.99 or hold for the next BB restock to re-pair).
+
+---
+
+### White Flare Booster Bundle (singles, multi-qty) (listed 2026-07-03)
+- **⚫ ENDED 2026-07-08** (withdrawn per Michael; the WF single was a slow mover, redirected inventory into a new WFBB combo R5). eBay #168512046531 · offer 199369008011 · SKU WF-BUNDLE-R
+- **Ask:** $74.99/each · **Qty:** 2 (dropped to 2 on 2026-07-05; 1 WF moved into the new WFBB pair R4) · **Cost:** $28.24/each (weighted avg) · **Market:** $78.35
+- **Photos:** `v2_photos/WhiteFlare_Bundle_single_01_front.JPG`, `v2_photos/WhiteFlare_Bundle_single_02_back.JPG`
+
+**Title:** Pokemon TCG Scarlet Violet White Flare Booster Bundle 6 Packs Sealed New
+
+**Body:**
+```
+New, factory-sealed Pokemon TCG Scarlet & Violet: White Flare Booster Bundle.
+
+Each bundle contains 6 White Flare booster packs.
+
+Smoke-free home. Ships within 1 business day.
+```
+**Net/each:** $64.49 → **+$36.36 margin/each.** $74.99 sits just under market ($75.83). With Black Bolt sold out there's no pair to run, so the 3 White Flares list solo at market. Re-pair with Black Bolt if/when more BB restocks.
+
+---
+
+### Mega Evolution 36 Sealed Booster Packs Lot — Full Booster Box Equivalent (listed 2026-07-04)
+- **🟢 LIVE 2026-07-04:** eBay #168512970168 · offer 199593673011 · SKU ME-36LOT · mapped 36x #31884
+- **Ask:** $299.99 · **Qty:** 1 (36 of 37 held; 1 spare hold) · **Cost:** $180.00 (36 × $5.00) · **Market:** $276.84 sum-of-parts; sealed ME booster box $324.54
+- **Photos:** `v2_photos/MegaEvolution_BoosterPack_36pack_02_stack.JPEG` (lead), `v2_photos/MegaEvolution_BoosterPack_36pack_01_spread.JPEG` (also in `iCloud Photos/`). Swapped 2026-07-04 to lead with the stack.
+
+**Title:** Pokemon TCG Mega Evolution ME01 36 Sealed Booster Packs Lot Box Equivalent  (74 chars; added ME01 to disambiguate from other Mega Evolution sets, trimmed "Booster Box Equivalent" → "Box Equivalent" to fit)
+
+**Body:**
+```
+36x sealed Pokemon TCG Mega Evolution booster packs. That's a full Booster Box (36 packs) or 4 ETBs worth of packs (9 packs each).
+
+All packs new and factory sealed, smoke-free home.
+Ships within 1 business day.
+
+Buy with confidence, check my feedback. Thanks for looking.
+```
+**Net:** $258.89 → **+$78.89 margin (43.8% ROI)** at $299.99 ($8.33/pack). ~7.6% under the sealed ME booster box ($324.54), a lot premium over $7.69/pack market. ME packs trade at market so this leans on the box-discount thesis; if it sits, step toward $279.99 ($7.78/pack).
+
+---
+
+### White Flare + Black Bolt Booster Bundle 2-Pack (relist R3, 2026-07-04)  🆕 thematic pair
+- **🔴 SOLD 2026-07-04** at $149.99 (eBay order #07-14860-12011, sold within ~hours). eBay #168513794677 · offer 199832659011 · SKU WFBB-2PACK-R3
+- **Ask:** $149.99 · **Qty:** 1 (1 WF + 1 BB) · **Cost:** $58.13/pair (WF $28.13 + BB $28.00) · **Market sum-of-parts:** $157.05 (WF $75.83 + BB $81.22)
+- **Photos:** `v2_photos/BlackBolt_WhiteFlare_BoosterBundle_pair_01_front.JPEG`, `v2_photos/BlackBolt_WhiteFlare_BoosterBundle_pair_02_back.JPEG`
+
+**Title:** Pokemon TCG Scarlet Violet White Flare + Black Bolt Booster Bundle 2-Pack
+
+**Body:**
+```
+Sealed Pokemon TCG Scarlet & Violet twin-set booster bundle pair:
+
+• 1x White Flare Booster Bundle (6 booster packs)
+• 1x Black Bolt Booster Bundle (6 booster packs)
+
+12 booster packs total. Both bundles new and factory sealed, smoke-free home.
+Ships within 1 business day.
+
+Buy with confidence, check my feedback. Thanks for looking.
+```
+**Net:** $129.29 → **+$71.16 margin/pair.** Same $149.99 that cleared fast on 7/2 (R2). New Black Bolt pickup re-enables the pair; pulled 1 WF from the qty-3 solo listing (now qty 2) to avoid overcommitting. Sits ~$7 under sum-of-parts ($157.05). After this sells: 2 WF solo remain, 0 BB.
+
+---
+
+### White Flare + Black Bolt Booster Bundle 2-Pack (relist R4, 2026-07-05)  🆕 thematic pair
+- **🔴 SOLD 2026-07-07** at $149.99 (4th WF+BB pair to clear; consumed the last Black Bolt, BB now 0). eBay #168516570059 · offer 200470813011 · SKU WFBB-2PACK-R4
+- **Ask:** $149.99 · **Qty:** 1 (1 WF + 1 BB) · **Cost:** $58.24/pair (WF $28.24 + BB $30.00) · **Market sum-of-parts:** $162.12 (WF $78.35 + BB $83.77)
+- **Photos:** `v2_photos/BlackBolt_WhiteFlare_BoosterBundle_pair_01_front.JPEG`, `v2_photos/BlackBolt_WhiteFlare_BoosterBundle_pair_02_back.JPEG`
+
+**Title:** Pokemon TCG Scarlet Violet White Flare + Black Bolt Booster Bundle 2-Pack
+
+**Body:**
+```
+Sealed Pokemon TCG Scarlet & Violet twin-set booster bundle pair:
+
+• 1x White Flare Booster Bundle (6 booster packs)
+• 1x Black Bolt Booster Bundle (6 booster packs)
+
+12 booster packs total. Both bundles new and factory sealed, smoke-free home.
+Ships within 1 business day.
+
+Buy with confidence, check my feedback. Thanks for looking.
+```
+**Net:** $129.29 → **+$71.05 margin/pair.** Third pair at $149.99; R2 (7/2) and R3 (7/4) both cleared within hours. Now ~$12 UNDER sum-of-parts ($162.12), so likely underpriced given how fast it moves. Pulled 1 WF from the solo listing (dropped 3 → 2) to avoid overcommitting. After this sells: 2 WF solo remain, 0 BB.
+
+---
+
+### Destined Rivals 36 Sealed Booster Packs Lot — relist R2 (2026-07-06)
+- **🟢 LIVE 2026-07-06 · bumped to Qty 2 on 2026-07-19:** eBay #168519091676 · offer 201311692011 · SKU DR-36LOT-R2 · mapped 36x #17236
+- **Ask:** $396.00 · **Qty:** 2 (72 of 72 held — fully committed; DR singles listing ended to free the packs) · **Cost:** $180.00/lot (36 × $5.00) · **Market:** $360.72/lot sum-of-parts ($10.02/pack); sealed DR box $500+
+- **Photos:** `v2_photos/DestinedRivals_BoosterPack_36pack_02_stack.JPEG` (lead), `v2_photos/DestinedRivals_BoosterPack_36pack_01_spread.JPEG`
+
+**Title:** Pokemon TCG Destined Rivals 36 Sealed Booster Packs Lot Booster Box Equivalent
+
+**Body:**
+```
+36x sealed Pokemon TCG Scarlet & Violet Destined Rivals booster packs. That's a full Booster Box (36 packs) or 4 ETBs worth of packs (9 packs each).
+
+All packs new and factory sealed, smoke-free home.
+Ships within 1 business day.
+
+Buy with confidence, check my feedback. Thanks for looking.
+```
+**Net:** $341.84 → **+$161.84 margin (90% ROI)** at $396 ($11.00/pack). Third DR 36-pack lot at the proven $396 (prior two cleared at $396 on 6/15 and 6/23). Listed at $396 flat (the normal price) to send the link to a repeat buyer; per-pack market has risen to $10.02 so $396 = ~10% over per-pack, still well under a sealed box ($500+). Predecessor DR-36LOT-R (#168483384016) sold 6/23.
+
+---
+
+### White Flare Booster Bundle Twofer (Lot of 2) (listed 2026-07-07)
+- **🔴 SOLD 2026-07-09** at $144.99 (in Dave Grant's $294.98 order #07-14879-41616, alongside a WFBB combo). eBay #168521320692 · offer 202247519011 · SKU WF-2PACK
+- **Ask:** $144.99 · **Qty:** 1 (2 WF bundles) · **Cost:** $56.84 (2 × $28.42) · **Market sum-of-parts:** $159.48 (2 × $79.74)
+- **Photos:** `v2_photos/WhiteFlare_Bundle_twofer_01_front.JPEG`, `v2_photos/WhiteFlare_Bundle_twofer_02_back.JPEG`
+
+**Title:** Pokemon TCG Scarlet Violet White Flare Booster Bundle Lot of 2 Sealed 12 Packs
+
+**Body:**
+```
+Sealed Pokemon TCG Scarlet & Violet: White Flare Booster Bundle, lot of 2.
+
+You receive 2 sealed White Flare Booster Bundles (6 booster packs each, 12 booster packs total).
+
+Both bundles new and factory sealed, smoke-free home. Ships within 1 business day.
+
+Buy with confidence, check my feedback. Thanks for looking.
+```
+**Net:** $124.97 → **+$68.13 margin.** Repriced 2026-07-07 from $159.99 to $144.99 per Michael, set $5 under the WFBB combo ($149.99) as a deal signal (~9% under sum-of-parts $159.48). CAUTION: White Flare is the soft half of the WF/BB twin set; a WF-only twofer lacks the demand driver (Black Bolt/theme) that makes the combo fly, so it may still move slower than the combo. If it stalls, split back to singles or re-pair a WF with a hot item. WF single (WF-BUNDLE-R) stays live at qty 2 alongside this.
+
+---
+
+### Prismatic Evolutions Booster Bundle Twofer (Lot of 2) (listed 2026-07-07)
+- **🔴 SOLD/ENDED 2026-07-12** (card show cash: all 6 PE went in a $560 lot deal; eBay listing ended to prevent double-sell). eBay #168521320743 · offer 202247584011 · SKU PE-2PACK
+- **Ask:** $175.99 · **Qty:** 1 (2 PE bundles) · **Cost:** $60.00 (2 × $30.00) · **Market sum-of-parts:** $175.18 (2 × $87.59)
+- **Photos:** `v2_photos/PrismaticEvolutions_Bundle_twofer_01_front.JPEG`, `v2_photos/PrismaticEvolutions_Bundle_twofer_02_back.JPEG`
+
+**Title:** Pokemon TCG Scarlet Violet Prismatic Evolutions Booster Bundle Lot of 2 Sealed
+
+**Body:**
+```
+Sealed Pokemon TCG Scarlet & Violet: Prismatic Evolutions Booster Bundle, lot of 2.
+
+You receive 2 sealed Prismatic Evolutions Booster Bundles (6 booster packs each, 12 booster packs total).
+
+Both bundles new and factory sealed, smoke-free home. Ships within 1 business day.
+
+Buy with confidence, check my feedback. Thanks for looking.
+```
+**Net:** $151.76 → **+$91.76 margin.** Priced at sum-of-parts ($175.18). Prismatic is a hot set that moves at market, so this should sell well. 3 PE bundles remain free after this (5 held − 2).
+
+---
+
+### White Flare + Black Bolt Booster Bundle 2-Pack (relist R5, 2026-07-08)  🆕 thematic pair
+- **🟢 LIVE 2026-07-08:** eBay #168523841361 · offer 203080809011 · SKU WFBB-2PACK-R5 · mapped 1x WF #31604 + 1x BB #5241
+- **Ask:** $149.99 · **Qty:** 1 (1 WF + 1 BB) · **Cost:** $58.42/pair (WF $28.42 + BB $30.00) · **Market sum-of-parts:** $165.21 (WF $79.90 + BB $85.31)
+- **Photos:** `v2_photos/BlackBolt_WhiteFlare_BoosterBundle_pair_01_front.JPEG`, `v2_photos/BlackBolt_WhiteFlare_BoosterBundle_pair_02_back.JPEG`
+
+**Title:** Pokemon TCG Scarlet Violet White Flare + Black Bolt Booster Bundle 2-Pack
+
+**Body:**
+```
+Sealed Pokemon TCG Scarlet & Violet twin-set booster bundle pair:
+
+• 1x White Flare Booster Bundle (6 booster packs)
+• 1x Black Bolt Booster Bundle (6 booster packs)
+
+12 booster packs total. Both bundles new and factory sealed, smoke-free home.
+Ships within 1 business day.
+
+Buy with confidence, check my feedback. Thanks for looking.
+```
+**Net:** $129.29 → **+$70.87 margin/pair.** 5th WF+BB pair at $149.99 (R2/R3/R4 all cleared, mostly within hours). New Black Bolt pickup re-enables the combo; ended the slow WF single (WF-BUNDLE-R) to feed it. Now ~$15 UNDER sum-of-parts ($165.21) as component prices keep climbing, still deliberately underpriced for speed. Inventory after: WF 4 held = 2 (WF-2PACK twofer) + 1 (this combo) + 1 spare; BB 1 = this combo. Sum-of-parts says there's room toward ~$159 if you'd rather capture margin than velocity.
+
+---
+
+### White Flare Booster Bundle Twofer (Lot of 2) — relist R2 (2026-07-10)
+- **🔴 SOLD/ENDED 2026-07-12** (card show cash: both WF went in the $560 lot deal; eBay listing ended to prevent double-sell). eBay #168528641987 · offer 204872069011 · SKU WF-2PACK-R2
+- **Ask:** $149.99 · **Qty:** 1 (2 WF bundles) · **Cost:** $60.00 (the 2 on-hand lots #422/#426 are $30 each; ignore the blended avg, dragged down by a free "Brandon" lot in history) · **Market sum-of-parts:** $157.18 (2 × $78.59)
+- **Photos:** `v2_photos/WhiteFlare_Bundle_twofer_01_front.JPEG`, `v2_photos/WhiteFlare_Bundle_twofer_02_back.JPEG`
+
+**Title:** Pokemon TCG Scarlet Violet White Flare Booster Bundle Lot of 2 Sealed 12 Packs
+
+**Body:**
+```
+Sealed Pokemon TCG Scarlet & Violet: White Flare Booster Bundle, lot of 2.
+
+You receive 2 sealed White Flare Booster Bundles (6 booster packs each, 12 booster packs total).
+
+Both bundles new and factory sealed, smoke-free home. Ships within 1 business day.
+
+Buy with confidence, check my feedback. Thanks for looking.
+```
+**Net:** $129.29 → **+$69.29 margin** (cost $60). Relist of the twofer (original WF-2PACK sold to Dave 7/9). Priced $149.99 per Michael, ~5% under sum-of-parts ($157.18) as WF market climbed. Uses the last 2 WF on hand; 0 BB so no combo option. WF-only twofer historically slower than the combo, but the last one cleared.
+
+---
+
+### White Flare Booster Bundle Twofer — relist R3 (2026-07-13)
+- **🟢 LIVE 2026-07-13:** eBay #168533932757 · offer 206495591011 · SKU WF-2PACK-R3 · mapped 2x #31604 per unit
+- **Ask:** $149.99 · **Qty:** 1 (2 WF bundles) · **Cost:** $60.00 (2 × $30 on-hand lots) · **Market sum-of-parts:** $152.34 (2 × $76.17)
+- **Photos:** `v2_photos/WhiteFlare_Bundle_twofer_01_front.JPEG`, `v2_photos/WhiteFlare_Bundle_twofer_02_back.JPEG`
+- **Net:** $129.29 → **+$69.29.** Price-refreshed on relist: WF market dipped ($78.83 → $76.17), so kept $149.99 per Michael (now ~1.5% under sum-of-parts). Uses the 2 WF he pulled 7/12-7/13. Sold at this price before (to Dave, then card show).
+
+**Title:** Pokemon TCG Scarlet Violet White Flare Booster Bundle Lot of 2 Sealed 12 Packs
+
+---
+
+### Pitch Black Elite Trainer Box — in-hand (listed 2026-07-13)
+- **🟢 LIVE 2026-07-13:** eBay #168533687564 · offer 206430584011 · SKU PB-ETB · mapped 1x #53864
+- **Ask:** $109.99 · **Qty:** 1 · **Cost:** $55.00 ($49.99 + WA tax) · **Market:** $99.61 · **Net:** $94.73 → **+$39.73 (72% ROI)**
+- **Photos:** `v2_photos/PitchBlack_ETB_01_front.jpg`, `v2_photos/PitchBlack_ETB_02_back.jpg`
+
+**Title:** Pokemon TCG Mega Evolution Pitch Black Elite Trainer Box ETB Sealed Ships Today  (79 chars; swapped "In Hand" for "Ships Today" per Michael, kept ETB + Sealed)
+
+**Body:** Standard PB ETB (9 packs, Zarude promo, headliners Mega Darkrai ex + Mega Zeraora ex, sleeves/energy/dice/coin/box). Priced ~$10 OVER market on the IN-HAND lever, most PB ETBs on eBay are still presale/ship-7/17 (set releases 7/17); "in hand, ships same business day before 3pm PT" is the differentiator to clear fast. Pre-release box from Zulu. Contrast the earlier PB-PC-ETB-R presale listing (different product, the PC exclusive #53866).
+
+---
+
+## Non-Pokemon / eBay test listings (NOT in pokestonks vault)
+
+These live on eBay only. No catalog_item_id, no sync mapping, no auto P&L. Track sales manually.
+
+### Kevin McGonigle RayWave Refractor RC (single, listed 2026-07-22)
+- **🟢 LIVE 2026-07-22:** eBay #168555697322 · offer 213743878011 · SKU MCGONIGLE-RAYWAVE · category 261328 (Trading Card Singles)
+- **Ask:** $99.99 or Best Offer (repriced 2026-07-22 from $139.99 to cover the 2 boxes) · **Qty:** 1 · pulled from a rip (0 cost basis / free roll) · **Comp:** one sold $139 on 2026-07-21
+- **Title:** 2026 Topps Chrome RayWave Refractor Kevin McGonigle Rookie RC #16 Tigers (72 chars)
+- **Photos (upgraded to originals 2026-07-23):** `bbcard_66_kevin-mcgonigle_1.jpg` (front), `bbcard_66_kevin-mcgonigle_2.jpg` (back) = full-res iCloud originals from `eBay_assets/baseball cards/`; `McGonigle_RayWave_03_toploader.jpg` kept as 3rd. Swapped off the Discord-compressed copies.
+- Condition: Ungraded / Near mint or better. First raw single listed via API. **Gotcha:** category 261328 requires condition 4000 (Ungraded) - the Sell API exposes it as `condition: "USED_VERY_GOOD"` (conditionId 4000) + `conditionDescriptors:[{name:"40001",values:["400010"]}]` (Card Condition = Near mint or better). Graded=2750, Used=3000 both rejected. See [[project_card_pricing_module]].
+
+### Shohei Ohtani Red White & Blue Refractor (single, listed 2026-07-22)
+- **🟢 LIVE 2026-07-22:** eBay #168555750100 · offer 213751510011 · SKU OHTANI-RWB-REFRACTOR · category 261328
+- **Ask:** $199.00 or Best Offer · **Qty:** 1 · from a rip (0 cost) · **Comp:** most single RWB solds $60-100 (7/22), but one single sold $350 (7/19, Michael confirmed it was the single not a set). $199 well-supported / conservative.
+- **Title:** 2026 Topps Chrome Red White & Blue Refractor Shohei Ohtani #7 Dodgers
+- **Photos:** full-res originals `bbcard_59_shohei-ohtani_1.jpg` (front) + `bbcard_59_shohei-ohtani_2.jpg` (back), `OhtaniRWB_03_toploader.jpg` (toploader)
+- Ungraded/Near mint (condition recipe per [[project_card_pricing_module]]). Card # corrected to **7** on 2026-07-23 (verified from the card back; the earlier "#1" from comps was wrong).
+
+### 2026 Topps Bowman Baseball Mega Box (test, listed 2026-07-09)
+- **⚫ ENDED 2026-07-13** (Michael ripped the Bowman boxes too; listing killed. Both baseball tests ended, he couldn't resist ripping). eBay #168526473520 · offer 204174304011 · SKU BOWMAN-2026-MEGA · category 261332
+- **Ask:** $79.99/each (dropped from $84.99 on 2026-07-09) · **Qty:** 2 · **Cost:** $49.99/box (MSRP) · **Net/each:** ~$68.81 → **+$18.82 (~38% ROI)**
+- **Photo:** `v2_photos/Bowman2026_MegaBox_01_front.jpg` · **UPC:** 887521158195
+- Contents (from box): 6 packs/box, 7 cards/pack (42), base set top 50 prospects + top 50 active stars/rookies on Mega Refractor stock; Mega Refractor Bowman Sterling + Electric Sluggers inserts, image variations, Mega Chrome Autos; 1st Bowman prospects (Ethan Holliday, Aiva Arquette, Daniel Pierce, Marek Houston).
+- Michael's first non-Pokemon eBay test. If it sells well, revisit whether to track sports in the vault.
+
+### 2026 Topps Finest Baseball Mega Box (test, listed 2026-07-10)
+- **⚫ ENDED 2026-07-12** (Michael ripped both Finest boxes; listing killed). eBay #168528553320 · offer 204840618011 · SKU FINEST-2026-MEGA · category 261332
+- **Ask:** $109.99 · **Qty:** 1 · **Cost:** ~$77.25 ($70 MSRP + ~10.35% WA/Seattle tax) · **Net:** ~$94.73 → **+$17.48 (~23% ROI)**
+- **Photo:** `v2_photos/ToppsFinest2026_MegaBox_01_front.jpg` · **UPC:** 887521166220 (corrected 2026-08-01 from the Fred Meyer receipt item code 88752116622 and the box barcode; previously recorded here as 887521166206)
+- Contents (box-confirmed): 8 packs/box, 6 cards/pack (48); Mega Box exclusive Mini Diamond parallels; base uncommon/rare, numbered parallels, inserts, case hits; new super-rare tier (350-card base). Mega boxes have NO guaranteed auto (hobby-only) — copy kept auto-free.
+- Second non-Pokemon test. Thinner margin than the Bowman.
+
+---
+
+## Single-pack quantity listings (added 2026-07-15)
+
+### Destined Rivals — single booster pack, qty listing (listed 2026-07-15)
+- **⚫ ENDED 2026-07-19:** eBay #168538028314 · offer 207943939011 · SKU DR-PACK · mapping deleted. Was an experiment until Michael had enough DR for a second 36-pack lot; killed to free the 72 packs for DR-36LOT qty 2.
+- **Ask:** $11.00 · **Qty:** 20 (of 66 held) · **Cost:** $5.00/pack · **Net:** ~$9.20 → **+$4.20/pack**
+- **Title:** Pokemon TCG Scarlet Violet Destined Rivals Booster Pack Sealed - Qty Available (78 chars)
+- **Photo:** `ChaosRising`/`DestinedRivals_Pack_01_front.jpg` (lightbox pack shot, hosted on Supabase)
+- Single-pack GTC with quantity. Sync maps 1 pack per unit sold, so each sale decrements DR held by 1.
+
+### Chaos Rising — single booster pack, qty listing (listed 2026-07-15)
+- **🟢 LIVE 2026-07-15:** eBay #168538028269 · offer 207943835011 · SKU CR-PACK · mapped 1x #53877
+- **Ask:** $7.29 · **Qty:** 14 · **Cost:** $5.00/pack · **Net:** ~$6.00 → **+$1.00/pack** (priced to Michael's $1-profit target)
+- **Title:** Pokemon TCG Mega Evolution Chaos Rising Booster Pack Sealed - Qty Available (75 chars)
+- **Photo:** `DestinedRivals`/`ChaosRising_Pack_01_front.jpg` (lightbox pack shot, hosted on Supabase)
+- These are also his kids-giveaway packs; listed all 14 held per go-ahead. Note: I wrongly flagged this set as non-official before listing (it IS official, Mega Evolution: Chaos Rising, out 2026-05-22) — corrected via web search.
+
+---
+
+## Bundle twofer (added 2026-07-28)
+
+### Prismatic Evolutions + Destined Rivals Booster Bundle Twofer (listed 2026-07-28)
+- **🔴 SOLD 2026-07-28** (eBay order #09-14959-92118, ~1hr after listing): $159.99, fees $24.46, cost $60 → **+$75.53 realized**. Synced (group a026d280, dedup row written). Ships to Bloomington IN, boxed via Ground Advantage, ship-by 7/30. eBay #168570958691 · offer 218664176011 · SKU DRPRIS-TWOFER · mapped 1x #19776 (Prismatic bundle) + 1x #17235 (DR bundle)
+- **Ask:** $159.99 · BIN only (no Best Offer) · **Cost:** $30 Prismatic (lot 502) + $30 DR (lot 503) = $60 · **Net:** ~$138 after ~13.6% fees → **+$78 margin**
+- **Title:** Pokemon TCG Prismatic Evolutions + Destined Rivals Booster Bundle Lot Sealed (76 chars)
+- **Photos:** `dr_prismatic_twofer_front.jpg`, `dr_prismatic_twofer_back.jpg` (both boxes front + back, hosted on Supabase)
+- Priced at sum-of-parts live market (Prismatic $88.29 + DR $73.71 = $162); Michael set $159.99. Ground Advantage calculated, buyer pays. Both bundles from 7/27 vending buys. eBay Set aspect is single-value only, so set to Prismatic Evolutions (both set names in the title for search). Sells → sync drops 1 Prismatic + 1 DR bundle from held.
+
+---
+
+## Lorcana (added 2026-07-29)
+
+### Disney Lorcana Attack of the Vine! Illumineer's Trove, qty listing (listed 2026-07-29)
+- **🟢 LIVE 2026-07-29:** eBay #168573778601 · offer 219514442011 · SKU LOR-AOTV-TROVE · mapped 1x ci135073 per unit · category 261044 (Toys & Hobbies > Collectible Card Games > CCG Sealed Boxes)
+- **Ask:** $89.99 · **Qty:** 4 · **Cost:** $55.00 each ($49.99 sticker + WA tax), $220 for the lot · **Net:** ~$77.45 after ~13.6% fees + $0.30 → **+$22.45 each (~41% on cost), ~$89.80 on all four**
+- **Title:** Disney Lorcana Attack of the Vine Illumineer's Trove Factory Sealed 8 Packs (75 chars)
+- **Photos:** `Lorcana_AttackOfTheVine_Trove_01_front.JPEG`, `_02_top_sealed.JPEG`, `_03_back_contents.JPEG` (hosted on Supabase)
+- **Shipping:** Ground Advantage Calculated (269110723012), buyer pays. Listed at 19 oz shipped: Michael weighed the box at 13.75 oz bare, plus ~5 oz for shipper and padding. That lands in the 2 lb GA bracket; packing under 16 oz total would drop it a tier.
+- Contents (read off the box back): 1 storage box, 6 card dividers, 6 damage-counter dice, 1 spin-dial lore counter, 8 booster packs at 12 cards each. Box states it does NOT include a Lorcana deck, so the copy says so too.
+- Market at draft time (TCGCSV category 71, group 24666, product 690388): market $85.70, low $77.77, mid $95.00. Ask sits just over market, under mid.
+- First Lorcana buy in the vault. Catalog had no Lorcana at all (the pipeline is wired to TCGplayer category 3), so ci135073 is a manual sealed item with `manual_market_cents` set from TCGCSV. Purchase = lot507. Wiring category 71 into the daily refresh is the open follow-up.
+
+### Disney Lorcana Attack of the Vine! Sleeved Booster Pack, lot of 12 (listed 2026-07-29)
+- **🟢 LIVE 2026-07-29:** eBay #168574098363 · offer 219614549011 · SKU LOR-AOTV-SLEEVED-12 · mapped 12x ci135074 per unit · category 183456 (Toys & Hobbies > Collectible Card Games > CCG Sealed Packs)
+- **Ask:** $132.00 · **Qty:** 1 lot (all 12 packs) · **Cost:** $79.43 (lot509, $6.62/pack) · **Net:** ~$113.75 after ~13.6% + $0.30 → **+$34.32 (43.2% ROI)**
+- **Title:** Disney Lorcana Attack of the Vine 12 Sleeved Booster Packs Sealed Lot 144 Cards (79 chars)
+- **Photos:** `Lorcana_AttackOfTheVine_Sleeved12_01_stack.JPEG` (fanned stack, leads), `_02_spread.JPEG` (all 12 laid out, count is verifiable in frame). Both hosted on Supabase.
+- **Shipping:** Ground Advantage Calculated (269110723012), buyer pays. Michael said to estimate: his standard box is 8x8x4, packs run ~13 oz, so listed at 20 oz. Ground Advantage bills 16-32 oz at the same 2 lb rate, so rounding up costs the buyer nothing and avoids under-collecting.
+- Contents (from the pack front): 12 sleeved booster packs, 12 cards each, 144 cards total.
+- Pricing: $132 = 97% of sum-of-parts at market ($11.31 x 12 = $135.72), so priced at parts per the no-discount bundle rule. Alternatives run at draft time: 12 singles at $10.99 nets +$30.91, card show at 85% of market nets +$35.93. The lot beats singles because it is one fee and one package.
+
+### 2026 Topps Finest Baseball Mega Box, qty listing (drafted 2026-08-01)
+
+- **🟢 LIVE 2026-08-01:** eBay #168581678721 · offer 204840618011 (reused from the ended July test) · SKU FINEST-2026-MEGA · category 261332 · location edmonds-wa
+- **Ask:** $99.99 · **Qty: 1 of 1 held** (was 4 of 5) · **Cost:** $77.48/box · **Net:** ~$86.09 after 13.6% + $0.30 → **+$8.61/box**
+- **⚡ 4 of the 5 SOLD LOCALLY 2026-08-06 at $90/box cash**, in-person meet at the Walmart parking lot in Lynnwood. **$360.00, no fees, realized +$50.08** (sale #453). Qty on the eBay listing was cut 4 → 1 *before* the meet so a concurrent eBay sale could not oversell boxes he was about to hand over.
+  - **Why local beat the listing:** $90 cash with no fees equals a **$104.51 eBay ask**. The listing was at $99.99 netting $86.09, so the meet was **$15.64 better across four boxes**, plus no packing, shipping or returns window. Sold market was $90.50 and the listing had gone five days without views, so this was the good exit on the tightest position in the portfolio (break-even was $90.02, leaving 48 cents of room).
+  - **The 5th box is NOT a free rip.** 4 x $90 = $360 against $387.40 for all five, so ripping the last one costs $27.40 out of pocket. At a $12.52/box margin it would have taken 7 sales to fund a free rip. Still a $77.48 box for $27.40, so worth doing; $96.85/box was the price that would have made it free.
+- **Title:** 2026 Topps Finest Baseball Mega Box Factory Sealed MLB 48 Cards Mini Diamond (76 chars)
+- **Photos:** `ToppsFinest2026_MegaBox_02_front.jpg` (leads), `_03_back.jpg`. New black-background shots, replace the July car-seat photo. Both hosted on Supabase.
+- **Shipping:** Ground Advantage Calculated (269110723012), buyer pays. Package 8x8x4 at 1 lb (box is 5.78 x 4.75 x 1.28 at 0.42 lb, plus shipper and filler).
+- **Cost basis:** Fred Meyer (4615 196th St), 2026-08-01, 5 boxes at $69.99 + $37.44 tax = $387.39, so $77.48/box at a 10.7% effective rate.
+- Contents (box-confirmed): 8 packs/box, 6 cards/pack (48); Mega Box exclusive Mini Diamond parallels; base uncommon/rare, numbered parallels, inserts, case hits; 350-card base. Mega boxes have NO guaranteed auto (hobby-only), so the copy stays auto-free.
+- Pricing: 71 active single-box asks at draft time, low $85 (open box), sealed floor ~$90. **Correction 2026-08-03:** the $103.12 "median" I first quoted was inflated by $135/$145 outliers. Pulling detail on 18 real single-box listings, the sealed cluster is $89.99 / $90 / $91.99 / $94.99 / $95 / $98 / $99 / $99.99 x3 / $105 x2, so the true median is ~**$99.50**. $104.99 sat in the top third, not mid-pack. Break-even is $90.03.
+- **Returns are NOT a ranking problem here (checked 2026-08-03):** 16 of 18 competing listings are also no-returns, so it is the category norm, not a penalty. I initially flagged it as one; that was wrong.
+- **Best Offer:** 13 of 18 competitors run it and this listing does not. Michael's explicit call is **BIN only, no offers**. Do not add it.
+- Competitor to watch: someone is running 4 sealed megas as a single lot at $378.99 ($94.75/box), directly against this qty-4.
+- Michael ripped his original Finest boxes; those are where the Finest singles came from. These 5 are his only sealed baseball wax. Still off-book (no vault catalog item), same as the July Bowman/Finest tests.
+
+### 2026 Topps Chrome Baseball Mega Box (listed 2026-08-05, release day)
+
+- **🟢 LIVE 2026-08-05:** eBay #168591205656 · offer 225088628011 · SKU CHROME-2026-MEGA · category 261332 · location edmonds-wa
+- **Ask:** **$109.99** · **Qty: 8 of 10 held** (2 held back to rip) · **Cost:** $77.38/box on the morning pair, $66.33/box on the afternoon eight · **Net:** ~$94.73/box after 13.6% + $0.30 · BIN only, no Best Offer (Michael's standing call)
+- **Price path 2026-08-05:** $129.99 → $119.99 → **$109.99**, all same day. The last cut is a deliberate sell-now price. Michael's read, and it is the right one: **every sold comp in the market is a presale.** He has these in hand on release day, so the play is to clear them before the preorder buyers take delivery and the supply lands. Title carries **IN HAND** and the description leads with it.
+- **Qty 8 is the free-rip plan.** 8 x $94.73 = $757.84 against the $685.38 total position → covers all 10 boxes with **$72.46 left over and 2 free to rip**. The clerk's uncharged 8th box is already baked into the $66.33 basis, so it is not additional headroom on top.
+- **Considered and rejected: 2-box and 4-box lot listings.** Only one multi-box comp exists in the sold history (2 boxes, $175, $87.50/box, a 26% haircut to the $118.91 single market), matching the Finest lot competitor at $94.75/box. Lot buyers are resellers who only buy at a discount, and lotting sealed boxes saves just $0.90 in fees across four (eBay's cut is percentage-based), unlike pack lots where it saves a whole package of labor. Raising qty gets the same volume at full price. Photos are shot and hosted (`ToppsChrome2026_MegaBox_4box_01_front.JPEG`/`_02_back`, `_2box_01_front`/`_02_back`) and held as a clearance option if the singles stall.
+- **Free-rip math (2026-08-05):** at $119.99 it takes **3 sales to fund a free rip of a $77.38 box** ($25.99 profit each) but only **2 to fund a $66.33 box** ($37.04 each, $7.75 spare). Break-even is $89.91 on the morning lot and **$77.12** on the afternoon lots. Superseded the earlier "3 boxes" answer once the cheaper lots landed.
+- **Price revised in place, not relisted.** Michael said "repost", but the listing was 35 minutes old and had no exposure to lose, and ending it would have started a RelistParentID chain, the same thing that cost the Finest its fresh-listing bump. A PUT on the published offer updates the live price instead.
+- **Title:** 2026 Topps Chrome Baseball Mega Box IN HAND Sealed MLB 42 Cards X-Fractor (73 chars). "Factory" was dropped to fit IN HAND under the 80-char cap.
+- **Photos:** `ToppsChrome2026_MegaBox_reshoot_01_front.JPEG` (leads), `_02_back.JPEG`. Square, straight-on, marble background; swapped in 2026-08-05 same day, replacing the release-day car-seat shots. Hosted on Supabase.
+- **Shipping:** Ground Advantage Calculated (269110723012), buyer pays. Package 8x8x4 at 1 lb.
+- **Cost basis (both trips, Dick's Northgate, 328 NE Northgate Way Seattle, 2026-08-05):**
+  - **Morning, 2 boxes:** $70.00 each + tax = **$77.38/box, $154.76.** Michael confirmed same store as the afternoon run, so the rate is Seattle's **10.5458%** (from the afternoon receipt: $50.62 / $480.00), not the 10.7% Lynnwood rate I first assumed. Corrected down from $77.48.
+  - **Afternoon, 8 boxes:** receipt (store 1419, trans 4130, 12:05 PM) rang **7** line items at $70.00 with a $10 reward certificate spread across them (-1.43 x6, -1.42), subtotal $480.00 + $50.62 tax = **$530.62 paid**. Michael left with **8** boxes; the register undercounted twice and the door alarm was waved through. Basis is spread over the 8 actually held = **$66.33/box**. If he goes back and pays for the 8th, re-cut to $75.80/box.
+  - **Total position: 10 boxes, $685.38 in, $68.54 blended.** At the $118.91 market that is ~$1,189, **+$503.72 unrealized**.
+- Contents (verified against Beckett/ChecklistInsider, box photo confirms X-Fractor callout + UPC 887521159635): 6 packs/box, 7 cards/pack (42); Mega Box exclusive X-Fractor parallels Aqua /199, Blue /150, Green /99, Purple /75, Gold /50, Orange /25, Black /10; 300-card base; Helix, Ultraviolet, World Series at Night return, Diamond Moments and Static Noise are new. **Copy claims no guaranteed X-Fractor per box** — the odds table reads "X-Fractor (1:1 Mega)" and it is ambiguous whether that is per pack or per box, so it is left out. Mega boxes have no guaranteed auto (hobby-only), copy stays auto-free.
+- **Pricing (sold comps, not asks):** SportsCardsPro sealed market **$118.91, +$8.92, ~6 sales/day** at draft time. $129.99 sits ~9% over market but has cleared twice in three days. Recent single-box sold spread: $90 x3, $95, $99.99, $108.99, $109.99, $114.99 x4, $119.99 x5, $129.99 x2. A repeat seller ("Judge Fast Shipping") is parked at $90 doing volume. Break-even $90.03.
+- **Caveat carried into the listing decision:** every one of those comps is a **presale**. The product released 2026-08-05, so the presale premium may fade once retail supply lands, or day-one hype may hold it. Recheck the sold market in a few days before deciding on the second box.
+- Competes head-to-head with the Finest mega at $99.99 in the same category, same buyer.
+- Still off-book (no vault catalog item, no `ebay_listing_mappings` row), same as the Bowman and Finest boxes. At $685 this is well past the test size that justified staying off-book; flagged to Michael that it should go in the vault.
+
+### 30-pack custom order for the igavov buyer (listed 2026-08-05)
+
+- **🟢 LIVE 2026-08-05:** eBay #168591612747 · offer 225207124011 · SKU CUSTOM-IGAVOV-30PACK · mapped 25x ci17236 + 5x ci19928 per unit · category 183456 · location edmonds-wa
+- **Ask:** $270.00 · **Qty:** 1 (the whole lot is one unit) · **Cost:** $150.00 · **Net:** ~$232.98 after 13.6% + $0.30 → **+$82.98 (55% ROI)**
+- **Title:** 30 Sealed Pokemon Booster Packs 25 Destined Rivals 5 Surging Sparks (67 chars)
+- **Photos:** `CombinedLot_DestinedRivals_plus_SurgingSparks_25plus5_01_stack.JPEG` (leads), `_02_spread.JPEG`. Shot for this exact order; the full 25 + 5 is countable in the spread, which is the proof of count on a lot listing.
+- **Shipping:** Ground Advantage Calculated (269110723012), buyer pays. 8x8x4 at 32 oz (~0.8 oz/pack x 30 plus shipper).
+- **How it came about:** igavov bought the Journey Together 18-pack lot, then messaged asking what Michael had in bulk. Negotiated in eBay messages and Instagram: 25 DR @ $9.50 + 5 SS @ $8.00 = $277.50 sum of parts, buyer asked to round to $270 even, Michael took it. The $7.50 concession is $6.48 after fees, cheap against a repeat buyer who wants recurring bulk orders.
+- **Pricing basis:** DR pack market was $9.35 TCGplayer / $9.98 PriceCharting at draft time; SS market $8.28. **Watch out for weighed-pack comps** — the $15.50 to $20.50 eBay DR sales that week were all "22.4g VERY HEAVY" pack-search listings, not comparable. Clean unweighed comps were $9.00 eBay and $9.54/$9.59 TCGplayer.
+- **Inventory effect:** clears Surging Sparks to 0, takes Destined Rivals from 106 to 81. SS was reconciled first (lot #527, +2 @ $5) because the vault read 3 and Michael physically had 5.
+- **Two publish errors worth remembering for the next Pokemon pack lot:** category **183454 is CCG Individual Cards and rejects condition NEW** — sealed packs are **183456**. And 183456 requires the `Set` aspect (free text, single value; used "Destined Rivals, Surging Sparks" for this mixed lot) with `Configuration` SELECTION_ONLY at exactly `Pack`, not "Booster Pack".
+
+### Shrouded Fable Booster Bundle twofer (listed 2026-08-05)
+
+- **🟢 LIVE 2026-08-05:** eBay #168592071604 · offer 225349662011 · SKU SF-BUNDLE-TWOFER · mapped **2x ci5283 per unit** · category 261044 · location edmonds-wa
+- **Ask:** $119.99 · **Qty:** 3 units (2 bundles each, covers all 6 held) · **Cost:** $70.74/unit · **Net:** ~$103.37 after 13.6% + $0.30 → **+$32.63/unit, +$97.89 if all three clear** · break-even $82.22
+- **Title:** Pokemon Shrouded Fable Booster Bundle Lot of 2 Sealed 12 Booster Packs (70 chars)
+- **Photos:** `ShroudedFable_BoosterBundle_twofer_reshoot_01_front.JPEG` (leads), `_02_back.JPEG`. Marble reshoot, swapped in ~75 min after go-live, replacing the car-seat originals.
+- **Shipping:** Ground Advantage Calculated (269110723012), buyer pays. 8x8x4 at 24 oz (~8 oz per bundle plus shipper).
+- **Cost basis:** Target Northgate (302 NE Northgate Way), 2026-08-05, lot #531. Six bundles at $31.99 + 10.55% WA tax = **$35.37/bundle, $212.22**. Bought over **3 trips at a 2-per-customer limit**. Target paper bag fee excluded per Michael. Receipt marks them final sale, no return.
+- **Pricing, and why it is NOT sum-of-parts off the vault:** vault market (TCGCSV/TCGplayer) is $64.77/bundle, so parts would say $129.54 → $129.99. **eBay does not pay that.** Single-bundle solds that week: $66.49, $64.00, $61.17, $60.53, $60.00, $59.99, $55.00, clustering ~$61. And there is a direct twofer comp: **a 2X lot sold 2026-08-05 for $113.77**. $119.99 is sum-of-parts on the price eBay actually pays, sitting just above the one real twofer sale. **Lesson for the no-discount rule: apply it to sum-of-parts at the venue's own market, not at TCGplayer's.** TCGCSV ran ~6% above eBay solds on this SKU.
+- Vault position after listing: 6 held, $212.22 basis, $388.62 at vault market, +$176.40 unrealized.
+
+### 2025-26 Topps Chrome Update Basketball, Mega + Value (listed 2026-08-06, release day)
+
+- **⚫ ENDED same day, Mega single:** eBay #168593830734 · offer 226210588011 · SKU CHROMEUPD-NBA-MEGA · was $124.99 x qty 2. Withdrawn ~40 min after go-live and replaced by the twofer below. Its vault mapping was deleted at the same time.
+- **🟢 LIVE Mega twofer:** eBay #168593884893 · SKU CHROMEUPD-NBA-MEGA-2X · mapped **2x ci135078 per unit** · **$259.99 x qty 1** (2 boxes) · cost $173.48 · net $224.33 → **+$50.85** · break-even $201.13
+  - **Why the switch (Michael's call):** with calculated shipping, a buyer taking two units off a qty-2 listing can be charged shipping twice. One twofer unit = one package = one shipping charge, which is a real saving for the buyer. The release-day data agreed: x2 lots sold at **$269.99 ($135/box)** and **$260 ($130/box)** against a $126.50 single median, so lots carried a premium rather than a discount here.
+  - **It also nets more.** $259.99 as a twofer nets $224.33 vs $215.38 for two separate $124.99 sales (the $0.30 order fee is charged once, not twice), so **+$8.95** on top of the shipping benefit.
+  - **Inventory guard:** only 2 megas exist, so the single listing had to come down before the twofer went up or the same two boxes would have been committed twice. Verified after publish: 2 held, 2 committed.
+  - Tradeoff accepted: a single-box buyer is now locked out of the mega. If the twofer sits, split it back into a qty-2 single at $124.99.
+- **🟢 LIVE Value:** eBay #168593831308 · offer 226210622011 · SKU CHROMEUPD-NBA-VALUE · mapped 1x ci135079 · **$64.99 x qty 2** · cost $45.92 · net $55.85 → **+$9.93/box** · break-even $53.50
+- Both category 261332, location edmonds-wa, Ground Advantage calculated, buyer pays. Mega 16 oz, Value 12 oz, 8x8x4.
+- **Titles:** `2025-26 Topps Chrome Update Basketball Mega Box SEALED IN HAND Flagg` (68) · `2025-26 Topps Chrome Update Basketball Value Box SEALED IN HAND 28 Cards` (72)
+- **SEALED is the differentiator, and it is quantified.** Topps shipped presale boxes with the **seal broken** to deter resellers (Michael's catch). His Dick's boxes are sealed. On release day the one **unsealed** mega sold at **$119.99** while sealed in-hand singles sold at $115, $122, $124.95, $124.99, $125, $127.99, $129.99, $130, $130, $140 — **median $126.50**. So the seal is worth roughly $7-10 and the title leads with SEALED IN HAND.
+- **Contents quoted from the box backs, not secondary sites.** Mega: 7 packs, 6 cards/pack, 42 total, UPC 887521161485, advertises NBA Debut Patch Autographs + color RayWave parallels + Paradox and Glass Canvas case hits. Value: 7 packs, 4 cards/pack, 28 total, UPC 887521161430, advertises Basketball and Red White and Blue Refractors. **Multiple sites claimed "10 X-Fractors" for the mega; the box does not say that**, so it stayed out of the copy.
+- **Correction to the 2026-08-05 lot guidance.** That note said sealed-box lots always sell at a discount, which held for the Chrome baseball. **It does not hold here.** Release-day multi-box lots sold at a *premium*: x2 at $269.99 ($135/box) and $260 ($130/box), x3 at $390 ($130/box), x5 at $640 ($128/box), against a $126.50 single median. Scarcity flips it. Still listed as qty 2 rather than a twofer, because a qty-2 listing lets one buyer take both and also serves single buyers.
+- **Value box has no comp.** No Update value box had sold at listing time; the value-box page on SportsCardsPro carries base-release sales from March 2026 ($56-$75), a different product. $64.99 is inferred from the mega's ~1.5x-retail multiple applied to the $45 value retail. `ci135079.manual_market_cents` is deliberately NULL. Re-price once real ones sell.
+- **Cost basis:** Dick's Northgate, 2026-08-06 10:13 AM, store 1419 trans 1600. Limit 2 per item. Mega $85.00 list and Value $45.00 list, less a $20 reward certificate earned on the previous day's Chrome baseball run (spread -6.54 x2 mega, -3.46 x2 value), + 10.55% tax. Subtotal $240.00, tax $25.32, **paid $265.32**, reconciles exactly to $86.74 and $45.92 per box.
+
+---
+
+## How to keep this file current
+
+- New SKUs get their own section with title, body, photos, and the net/margin line.
+- When a listing sells, log the sale in PokeStonks (platform + fees) and decrement the qty here.
+- When market moves materially, re-pull prices and update the ask, keeping the never-negative floor.

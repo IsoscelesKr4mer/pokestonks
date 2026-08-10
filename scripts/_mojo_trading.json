@@ -1,0 +1,554 @@
+{
+  "Title": "2026 Bowman Chrome Mojo Refractor You Pick Card RC 1st Bowman Prospects MLB",
+  "Description": "<p>2026 Bowman Chrome Mojo Refractors. Pick your card from the dropdown above. Every card listed is the mojo (mosaic) refractor parallel, not the base chrome.</p><p>Raw / ungraded, near mint or better. Cards are pulled straight from mega box packs into penny sleeves, and ship in a penny sleeve and toploader protected between rigid cardboard with tracking. Ships within 1 business day.</p><p>Buying several? Add them all to your cart and they ship together.</p><p>Smoke-free home. Buy with confidence, check my feedback. Thanks for looking.</p>",
+  "PrimaryCategory": {
+    "CategoryID": "261328"
+  },
+  "ConditionID": 4000,
+  "ConditionDescriptors": {
+    "ConditionDescriptor": {
+      "Name": "40001",
+      "Value": "400010"
+    }
+  },
+  "Country": "US",
+  "Currency": "USD",
+  "Location": "Edmonds, Washington",
+  "PostalCode": "98026",
+  "DispatchTimeMax": 2,
+  "ListingDuration": "GTC",
+  "ListingType": "FixedPriceItem",
+  "SellerProfiles": {
+    "SellerShippingProfile": {
+      "ShippingProfileID": "272052757012"
+    },
+    "SellerReturnProfile": {
+      "ReturnProfileID": "269110705012"
+    },
+    "SellerPaymentProfile": {
+      "PaymentProfileID": "269110704012"
+    }
+  },
+  "ItemSpecifics": {
+    "NameValueList": [
+      {
+        "Name": "Sport",
+        "Value": "Baseball"
+      },
+      {
+        "Name": "League",
+        "Value": "Major League Baseball (MLB)"
+      },
+      {
+        "Name": "Type",
+        "Value": "Sports Trading Card"
+      },
+      {
+        "Name": "Set",
+        "Value": "2026 Bowman Chrome"
+      },
+      {
+        "Name": "Season",
+        "Value": "2026"
+      },
+      {
+        "Name": "Manufacturer",
+        "Value": "Bowman"
+      },
+      {
+        "Name": "Parallel/Variety",
+        "Value": "Mojo Refractor"
+      },
+      {
+        "Name": "Features",
+        "Value": "Refractor"
+      },
+      {
+        "Name": "Grade",
+        "Value": "Ungraded"
+      },
+      {
+        "Name": "Graded",
+        "Value": "No"
+      },
+      {
+        "Name": "Vintage",
+        "Value": "No"
+      },
+      {
+        "Name": "Autographed",
+        "Value": "No"
+      }
+    ]
+  },
+  "PictureDetails": {
+    "GalleryType": "Gallery",
+    "PictureURL": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0706.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0732.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0664.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0695.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0681.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0668.jpg"
+    ]
+  },
+  "Variations": {
+    "VariationSpecificsSet": {
+      "NameValueList": [
+        {
+          "Name": "Card # / Player / Team",
+          "Value": [
+            "1 - Aaron Judge - Yankees",
+            "6 - Sal Stewart - Reds (RC)",
+            "18 - Roman Anthony - Red Sox (RC)",
+            "19 - Kyle Teel - White Sox (RC)",
+            "23 - Ronald Acuna Jr. - Braves",
+            "44 - Elly De La Cruz - Reds",
+            "62 - Owen Caissie - Marlins (RC)",
+            "65 - Jonah Tong - Mets (RC)",
+            "80 - Corbin Carroll - Diamondbacks",
+            "86 - Jakob Marsee - Marlins (RC)",
+            "100 - Mike Trout - Angels",
+            "BCP-7 - Kendry Chourio - Royals (1st Bowman)",
+            "BCP-33 - Coy James - Nationals (1st Bowman)",
+            "BCP-45 - Seojun Moon - Blue Jays (1st Bowman)",
+            "BCP-88 - Dasan Hill - Twins (1st Bowman)",
+            "BCP-90 - Andrew Tess - Orioles (1st Bowman)",
+            "BCP-93 - Jorge Quintana - Padres (1st Bowman)",
+            "BCP-95 - Eli Willits - Nationals (1st Bowman)",
+            "BCP-98 - Walker Jenkins - Twins (1st Bowman)",
+            "BCP-125 - Wei-En Lin - Athletics (1st Bowman)",
+            "BCP-150 - Wilder Dalis - Rockies (1st Bowman)"
+          ]
+        }
+      ]
+    },
+    "Variation": [
+      {
+        "SKU": "BBC-182",
+        "StartPrice": "2.49",
+        "Quantity": 1,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "1 - Aaron Judge - Yankees"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-162",
+        "StartPrice": "2.49",
+        "Quantity": 2,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "6 - Sal Stewart - Reds (RC)"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-195",
+        "StartPrice": "2.99",
+        "Quantity": 1,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "18 - Roman Anthony - Red Sox (RC)"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-172",
+        "StartPrice": "1.99",
+        "Quantity": 2,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "19 - Kyle Teel - White Sox (RC)"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-176",
+        "StartPrice": "1.99",
+        "Quantity": 2,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "23 - Ronald Acuna Jr. - Braves"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-169",
+        "StartPrice": "1.49",
+        "Quantity": 2,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "44 - Elly De La Cruz - Reds"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-189",
+        "StartPrice": "1.49",
+        "Quantity": 1,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "62 - Owen Caissie - Marlins (RC)"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-185",
+        "StartPrice": "1.99",
+        "Quantity": 1,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "65 - Jonah Tong - Mets (RC)"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-204",
+        "StartPrice": "1.99",
+        "Quantity": 1,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "80 - Corbin Carroll - Diamondbacks"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-186",
+        "StartPrice": "1.49",
+        "Quantity": 1,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "86 - Jakob Marsee - Marlins (RC)"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-160",
+        "StartPrice": "1.49",
+        "Quantity": 2,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "100 - Mike Trout - Angels"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-164",
+        "StartPrice": "1.99",
+        "Quantity": 1,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "BCP-7 - Kendry Chourio - Royals (1st Bowman)"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-193",
+        "StartPrice": "1.49",
+        "Quantity": 1,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "BCP-33 - Coy James - Nationals (1st Bowman)"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-167",
+        "StartPrice": "1.49",
+        "Quantity": 2,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "BCP-45 - Seojun Moon - Blue Jays (1st Bowman)"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-161",
+        "StartPrice": "1.99",
+        "Quantity": 2,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "BCP-88 - Dasan Hill - Twins (1st Bowman)"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-163",
+        "StartPrice": "1.99",
+        "Quantity": 1,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "BCP-90 - Andrew Tess - Orioles (1st Bowman)"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-194",
+        "StartPrice": "1.49",
+        "Quantity": 1,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "BCP-93 - Jorge Quintana - Padres (1st Bowman)"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-173",
+        "StartPrice": "1.99",
+        "Quantity": 2,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "BCP-95 - Eli Willits - Nationals (1st Bowman)"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-190",
+        "StartPrice": "1.49",
+        "Quantity": 2,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "BCP-98 - Walker Jenkins - Twins (1st Bowman)"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-165",
+        "StartPrice": "1.99",
+        "Quantity": 2,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "BCP-125 - Wei-En Lin - Athletics (1st Bowman)"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-192",
+        "StartPrice": "1.49",
+        "Quantity": 1,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "BCP-150 - Wilder Dalis - Rockies (1st Bowman)"
+            }
+          ]
+        }
+      }
+    ],
+    "Pictures": {
+      "VariationSpecificName": "Card # / Player / Team",
+      "VariationSpecificPictureSet": [
+        {
+          "VariationSpecificValue": "1 - Aaron Judge - Yankees",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0706.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0707.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "6 - Sal Stewart - Reds (RC)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0668.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0669.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "18 - Roman Anthony - Red Sox (RC)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0732.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0733.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "19 - Kyle Teel - White Sox (RC)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0687.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0688.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "23 - Ronald Acuna Jr. - Braves",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0695.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0696.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "44 - Elly De La Cruz - Reds",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0681.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0682.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "62 - Owen Caissie - Marlins (RC)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0720.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0721.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "65 - Jonah Tong - Mets (RC)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0712.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0713.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "80 - Corbin Carroll - Diamondbacks",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0751.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0752.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "86 - Jakob Marsee - Marlins (RC)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0714.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0715.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "100 - Mike Trout - Angels",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0664.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0665.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "BCP-7 - Kendry Chourio - Royals (1st Bowman)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0672.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0673.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "BCP-33 - Coy James - Nationals (1st Bowman)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0728.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0729.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "BCP-45 - Seojun Moon - Blue Jays (1st Bowman)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0679.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0680.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "BCP-88 - Dasan Hill - Twins (1st Bowman)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0666.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0667.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "BCP-90 - Andrew Tess - Orioles (1st Bowman)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0670.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0671.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "BCP-93 - Jorge Quintana - Padres (1st Bowman)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0730.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0731.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "BCP-95 - Eli Willits - Nationals (1st Bowman)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0689.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0690.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "BCP-98 - Walker Jenkins - Twins (1st Bowman)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0722.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0723.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "BCP-125 - Wei-En Lin - Athletics (1st Bowman)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0674.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0675.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "BCP-150 - Wilder Dalis - Rockies (1st Bowman)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0726.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0727.jpg"
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,1206 @@
+{
+ "group": {
+  "key": "finest",
+  "sets": [
+   "2026 Topps Finest"
+  ],
+  "title": "2026 Topps Finest Baseball You Pick Card Mini Diamond Refractor Insert RC",
+  "setAspect": "2026 Topps Finest",
+  "manufacturer": "Topps",
+  "season": "2026"
+ },
+ "variations": [
+  {
+   "label": "6 - Konnor Griffin - Base RC",
+   "primary": {
+    "id": "103",
+    "player": "Konnor Griffin",
+    "set_name": "2026 Topps Finest",
+    "card_number": "6",
+    "parallel": "base",
+    "price": 299,
+    "itemId": "168561672968",
+    "sku": "BBC-103",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0517.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0518.jpg"
+    ],
+    "notes": "Pirates RC (distinct from #139)"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 299
+  },
+  {
+   "label": "9 - Justin Crawford - Pink Ref /250 RC",
+   "primary": {
+    "id": "12",
+    "player": "Justin Crawford",
+    "set_name": "2026 Topps Finest",
+    "card_number": "9",
+    "parallel": "Pink Refractor /250 (124/250)",
+    "price": 799,
+    "itemId": "168561671930",
+    "sku": "BBC-12",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_11_justin-crawford_1.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0575.jpg"
+    ],
+    "notes": "Pink Refractor /250 (124/250); RC"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 799
+  },
+  {
+   "label": "9 - Munetaka Murakami - Base RC",
+   "primary": {
+    "id": "9",
+    "player": "Munetaka Murakami",
+    "set_name": "2026 Topps Finest",
+    "card_number": "9",
+    "parallel": "base",
+    "price": 799,
+    "itemId": "168561671919",
+    "sku": "BBC-9",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_08_munetaka-murakami_1.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_08_munetaka-murakami_2.jpg"
+    ],
+    "notes": "base; RC"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 799
+  },
+  {
+   "label": "10 - Paul Skenes - Base",
+   "primary": {
+    "id": "96",
+    "player": "Paul Skenes",
+    "set_name": "2026 Topps Finest",
+    "card_number": "10",
+    "parallel": "base",
+    "price": 249,
+    "itemId": "168561673135",
+    "sku": "BBC-96",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0504.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0505.jpg"
+    ],
+    "notes": "Pirates"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 249
+  },
+  {
+   "label": "15 - JJ Wetherholt - Base RC",
+   "primary": {
+    "id": "114",
+    "player": "JJ Wetherholt",
+    "set_name": "2026 Topps Finest",
+    "card_number": "15",
+    "parallel": "base",
+    "price": 299,
+    "itemId": "168561672955",
+    "sku": "BBC-114",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0536.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0537.jpg"
+    ],
+    "notes": "Cardinals RC"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 299
+  },
+  {
+   "label": "17 - Corbin Carroll - Mini Dia Ref",
+   "primary": {
+    "id": "226",
+    "player": "Corbin Carroll",
+    "set_name": "2026 Topps Finest",
+    "card_number": "17",
+    "parallel": "Mini Diamond Refractor",
+    "price": 249,
+    "itemId": null,
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1167.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1168.jpg"
+    ],
+    "notes": "From the 2026-08-08 Topps Finest / Topps Chrome mega box rip."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 249
+  },
+  {
+   "label": "30 - Colson Montgomery - Mini Dia Ref RC",
+   "primary": {
+    "id": "14",
+    "player": "Colson Montgomery",
+    "set_name": "2026 Topps Finest",
+    "card_number": "30",
+    "parallel": "Mini Diamond Refractor (mega box)",
+    "price": 349,
+    "itemId": "168561672849",
+    "sku": "BBC-14",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_13_colson-montgomery_1.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_13_colson-montgomery_2.jpg"
+    ],
+    "notes": "Speckle/sparkle Refractor (uncertain); RC"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 349
+  },
+  {
+   "label": "34 - Kazuma Okamoto - Base RC",
+   "primary": {
+    "id": "6",
+    "player": "Kazuma Okamoto",
+    "set_name": "2026 Topps Finest",
+    "card_number": "34",
+    "parallel": "base",
+    "price": 199,
+    "itemId": "168561673256",
+    "sku": "BBC-6",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0567.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0568.jpg"
+    ],
+    "notes": "base; RC"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "36 - Bo Bichette - Blue Ref /150",
+   "primary": {
+    "id": "18",
+    "player": "Bo Bichette",
+    "set_name": "2026 Topps Finest",
+    "card_number": "36",
+    "parallel": "Blue Refractor /150 (138/150)",
+    "price": 849,
+    "itemId": "168561671911",
+    "sku": "BBC-18",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0571.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0572.jpg"
+    ],
+    "notes": "Blue Refractor /150 (138/150)"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 849
+  },
+  {
+   "label": "38 - Zach Neto - Base",
+   "primary": {
+    "id": "120",
+    "player": "Zach Neto",
+    "set_name": "2026 Topps Finest",
+    "card_number": "38",
+    "parallel": "base",
+    "price": 199,
+    "itemId": "168561673130",
+    "sku": "BBC-120",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0551.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0552.jpg"
+    ],
+    "notes": "Angels"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "44 - Drake Baldwin - Mini Dia Ref",
+   "primary": {
+    "id": "116",
+    "player": "Drake Baldwin",
+    "set_name": "2026 Topps Finest",
+    "card_number": "44",
+    "parallel": "Mini Diamond Refractor (mega box)",
+    "price": 299,
+    "itemId": "168561672962",
+    "sku": "BBC-116",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0543.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0544.jpg"
+    ],
+    "notes": "Braves"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 299
+  },
+  {
+   "label": "50 - Shohei Ohtani - Base",
+   "primary": {
+    "id": "10",
+    "player": "Shohei Ohtani",
+    "set_name": "2026 Topps Finest",
+    "card_number": "50",
+    "parallel": "base",
+    "price": 399,
+    "itemId": "168561673675",
+    "sku": "BBC-10",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_09_shohei-ohtani_1.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_09_shohei-ohtani_2.jpg"
+    ],
+    "notes": "base"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 399
+  },
+  {
+   "label": "52 - Roman Anthony - Base RC",
+   "primary": {
+    "id": "117",
+    "player": "Roman Anthony",
+    "set_name": "2026 Topps Finest",
+    "card_number": "52",
+    "parallel": "base",
+    "price": 249,
+    "itemId": "168561673123",
+    "sku": "BBC-117",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0545.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0546.jpg"
+    ],
+    "notes": "Red Sox RC"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 249
+  },
+  {
+   "label": "53 - Drew Gilbert - Base RC",
+   "primary": {
+    "id": "105",
+    "player": "Drew Gilbert",
+    "set_name": "2026 Topps Finest",
+    "card_number": "53",
+    "parallel": "base",
+    "price": 199,
+    "itemId": "168561673140",
+    "sku": "BBC-105",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0521.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0522.jpg"
+    ],
+    "notes": "Giants RC"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "54 - Kyle Teel - Base RC",
+   "primary": {
+    "id": "107",
+    "player": "Kyle Teel",
+    "set_name": "2026 Topps Finest",
+    "card_number": "54",
+    "parallel": "base",
+    "price": 149,
+    "itemId": "168561673399",
+    "sku": "BBC-107",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0525.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0526.jpg"
+    ],
+    "notes": "White Sox RC"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 149
+  },
+  {
+   "label": "54 - Kyle Teel - Mini Dia Ref RC",
+   "primary": {
+    "id": "227",
+    "player": "Kyle Teel",
+    "set_name": "2026 Topps Finest",
+    "card_number": "54",
+    "parallel": "Mini Diamond Refractor",
+    "price": 249,
+    "itemId": null,
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1169.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1170.jpg"
+    ],
+    "notes": "From the 2026-08-08 Topps Finest / Topps Chrome mega box rip. RC."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 249
+  },
+  {
+   "label": "56 - Connelly Early - Base RC",
+   "primary": {
+    "id": "100",
+    "player": "Connelly Early",
+    "set_name": "2026 Topps Finest",
+    "card_number": "56",
+    "parallel": "base",
+    "price": 149,
+    "itemId": "168561673257",
+    "sku": "BBC-100",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0512.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0513.jpg"
+    ],
+    "notes": "Red Sox RC"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 149
+  },
+  {
+   "label": "57 - Cole Young - Base RC",
+   "primary": {
+    "id": "133",
+    "player": "Cole Young",
+    "set_name": "2026 Topps Finest",
+    "card_number": "57",
+    "parallel": "base",
+    "price": 199,
+    "itemId": "168561673141",
+    "sku": "BBC-133",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0589.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0590.jpg"
+    ],
+    "notes": "Mariners 2B, Finest base RC"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "73 - Colby Thomas - Base RC",
+   "primary": {
+    "id": "115",
+    "player": "Colby Thomas",
+    "set_name": "2026 Topps Finest",
+    "card_number": "73",
+    "parallel": "base",
+    "price": 199,
+    "itemId": "168561673119",
+    "sku": "BBC-115",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0541.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0542.jpg"
+    ],
+    "notes": "Athletics RC"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "74 - Kevin McGonigle - Base RC",
+   "primary": {
+    "id": "119",
+    "player": "Kevin McGonigle",
+    "set_name": "2026 Topps Finest",
+    "card_number": "74",
+    "parallel": "base",
+    "price": 349,
+    "itemId": "168561672840",
+    "sku": "BBC-119",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0549.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0550.jpg"
+    ],
+    "notes": "Tigers RC"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 349
+  },
+  {
+   "label": "76 - Chase Burns - Base RC",
+   "primary": {
+    "id": "99",
+    "player": "Chase Burns",
+    "set_name": "2026 Topps Finest",
+    "card_number": "76",
+    "parallel": "base",
+    "price": 199,
+    "itemId": "168561673131",
+    "sku": "BBC-99",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0510.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0511.jpg"
+    ],
+    "notes": "Reds RC"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "82 - Jacob Misiorowski - Base RC",
+   "primary": {
+    "id": "118",
+    "player": "Jacob Misiorowski",
+    "set_name": "2026 Topps Finest",
+    "card_number": "82",
+    "parallel": "base",
+    "price": 299,
+    "itemId": "168561672965",
+    "sku": "BBC-118",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0547.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0548.jpg"
+    ],
+    "notes": "Brewers RC"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 299
+  },
+  {
+   "label": "85 - Dylan Beavers - Mini Dia Ref RC",
+   "primary": {
+    "id": "13",
+    "player": "Dylan Beavers",
+    "set_name": "2026 Topps Finest",
+    "card_number": "85",
+    "parallel": "Mini Diamond Refractor (mega box)",
+    "price": 199,
+    "itemId": "168561673122",
+    "sku": "BBC-13",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_12_dylan-beavers_1.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_12_dylan-beavers_2.jpg"
+    ],
+    "notes": "Speckle/sparkle Refractor (uncertain); RC"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "87 - Kyle Karros - Base RC",
+   "primary": {
+    "id": "112",
+    "player": "Kyle Karros",
+    "set_name": "2026 Topps Finest",
+    "card_number": "87",
+    "parallel": "base",
+    "price": 149,
+    "itemId": "168561674847",
+    "sku": "BBC-112",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0534.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0539.jpg"
+    ],
+    "notes": "Rockies RC (base; distinct from Blue /150)"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 149
+  },
+  {
+   "label": "87 - Kyle Karros - Blue Ref /150 RC",
+   "primary": {
+    "id": "19",
+    "player": "Kyle Karros",
+    "set_name": "2026 Topps Finest",
+    "card_number": "87",
+    "parallel": "Blue Refractor /150 (049/150)",
+    "price": 499,
+    "itemId": "168561671926",
+    "sku": "BBC-19",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0569.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0570.jpg"
+    ],
+    "notes": "Blue Refractor /150 (049/150); RC"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 499
+  },
+  {
+   "label": "90 - Bubba Chandler - Base RC",
+   "primary": {
+    "id": "111",
+    "player": "Bubba Chandler",
+    "set_name": "2026 Topps Finest",
+    "card_number": "90",
+    "parallel": "base",
+    "price": 199,
+    "itemId": "168561673125",
+    "sku": "BBC-111",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0533.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0540.jpg"
+    ],
+    "notes": "Pirates RC"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "96 - Trey Yesavage - Base RC",
+   "primary": {
+    "id": "113",
+    "player": "Trey Yesavage",
+    "set_name": "2026 Topps Finest",
+    "card_number": "96",
+    "parallel": "base",
+    "price": 199,
+    "itemId": "168561673133",
+    "sku": "BBC-113",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0535.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0538.jpg"
+    ],
+    "notes": "Blue Jays RC (copy 1 of 2)"
+   },
+   "extras": [
+    {
+     "id": "122",
+     "player": "Trey Yesavage",
+     "set_name": "2026 Topps Finest",
+     "card_number": "96",
+     "parallel": "base",
+     "price": 199,
+     "itemId": "168561673139",
+     "sku": "BBC-122",
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0555.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0556.jpg"
+     ],
+     "notes": "Blue Jays RC (copy 2 of 2)"
+    }
+   ],
+   "qty": 2,
+   "price": 199
+  },
+  {
+   "label": "98 - Bryce Eldridge - Mini Dia Ref RC",
+   "primary": {
+    "id": "108",
+    "player": "Bryce Eldridge",
+    "set_name": "2026 Topps Finest",
+    "card_number": "98",
+    "parallel": "Mini Diamond Refractor (mega box)",
+    "price": 399,
+    "itemId": "168561672854",
+    "sku": "BBC-108",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0527.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0528.jpg"
+    ],
+    "notes": "Giants RC"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 399
+  },
+  {
+   "label": "112 - Jose Altuve - Mini Dia Ref",
+   "primary": {
+    "id": "230",
+    "player": "Jose Altuve",
+    "set_name": "2026 Topps Finest",
+    "card_number": "112",
+    "parallel": "Mini Diamond Refractor",
+    "price": 249,
+    "itemId": null,
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1175.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1176.jpg"
+    ],
+    "notes": "From the 2026-08-08 Topps Finest / Topps Chrome mega box rip."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 249
+  },
+  {
+   "label": "118 - Rafael Devers - Mini Dia Ref",
+   "primary": {
+    "id": "95",
+    "player": "Rafael Devers",
+    "set_name": "2026 Topps Finest",
+    "card_number": "118",
+    "parallel": "Mini Diamond Refractor (mega box)",
+    "price": 349,
+    "itemId": "168561672850",
+    "sku": "BBC-95",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0502.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0503.jpg"
+    ],
+    "notes": "Giants"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 349
+  },
+  {
+   "label": "133 - Denzer Guzman - Mini Dia Ref RC",
+   "primary": {
+    "id": "106",
+    "player": "Denzer Guzman",
+    "set_name": "2026 Topps Finest",
+    "card_number": "133",
+    "parallel": "Mini Diamond Refractor (mega box)",
+    "price": 449,
+    "itemId": "168561673673",
+    "sku": "BBC-106",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0523.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0524.jpg"
+    ],
+    "notes": "Angels RC"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 449
+  },
+  {
+   "label": "135 - Deyvison De Los Santos - Base RC",
+   "primary": {
+    "id": "98",
+    "player": "Deyvison De Los Santos",
+    "set_name": "2026 Topps Finest",
+    "card_number": "135",
+    "parallel": "base",
+    "price": 199,
+    "itemId": "168561673126",
+    "sku": "BBC-98",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0508.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0509.jpg"
+    ],
+    "notes": "Marlins RC"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "136 - Trey Yesavage - Base RC",
+   "primary": {
+    "id": "233",
+    "player": "Trey Yesavage",
+    "set_name": "2026 Topps Finest",
+    "card_number": "136",
+    "parallel": "base (UNCOMMON tier)",
+    "price": 199,
+    "itemId": null,
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1181.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1182.jpg"
+    ],
+    "notes": "From the 2026-08-08 Topps Finest / Topps Chrome mega box rip. RC."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "137 - Chris Sale - Base",
+   "primary": {
+    "id": "125",
+    "player": "Chris Sale",
+    "set_name": "2026 Topps Finest",
+    "card_number": "137",
+    "parallel": "base",
+    "price": 249,
+    "itemId": "168561672957",
+    "sku": "BBC-125",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0561.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0562.jpg"
+    ],
+    "notes": "Braves - UNCOMMON tier"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 249
+  },
+  {
+   "label": "139 - Konnor Griffin - Base RC",
+   "primary": {
+    "id": "17",
+    "player": "Konnor Griffin",
+    "set_name": "2026 Topps Finest",
+    "card_number": "139",
+    "parallel": "base",
+    "price": 599,
+    "itemId": "168561671913",
+    "sku": "BBC-17",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0573.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0574.jpg"
+    ],
+    "notes": "base; RC"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 599
+  },
+  {
+   "label": "149 - Geraldo Perdomo - Base",
+   "primary": {
+    "id": "231",
+    "player": "Geraldo Perdomo",
+    "set_name": "2026 Topps Finest",
+    "card_number": "149",
+    "parallel": "base (UNCOMMON tier)",
+    "price": 149,
+    "itemId": null,
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1177.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1178.jpg"
+    ],
+    "notes": "From the 2026-08-08 Topps Finest / Topps Chrome mega box rip."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 149
+  },
+  {
+   "label": "160 - Zack Wheeler - Mini Dia Ref",
+   "primary": {
+    "id": "101",
+    "player": "Zack Wheeler",
+    "set_name": "2026 Topps Finest",
+    "card_number": "160",
+    "parallel": "Mini Diamond Refractor (mega box)",
+    "price": 249,
+    "itemId": "168561672961",
+    "sku": "BBC-101",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0514.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0515.jpg"
+    ],
+    "notes": "Phillies"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 249
+  },
+  {
+   "label": "169 - Hunter Greene - Base",
+   "primary": {
+    "id": "126",
+    "player": "Hunter Greene",
+    "set_name": "2026 Topps Finest",
+    "card_number": "169",
+    "parallel": "base",
+    "price": 199,
+    "itemId": "168561673128",
+    "sku": "BBC-126",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0563.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0564.jpg"
+    ],
+    "notes": "Reds - UNCOMMON tier"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "171 - CJ Abrams - Base",
+   "primary": {
+    "id": "104",
+    "player": "CJ Abrams",
+    "set_name": "2026 Topps Finest",
+    "card_number": "171",
+    "parallel": "base",
+    "price": 149,
+    "itemId": "168561674832",
+    "sku": "BBC-104",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0519.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0520.jpg"
+    ],
+    "notes": "Nationals"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 149
+  },
+  {
+   "label": "174 - Masyn Winn - Mini Dia Ref",
+   "primary": {
+    "id": "229",
+    "player": "Masyn Winn",
+    "set_name": "2026 Topps Finest",
+    "card_number": "174",
+    "parallel": "Mini Diamond Refractor",
+    "price": 349,
+    "itemId": null,
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1173.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1174.jpg"
+    ],
+    "notes": "From the 2026-08-08 Topps Finest / Topps Chrome mega box rip."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 349
+  },
+  {
+   "label": "183 - Gunnar Henderson - Base",
+   "primary": {
+    "id": "232",
+    "player": "Gunnar Henderson",
+    "set_name": "2026 Topps Finest",
+    "card_number": "183",
+    "parallel": "base (UNCOMMON tier)",
+    "price": 249,
+    "itemId": null,
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1179.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1180.jpg"
+    ],
+    "notes": "From the 2026-08-08 Topps Finest / Topps Chrome mega box rip."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 249
+  },
+  {
+   "label": "207 - Bobby Witt Jr. - Base",
+   "primary": {
+    "id": "228",
+    "player": "Bobby Witt Jr.",
+    "set_name": "2026 Topps Finest",
+    "card_number": "207",
+    "parallel": "base (RARE tier)",
+    "price": 449,
+    "itemId": null,
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1171.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1172.jpg"
+    ],
+    "notes": "From the 2026-08-08 Topps Finest / Topps Chrome mega box rip. RARE is the short-print tier of the 2026 Finest base set."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 449
+  },
+  {
+   "label": "A-5 - Chase Burns - Insert RC",
+   "primary": {
+    "id": "16",
+    "player": "Chase Burns",
+    "set_name": "2026 Topps Finest (Arrivals insert)",
+    "card_number": "A-5",
+    "parallel": "insert",
+    "price": 299,
+    "itemId": "168561672967",
+    "sku": "BBC-16",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_15_chase-burns_1.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_15_chase-burns_2.jpg"
+    ],
+    "notes": "insert; RC"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 299
+  },
+  {
+   "label": "WF-8 - Pete Crow-Armstrong - Insert",
+   "primary": {
+    "id": "15",
+    "player": "Pete Crow-Armstrong",
+    "set_name": "2026 Topps Finest (World's Finest insert)",
+    "card_number": "WF-8",
+    "parallel": "insert",
+    "price": 349,
+    "itemId": "168561673674",
+    "sku": "BBC-15",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_14_pete-crow-armstrong_1.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_14_pete-crow-armstrong_2.jpg"
+    ],
+    "notes": "insert"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 349
+  },
+  {
+   "label": "TF-9 - Ketel Marte - Insert",
+   "primary": {
+    "id": "110",
+    "player": "Ketel Marte",
+    "set_name": "2026 Topps Finest (Team Finest insert)",
+    "card_number": "TF-9",
+    "parallel": "insert",
+    "price": 249,
+    "itemId": "168561672958",
+    "sku": "BBC-110",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0531.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0532.jpg"
+    ],
+    "notes": "Dbacks"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 249
+  },
+  {
+   "label": "WF-9 - Roman Anthony - Insert",
+   "primary": {
+    "id": "234",
+    "player": "Roman Anthony",
+    "set_name": "2026 Topps Finest (World's Finest insert)",
+    "card_number": "WF-9",
+    "parallel": "insert",
+    "price": 399,
+    "itemId": null,
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1183.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1184.jpg"
+    ],
+    "notes": "From the 2026-08-08 Topps Finest / Topps Chrome mega box rip."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 399
+  },
+  {
+   "label": "TF-10 - Jose Ramirez - Ref",
+   "primary": {
+    "id": "127",
+    "player": "Jose Ramirez",
+    "set_name": "2026 Topps Finest (Team Finest insert)",
+    "card_number": "TF-10",
+    "parallel": "Refractor",
+    "price": 349,
+    "itemId": "168561672851",
+    "sku": "BBC-127",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0565.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0566.jpg"
+    ],
+    "notes": "Guardians"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 349
+  },
+  {
+   "label": "A-11 - Carson Williams - Insert RC",
+   "primary": {
+    "id": "238",
+    "player": "Carson Williams",
+    "set_name": "2026 Topps Finest (Arrivals insert)",
+    "card_number": "A-11",
+    "parallel": "insert",
+    "price": 199,
+    "itemId": null,
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1191.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1192.jpg"
+    ],
+    "notes": "From the 2026-08-08 Topps Finest / Topps Chrome mega box rip. RC. No refractor marker on the back, so base insert."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "WF-11 - Bobby Witt Jr. - Insert",
+   "primary": {
+    "id": "11",
+    "player": "Bobby Witt Jr.",
+    "set_name": "2026 Topps Finest (World's Finest insert)",
+    "card_number": "WF-11",
+    "parallel": "insert",
+    "price": 399,
+    "itemId": "168561672853",
+    "sku": "BBC-11",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_10_bobby-witt-jr_1.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_10_bobby-witt-jr_2.jpg"
+    ],
+    "notes": "insert"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 399
+  },
+  {
+   "label": "TF-12 - Aaron Judge - Insert",
+   "primary": {
+    "id": "235",
+    "player": "Aaron Judge",
+    "set_name": "2026 Topps Finest (Team Finest insert)",
+    "card_number": "TF-12",
+    "parallel": "insert",
+    "price": 349,
+    "itemId": null,
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1185.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1186.jpg"
+    ],
+    "notes": "From the 2026-08-08 Topps Finest / Topps Chrome mega box rip."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 349
+  },
+  {
+   "label": "A-14 - Harry Ford - Ref RC",
+   "primary": {
+    "id": "236",
+    "player": "Harry Ford",
+    "set_name": "2026 Topps Finest (Arrivals insert)",
+    "card_number": "A-14",
+    "parallel": "Refractor",
+    "price": 199,
+    "itemId": null,
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1187.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1188.jpg"
+    ],
+    "notes": "From the 2026-08-08 Topps Finest / Topps Chrome mega box rip. RC. Back prints REFRACTOR top-left."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "A-17 - Sal Stewart - Insert RC",
+   "primary": {
+    "id": "237",
+    "player": "Sal Stewart",
+    "set_name": "2026 Topps Finest (Arrivals insert)",
+    "card_number": "A-17",
+    "parallel": "insert",
+    "price": 349,
+    "itemId": null,
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1189.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1190.jpg"
+    ],
+    "notes": "From the 2026-08-08 Topps Finest / Topps Chrome mega box rip. RC. No refractor marker on the back, so base insert."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 349
+  },
+  {
+   "label": "FT-24 - Rickey Henderson - Insert",
+   "primary": {
+    "id": "124",
+    "player": "Rickey Henderson",
+    "set_name": "2026 Topps Finest (Finest Timelines insert)",
+    "card_number": "FT-24",
+    "parallel": "insert",
+    "price": 299,
+    "itemId": "168561672845",
+    "sku": "BBC-124",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0559.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0560.jpg"
+    ],
+    "notes": "Athletics legend"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 299
+  },
+  {
+   "label": "A-26 - Munetaka Murakami - Insert RC",
+   "primary": {
+    "id": "7",
+    "player": "Munetaka Murakami",
+    "set_name": "2026 Topps Finest (Arrivals insert)",
+    "card_number": "A-26",
+    "parallel": "insert",
+    "price": 749,
+    "itemId": "168561671907",
+    "sku": "BBC-7",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_06_munetaka-murakami_1.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_06_munetaka-murakami_2.jpg"
+    ],
+    "notes": "insert; RC"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 749
+  },
+  {
+   "label": "FT-27 - George Springer - Insert",
+   "primary": {
+    "id": "97",
+    "player": "George Springer",
+    "set_name": "2026 Topps Finest (Finest Timelines insert)",
+    "card_number": "FT-27",
+    "parallel": "insert",
+    "price": 199,
+    "itemId": "168561673124",
+    "sku": "BBC-97",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0506.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0507.jpg"
+    ],
+    "notes": "Blue Jays"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "WF-28 - Salvador Perez - Ref",
+   "primary": {
+    "id": "123",
+    "player": "Salvador Perez",
+    "set_name": "2026 Topps Finest (World's Finest insert)",
+    "card_number": "WF-28",
+    "parallel": "Refractor",
+    "price": 349,
+    "itemId": "168561673672",
+    "sku": "BBC-123",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0557.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0558.jpg"
+    ],
+    "notes": "WBC Venezuela"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 349
+  }
+ ]
+}

@@ -1,0 +1,632 @@
+[
+ {
+  "id": "8",
+  "player": "Munetaka Murakami",
+  "set": "2026 Topps Finest",
+  "num": "295",
+  "ask": 1799,
+  "item": "168561671909",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_07_munetaka-murakami_1.jpg",
+  "hasRC": true
+ },
+ {
+  "id": "218",
+  "player": "Pete Crow-Armstrong",
+  "set": "2026 Topps Chrome",
+  "num": "45",
+  "ask": 1449,
+  "item": "168584893860",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1002.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "6",
+  "player": "Kazuma Okamoto",
+  "set": "2026 Topps Finest",
+  "num": "34",
+  "ask": 199,
+  "item": "168601477878",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0567.jpg",
+  "hasRC": true
+ },
+ {
+  "id": "9",
+  "player": "Munetaka Murakami",
+  "set": "2026 Topps Finest",
+  "num": "9",
+  "ask": 799,
+  "item": "168601477878",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_08_munetaka-murakami_1.jpg",
+  "hasRC": true
+ },
+ {
+  "id": "10",
+  "player": "Shohei Ohtani",
+  "set": "2026 Topps Finest",
+  "num": "50",
+  "ask": 399,
+  "item": "168601477878",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_09_shohei-ohtani_1.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "17",
+  "player": "Konnor Griffin",
+  "set": "2026 Topps Finest",
+  "num": "139",
+  "ask": 599,
+  "item": "168601477878",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0573.jpg",
+  "hasRC": true
+ },
+ {
+  "id": "96",
+  "player": "Paul Skenes",
+  "set": "2026 Topps Finest",
+  "num": "10",
+  "ask": 249,
+  "item": "168601477878",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0504.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "98",
+  "player": "Deyvison De Los Santos",
+  "set": "2026 Topps Finest",
+  "num": "135",
+  "ask": 199,
+  "item": "168601477878",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0508.jpg",
+  "hasRC": true
+ },
+ {
+  "id": "99",
+  "player": "Chase Burns",
+  "set": "2026 Topps Finest",
+  "num": "76",
+  "ask": 199,
+  "item": "168601477878",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0510.jpg",
+  "hasRC": true
+ },
+ {
+  "id": "100",
+  "player": "Connelly Early",
+  "set": "2026 Topps Finest",
+  "num": "56",
+  "ask": 149,
+  "item": "168601477878",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0512.jpg",
+  "hasRC": true
+ },
+ {
+  "id": "103",
+  "player": "Konnor Griffin",
+  "set": "2026 Topps Finest",
+  "num": "6",
+  "ask": 299,
+  "item": "168601477878",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0517.jpg",
+  "hasRC": true
+ },
+ {
+  "id": "104",
+  "player": "CJ Abrams",
+  "set": "2026 Topps Finest",
+  "num": "171",
+  "ask": 149,
+  "item": "168601477878",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0519.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "105",
+  "player": "Drew Gilbert",
+  "set": "2026 Topps Finest",
+  "num": "53",
+  "ask": 199,
+  "item": "168601477878",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0521.jpg",
+  "hasRC": true
+ },
+ {
+  "id": "107",
+  "player": "Kyle Teel",
+  "set": "2026 Topps Finest",
+  "num": "54",
+  "ask": 149,
+  "item": "168601477878",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0525.jpg",
+  "hasRC": true
+ },
+ {
+  "id": "111",
+  "player": "Bubba Chandler",
+  "set": "2026 Topps Finest",
+  "num": "90",
+  "ask": 199,
+  "item": "168601477878",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0533.jpg",
+  "hasRC": true
+ },
+ {
+  "id": "112",
+  "player": "Kyle Karros",
+  "set": "2026 Topps Finest",
+  "num": "87",
+  "ask": 149,
+  "item": "168601477878",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0534.jpg",
+  "hasRC": true
+ },
+ {
+  "id": "113",
+  "player": "Trey Yesavage",
+  "set": "2026 Topps Finest",
+  "num": "96",
+  "ask": 199,
+  "item": "168601477878",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0535.jpg",
+  "hasRC": true
+ },
+ {
+  "id": "114",
+  "player": "JJ Wetherholt",
+  "set": "2026 Topps Finest",
+  "num": "15",
+  "ask": 299,
+  "item": "168601477878",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0536.jpg",
+  "hasRC": true
+ },
+ {
+  "id": "115",
+  "player": "Colby Thomas",
+  "set": "2026 Topps Finest",
+  "num": "73",
+  "ask": 199,
+  "item": "168601477878",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0541.jpg",
+  "hasRC": true
+ },
+ {
+  "id": "117",
+  "player": "Roman Anthony",
+  "set": "2026 Topps Finest",
+  "num": "52",
+  "ask": 249,
+  "item": "168601477878",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0545.jpg",
+  "hasRC": true
+ },
+ {
+  "id": "118",
+  "player": "Jacob Misiorowski",
+  "set": "2026 Topps Finest",
+  "num": "82",
+  "ask": 299,
+  "item": "168601477878",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0547.jpg",
+  "hasRC": true
+ },
+ {
+  "id": "119",
+  "player": "Kevin McGonigle",
+  "set": "2026 Topps Finest",
+  "num": "74",
+  "ask": 349,
+  "item": "168601477878",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0549.jpg",
+  "hasRC": true
+ },
+ {
+  "id": "120",
+  "player": "Zach Neto",
+  "set": "2026 Topps Finest",
+  "num": "38",
+  "ask": 199,
+  "item": "168601477878",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0551.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "122",
+  "player": "Trey Yesavage",
+  "set": "2026 Topps Finest",
+  "num": "96",
+  "ask": 199,
+  "item": "168601477878",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0555.jpg",
+  "hasRC": true
+ },
+ {
+  "id": "125",
+  "player": "Chris Sale",
+  "set": "2026 Topps Finest",
+  "num": "137",
+  "ask": 249,
+  "item": "168601477878",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0561.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "126",
+  "player": "Hunter Greene",
+  "set": "2026 Topps Finest",
+  "num": "169",
+  "ask": 199,
+  "item": "168601477878",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0563.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "133",
+  "player": "Cole Young",
+  "set": "2026 Topps Finest",
+  "num": "57",
+  "ask": 199,
+  "item": "168601477878",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0589.jpg",
+  "hasRC": true
+ },
+ {
+  "id": "228",
+  "player": "Bobby Witt Jr.",
+  "set": "2026 Topps Finest",
+  "num": "207",
+  "ask": 449,
+  "item": "168601477878",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1171.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "231",
+  "player": "Geraldo Perdomo",
+  "set": "2026 Topps Finest",
+  "num": "149",
+  "ask": 149,
+  "item": "168601477878",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1177.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "232",
+  "player": "Gunnar Henderson",
+  "set": "2026 Topps Finest",
+  "num": "183",
+  "ask": 249,
+  "item": "168601477878",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1179.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "233",
+  "player": "Trey Yesavage",
+  "set": "2026 Topps Finest",
+  "num": "136",
+  "ask": 199,
+  "item": "168601477878",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1181.jpg",
+  "hasRC": true
+ },
+ {
+  "id": "61",
+  "player": "Aaron Judge",
+  "set": "2026 Topps Chrome",
+  "num": "100",
+  "ask": 299,
+  "item": "168601478411",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0443.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "64",
+  "player": "Julio Rodriguez",
+  "set": "2026 Topps Chrome",
+  "num": "149",
+  "ask": 299,
+  "item": "168601478411",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_63_julio-rodriguez_1.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "65",
+  "player": "Vinnie Pasquantino",
+  "set": "2026 Topps Chrome",
+  "num": "162",
+  "ask": 299,
+  "item": "168601478411",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0445.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "77",
+  "player": "Lars Nootbaar",
+  "set": "2026 Topps Chrome",
+  "num": "292",
+  "ask": 399,
+  "item": "168601478411",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0459.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "78",
+  "player": "Jack Flaherty",
+  "set": "2026 Topps Chrome",
+  "num": "14",
+  "ask": 299,
+  "item": "168601478411",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0461.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "87",
+  "player": "Brady House",
+  "set": "2026 Topps Chrome",
+  "num": "189",
+  "ask": 299,
+  "item": "168601478411",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0481.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "88",
+  "player": "Dylan Beavers",
+  "set": "2026 Topps Chrome",
+  "num": "218",
+  "ask": 199,
+  "item": "168601478411",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0483.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "89",
+  "player": "Sal Stewart",
+  "set": "2026 Topps Chrome",
+  "num": "6",
+  "ask": 999,
+  "item": "168601478411",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0485.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "90",
+  "player": "Zach Maxwell",
+  "set": "2026 Topps Chrome",
+  "num": "143",
+  "ask": 249,
+  "item": "168601478411",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0487.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "91",
+  "player": "Kyle Karros",
+  "set": "2026 Topps Chrome",
+  "num": "13",
+  "ask": 299,
+  "item": "168601478411",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0489.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "92",
+  "player": "Nolan McLean",
+  "set": "2026 Topps Chrome",
+  "num": "236",
+  "ask": 499,
+  "item": "168601478411",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0491.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "93",
+  "player": "Colson Montgomery",
+  "set": "2026 Topps Chrome",
+  "num": "259",
+  "ask": 399,
+  "item": "168601478411",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0493.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "94",
+  "player": "Cody Freeman",
+  "set": "2026 Topps Chrome",
+  "num": "255",
+  "ask": 199,
+  "item": "168601478411",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0495.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "135",
+  "player": "Agustin Ramirez",
+  "set": "2026 Topps Chrome",
+  "num": "222",
+  "ask": 299,
+  "item": "168601478411",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0612.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "137",
+  "player": "Cole Young",
+  "set": "2026 Topps Chrome",
+  "num": "23",
+  "ask": 399,
+  "item": "168601478411",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0616.jpg",
+  "hasRC": true
+ },
+ {
+  "id": "142",
+  "player": "Samuel Basallo",
+  "set": "2026 Topps Chrome",
+  "num": "7",
+  "ask": 299,
+  "item": "168601478411",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0628.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "143",
+  "player": "Christian Moore",
+  "set": "2026 Topps Chrome",
+  "num": "232",
+  "ask": 249,
+  "item": "168601478411",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0630.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "147",
+  "player": "C.J. Kayfus",
+  "set": "2026 Topps Chrome",
+  "num": "46",
+  "ask": 199,
+  "item": "168601478411",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0638.jpg",
+  "hasRC": true
+ },
+ {
+  "id": "148",
+  "player": "Nick Kurtz",
+  "set": "2026 Topps Chrome",
+  "num": "250",
+  "ask": 499,
+  "item": "168601478411",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0640.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "149",
+  "player": "Jack Dreyer",
+  "set": "2026 Topps Chrome",
+  "num": "52",
+  "ask": 249,
+  "item": "168601478411",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0642.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "155",
+  "player": "Justin Crawford",
+  "set": "2026 Topps Chrome",
+  "num": "73",
+  "ask": 349,
+  "item": "168601478411",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0654.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "243",
+  "player": "Jhostynxon Garcia",
+  "set": "2026 Topps Chrome",
+  "num": "70",
+  "ask": 149,
+  "item": "168601478411",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1203.jpg",
+  "hasRC": true
+ },
+ {
+  "id": "244",
+  "player": "Carter Jensen",
+  "set": "2026 Topps Chrome",
+  "num": "39",
+  "ask": 249,
+  "item": "168601478411",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1205.jpg",
+  "hasRC": true
+ },
+ {
+  "id": "245",
+  "player": "Kyle Teel",
+  "set": "2026 Topps Chrome",
+  "num": "63",
+  "ask": 249,
+  "item": "168601478411",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1207.jpg",
+  "hasRC": true
+ },
+ {
+  "id": "246",
+  "player": "Kazuma Okamoto",
+  "set": "2026 Topps Chrome",
+  "num": "78",
+  "ask": 449,
+  "item": "168601478411",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1209.jpg",
+  "hasRC": true
+ },
+ {
+  "id": "247",
+  "player": "Shinnosuke Ogasawara",
+  "set": "2026 Topps Chrome",
+  "num": "64",
+  "ask": 199,
+  "item": "168601478411",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1211.jpg",
+  "hasRC": true
+ },
+ {
+  "id": "248",
+  "player": "Luke Keaschall",
+  "set": "2026 Topps Chrome",
+  "num": "220",
+  "ask": 199,
+  "item": "168601478411",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1213.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "249",
+  "player": "Bubba Chandler",
+  "set": "2026 Topps Chrome",
+  "num": "93",
+  "ask": 249,
+  "item": "168601478411",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1215.jpg",
+  "hasRC": true
+ },
+ {
+  "id": "250",
+  "player": "Carson Whisenhunt",
+  "set": "2026 Topps Chrome",
+  "num": "142",
+  "ask": 199,
+  "item": "168601478411",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1217.jpg",
+  "hasRC": true
+ },
+ {
+  "id": "5",
+  "player": "Eric Hartman",
+  "set": "2026 Bowman Chrome Prospects",
+  "num": "BCP-102",
+  "ask": 249,
+  "item": "168601501301",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_04_eric-hartman_1.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "203",
+  "player": "Aaron Judge",
+  "set": "2026 Bowman",
+  "num": "1",
+  "ask": 199,
+  "item": "168601642974",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0749.jpg",
+  "hasRC": false
+ },
+ {
+  "id": "197",
+  "player": "Shohei Ohtani",
+  "set": "2026 Bowman",
+  "num": "52",
+  "ask": 149,
+  "item": "168601643466",
+  "front": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0737.jpg",
+  "hasRC": false
+ }
+]

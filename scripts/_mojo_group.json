@@ -1,0 +1,635 @@
+{
+  "title": "2026 Bowman Chrome Mojo Refractor You Pick Card RC 1st Bowman Prospects MLB",
+  "variations": [
+    {
+      "label": "1 - Aaron Judge - Yankees",
+      "primary": {
+        "id": "182",
+        "sku": "BBC-182",
+        "player": "Aaron Judge",
+        "card_number": "1",
+        "team": "Yankees",
+        "firstBowman": false,
+        "rc": false,
+        "price": 249,
+        "itemId": "168562539966",
+        "offerId": "216194668011",
+        "photos": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0706.jpg",
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0707.jpg"
+        ]
+      },
+      "extras": [],
+      "qty": 1,
+      "price": 249
+    },
+    {
+      "label": "6 - Sal Stewart - Reds (RC)",
+      "primary": {
+        "id": "162",
+        "sku": "BBC-162",
+        "player": "Sal Stewart",
+        "card_number": "6",
+        "team": "Reds",
+        "firstBowman": false,
+        "rc": false,
+        "price": 249,
+        "itemId": "168562538624",
+        "offerId": "216194853011",
+        "photos": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0668.jpg",
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0669.jpg"
+        ]
+      },
+      "extras": [
+        {
+          "id": "199",
+          "sku": "BBC-199",
+          "player": "Sal Stewart",
+          "card_number": "6",
+          "team": "Reds",
+          "firstBowman": false,
+          "rc": true,
+          "price": 249,
+          "itemId": "168562538620",
+          "offerId": "216194844011",
+          "photos": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0741.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0742.jpg"
+          ]
+        }
+      ],
+      "qty": 2,
+      "price": 249
+    },
+    {
+      "label": "18 - Roman Anthony - Red Sox (RC)",
+      "primary": {
+        "id": "195",
+        "sku": "BBC-195",
+        "player": "Roman Anthony",
+        "card_number": "18",
+        "team": "Red Sox",
+        "firstBowman": false,
+        "rc": true,
+        "price": 299,
+        "itemId": "168562540553",
+        "offerId": "216194681011",
+        "photos": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0732.jpg",
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0733.jpg"
+        ]
+      },
+      "extras": [],
+      "qty": 1,
+      "price": 299
+    },
+    {
+      "label": "19 - Kyle Teel - White Sox (RC)",
+      "primary": {
+        "id": "172",
+        "sku": "BBC-172",
+        "player": "Kyle Teel",
+        "card_number": "19",
+        "team": "White Sox",
+        "firstBowman": false,
+        "rc": true,
+        "price": 199,
+        "itemId": "168562538627",
+        "offerId": "216194841011",
+        "photos": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0687.jpg",
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0688.jpg"
+        ]
+      },
+      "extras": [
+        {
+          "id": "168",
+          "sku": "BBC-168",
+          "player": "Kyle Teel",
+          "card_number": "19",
+          "team": "White Sox",
+          "firstBowman": false,
+          "rc": false,
+          "price": 199,
+          "itemId": "168562538706",
+          "offerId": "216194900011",
+          "photos": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0678.jpg"
+          ]
+        }
+      ],
+      "qty": 2,
+      "price": 199
+    },
+    {
+      "label": "23 - Ronald Acuna Jr. - Braves",
+      "primary": {
+        "id": "176",
+        "sku": "BBC-176",
+        "player": "Ronald Acuna Jr.",
+        "card_number": "23",
+        "team": "Braves",
+        "firstBowman": false,
+        "rc": false,
+        "price": 199,
+        "itemId": "168562538622",
+        "offerId": "216194854011",
+        "photos": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0695.jpg",
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0696.jpg"
+        ]
+      },
+      "extras": [
+        {
+          "id": "200",
+          "sku": "BBC-200",
+          "player": "Ronald Acuna Jr.",
+          "card_number": "23",
+          "team": "Braves",
+          "firstBowman": false,
+          "rc": false,
+          "price": 199,
+          "itemId": "168562538690",
+          "offerId": "216194895011",
+          "photos": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0743.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0744.jpg"
+          ]
+        }
+      ],
+      "qty": 2,
+      "price": 199
+    },
+    {
+      "label": "44 - Elly De La Cruz - Reds",
+      "primary": {
+        "id": "169",
+        "sku": "BBC-169",
+        "player": "Elly De La Cruz",
+        "card_number": "44",
+        "team": "Reds",
+        "firstBowman": false,
+        "rc": false,
+        "price": 149,
+        "itemId": "168562538721",
+        "offerId": "216194904011",
+        "photos": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0681.jpg",
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0682.jpg"
+        ]
+      },
+      "extras": [
+        {
+          "id": "187",
+          "sku": "BBC-187",
+          "player": "Elly De La Cruz",
+          "card_number": "44",
+          "team": "Reds",
+          "firstBowman": false,
+          "rc": false,
+          "price": 149,
+          "itemId": "168562538707",
+          "offerId": "216194903011",
+          "photos": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0716.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0717.jpg"
+          ]
+        }
+      ],
+      "qty": 2,
+      "price": 149
+    },
+    {
+      "label": "62 - Owen Caissie - Marlins (RC)",
+      "primary": {
+        "id": "189",
+        "sku": "BBC-189",
+        "player": "Owen Caissie",
+        "card_number": "62",
+        "team": "Marlins",
+        "firstBowman": false,
+        "rc": true,
+        "price": 149,
+        "itemId": "168562540785",
+        "offerId": "216194892011",
+        "photos": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0720.jpg",
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0721.jpg"
+        ]
+      },
+      "extras": [],
+      "qty": 1,
+      "price": 149
+    },
+    {
+      "label": "65 - Jonah Tong - Mets (RC)",
+      "primary": {
+        "id": "185",
+        "sku": "BBC-185",
+        "player": "Jonah Tong",
+        "card_number": "65",
+        "team": "Mets",
+        "firstBowman": false,
+        "rc": true,
+        "price": 199,
+        "itemId": "168562538701",
+        "offerId": "216194905011",
+        "photos": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0712.jpg",
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0713.jpg"
+        ]
+      },
+      "extras": [],
+      "qty": 1,
+      "price": 199
+    },
+    {
+      "label": "80 - Corbin Carroll - Diamondbacks",
+      "primary": {
+        "id": "204",
+        "sku": "BBC-204",
+        "player": "Corbin Carroll",
+        "card_number": "80",
+        "team": "Diamondbacks",
+        "firstBowman": false,
+        "rc": false,
+        "price": 199,
+        "itemId": "168562538639",
+        "offerId": "216194839011",
+        "photos": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0751.jpg",
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0752.jpg"
+        ]
+      },
+      "extras": [],
+      "qty": 1,
+      "price": 199
+    },
+    {
+      "label": "86 - Jakob Marsee - Marlins (RC)",
+      "primary": {
+        "id": "186",
+        "sku": "BBC-186",
+        "player": "Jakob Marsee",
+        "card_number": "86",
+        "team": "Marlins",
+        "firstBowman": false,
+        "rc": true,
+        "price": 149,
+        "itemId": "168562540120",
+        "offerId": "216194899011",
+        "photos": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0714.jpg",
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0715.jpg"
+        ]
+      },
+      "extras": [],
+      "qty": 1,
+      "price": 149
+    },
+    {
+      "label": "100 - Mike Trout - Angels",
+      "primary": {
+        "id": "160",
+        "sku": "BBC-160",
+        "player": "Mike Trout",
+        "card_number": "100",
+        "team": "Angels",
+        "firstBowman": false,
+        "rc": false,
+        "price": 149,
+        "itemId": "168562538716",
+        "offerId": "216194907011",
+        "photos": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0664.jpg",
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0665.jpg"
+        ]
+      },
+      "extras": [
+        {
+          "id": "178",
+          "sku": "BBC-178",
+          "player": "Mike Trout",
+          "card_number": "100",
+          "team": "Angels",
+          "firstBowman": false,
+          "rc": false,
+          "price": 149,
+          "itemId": "168562538708",
+          "offerId": "216194894011",
+          "photos": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0699.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0701.jpg"
+          ]
+        }
+      ],
+      "qty": 2,
+      "price": 149
+    },
+    {
+      "label": "BCP-7 - Kendry Chourio - Royals (1st Bowman)",
+      "primary": {
+        "id": "164",
+        "sku": "BBC-164",
+        "player": "Kendry Chourio",
+        "card_number": "BCP-7",
+        "team": "Royals",
+        "firstBowman": true,
+        "rc": false,
+        "price": 199,
+        "itemId": "168562538715",
+        "offerId": "216194889011",
+        "photos": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0672.jpg",
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0673.jpg"
+        ]
+      },
+      "extras": [],
+      "qty": 1,
+      "price": 199
+    },
+    {
+      "label": "BCP-33 - Coy James - Nationals (1st Bowman)",
+      "primary": {
+        "id": "193",
+        "sku": "BBC-193",
+        "player": "Coy James",
+        "card_number": "BCP-33",
+        "team": "Nationals",
+        "firstBowman": true,
+        "rc": false,
+        "price": 149,
+        "itemId": "168562538699",
+        "offerId": "216194898011",
+        "photos": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0728.jpg",
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0729.jpg"
+        ]
+      },
+      "extras": [],
+      "qty": 1,
+      "price": 149
+    },
+    {
+      "label": "BCP-45 - Seojun Moon - Blue Jays (1st Bowman)",
+      "primary": {
+        "id": "167",
+        "sku": "BBC-167",
+        "player": "Seojun Moon",
+        "card_number": "BCP-45",
+        "team": "Blue Jays",
+        "firstBowman": true,
+        "rc": false,
+        "price": 149,
+        "itemId": "168562538720",
+        "offerId": "216194906011",
+        "photos": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0679.jpg",
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0680.jpg"
+        ]
+      },
+      "extras": [
+        {
+          "id": "174",
+          "sku": "BBC-174",
+          "player": "Seojun Moon",
+          "card_number": "BCP-45",
+          "team": "Blue Jays",
+          "firstBowman": true,
+          "rc": false,
+          "price": 149,
+          "itemId": "168562540697",
+          "offerId": "216194941011",
+          "photos": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0691.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0692.jpg"
+          ]
+        }
+      ],
+      "qty": 2,
+      "price": 149
+    },
+    {
+      "label": "BCP-88 - Dasan Hill - Twins (1st Bowman)",
+      "primary": {
+        "id": "161",
+        "sku": "BBC-161",
+        "player": "Dasan Hill",
+        "card_number": "BCP-88",
+        "team": "Twins",
+        "firstBowman": true,
+        "rc": false,
+        "price": 199,
+        "itemId": "168562538632",
+        "offerId": "216194835011",
+        "photos": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0666.jpg",
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0667.jpg"
+        ]
+      },
+      "extras": [
+        {
+          "id": "198",
+          "sku": "BBC-198",
+          "player": "Dasan Hill",
+          "card_number": "BCP-88",
+          "team": "Twins",
+          "firstBowman": true,
+          "rc": false,
+          "price": 199,
+          "itemId": "168562538711",
+          "offerId": "216194890011",
+          "photos": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0739.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0740.jpg"
+          ]
+        }
+      ],
+      "qty": 2,
+      "price": 199
+    },
+    {
+      "label": "BCP-90 - Andrew Tess - Orioles (1st Bowman)",
+      "primary": {
+        "id": "163",
+        "sku": "BBC-163",
+        "player": "Andrew Tess",
+        "card_number": "BCP-90",
+        "team": "Orioles",
+        "firstBowman": true,
+        "rc": false,
+        "price": 199,
+        "itemId": "168562538635",
+        "offerId": "216194850011",
+        "photos": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0670.jpg",
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0671.jpg"
+        ]
+      },
+      "extras": [],
+      "qty": 1,
+      "price": 199
+    },
+    {
+      "label": "BCP-93 - Jorge Quintana - Padres (1st Bowman)",
+      "primary": {
+        "id": "194",
+        "sku": "BBC-194",
+        "player": "Jorge Quintana",
+        "card_number": "BCP-93",
+        "team": "Padres",
+        "firstBowman": true,
+        "rc": false,
+        "price": 149,
+        "itemId": "168562540466",
+        "offerId": "216194896011",
+        "photos": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0730.jpg",
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0731.jpg"
+        ]
+      },
+      "extras": [],
+      "qty": 1,
+      "price": 149
+    },
+    {
+      "label": "BCP-95 - Eli Willits - Nationals (1st Bowman)",
+      "primary": {
+        "id": "173",
+        "sku": "BBC-173",
+        "player": "Eli Willits",
+        "card_number": "BCP-95",
+        "team": "Nationals",
+        "firstBowman": true,
+        "rc": false,
+        "price": 199,
+        "itemId": "168562538629",
+        "offerId": "216194836011",
+        "photos": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0689.jpg",
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0690.jpg"
+        ]
+      },
+      "extras": [
+        {
+          "id": "175",
+          "sku": "BBC-175",
+          "player": "Eli Willits",
+          "card_number": "BCP-95",
+          "team": "Nationals",
+          "firstBowman": true,
+          "rc": false,
+          "price": 199,
+          "itemId": "168562541837",
+          "offerId": "216194888011",
+          "photos": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0693.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0694.jpg"
+          ]
+        }
+      ],
+      "qty": 2,
+      "price": 199
+    },
+    {
+      "label": "BCP-98 - Walker Jenkins - Twins (1st Bowman)",
+      "primary": {
+        "id": "190",
+        "sku": "BBC-190",
+        "player": "Walker Jenkins",
+        "card_number": "BCP-98",
+        "team": "Twins",
+        "firstBowman": true,
+        "rc": false,
+        "price": 149,
+        "itemId": "168562540968",
+        "offerId": "216194901011",
+        "photos": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0722.jpg",
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0723.jpg"
+        ]
+      },
+      "extras": [
+        {
+          "id": "179",
+          "sku": "BBC-179",
+          "player": "Walker Jenkins",
+          "card_number": "BCP-98",
+          "team": "Twins",
+          "firstBowman": true,
+          "rc": false,
+          "price": 149,
+          "itemId": "168562539802",
+          "offerId": "216194891011",
+          "photos": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0702.jpg"
+          ]
+        }
+      ],
+      "qty": 2,
+      "price": 149
+    },
+    {
+      "label": "BCP-125 - Wei-En Lin - Athletics (1st Bowman)",
+      "primary": {
+        "id": "165",
+        "sku": "BBC-165",
+        "player": "Wei-En Lin",
+        "card_number": "BCP-125",
+        "team": "Athletics",
+        "firstBowman": true,
+        "rc": false,
+        "price": 199,
+        "itemId": "168562539586",
+        "offerId": "216194893011",
+        "photos": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0674.jpg",
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0675.jpg"
+        ]
+      },
+      "extras": [
+        {
+          "id": "188",
+          "sku": "BBC-188",
+          "player": "Wei-En Lin",
+          "card_number": "BCP-125",
+          "team": "Athletics",
+          "firstBowman": true,
+          "rc": false,
+          "price": 199,
+          "itemId": "168562540245",
+          "offerId": "216194897011",
+          "photos": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0718.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0719.jpg"
+          ]
+        }
+      ],
+      "qty": 2,
+      "price": 199
+    },
+    {
+      "label": "BCP-150 - Wilder Dalis - Rockies (1st Bowman)",
+      "primary": {
+        "id": "192",
+        "sku": "BBC-192",
+        "player": "Wilder Dalis",
+        "card_number": "BCP-150",
+        "team": "Rockies",
+        "firstBowman": true,
+        "rc": false,
+        "price": 149,
+        "itemId": "168562541887",
+        "offerId": "216194902011",
+        "photos": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0726.jpg",
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0727.jpg"
+        ]
+      },
+      "extras": [],
+      "qty": 1,
+      "price": 149
+    }
+  ]
+}

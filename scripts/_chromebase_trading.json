@@ -1,0 +1,485 @@
+{
+  "Title": "2026 Topps Chrome Baseball You Pick Card Base RC Rookie MLB Singles",
+  "Description": "<p>2026 Topps Chrome baseball base cards. Pick your card from the dropdown above.</p><p>Raw / ungraded, near mint or better. Cards ship in a penny sleeve and toploader protected between rigid cardboard with tracking. Ships within 1 business day.</p><p>Buying several? Add them all to your cart and they ship together.</p><p>Smoke-free home. Buy with confidence, check my feedback. Thanks for looking.</p>",
+  "PrimaryCategory": {
+    "CategoryID": "261328"
+  },
+  "ConditionID": 4000,
+  "ConditionDescriptors": {
+    "ConditionDescriptor": {
+      "Name": "40001",
+      "Value": "400010"
+    }
+  },
+  "Country": "US",
+  "Currency": "USD",
+  "Location": "Edmonds, Washington",
+  "PostalCode": "98026",
+  "DispatchTimeMax": 2,
+  "ListingDuration": "GTC",
+  "ListingType": "FixedPriceItem",
+  "InventoryTrackingMethod": "SKU",
+  "SKU": "CHROME2026-BASE-YOUPICK",
+  "SellerProfiles": {
+    "SellerShippingProfile": {
+      "ShippingProfileID": "272052757012"
+    },
+    "SellerReturnProfile": {
+      "ReturnProfileID": "269110705012"
+    },
+    "SellerPaymentProfile": {
+      "PaymentProfileID": "269110704012"
+    }
+  },
+  "ItemSpecifics": {
+    "NameValueList": [
+      {
+        "Name": "Sport",
+        "Value": "Baseball"
+      },
+      {
+        "Name": "League",
+        "Value": "Major League Baseball (MLB)"
+      },
+      {
+        "Name": "Type",
+        "Value": "Sports Trading Card"
+      },
+      {
+        "Name": "Set",
+        "Value": "2026 Topps Chrome"
+      },
+      {
+        "Name": "Season",
+        "Value": "2026"
+      },
+      {
+        "Name": "Manufacturer",
+        "Value": "Topps"
+      },
+      {
+        "Name": "Grade",
+        "Value": "Ungraded"
+      },
+      {
+        "Name": "Graded",
+        "Value": "No"
+      },
+      {
+        "Name": "Vintage",
+        "Value": "No"
+      },
+      {
+        "Name": "Autographed",
+        "Value": "No"
+      }
+    ]
+  },
+  "PictureDetails": {
+    "GalleryType": "Gallery",
+    "PictureURL": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0443.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_63_julio-rodriguez_1.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0485.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0640.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0491.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0493.jpg"
+    ]
+  },
+  "Variations": {
+    "VariationSpecificsSet": {
+      "NameValueList": [
+        {
+          "Name": "Card # / Player / Team",
+          "Value": [
+            "6 - Sal Stewart - Reds (RC)",
+            "7 - Samuel Basallo - Orioles (RC)",
+            "13 - Kyle Karros - Rockies (RC)",
+            "23 - Cole Young - Mariners (RC)",
+            "46 - C.J. Kayfus - Guardians (RC)",
+            "52 - Jack Dreyer - Dodgers (Rookie Cup)",
+            "73 - Justin Crawford - Phillies (RC)",
+            "100 - Aaron Judge - Yankees",
+            "143 - Zach Maxwell - Reds (RC)",
+            "149 - Julio Rodriguez - Mariners",
+            "189 - Brady House - Nationals (RC)",
+            "218 - Dylan Beavers - Orioles (RC)",
+            "222 - Agustin Ramirez - Marlins (Rookie Cup)",
+            "232 - Christian Moore - Angels (RC)",
+            "236 - Nolan McLean - Mets (RC)",
+            "250 - Nick Kurtz - Athletics (Rookie Cup)",
+            "255 - Cody Freeman - Rangers (RC)",
+            "259 - Colson Montgomery - White Sox (RC)"
+          ]
+        }
+      ]
+    },
+    "Variation": [
+      {
+        "SKU": "BBC-89",
+        "StartPrice": "9.99",
+        "Quantity": 1,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "6 - Sal Stewart - Reds (RC)"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-142",
+        "StartPrice": "2.99",
+        "Quantity": 1,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "7 - Samuel Basallo - Orioles (RC)"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-91",
+        "StartPrice": "2.99",
+        "Quantity": 1,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "13 - Kyle Karros - Rockies (RC)"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-137",
+        "StartPrice": "3.99",
+        "Quantity": 1,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "23 - Cole Young - Mariners (RC)"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-147",
+        "StartPrice": "1.99",
+        "Quantity": 1,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "46 - C.J. Kayfus - Guardians (RC)"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-149",
+        "StartPrice": "2.49",
+        "Quantity": 1,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "52 - Jack Dreyer - Dodgers (Rookie Cup)"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-155",
+        "StartPrice": "3.49",
+        "Quantity": 1,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "73 - Justin Crawford - Phillies (RC)"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-61",
+        "StartPrice": "2.99",
+        "Quantity": 1,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "100 - Aaron Judge - Yankees"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-90",
+        "StartPrice": "2.49",
+        "Quantity": 1,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "143 - Zach Maxwell - Reds (RC)"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-64",
+        "StartPrice": "2.99",
+        "Quantity": 1,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "149 - Julio Rodriguez - Mariners"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-87",
+        "StartPrice": "2.99",
+        "Quantity": 1,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "189 - Brady House - Nationals (RC)"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-88",
+        "StartPrice": "1.99",
+        "Quantity": 1,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "218 - Dylan Beavers - Orioles (RC)"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-135",
+        "StartPrice": "2.99",
+        "Quantity": 1,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "222 - Agustin Ramirez - Marlins (Rookie Cup)"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-143",
+        "StartPrice": "2.49",
+        "Quantity": 1,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "232 - Christian Moore - Angels (RC)"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-92",
+        "StartPrice": "4.99",
+        "Quantity": 1,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "236 - Nolan McLean - Mets (RC)"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-148",
+        "StartPrice": "4.99",
+        "Quantity": 1,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "250 - Nick Kurtz - Athletics (Rookie Cup)"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-94",
+        "StartPrice": "1.99",
+        "Quantity": 1,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "255 - Cody Freeman - Rangers (RC)"
+            }
+          ]
+        }
+      },
+      {
+        "SKU": "BBC-93",
+        "StartPrice": "3.99",
+        "Quantity": 1,
+        "VariationSpecifics": {
+          "NameValueList": [
+            {
+              "Name": "Card # / Player / Team",
+              "Value": "259 - Colson Montgomery - White Sox (RC)"
+            }
+          ]
+        }
+      }
+    ],
+    "Pictures": {
+      "VariationSpecificName": "Card # / Player / Team",
+      "VariationSpecificPictureSet": [
+        {
+          "VariationSpecificValue": "6 - Sal Stewart - Reds (RC)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0485.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0486.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "7 - Samuel Basallo - Orioles (RC)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0628.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0629.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "13 - Kyle Karros - Rockies (RC)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0489.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0490.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "23 - Cole Young - Mariners (RC)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0616.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0617.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "46 - C.J. Kayfus - Guardians (RC)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0638.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0639.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "52 - Jack Dreyer - Dodgers (Rookie Cup)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0642.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0643.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "73 - Justin Crawford - Phillies (RC)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0654.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0655.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "100 - Aaron Judge - Yankees",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0443.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0444.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "143 - Zach Maxwell - Reds (RC)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0487.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0488.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "149 - Julio Rodriguez - Mariners",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_63_julio-rodriguez_1.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0594.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "189 - Brady House - Nationals (RC)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0481.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0482.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "218 - Dylan Beavers - Orioles (RC)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0483.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0484.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "222 - Agustin Ramirez - Marlins (Rookie Cup)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0612.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0613.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "232 - Christian Moore - Angels (RC)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0630.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0631.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "236 - Nolan McLean - Mets (RC)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0491.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0492.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "250 - Nick Kurtz - Athletics (Rookie Cup)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0640.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0641.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "255 - Cody Freeman - Rangers (RC)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0495.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0497.jpg"
+          ]
+        },
+        {
+          "VariationSpecificValue": "259 - Colson Montgomery - White Sox (RC)",
+          "PictureURL": [
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0493.jpg",
+            "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0494.jpg"
+          ]
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,20 @@
+import { config } from 'dotenv';
+import postgres from 'postgres';
+config({ path: '.env.local' });
+const sql = postgres(process.env.DATABASE_URL_DIRECT!, { prepare: false });
+async function main() {
+  const h = (await sql`
+    SELECT ci.id, ci.name,
+      COALESCE(SUM(p.quantity),0)::int AS bought,
+      (SELECT COALESCE(SUM(s.quantity),0) FROM sales s JOIN purchases p2 ON s.purchase_id=p2.id WHERE p2.catalog_item_id=17236)::int AS sold,
+      COALESCE(SUM(p.quantity
+        - COALESCE((SELECT COUNT(*) FROM rips r WHERE r.source_purchase_id=p.id),0)
+        - COALESCE((SELECT COUNT(*) FROM box_decompositions d WHERE d.source_purchase_id=p.id),0)
+        - COALESCE((SELECT SUM(s.quantity) FROM sales s WHERE s.purchase_id=p.id),0)),0)::int AS held,
+      (SELECT ROUND(AVG(p.cost_cents)) FROM purchases p WHERE p.catalog_item_id=ci.id AND p.deleted_at IS NULL) AS wac
+    FROM catalog_items ci LEFT JOIN purchases p ON p.catalog_item_id=ci.id AND p.deleted_at IS NULL
+    WHERE ci.id=17236 GROUP BY ci.id, ci.name`)[0];
+  console.log(`#${h.id} ${h.name}: bought ${h.bought}, sold ${h.sold}, held ${h.held}, WAC $${(h.wac/100).toFixed(2)}`);
+  await sql.end();
+}
+main();

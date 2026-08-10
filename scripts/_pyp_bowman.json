@@ -1,0 +1,815 @@
+{
+ "group": {
+  "key": "bowman",
+  "sets": [
+   "2026 Bowman Chrome",
+   "2026 Bowman Chrome Prospects",
+   "2026 Bowman",
+   "2023 Bowman Chrome"
+  ],
+  "title": "Bowman Chrome Baseball You Pick Card Refractor Prospect 1st Bowman RC MLB",
+  "setAspect": "2026 Bowman Chrome",
+  "manufacturer": "Bowman",
+  "season": "2026"
+ },
+ "variations": [
+  {
+   "label": "1 - Aaron Judge - Base",
+   "primary": {
+    "id": "203",
+    "player": "Aaron Judge",
+    "set_name": "2026 Bowman",
+    "card_number": "1",
+    "parallel": "base (paper, non-chrome)",
+    "price": 199,
+    "itemId": "168562538630",
+    "sku": "BBC-203",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0749.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0750.jpg"
+    ],
+    "notes": "Team: New York Yankees OF. Paper base Bowman (white bordered), not Chrome. Same card number (#1) as the chrome mojo Judge at 0706/0707."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "1 - Aaron Judge - Mojo Ref",
+   "primary": {
+    "id": "182",
+    "player": "Aaron Judge",
+    "set_name": "2026 Bowman Chrome",
+    "card_number": "1",
+    "parallel": "Mojo Refractor",
+    "price": 249,
+    "itemId": "168571320326",
+    "sku": "BBC-182",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0706.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0707.jpg"
+    ],
+    "notes": "Team: New York Yankees OF. Chrome base numeric #1, Mojo mosaic. (Separate paper base Judge #1 also in batch at IMG_0749/0750.)"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 249
+  },
+  {
+   "label": "13 - Cal Raleigh - Blue Parallel /150",
+   "primary": {
+    "id": "128",
+    "player": "Cal Raleigh",
+    "set_name": "2026 Bowman",
+    "card_number": "13",
+    "parallel": "Blue Parallel /150 (028/150)",
+    "price": 499,
+    "itemId": "168561671921",
+    "sku": "BBC-128",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0579.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0580.jpg"
+    ],
+    "notes": "Mariners C, paper Bowman blue border /150"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 499
+  },
+  {
+   "label": "18 - Roman Anthony - Mojo Ref RC",
+   "primary": {
+    "id": "195",
+    "player": "Roman Anthony",
+    "set_name": "2026 Bowman Chrome",
+    "card_number": "18",
+    "parallel": "Mojo Refractor",
+    "price": 299,
+    "itemId": "168571320326",
+    "sku": "BBC-195",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0732.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0733.jpg"
+    ],
+    "notes": "Team: Boston Red Sox OF, RC. Base numeric"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 299
+  },
+  {
+   "label": "19 - Kyle Teel - Mojo Ref RC",
+   "primary": {
+    "id": "172",
+    "player": "Kyle Teel",
+    "set_name": "2026 Bowman Chrome",
+    "card_number": "19",
+    "parallel": "Mojo Refractor",
+    "price": 199,
+    "itemId": "168571320326",
+    "sku": "BBC-172",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0687.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0688.jpg"
+    ],
+    "notes": "Team: Chicago White Sox C, RC. Base set numeric card, mega-box Mojo mosaic pattern."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "23 - Ronald Acuna Jr. - Mojo Ref",
+   "primary": {
+    "id": "176",
+    "player": "Ronald Acuna Jr.",
+    "set_name": "2026 Bowman Chrome",
+    "card_number": "23",
+    "parallel": "Mojo Refractor",
+    "price": 199,
+    "itemId": "168571320326",
+    "sku": "BBC-176",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0695.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0696.jpg"
+    ],
+    "notes": "Team: Atlanta Braves OF. Base numeric"
+   },
+   "extras": [
+    {
+     "id": "200",
+     "player": "Ronald Acuna Jr.",
+     "set_name": "2026 Bowman Chrome",
+     "card_number": "23",
+     "parallel": "Mojo Refractor",
+     "price": 199,
+     "itemId": "168571320326",
+     "sku": "BBC-176",
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0743.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0744.jpg"
+     ],
+     "notes": "Team: Atlanta Braves OF. Base numeric | 2nd copy, sells as qty 2 under BBC-176"
+    }
+   ],
+   "qty": 2,
+   "price": 199
+  },
+  {
+   "label": "44 - Elly De La Cruz - Mojo Ref",
+   "primary": {
+    "id": "169",
+    "player": "Elly De La Cruz",
+    "set_name": "2026 Bowman Chrome",
+    "card_number": "44",
+    "parallel": "Mojo Refractor",
+    "price": 149,
+    "itemId": "168571320326",
+    "sku": "BBC-169",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0681.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0682.jpg"
+    ],
+    "notes": "Team: Cincinnati Reds"
+   },
+   "extras": [
+    {
+     "id": "187",
+     "player": "Elly De La Cruz",
+     "set_name": "2026 Bowman Chrome",
+     "card_number": "44",
+     "parallel": "Mojo Refractor",
+     "price": 149,
+     "itemId": "168571320326",
+     "sku": "BBC-169",
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0716.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0717.jpg"
+     ],
+     "notes": "Team: Cincinnati Reds SS. Base numeric | 2nd copy, sells as qty 2 under BBC-169"
+    }
+   ],
+   "qty": 2,
+   "price": 149
+  },
+  {
+   "label": "52 - Shohei Ohtani - Base",
+   "primary": {
+    "id": "197",
+    "player": "Shohei Ohtani",
+    "set_name": "2026 Bowman",
+    "card_number": "52",
+    "parallel": "base (paper, non-chrome)",
+    "price": 149,
+    "itemId": "168562538904",
+    "sku": "BBC-197",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0737.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0738.jpg"
+    ],
+    "notes": "Team: Los Angeles Dodgers DH/P. This is paper base Bowman (white bordered), not Bowman Chrome."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 149
+  },
+  {
+   "label": "62 - Owen Caissie - Mojo Ref RC",
+   "primary": {
+    "id": "189",
+    "player": "Owen Caissie",
+    "set_name": "2026 Bowman Chrome",
+    "card_number": "62",
+    "parallel": "Mojo Refractor",
+    "price": 149,
+    "itemId": "168571320326",
+    "sku": "BBC-189",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0720.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0721.jpg"
+    ],
+    "notes": "Team: Miami Marlins OF, RC. Base numeric"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 149
+  },
+  {
+   "label": "65 - Jonah Tong - Mojo Ref RC",
+   "primary": {
+    "id": "185",
+    "player": "Jonah Tong",
+    "set_name": "2026 Bowman Chrome",
+    "card_number": "65",
+    "parallel": "Mojo Refractor",
+    "price": 199,
+    "itemId": "168571320326",
+    "sku": "BBC-185",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0712.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0713.jpg"
+    ],
+    "notes": "Team: New York Mets pitcher, RC. Base numeric"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "80 - Corbin Carroll - Mojo Ref",
+   "primary": {
+    "id": "204",
+    "player": "Corbin Carroll",
+    "set_name": "2026 Bowman Chrome",
+    "card_number": "80",
+    "parallel": "Mojo Refractor",
+    "price": 199,
+    "itemId": "168571320326",
+    "sku": "BBC-204",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0751.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0752.jpg"
+    ],
+    "notes": "Team: Arizona Diamondbacks OF. Base numeric"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "86 - Jakob Marsee - Mojo Ref RC",
+   "primary": {
+    "id": "186",
+    "player": "Jakob Marsee",
+    "set_name": "2026 Bowman Chrome",
+    "card_number": "86",
+    "parallel": "Mojo Refractor",
+    "price": 149,
+    "itemId": "168571320326",
+    "sku": "BBC-186",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0714.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0715.jpg"
+    ],
+    "notes": "Team: Miami Marlins OF, RC. Base numeric"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 149
+  },
+  {
+   "label": "100 - Mike Trout - Mojo Ref",
+   "primary": {
+    "id": "160",
+    "player": "Mike Trout",
+    "set_name": "2026 Bowman Chrome",
+    "card_number": "100",
+    "parallel": "Mojo Refractor",
+    "price": 149,
+    "itemId": "168571320326",
+    "sku": "BBC-160",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0664.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0665.jpg"
+    ],
+    "notes": "Team: Los Angeles Angels"
+   },
+   "extras": [
+    {
+     "id": "178",
+     "player": "Mike Trout",
+     "set_name": "2026 Bowman Chrome",
+     "card_number": "100",
+     "parallel": "Mojo Refractor",
+     "price": 149,
+     "itemId": "168571320326",
+     "sku": "BBC-160",
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0699.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0701.jpg"
+     ],
+     "notes": "Team: Los Angeles Angels OF. Base numeric | 2nd copy, sells as qty 2 under BBC-160"
+    }
+   ],
+   "qty": 2,
+   "price": 149
+  },
+  {
+   "label": "? - Kyle Teel - Mojo Ref",
+   "primary": {
+    "id": "168",
+    "player": "Kyle Teel",
+    "set_name": "2026 Bowman Chrome",
+    "card_number": null,
+    "parallel": "Mojo Refractor",
+    "price": 199,
+    "itemId": "168571320326",
+    "sku": "BBC-172",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0678.jpg"
+    ],
+    "notes": "Team: Chicago White Sox | 2nd copy, sells as qty 2 under BBC-172"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "ES-5 - Mookie Betts - Electric Sluggers insert",
+   "primary": {
+    "id": "201",
+    "player": "Mookie Betts",
+    "set_name": "2026 Bowman Chrome (Electric Sluggers insert)",
+    "card_number": "ES-5",
+    "parallel": "Electric Sluggers insert",
+    "price": 199,
+    "itemId": "168562538625",
+    "sku": "BBC-201",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0745.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0746.jpg"
+    ],
+    "notes": "Team: Los Angeles Dodgers. Lightning-themed Electric Sluggers insert."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "BCP-7 - Kendry Chourio - Mojo Ref",
+   "primary": {
+    "id": "164",
+    "player": "Kendry Chourio",
+    "set_name": "2026 Bowman Chrome",
+    "card_number": "BCP-7",
+    "parallel": "Mojo Refractor",
+    "price": 199,
+    "itemId": "168571320326",
+    "sku": "BBC-164",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0672.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0673.jpg"
+    ],
+    "notes": "1st Bowman | Team: Kansas City Royals"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "BST-7 - Konnor Griffin - Bowman Sterling insert",
+   "primary": {
+    "id": "202",
+    "player": "Konnor Griffin",
+    "set_name": "2026 Bowman Chrome (Bowman Sterling insert)",
+    "card_number": "BST-7",
+    "parallel": "Bowman Sterling insert (refractor)",
+    "price": 249,
+    "itemId": "168562538634",
+    "sku": "BBC-202",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0747.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0748.jpg"
+    ],
+    "notes": "Team: Pittsburgh Pirates SS prospect. Ornate Bowman Sterling insert."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 249
+  },
+  {
+   "label": "BST-10 - Chase Burns - Bowman Sterling insert RC",
+   "primary": {
+    "id": "183",
+    "player": "Chase Burns",
+    "set_name": "2026 Bowman Chrome (Bowman Sterling insert)",
+    "card_number": "BST-10",
+    "parallel": "Bowman Sterling insert (refractor)",
+    "price": 199,
+    "itemId": "168562538621",
+    "sku": "BBC-183",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0708.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0709.jpg"
+    ],
+    "notes": "Team: Cincinnati Reds pitcher, RC. Bowman Sterling insert."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "BST-14 - Jac Caglianone - Bowman Sterling insert",
+   "primary": {
+    "id": "177",
+    "player": "Jac Caglianone",
+    "set_name": "2026 Bowman Chrome (Bowman Sterling insert)",
+    "card_number": "BST-14",
+    "parallel": "Bowman Sterling insert (refractor)",
+    "price": 249,
+    "itemId": "168562538626",
+    "sku": "BBC-177",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0697.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0698.jpg"
+    ],
+    "notes": "Team: Kansas City Royals OF. Ornate Bowman Sterling insert design."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 249
+  },
+  {
+   "label": "BCP-33 - Coy James - Mojo Ref",
+   "primary": {
+    "id": "193",
+    "player": "Coy James",
+    "set_name": "2026 Bowman Chrome",
+    "card_number": "BCP-33",
+    "parallel": "Mojo Refractor",
+    "price": 149,
+    "itemId": "168571320326",
+    "sku": "BBC-193",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0728.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0729.jpg"
+    ],
+    "notes": "1st Bowman | Team: Prospect (Nationals/other org SS). 1st Bowman"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 149
+  },
+  {
+   "label": "BCP-45 - Seojun Moon - Mojo Ref",
+   "primary": {
+    "id": "167",
+    "player": "Seojun Moon",
+    "set_name": "2026 Bowman Chrome",
+    "card_number": "BCP-45",
+    "parallel": "Mojo Refractor",
+    "price": 149,
+    "itemId": "168571320326",
+    "sku": "BBC-167",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0679.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0680.jpg"
+    ],
+    "notes": "1st Bowman | Team: Toronto Blue Jays"
+   },
+   "extras": [
+    {
+     "id": "174",
+     "player": "Seojun Moon",
+     "set_name": "2026 Bowman Chrome",
+     "card_number": "BCP-45",
+     "parallel": "Mojo Refractor",
+     "price": 149,
+     "itemId": "168571320326",
+     "sku": "BBC-167",
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0691.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0692.jpg"
+     ],
+     "notes": "1st Bowman | Team: Toronto Blue Jays pitcher prospect. 1st Bowman flag | 2nd copy, sells as qty 2 under BBC-167"
+    }
+   ],
+   "qty": 2,
+   "price": 149
+  },
+  {
+   "label": "BCP-58 - Lazaro Montes - Mojo Ref",
+   "primary": {
+    "id": "132",
+    "player": "Lazaro Montes",
+    "set_name": "2023 Bowman Chrome",
+    "card_number": "BCP-58",
+    "parallel": "Mojo Refractor",
+    "price": 499,
+    "itemId": "168561671927",
+    "sku": "BBC-132",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0587.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0588.jpg"
+    ],
+    "notes": ""
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 499
+  },
+  {
+   "label": "BCP-88 - Dasan Hill - Mojo Ref",
+   "primary": {
+    "id": "161",
+    "player": "Dasan Hill",
+    "set_name": "2026 Bowman Chrome",
+    "card_number": "BCP-88",
+    "parallel": "Mojo Refractor",
+    "price": 199,
+    "itemId": "168571320326",
+    "sku": "BBC-161",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0666.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0667.jpg"
+    ],
+    "notes": "1st Bowman | Team: Minnesota Twins"
+   },
+   "extras": [
+    {
+     "id": "198",
+     "player": "Dasan Hill",
+     "set_name": "2026 Bowman Chrome",
+     "card_number": "BCP-88",
+     "parallel": "Mojo Refractor",
+     "price": 199,
+     "itemId": "168571320326",
+     "sku": "BBC-161",
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0739.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0740.jpg"
+     ],
+     "notes": "1st Bowman | Team: Minnesota Twins pitcher prospect. 1st Bowman flag visible | 2nd copy, sells as qty 2 under BBC-161"
+    }
+   ],
+   "qty": 2,
+   "price": 199
+  },
+  {
+   "label": "BCP-90 - Andrew Tess - Mojo Ref",
+   "primary": {
+    "id": "163",
+    "player": "Andrew Tess",
+    "set_name": "2026 Bowman Chrome",
+    "card_number": "BCP-90",
+    "parallel": "Mojo Refractor",
+    "price": 199,
+    "itemId": "168571320326",
+    "sku": "BBC-163",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0670.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0671.jpg"
+    ],
+    "notes": "1st Bowman | Team: Baltimore Orioles"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "BCP-93 - Jorge Quintana - Mojo Ref",
+   "primary": {
+    "id": "194",
+    "player": "Jorge Quintana",
+    "set_name": "2026 Bowman Chrome",
+    "card_number": "BCP-93",
+    "parallel": "Mojo Refractor",
+    "price": 149,
+    "itemId": "168571320326",
+    "sku": "BBC-194",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0730.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0731.jpg"
+    ],
+    "notes": "1st Bowman | Team: San Diego Padres SS prospect. 1st Bowman flag visible"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 149
+  },
+  {
+   "label": "BCP-94 - Ricardo Cova - Laser Ref",
+   "primary": {
+    "id": "134",
+    "player": "Ricardo Cova",
+    "set_name": "2026 Bowman Chrome",
+    "card_number": "BCP-94",
+    "parallel": "Laser Refractor",
+    "price": 249,
+    "itemId": "168561673132",
+    "sku": "BBC-134",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0591.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0592.jpg"
+    ],
+    "notes": ""
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 249
+  },
+  {
+   "label": "BCP-95 - Eli Willits - Mojo Ref",
+   "primary": {
+    "id": "173",
+    "player": "Eli Willits",
+    "set_name": "2026 Bowman Chrome",
+    "card_number": "BCP-95",
+    "parallel": "Mojo Refractor",
+    "price": 199,
+    "itemId": "168571320326",
+    "sku": "BBC-173",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0689.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0690.jpg"
+    ],
+    "notes": "1st Bowman | Team: Washington Nationals SS prospect. Copy 1 of 2 mojo Willits"
+   },
+   "extras": [
+    {
+     "id": "175",
+     "player": "Eli Willits",
+     "set_name": "2026 Bowman Chrome",
+     "card_number": "BCP-95",
+     "parallel": "Mojo Refractor",
+     "price": 199,
+     "itemId": "168571320326",
+     "sku": "BBC-173",
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0693.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0694.jpg"
+     ],
+     "notes": "1st Bowman | Team: Washington Nationals SS prospect. Copy 2 of 2 mojo Willits. | 2nd copy, sells as qty 2 under BBC-173"
+    }
+   ],
+   "qty": 2,
+   "price": 199
+  },
+  {
+   "label": "BCP-98 - Walker Jenkins - Mojo Ref",
+   "primary": {
+    "id": "190",
+    "player": "Walker Jenkins",
+    "set_name": "2026 Bowman Chrome",
+    "card_number": "BCP-98",
+    "parallel": "Mojo Refractor",
+    "price": 149,
+    "itemId": "168571320326",
+    "sku": "BBC-190",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0722.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0723.jpg"
+    ],
+    "notes": "1st Bowman | Team: Minnesota Twins OF prospect. Paired with the single Jenkins back"
+   },
+   "extras": [
+    {
+     "id": "179",
+     "player": "Walker Jenkins",
+     "set_name": "2026 Bowman Chrome",
+     "card_number": "BCP-98",
+     "parallel": "Mojo Refractor",
+     "price": 149,
+     "itemId": "168571320326",
+     "sku": "BBC-190",
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0702.jpg"
+     ],
+     "notes": "1st Bowman | Team: Minnesota Twins OF prospect. Second mojo Jenkins front | 2nd copy, sells as qty 2 under BBC-190"
+    }
+   ],
+   "qty": 2,
+   "price": 149
+  },
+  {
+   "label": "BCP-102 - Eric Hartman - Base",
+   "primary": {
+    "id": "5",
+    "player": "Eric Hartman",
+    "set_name": "2026 Bowman Chrome Prospects",
+    "card_number": "BCP-102",
+    "parallel": "base",
+    "price": 249,
+    "itemId": "168561673127",
+    "sku": "BBC-5",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_04_eric-hartman_1.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_04_eric-hartman_2.jpg"
+    ],
+    "notes": "base"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 249
+  },
+  {
+   "label": "BCP-125 - Wei-En Lin - Mojo Ref",
+   "primary": {
+    "id": "165",
+    "player": "Wei-En Lin",
+    "set_name": "2026 Bowman Chrome",
+    "card_number": "BCP-125",
+    "parallel": "Mojo Refractor",
+    "price": 199,
+    "itemId": "168571320326",
+    "sku": "BBC-165",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0674.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0675.jpg"
+    ],
+    "notes": "1st Bowman | Team: Athletics"
+   },
+   "extras": [
+    {
+     "id": "188",
+     "player": "Wei-En Lin",
+     "set_name": "2026 Bowman Chrome",
+     "card_number": "BCP-125",
+     "parallel": "Mojo Refractor",
+     "price": 199,
+     "itemId": "168571320326",
+     "sku": "BBC-165",
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0718.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0719.jpg"
+     ],
+     "notes": "1st Bowman | Team: Athletics pitcher prospect. 1st Bowman flag | 2nd copy, sells as qty 2 under BBC-165"
+    }
+   ],
+   "qty": 2,
+   "price": 199
+  },
+  {
+   "label": "BCP-150 - Wilder Dalis - Mojo Ref",
+   "primary": {
+    "id": "192",
+    "player": "Wilder Dalis",
+    "set_name": "2026 Bowman Chrome",
+    "card_number": "BCP-150",
+    "parallel": "Mojo Refractor",
+    "price": 149,
+    "itemId": "168571320326",
+    "sku": "BBC-192",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0726.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0727.jpg"
+    ],
+    "notes": "1st Bowman | Team: Colorado Rockies SS prospect. 1st Bowman"
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 149
+  },
+  {
+   "label": "BCP-156 - Felnin Celesten - Mojo Ref",
+   "primary": {
+    "id": "129",
+    "player": "Felnin Celesten",
+    "set_name": "2023 Bowman Chrome",
+    "card_number": "BCP-156",
+    "parallel": "Mojo Refractor",
+    "price": 799,
+    "itemId": "168561671905",
+    "sku": "BBC-129",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0581.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0582.jpg"
+    ],
+    "notes": ""
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 799
+  }
+ ]
+}
