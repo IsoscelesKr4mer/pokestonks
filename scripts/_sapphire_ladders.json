@@ -1,0 +1,310 @@
+{
+ "Bowman Sapphire": {
+  "2020": [
+   {
+    "name": "Orange Sapphire",
+    "serial": 50
+   },
+   {
+    "name": "Purple Sapphire",
+    "serial": 25
+   },
+   {
+    "name": "Red Sapphire",
+    "serial": 10
+   },
+   {
+    "name": "Green Sapphire",
+    "serial": 50
+   },
+   {
+    "name": "Orange Sapphrie",
+    "serial": 25
+   }
+  ],
+  "2023": [
+   {
+    "name": "Green Sapphire",
+    "serial": 60
+   },
+   {
+    "name": "Aqua Sapphire",
+    "serial": 55
+   },
+   {
+    "name": "Orange Sapphire",
+    "serial": 50
+   },
+   {
+    "name": "Purple Sapphire",
+    "serial": 25
+   },
+   {
+    "name": "Red Sapphire",
+    "serial": 10
+   },
+   {
+    "name": "Padparadscha Sapphire",
+    "serial": 1
+   }
+  ],
+  "2024": [
+   {
+    "name": "Green Sapphire",
+    "serial": 99
+   },
+   {
+    "name": "Yellow Sapphire",
+    "serial": 75
+   },
+   {
+    "name": "Gold Sapphire",
+    "serial": 50
+   },
+   {
+    "name": "Orange Sapphire",
+    "serial": 25
+   },
+   {
+    "name": "Black Sapphire",
+    "serial": 10
+   },
+   {
+    "name": "Red Sapphire",
+    "serial": 5
+   },
+   {
+    "name": "Orange Refractors",
+    "serial": 25
+   },
+   {
+    "name": "Red Refractors",
+    "serial": 5
+   },
+   {
+    "name": "Gold Refractors",
+    "serial": 50
+   }
+  ]
+ },
+ "Bowman Chrome Sapphire": {
+  "2021": [
+   {
+    "name": "Green Sapphire",
+    "serial": 125
+   },
+   {
+    "name": "Aqua Sapphire",
+    "serial": 99
+   },
+   {
+    "name": "Orange Sapphire",
+    "serial": 75
+   },
+   {
+    "name": "Yellow Sapphire",
+    "serial": 50
+   },
+   {
+    "name": "Purple Sapphire",
+    "serial": 25
+   },
+   {
+    "name": "Red Sapphire",
+    "serial": 5
+   },
+   {
+    "name": "Padparadscha Sapphire",
+    "serial": 1
+   }
+  ],
+  "2023": [
+   {
+    "name": "Aqua Sapphire",
+    "serial": 99
+   },
+   {
+    "name": "Orange Sapphire",
+    "serial": 75
+   },
+   {
+    "name": "Yellow Sapphire",
+    "serial": 50
+   },
+   {
+    "name": "Purple Sapphire",
+    "serial": 25
+   },
+   {
+    "name": "Red Sapphire",
+    "serial": 5
+   }
+  ],
+  "2025": [
+   {
+    "name": "Yellow Sapphire",
+    "serial": 75
+   },
+   {
+    "name": "Gold Sapphire",
+    "serial": 50
+   },
+   {
+    "name": "Orange Sapphire",
+    "serial": 25
+   },
+   {
+    "name": "Black Sapphire",
+    "serial": 10
+   },
+   {
+    "name": "Red Sapphire",
+    "serial": 5
+   },
+   {
+    "name": "Padparadscha Sapphire",
+    "serial": 1
+   },
+   {
+    "name": "Superfractor",
+    "serial": 1
+   },
+   {
+    "name": "Green Sapphire",
+    "serial": 99
+   },
+   {
+    "name": "Padparadscha Sapphire /1 (1:839)",
+    "serial": 1
+   },
+   {
+    "name": "Superfractor /1 (1:4,025)",
+    "serial": 1
+   },
+   {
+    "name": "Padparadscha Sapphire /1 (1:2,778)",
+    "serial": 1
+   },
+   {
+    "name": "Superfractor /1 (1:6,714)",
+    "serial": 1
+   }
+  ]
+ },
+ "Bowman Draft Sapphire": {
+  "2023": [
+   {
+    "name": "Yellow Sapphire",
+    "serial": 75
+   },
+   {
+    "name": "Gold Sapphire",
+    "serial": 50
+   },
+   {
+    "name": "Orange Sapphire",
+    "serial": 25
+   },
+   {
+    "name": "Black Sapphire",
+    "serial": 10
+   },
+   {
+    "name": "Red Sapphire",
+    "serial": 5
+   },
+   {
+    "name": "Green Sapphire",
+    "serial": 99
+   },
+   {
+    "name": "Orange Refractors",
+    "serial": 25
+   },
+   {
+    "name": "Red Refractors",
+    "serial": 5
+   },
+   {
+    "name": "Gold Refractors",
+    "serial": 50
+   }
+  ],
+  "2024": [
+   {
+    "name": "Yellow Sapphire",
+    "serial": 75
+   },
+   {
+    "name": "Gold Sapphire",
+    "serial": 50
+   },
+   {
+    "name": "Orange Sapphire",
+    "serial": 25
+   },
+   {
+    "name": "Black Sapphire",
+    "serial": 10
+   },
+   {
+    "name": "Red Sapphire",
+    "serial": 5
+   },
+   {
+    "name": "Green Sapphire",
+    "serial": 99
+   }
+  ],
+  "2025": [
+   {
+    "name": "Yellow",
+    "serial": 75
+   },
+   {
+    "name": "Gold",
+    "serial": 50
+   },
+   {
+    "name": "Orange",
+    "serial": 25
+   },
+   {
+    "name": "Black",
+    "serial": 10
+   },
+   {
+    "name": "Red",
+    "serial": 5
+   },
+   {
+    "name": "Padparadscha",
+    "serial": 1
+   },
+   {
+    "name": "Green Sapphire",
+    "serial": 99
+   },
+   {
+    "name": "Superfractor",
+    "serial": 1
+   },
+   {
+    "name": "Padparadscha /1 (1:422)",
+    "serial": 1
+   },
+   {
+    "name": "Padparadscha Sapphire /1 (1:2,597)",
+    "serial": 1
+   },
+   {
+    "name": "Superfractor /1 (1:5,366)",
+    "serial": 1
+   },
+   {
+    "name": "Superfractor /1 (1:4,236)",
+    "serial": 1
+   }
+  ]
+ }
+}
