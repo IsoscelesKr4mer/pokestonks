@@ -28,16 +28,41 @@ async function main(){
 
   const rows:any[]=[];
   for (const c of cards as any[]) {
-    let med = Number(c.comp_note?.match(/med \$([\d.]+)/)?.[1] ?? 0) * 100;
-    let n = Number(c.comp_note?.match(/^(\d+) active/)?.[1] ?? 0);
-    if (!med) {
+    // Always query fresh. The stored comp_note came from the listing pricer,
+    // whose matching is looser than a valuation needs: it is what produced a
+    // $1,350 "median" for a non-auto Blue Sapphire off a PSA 9 auto listing.
+    let med = 0;
+    let n = 0;
+    {
       const set=(c.set_name||'').replace(/\(.*?\)/g,'').trim();
       const par=(c.parallel||'').replace(/\s*\(.*?\)\s*/g,' ').replace(/\+ IP Auto/i,'autograph').trim();
       const q=[c.year||'', set, c.player, par, c.card_number?`#${c.card_number}`:''].filter(Boolean).join(' ');
       try {
         const d=await (await fetch(`https://api.ebay.com/buy/browse/v1/item_summary/search?q=${encodeURIComponent(q)}&category_ids=261328&limit=40`,{headers:{Authorization:`Bearer ${tok}`,'X-EBAY-C-MARKETPLACE-ID':'EBAY_US'}})).json();
+        // SAPPHIRE STRUCTURE, corrected by Michael 2026-08-10:
+        //   Blue Sapphire IS the base card. The numbered parallels are the
+        //   colours: /199, /99, /75, /50, /25, /10, /5, /1.
+        // I had been treating Blue as a colour parallel, so a base card was
+        // being valued against numbered and autographed listings. That is what
+        // produced a $899 "median" for a common base card.
         const last=c.player.split(' ').pop()!.toLowerCase();
-        const items=(d.itemSummaries||[]).filter((i:any)=>i.title.toLowerCase().includes(last));
+        const serial=(c.parallel||'').match(/\/(\d{1,4})/)?.[1];
+        const isAuto=/auto/i.test(c.parallel||'');
+        const isGraded=/psa|bgs|sgc/i.test(c.parallel||'');
+        const items=(d.itemSummaries||[]).filter((i:any)=>{
+          const t=i.title.toLowerCase();
+          if (!t.includes(last)) return false;
+          if (!isAuto && /auto|autograph|signed/.test(t)) return false;
+          if (!isGraded && /psa\s*\d|bgs\s*\d|sgc\s*\d/.test(t)) return false;
+          if (serial) {
+            // A numbered card only comps against its own print run.
+            if (!t.includes('/' + serial)) return false;
+          } else {
+            // Base Blue Sapphire: reject anything numbered.
+            if (/\/\s*\d{1,4}/.test(t)) return false;
+          }
+          return true;
+        });
         const p=items.map((i:any)=>Number(i.price?.value)).filter((v:number)=>v>0&&v<20000);
         if (p.length) { med=Math.round(pct(p,0.5)*100); n=p.length; }
       } catch {}
