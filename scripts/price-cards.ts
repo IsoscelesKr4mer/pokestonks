@@ -90,7 +90,7 @@ function matches(title:string, c:any){
 function pct(arr:number[],p:number){ const s=[...arr].sort((a,b)=>a-b); return s[Math.min(s.length-1,Math.floor(p*s.length))]; }
 async function main(){
   const tok=await token();
-  const cards=await sql`SELECT id,player,set_name,year,card_number,parallel,status FROM baseball_cards
+  const cards=await sql`SELECT id,player,set_name,year,card_number,parallel,status,asking_price_cents FROM baseball_cards
     WHERE for_sale=true AND status NOT IN ('listed','sold')
     AND coalesce(notes,'') NOT ILIKE '%AUCTION%' AND coalesce(notes,'') NOT ILIKE '%no auto-price%'
     AND coalesce(notes,'') NOT ILIKE '%in-person auto%'
@@ -114,7 +114,20 @@ async function main(){
     ask=Math.round(ask*100)/100;
     // round to a clean .49 or .99
     const whole=Math.floor(ask); const frac=ask-whole; ask = whole + (frac<0.5?0.49:0.99);
-    const askCents=Math.round(ask*100);
+    let askCents=Math.round(ask*100);
+
+    // GUARD. This asks at the 35th percentile, which is right for a tight comp
+    // set and badly wrong when the spread is wide. On 2026-08-10 it overwrote a
+    // hand-set $17.99 Misiorowski X-Fractor with $4.99 against a $17.99 median,
+    // and the card sold at the lower price. So: never cut an existing price by
+    // more than a third on its own, and never ask below half the median.
+    const floor = Math.round(med * 0.5);
+    if (askCents < floor) askCents = floor;
+    const current = c.asking_price_cents as number | null;
+    if (current != null && askCents < current * 0.67) {
+      console.log(`  HELD #${c.id} ${c.player}: would cut $${(current/100).toFixed(2)} -> $${(askCents/100).toFixed(2)}, needs a human`);
+      continue;
+    }
     const note=`${prices.length} active comps: low $${low.toFixed(2)} / med $${med.toFixed(2)} / high $${high.toFixed(2)} (eBay Browse)`;
     if(APPLY){
       await sql`UPDATE baseball_cards SET asking_price_cents=${askCents}, status='priced', comp_note=${note} WHERE id=${c.id}`;

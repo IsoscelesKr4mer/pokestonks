@@ -110,7 +110,7 @@ async function main() {
       conditionDescriptors: [{ name: '40001', values: ['400010'] }],
       // Calculated shipping is rejected without a packageType.
       packageWeightAndSize: c.ask > 2000
-        ? { packageType: 'PACKAGE_THICK_ENVELOPE', dimensions: { length: 9, width: 6, height: 1, unit: 'INCH' }, weight: { value: 3, unit: 'OUNCE' }, shippingIrregular: false }
+        ? { packageType: 'PACKAGE_THICK_ENVELOPE', dimensions: { length: 8, width: 4, height: 1, unit: 'INCH' }, weight: { value: 3, unit: 'OUNCE' }, shippingIrregular: false } // 4x8 bubble mailer, the size Michael stocks
         : { dimensions: { width: 4, length: 6, height: 1, unit: 'INCH' }, weight: { value: 2, unit: 'OUNCE' }, shippingIrregular: false },
       availability: { shipToLocationAvailability: { quantity: 1 } },
       product: {
