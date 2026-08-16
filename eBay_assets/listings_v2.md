@@ -892,7 +892,7 @@ These live on eBay only. No catalog_item_id, no sync mapping, no auto P&L. Track
 ### Destined Rivals Booster Bundle — SINGLE (listed 2026-08-16)
 
 **Item:** 168617483804 · **Price:** $64.99 · **Qty:** 4 · **SKU:** `DR-BUNDLE-SINGLE`
-**Title:** Pokemon Destined Rivals Booster Bundle Sealed 6 Booster Packs Scarlet Violet (76 chars)
+**Title:** Pokemon TCG Scarlet Violet Destined Rivals Booster Bundle Sealed 6 Packs (72 chars)
 - **Photos:** `DestinedRivals_BoosterBundle_single_01_front.jpg`, `DestinedRivals_BoosterBundle_single_02_back.jpg`
 - **Mapping:** 1x ci17235 per unit sold.
 - **Net:** $55.98 on $30.00 cost → **+$25.98 per bundle.**
@@ -901,7 +901,7 @@ These live on eBay only. No catalog_item_id, no sync mapping, no auto P&L. Track
 ### Prismatic Evolutions Booster Bundle — SINGLE (listed 2026-08-16)
 
 **Item:** 168617484171 · **Price:** $79.99 · **Qty:** 1 · **SKU:** `PE-BUNDLE-SINGLE`
-**Title:** Pokemon Prismatic Evolutions Booster Bundle Sealed 6 Booster Packs Scarlet (74 chars)
+**Title:** Pokemon TCG Scarlet Violet Prismatic Evolutions Booster Bundle Sealed 6 Packs (77 chars)
 - **Photos:** `PrismaticEvolutions_BoosterBundle_single_01_front.jpg`, `PrismaticEvolutions_BoosterBundle_single_02_back.jpg`
 - **Mapping:** 1x ci19776 per unit sold.
 - **Net:** $68.99 on $30.00 cost → **+$38.99.**
@@ -910,6 +910,8 @@ These live on eBay only. No catalog_item_id, no sync mapping, no auto P&L. Track
 **Inventory reconciliation for both, worth repeating.** Four mappings touch these two products and on paper committed 5 Prismatic against 2 held. Checking each mapped listing against live eBay, three are **Completed** and commit nothing; only 168606266070 (PE+DR combo, $159.99) is Active. Real position was 4 DR and 1 PE free, which is the quantity listed. **A mapping only commits stock while its listing is Active** — count against live status, never against the mappings table alone.
 
 **No UPC on either.** Michael's call. The barcode panel is not in these photos, and the bundle ships in more than one box footprint with different barcodes, so it cannot be looked up; it has to come off his box.
+
+**Titles corrected 2026-08-16.** The PE title originally ended in a bare "Scarlet": the full set name took it to 83 characters against the 80 limit, so the tail was trimmed and left a dangling word that reads like a broken listing. Michael caught it. **Never trim a title mid-phrase.** Shorten something harmless instead: dropping the ampersand (eBay search ignores it) and using "6 Packs" rather than "6 Booster Packs" bought nine characters and let the whole set name stay. Both now follow the house pattern `Pokemon TCG Scarlet Violet <Set> Booster Bundle Sealed 6 Packs`.
 
 **Open question:** the PE+DR combo at $159.99 is asking $15 over sum-of-parts now that the singles are up ($80 + $65 = $145), and each single reaches a bigger pool than the combo does.
 
