@@ -5,6 +5,8 @@ import { homedir } from 'os';
 config({ path: '.env.local' });
 const sql = postgres(process.env.DATABASE_URL_DIRECT!, { prepare: false });
 const APPLY = process.argv.includes('--apply');
+// Fewest active comps we will trust a percentile on. Below this, a human prices it.
+const MIN_COMPS = 5;
 
 function findKey(o:any,k:string):string|undefined{ if(o&&typeof o==='object'){for(const kk of Object.keys(o)){if(kk===k&&typeof o[kk]==='string')return o[kk];const r=findKey(o[kk],k);if(r)return r;}} return undefined; }
 async function token(){
@@ -20,6 +22,12 @@ function category(parallel:string){
   if(/mini[\s-]?diamond/.test(p) && !serial(parallel)) return 'minidiamond';
   if(/red\s*white|rwb|red\/white/.test(p)) return 'rwb';
   if(serial(parallel)) return 'numbered';
+  // X-Fractor MUST be tested before the refractor check and before the base
+  // fallback. "x-fractor" does not contain the substring "refractor", so it used
+  // to fall all the way through to 'base' and get comped against base cards,
+  // which are worth a fraction of an X-Fractor. Caught 2026-08-16 when the whole
+  // 08-15 mega rip of X-Fractors priced as [base].
+  if(/x-?fractor/.test(p)) return 'xfractor';
   if(p.includes('refractor')||p.includes('raywave')) return 'refractor';
   if(p.includes('insert')) return 'insert';
   return 'base';
@@ -42,6 +50,7 @@ function buildQuery(c:any){
   const cat=category(c.parallel);
   if(cat==='rwb') parts.push('red white blue refractor');
   else if(cat==='minidiamond') parts.push('mini diamond refractor');
+  else if(cat==='xfractor') parts.push('xfractor');
   else if(cat==='refractor') parts.push(refKeyword(c.parallel) ? `${refKeyword(c.parallel)} refractor` : 'refractor');
   const ser=serial(c.parallel); if(ser) parts.push(ser);
   return parts.filter(Boolean).join(' ').replace(/\s+/g,' ').trim();
@@ -88,6 +97,9 @@ function matches(title:string, c:any){
   const hasRef=t.includes('refractor')||t.includes('raywave')||t.includes('prism');
   const hasNum=/\/\d/.test(t); const hasAuto=t.includes('auto'); const hasSSP=t.includes('ssp')||t.includes('super');
   if(cat==='minidiamond') return t.includes('mini')&&t.includes('diamond')&&!hasNum&&!hasAuto;
+  // Sellers write it as "X-Fractor", "Xfractor" or "X Fractor"; all three
+  // survive stripping the separators. Reject serialled and auto copies.
+  if(cat==='xfractor') return /x\s*-?\s*fractor/.test(t) && !hasNum && !hasAuto;
   // base = cheapest common copy: reject only unambiguous parallel signals (NOT plain
   // "refractor", since Chrome/Finest base ARE refractors, and NOT raw colors).
   if(cat==='base') return !hasNum && !hasAuto && !hasSSP && !NONBASE_WORDS.some(w=>t.includes(w));
@@ -107,7 +119,7 @@ async function main(){
     AND coalesce(notes,'') NOT ILIKE '%confirm parallel%' AND coalesce(parallel,'') NOT ILIKE '%(CONFIRM)%'
     ORDER BY id`;
   console.log(`pricing ${cards.length} sellable cards... (APPLY=${APPLY})`);
-  let priced=0,nocomp=0; const samples:string[]=[];
+  let priced=0,nocomp=0,thin=0; const samples:string[]=[]; const thinList:string[]=[];
   for(const c of cards){
     const q=buildQuery(c);
     let items:any[]=[];
@@ -117,6 +129,12 @@ async function main(){
     }catch{}
     await sleep(120);
     const prices=items.filter(it=>matches(it.title||'',c)).map(it=>Number(it.price?.value)).filter(v=>v>0&&v<100000);
+    // MINIMUM COMP COUNT. A percentile over 1-3 points is noise, not a market.
+    // On 2026-08-16 this produced a $27.49 ask for a Big Ticket Ohtani off ONE
+    // comp, $15.49 for a Torkelson off three that ran $1.74 to $35, and $24.99
+    // for a Yelich off three that ran $2.00 to $29.99, in insert sets whose
+    // median is about $2. Thin comps are left for a human instead.
+    if(prices.length<MIN_COMPS){ thin++; if(thinList.length<20) thinList.push(`  #${c.id} ${c.player} ${c.card_number||''}: only ${prices.length} comp(s)`); continue; }
     if(prices.length<1){ nocomp++; continue; }
     const med=pct(prices,0.5), low=Math.min(...prices), high=Math.max(...prices);
     // velocity-tuned: 35th percentile, floored at $1.49, rounded to nearest .49/.99
@@ -145,7 +163,8 @@ async function main(){
     priced++;
     if(samples.length<15) samples.push(`  #${c.id} ${c.player} ${c.card_number||''} [${category(c.parallel)}] ${prices.length}comps med $${med.toFixed(2)} -> ask $${ask.toFixed(2)}`);
   }
-  console.log(`\npriced: ${priced}, no-comps: ${nocomp}`);
+  console.log(`\npriced: ${priced}, no-comps: ${nocomp}, too-thin (<${MIN_COMPS} comps, left for a human): ${thin}`);
+  if(thinList.length) console.log('needs a human price:\n'+thinList.join('\n'));
   console.log('samples:\n'+samples.join('\n'));
   await sql.end();
 }
