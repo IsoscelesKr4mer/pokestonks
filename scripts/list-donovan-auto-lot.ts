@@ -30,7 +30,11 @@ const PUBLISH = process.argv.includes('--publish');
 const sql = postgres(process.env.DATABASE_URL_DIRECT!, { prepare: false });
 
 const CERT_ID = 71, IP_ID = 109;
-const IP_SOURCE_ITEM = '168602363198';        // Finest you-pick holding the IP card
+// The vault had #109 pointing at 168602363198, which has ENDED; that is a stale
+// pointer to a retired you-pick. The current Finest you-pick is 168602424592.
+// Check both, skip anything that is not Active, and treat "not a variation" and
+// "listing ended" alike: there is nothing there to oversell.
+const IP_SOURCE_ITEMS = ['168602424592', '168602363198'];
 const PRICE = '99.99';
 // CATEGORY MATTERS HERE. 261328 is single cards and eBay blocks the word "Lot"
 // in the title there, answering with the generic "title and/or description may
@@ -109,6 +113,8 @@ async function pullFromYouPick(tok: string, item: string, cardId: number) {
   const g = await trading(tok, 'GetItem',
     `<?xml version="1.0" encoding="utf-8"?><GetItemRequest xmlns="urn:ebay:apis:eBLBaseComponents"><ItemID>${item}</ItemID><DetailLevel>ReturnAll</DetailLevel><IncludeVariations>true</IncludeVariations></GetItemRequest>`);
   if (!/<Ack>(Success|Warning)</.test(g)) throw new Error('GetItem failed on ' + item);
+  const status = g.match(/<ListingStatus>([^<]*)</)?.[1] ?? '?';
+  if (status !== 'Active') { console.log(`  ${item} is ${status}, nothing to pull`); return; }
 
   let target: { sku: string; label: string } | null = null;
   for (const m of g.matchAll(/<Variation>([\s\S]*?)<\/Variation>/g)) {
@@ -153,7 +159,7 @@ async function main() {
   console.log(`TITLE (${TITLE.length} chars): ${TITLE}`);
   if (TITLE.length > 80) { console.error('title over 80 chars'); process.exit(1); }
   console.log(`  #${cert.id} ${cert.card_number} ${cert.parallel}  (was $${((cert.ask ?? 0) / 100).toFixed(2)})`);
-  console.log(`  #${ip.id}  ${ip.card_number}  ${ip.parallel}  (was $${((ip.ask ?? 0) / 100).toFixed(2)}, currently on you-pick ${ip.ebay_item_id ?? '-'})`);
+  console.log(`  #${ip.id}  ${ip.card_number}  ${ip.parallel}  (was $${((ip.ask ?? 0) / 100).toFixed(2)}, vault says you-pick ${ip.ebay_item_id ?? '-'})`);
   console.log(`  lot $${PRICE}  vs $${(cost / 100).toFixed(2)} listed separately  |  est net $${net.toFixed(2)}`);
 
   for (const [n] of PHOTOS) if (!existsSync(`${DIR}/IMG_${n}.JPEG`)) { console.error(`missing IMG_${n}.JPEG`); process.exit(1); }
@@ -178,7 +184,7 @@ async function main() {
   const tok = await userToken();
   if (PUBLISH) {
     console.log('\nreconciling inventory before listing:');
-    await pullFromYouPick(tok, IP_SOURCE_ITEM, IP_ID);
+    for (const src of IP_SOURCE_ITEMS) await pullFromYouPick(tok, src, IP_ID);
   }
 
   const call = PUBLISH ? 'AddFixedPriceItem' : 'VerifyAddFixedPriceItem';
