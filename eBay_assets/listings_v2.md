@@ -909,7 +909,7 @@ Added "Checklane" and "TCG", dropped "Coin" which nobody searches on. **Price wa
 
 ### Prismatic Evolutions Booster Bundle — SINGLE (listed 2026-08-16)
 
-**Item:** 168617484171 · **Price:** $79.99 · **Qty:** 2 · **SKU:** `PE-BUNDLE-SINGLE`
+**Item:** 168617484171 · **Price:** $79.99 · **Qty:** 3 · **SKU:** `PE-BUNDLE-SINGLE`
 **Title:** Pokemon TCG Scarlet Violet Prismatic Evolutions Booster Bundle Sealed 6 Packs (77 chars)
 - **Photos:** `PrismaticEvolutions_BoosterBundle_single_01_front.jpg`, `PrismaticEvolutions_BoosterBundle_single_02_back.jpg`
 - **Mapping:** 1x ci19776 per unit sold.
@@ -926,7 +926,9 @@ Added "Checklane" and "TCG", dropped "Coin" which nobody searches on. **Price wa
 
 **Order of operations, which matters.** The combo was ended BEFORE the quantities went up, so no unit was ever committed to two Active listings at once. The guard that re-checks held-minus-committed has to skip the listing being ended as well as the one being raised, or a dry run refuses the raise purely because the withdraw has not happened yet.
 
-**Every bundle is now committed exactly once:** SF twofer 2x2 + SF single 2 = 6 held; DR single 5 = 5 held; PE single 2 = 2 held.
+**Every bundle is now committed exactly once:** SF twofer 2x2 + SF single 2 = 6 held; DR single 5 = 5 held; PE single 3 = 3 held (raised to 3 on 2026-08-16 after lot #575 came out of Edmonds Safeway at 10:58; price held at $79.99 because market slid from $89.21 to $82.62).
+
+Use `scripts/set-bundle-qty.ts <sku> <qty> --apply` for this. It refuses to oversell, counting commitments only against listings that are still **Active**.
 
 ### Shrouded Fable Booster Bundle — price cut 2026-08-16
 
