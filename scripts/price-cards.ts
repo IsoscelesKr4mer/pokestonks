@@ -26,9 +26,19 @@ function category(parallel:string){
 }
 const REF_KW=['superfractor','atomic','laser','mojo','shimmer','padparadscha','sepia','aqua prism','prism','x-fractor','xfractor','seams'];
 function refKeyword(parallel:string){ const p=(parallel||'').toLowerCase(); return REF_KW.find(k=>p.includes(k))||null; }
+// NOTE 2026-08-14: the card number used to go INTO the query as "#237", which
+// throttled results to near zero because most titles do not carry it in that
+// form. "2026 Topps Chrome Denzer Guzman #237" returned 0 results; drop the
+// number and the same search returns 50. Brady House went 4 -> 50 the same way.
+// The number is still enforced, but as a FILTER over a wide result set
+// (numberMatches below), which is where it belongs. Michael found comps by hand
+// for four cards this priced as "no comps"; this was why.
+// The year was also being prepended to a set_name that already starts with it,
+// producing "2026 2026 Topps Chrome".
 function buildQuery(c:any){
-  const parts=[c.year||'', (c.set_name||'').replace(/\(.*?\)/g,'').trim(), c.player];
-  if(c.card_number) parts.push('#'+c.card_number);
+  const set=(c.set_name||'').replace(/\(.*?\)/g,'').trim();
+  const year=String(c.year||'');
+  const parts=[set.startsWith(year)?'':year, set, c.player];
   const cat=category(c.parallel);
   if(cat==='rwb') parts.push('red white blue refractor');
   else if(cat==='minidiamond') parts.push('mini diamond refractor');

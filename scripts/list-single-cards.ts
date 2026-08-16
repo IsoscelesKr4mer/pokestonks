@@ -85,6 +85,32 @@ async function main() {
            photo_urls, COALESCE(notes,'') AS notes, status, ebay_item_id
     FROM baseball_cards WHERE id = ANY(${IDS}) ORDER BY asking_price_cents DESC`;
 
+  // DUPLICATE GUARD, added 2026-08-14. This script happily minted a second
+  // listing for a Pete Crow-Armstrong #45 that was already live at qty 2, so
+  // the same card sat on eBay twice at two different prices. Michael has now
+  // caught that twice. If another vault row for the same card is already
+  // listed, the right move is to raise that listing's quantity, not create a
+  // rival one, so refuse and say so.
+  const dupes: any = await sql`
+    SELECT a.id AS want, b.id AS existing, b.ebay_item_id, b.ebay_sku, b.asking_price_cents AS ask
+    FROM baseball_cards a
+    JOIN baseball_cards b
+      ON b.id <> a.id
+     AND lower(b.player) = lower(a.player)
+     AND lower(b.set_name) = lower(a.set_name)
+     AND coalesce(b.card_number,'') = coalesce(a.card_number,'')
+     AND lower(coalesce(b.parallel,'')) = lower(coalesce(a.parallel,''))
+     AND b.status = 'listed' AND b.ebay_item_id IS NOT NULL
+    WHERE a.id = ANY(${IDS})`;
+  if (dupes.length) {
+    console.error('REFUSING: these cards are already listed under another vault row.');
+    for (const d of dupes) {
+      console.error(`  #${d.want} duplicates #${d.existing} on item ${d.ebay_item_id} (${d.ebay_sku}) at $${(d.ask / 100).toFixed(2)}`);
+    }
+    console.error('Raise the quantity on the existing listing instead of creating a second one.');
+    process.exit(1);
+  }
+
   const tok = APPLY ? await userToken() : '';
   for (const c of cards) {
     const title = buildTitle(c);

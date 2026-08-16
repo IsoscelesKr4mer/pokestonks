@@ -8,10 +8,26 @@
  *   single  (this)         qty 2 units x 1 bundle  = 2
  *                                                   -- 6 total, no overcommit
  *
- * Price: $62.99. eBay single-bundle solds that week ran $55.00-$66.49, median
- * $60.53, so this sits just above median. The twofer works out to $59.99/bundle,
- * so the single is deliberately a little more per unit, which is normal - the
- * twofer discount is the reason to buy two.
+ * Price: $57.99, cut from the original $62.99 draft.
+ *
+ * Michael, 2026-08-11, proposed this as an A/B test rather than nuking the
+ * twofer: "why dont we start w/ 2 singles of SF and 2 quantity of the twofer
+ * to test the theory and not nuke the listing that already has a watcher on
+ * it." Right call, the twofer keeps its watcher and its history.
+ *
+ * Active scan 2026-08-11 (n=87 single bundles, delivered): low $49.99,
+ * Q1 $57.50, median $62.99, Q3 $75.32. The old $62.99 draft was the MEDIAN,
+ * and the median is the price that is not selling. $57.99 sits at Q1, in the
+ * band where the transactions are. See memory feedback_dont_price_to_active_median.
+ *
+ * The twofer at $109.99 is $54.99/bundle, already under Q1, so SF was never
+ * overpriced. Its problem is format: it asks buyers to take two when 87
+ * sellers offer one. That is the theory this test checks.
+ *
+ * Economics at $57.99 vs the twofer, per bundle:
+ *   single  net $48.85 on $35.37 cost -> +$13.48
+ *   twofer  net $93.69 on $70.74 cost -> +$11.48
+ * So the single is better per unit AND reaches a bigger pool.
  *
  *   npx tsx scripts/list-shroudedfable-single.ts            # dry run
  *   npx tsx scripts/list-shroudedfable-single.ts --stage    # create, NOT live
@@ -34,11 +50,15 @@ const PUBLISH = process.argv.includes('--publish');
 const SKU = 'SF-BUNDLE-SINGLE';
 const TWOFER_SKU = 'SF-BUNDLE-TWOFER';
 const CATALOG_ITEM_ID = 5283;
-const PRICE = '62.99';
+const PRICE = '57.99';
 const QTY = 2;
 const TWOFER_QTY = 2; // units, each 2 bundles
 const COST_EACH = 35.37;
-const UPC: string | null = null; // <- fill from the box barcode
+// Read off the barcode on Michael's actual box, 2026-08-11: "0 820650 413513",
+// item code 290-41351. Check digit validates. This product ships in two box
+// footprints with DIFFERENT barcodes assigned at random, so it could never be
+// looked up online; it had to come from his box.
+const UPC: string | null = '820650413513';
 const BASE = 'https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/';
 
 const TITLE = 'Pokemon Shrouded Fable Booster Bundle Sealed 6 Booster Packs Scarlet Violet';
@@ -50,7 +70,8 @@ const DESCRIPTION = [
   '<p>Smoke-free home. Buy with confidence, check my feedback. Thanks for looking.</p>',
 ].join('\n');
 
-const PHOTOS = ['ShroudedFable_BoosterBundle_single_01_front.JPEG', 'ShroudedFable_BoosterBundle_single_02_back.JPEG'];
+// Marble reshoot Michael sent 2026-08-11 for this listing specifically.
+const PHOTOS = ['ShroudedFable_BoosterBundle_single_reshoot_01_front.JPEG', 'ShroudedFable_BoosterBundle_single_reshoot_02_back.JPEG'];
 
 function findKey(o: any, k: string): string | undefined {
   if (o && typeof o === 'object') {
