@@ -84,16 +84,24 @@ The insert code in `card_number` is the **authority** on `set_name`. Never file
 an insert under plain `2026 Topps Chrome`, and never invent a new spelling of an
 insert name. Canonical values:
 
+Names below are taken from the **official Topps checklist PDF**, not from
+whatever spelling was already most common in the table. Two of them were wrong
+when guessed that way: the `91CB-` insert is "1991 Topps **Baseball**", not
+"1991 Topps 75 Years", and `BTP-` is "Big Ticket **Players**", plural.
+
 | prefix | set_name |
 |---|---|
-| `91CB-` | `2026 Topps Chrome (1991 Topps 75 Years insert)` |
+| `91CB-` | `2026 Topps Chrome (1991 Topps Baseball insert)` |
 | `PTP-` | `2026 Topps Chrome (Past to Present insert)` |
-| `BTP-` | `2026 Topps Chrome (Big Ticket Player insert)` |
+| `BTP-` | `2026 Topps Chrome (Big Ticket Players insert)` |
 | `RVA-` | `2026 Topps Chrome (Chrome Rivals insert)` (AWAY variant) |
 | `RVH-` | `2026 Topps Chrome (Chrome Rivals insert)` (HOME variant) |
 | `WC-` | `2026 Topps Chrome (Wrecking Crew insert)` |
 | `FS-` | `2026 Topps Chrome (Future Stars insert)` |
 | `SN-` | `2026 Topps Chrome (Static Noise insert)` |
+| `DM-` | `2026 Topps Chrome (Diamond Moments insert)` |
+| `IS-` | `2026 Topps Chrome (Ink Strokes autographs)` |
+| `RA-` | `2026 Topps Chrome (Rookie Autographs)` |
 | `P-` | `2026 Topps Chrome (Perspectives insert)` |
 
 Test `PTP-` and `BTP-` **before** `P-`, or the prefix match swallows them.
@@ -102,8 +110,29 @@ A prefix missing from that table is worse than a wrong set name: the card stays
 in base Chrome and disappears from the insert count entirely. `RVH-` was missing
 at first and stranded a Reggie Jackson. Before trusting a count, list every
 letter-coded `card_number` whose prefix is not in the table and resolve each one.
-If you cannot identify the insert from the card, **ask** rather than invent a
-set name (`DM-` and `IS-` are still unresolved for this reason).
+
+**Do not ask Michael what an unknown code means, and do not invent it. Look it
+up on the checklist.** Every Topps product publishes one, and retailers host the
+PDF (`steelcitycollectibles.com/storage/pdf/product_checklists/...`). Beckett and
+checklistinsider.com carry them too. `topps.com` returns 403 to WebFetch; curl
+with a browser user-agent gets through.
+
+## 3a. Verify the whole vault against the checklist
+
+The checklist is the only source that can catch a misread the photos agree on.
+
+```
+python scripts/parse-checklist.py <checklist.pdf> <out.json>
+npx tsx scripts/verify-against-checklist.ts <out.json>
+```
+
+It matches `card_number -> player` for every letter-coded card and reports
+mismatches and codes that do not exist. Two parsing traps, both already handled
+in the script and both of which silently turn every double-digit card into an
+"unknown code": the PDF extracts the code glued to the name (`BTP-11Juan Soto`),
+so a greedy suffix eats the leading capital, and accented names lose their
+characters to U+FFFD, so the comparison treats U+FFFD as a wildcard. Past to
+Present entries list only the present-day player, so match on **any** surname.
 
 Run `npx tsx scripts/normalize-insert-sets.ts` after any ingest as a check. It
 only touches `2026 Topps Chrome%`; Finest and Bowman have their own families.

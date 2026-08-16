@@ -27,11 +27,19 @@ const APPLY = process.argv.includes('--apply');
 const sql = postgres(process.env.DATABASE_URL_DIRECT!, { prepare: false });
 const TC = '2026 Topps Chrome';
 
-/** Code prefix -> canonical set_name. Order matters: PTP must beat P. */
+/**
+ * Code prefix -> canonical set_name. Order matters: PTP must beat P.
+ *
+ * These names come from the official Topps checklist PDF, not from whatever
+ * spelling happened to be most common in the table. Two were wrong on the first
+ * pass: the 91CB- insert is "1991 Topps Baseball" (I had picked "1991 Topps 75
+ * Years", which was the majority spelling but not the real one), and BTP- is
+ * "Big Ticket Players", plural. Verify with scripts/verify-against-checklist.ts.
+ */
 const BY_PREFIX: [string, string][] = [
-  ['91CB-', `${TC} (1991 Topps 75 Years insert)`],
+  ['91CB-', `${TC} (1991 Topps Baseball insert)`],
   ['PTP-', `${TC} (Past to Present insert)`],
-  ['BTP-', `${TC} (Big Ticket Player insert)`],
+  ['BTP-', `${TC} (Big Ticket Players insert)`],
   // Chrome Rivals ships in HOME and AWAY variants, coded RVH- and RVA-. Only
   // RVA- was listed here at first, which left Reggie Jackson RVH-16 sitting
   // under plain "2026 Topps Chrome" and missing from the Rivals count entirely.
@@ -40,6 +48,12 @@ const BY_PREFIX: [string, string][] = [
   ['WC-', `${TC} (Wrecking Crew insert)`],
   ['FS-', `${TC} (Future Stars insert)`],
   ['SN-', `${TC} (Static Noise insert)`],
+  // Looked up on the 2026 Topps Chrome checklist rather than guessed: DM- is
+  // Diamond Moments, IS- is Ink Strokes (an autograph set, so it is named like
+  // the other auto sets and deliberately does not end in "insert").
+  ['DM-', `${TC} (Diamond Moments insert)`],
+  ['IS-', `${TC} (Ink Strokes autographs)`],
+  ['RA-', `${TC} (Rookie Autographs)`],
   ['P-', `${TC} (Perspectives insert)`],
 ];
 
