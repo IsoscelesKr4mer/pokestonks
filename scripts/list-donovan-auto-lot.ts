@@ -53,6 +53,11 @@ const PUB = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/${
 const DIR = 'eBay_assets/card drop';
 
 // Duo shot leads: it shows both cards, which is what the buyer is getting.
+// The IP card's own front and back are appended from the vault further down.
+// Shipping only the three new files left the buyer unable to see the back of the
+// in-person card at all, which is the one carrying the guarantee. Michael:
+// "why didnt you include the front/back of the IP auto we already have in the
+// database".
 const PHOTOS: [number, string][] = [
   [1590, 'donovan_finest_lot_duo_certified_and_ip_auto.jpg'],
   [1588, 'donovan_finest_fma-bd_blue_ref_auto_150_front.jpg'],
@@ -144,7 +149,7 @@ async function pullFromYouPick(tok: string, item: string, cardId: number) {
 async function main() {
   const rows: any = (await sql`
     SELECT id, player, set_name, card_number, parallel, status, for_sale, asking_price_cents AS ask,
-           ebay_item_id, COALESCE(notes,'') AS notes
+           ebay_item_id, photo_urls, COALESCE(notes,'') AS notes
     FROM baseball_cards WHERE id IN (${CERT_ID}, ${IP_ID})`).map((r: any) => ({ ...r, id: Number(r.id) }));
   const cert = rows.find((r: any) => r.id === CERT_ID);
   const ip = rows.find((r: any) => r.id === IP_ID);
@@ -166,6 +171,7 @@ async function main() {
 
   const sb = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
   const urls: string[] = [];
+  const ipPics = (ip.photo_urls as string[]) ?? [];
   for (const [n, name] of PHOTOS) {
     const { error } = await sb.storage.from(BUCKET)
       .upload(name, readFileSync(`${DIR}/IMG_${n}.JPEG`), { contentType: 'image/jpeg', upsert: true });
@@ -173,6 +179,9 @@ async function main() {
     urls.push(PUB + name);
     console.log(`  uploaded ${name}`);
   }
+  // the in-person card's existing shots, already in Supabase from its ingest
+  urls.push(...ipPics);
+  console.log(`  + ${ipPics.length} existing photos of the in-person card`);
   for (const u of urls) {
     const r = await fetch(u, { method: 'HEAD' });
     if (!r.ok) { console.error(`not reachable: ${u}`); process.exit(1); }
