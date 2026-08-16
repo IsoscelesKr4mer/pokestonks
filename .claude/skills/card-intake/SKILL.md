@@ -89,13 +89,21 @@ insert name. Canonical values:
 | `91CB-` | `2026 Topps Chrome (1991 Topps 75 Years insert)` |
 | `PTP-` | `2026 Topps Chrome (Past to Present insert)` |
 | `BTP-` | `2026 Topps Chrome (Big Ticket Player insert)` |
-| `RVA-` | `2026 Topps Chrome (Chrome Rivals insert)` |
+| `RVA-` | `2026 Topps Chrome (Chrome Rivals insert)` (AWAY variant) |
+| `RVH-` | `2026 Topps Chrome (Chrome Rivals insert)` (HOME variant) |
 | `WC-` | `2026 Topps Chrome (Wrecking Crew insert)` |
 | `FS-` | `2026 Topps Chrome (Future Stars insert)` |
 | `SN-` | `2026 Topps Chrome (Static Noise insert)` |
 | `P-` | `2026 Topps Chrome (Perspectives insert)` |
 
 Test `PTP-` and `BTP-` **before** `P-`, or the prefix match swallows them.
+
+A prefix missing from that table is worse than a wrong set name: the card stays
+in base Chrome and disappears from the insert count entirely. `RVH-` was missing
+at first and stranded a Reggie Jackson. Before trusting a count, list every
+letter-coded `card_number` whose prefix is not in the table and resolve each one.
+If you cannot identify the insert from the card, **ask** rather than invent a
+set name (`DM-` and `IS-` are still unresolved for this reason).
 
 Run `npx tsx scripts/normalize-insert-sets.ts` after any ingest as a check. It
 only touches `2026 Topps Chrome%`; Finest and Bowman have their own families.
@@ -123,6 +131,37 @@ only touches `2026 Topps Chrome%`; Finest and Bowman have their own families.
 - Not every card belongs in the vault: no plain base unless it is an RC, a big
   name, or an MVP buyback candidate. An unexplained base card is usually a
   misread Refractor, so re-check step 1 before filing one.
+
+## 5a. After every ingest, run the collision check
+
+Two different players cannot hold the same `card_number` inside one set. When
+they do, a number was misread. This single query found three misreads that had
+been live for weeks (`WC-15` Roman Anthony was really `WC-25`, and two Ohtani
+base cards logged as `#7` were really `#1`):
+
+```sql
+SELECT set_name, card_number, string_agg(DISTINCT player, ' | ') players
+FROM baseball_cards
+WHERE card_number IS NOT NULL AND card_number <> 'UNKNOWN'
+GROUP BY 1,2 HAVING count(DISTINCT player) > 1;
+```
+
+Resolve each hit by **re-reading both cards' photos**, never by picking the one
+that looks more likely. `scripts/fix-card-misreads-0816.ts` is the pattern: it
+asserts the current value matches what you expect before writing, so a stale fix
+cannot clobber a corrected row.
+
+Beware of reporting bugs too. Any inventory grouped by `card_number` alone will
+hide one of the two players behind a false `x2`. Group by number **and** player.
+
+## 5b. Counts are a floor, not the truth
+
+Michael photographs **one** copy of the cheap inserts, because they sell through
+a quantity dropdown rather than as individual listings. So the vault legitimately
+holds fewer rows than his team bags, and a gap is not automatically an error.
+Ask before chasing one. When he reports bag counts, add the extra copies as
+`needs_photos` with an empty `photo_urls` and no price, noting that the
+`card_number` is assumed to match the copy already logged.
 
 ## 6. When unsure, stop
 
