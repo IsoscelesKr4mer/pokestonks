@@ -139,7 +139,11 @@ async function build(d: SetDef): Promise<Variation[]> {
     if (!withPics.length) throw new Error(`${d.key} ${code}: no photo on any copy`);
     let label = `${code} - ${primary.player}`;
     if (label.length > 50) label = label.slice(0, 50).trim();
-    vars.push({ label, sku: `PYP-${d.key}-${primary.id}`, price, qty: group.length, pics: (primary.photo_urls as string[]).slice(0, 1), ids: group.map((g: any) => g.id) });
+    // ALL of the primary's photos, not just the front. Attaching only
+    // photo_urls[0] meant every variation showed the front and no back, and the
+    // gallery is also built from fronts, so the buyer saw the same front twice
+    // with the back nowhere. Michael caught it on Perspectives; it affected all 7.
+    vars.push({ label, sku: `PYP-${d.key}-${primary.id}`, price, qty: group.length, pics: (primary.photo_urls as string[]) ?? [], ids: group.map((g: any) => g.id) });
   }
   vars.sort((a, b) => order(a.label.split(' - ')[0], b.label.split(' - ')[0]));
 
@@ -157,7 +161,8 @@ function itemXml(d: SetDef, vars: Variation[]) {
     v.pics.map((u) => `<PictureURL>${esc(u)}</PictureURL>`).join('') + `</VariationSpecificPictureSet>`).join('');
   const setXml = `<VariationSpecificsSet><NameValueList><Name>Card</Name>` +
     vars.map((v) => `<Value>${esc(v.label)}</Value>`).join('') + `</NameValueList></VariationSpecificsSet>`;
-  const gallery = vars.flatMap((v) => v.pics).slice(0, 12);
+  // Gallery is one shot per card, the front, so it reads as a set at a glance.
+  const gallery = vars.map((v) => v.pics[0]).filter(Boolean).slice(0, 12);
 
   return `<Item>` +
     `<Title>${esc(d.title)}</Title>` +
