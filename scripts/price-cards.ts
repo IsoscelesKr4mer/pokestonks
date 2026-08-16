@@ -43,10 +43,26 @@ function refKeyword(parallel:string){ const p=(parallel||'').toLowerCase(); retu
 // for four cards this priced as "no comps"; this was why.
 // The year was also being prepended to a set_name that already starts with it,
 // producing "2026 2026 Topps Chrome".
+// "2026 Topps Chrome (Big Ticket Players insert)" -> "Big Ticket Players".
+// The insert NAME is what sellers actually put in the title; the code often is
+// not there at all.
+function insertName(setName:string){
+  const m=(setName||'').match(/\(([^)]+)\)/);
+  if(!m) return null;
+  return m[1].replace(/\s*(insert|autographs|autograph)$/i,'').trim() || null;
+}
+// NOTE 2026-08-16: insert cards searched WITHOUT their insert name, so
+// "2026 Topps Chrome Shohei Ohtani" came back with 50 generic Ohtani cards of
+// which exactly ONE was the Big Ticket Players BTP-3, and that one was a graded
+// GEM MINT 10. Result: a "1 comp" verdict and a $27.49 ask on a $4 card. Adding
+// the insert name to the query takes it to 42 of 50 matching, at $4.00-$5.99.
+// Michael: "ohtani btp-3 is not thin at all check again there are tons and tons
+// of listings." He was right; the market was never thin, the query was wrong.
 function buildQuery(c:any){
   const set=(c.set_name||'').replace(/\(.*?\)/g,'').trim();
   const year=String(c.year||'');
-  const parts=[set.startsWith(year)?'':year, set, c.player];
+  const ins=insertName(c.set_name);
+  const parts=[set.startsWith(year)?'':year, set, ins, c.player];
   const cat=category(c.parallel);
   if(cat==='rwb') parts.push('red white blue refractor');
   else if(cat==='minidiamond') parts.push('mini diamond refractor');
@@ -82,16 +98,26 @@ function numberMatches(title:string, num:string){
 // Words that unambiguously signal a NON-base parallel (avoids raw colors like
 // "blue"/"red" which collide with team names Blue Jays / Red Sox).
 const NONBASE_WORDS=['auto','ssp','superfractor','super fractor','x-fractor','xfractor','mini diamond','mojo','shimmer','laser','atomic','prism','sepia','padparadscha','sapphire','printing plate','negative','1/1'];
+// Graded copies sell for a multiple of the raw card, so they are not comps for
+// raw inventory. The single BTP-3 Ohtani that survived the old query was a
+// "GEM MINT 10" at $27.49 against a raw market of about $4.50.
+const GRADED=/\b(psa|bgs|sgc|cgc|gem\s*mint|graded|slab)\b/i;
 function matches(title:string, c:any){
   const t=title.toLowerCase();
+  if(GRADED.test(title)) return false;
   const surname=(c.player.split('/')[0].trim().split(' ').pop()||'').toLowerCase();
   if(surname && !t.includes(surname)) return false;
   // product gate: right set family, wrong ones excluded
   const pg=productGate(c.set_name);
   if(pg.require.some(r=>!t.includes(r))) return false;
   if(pg.exclude.some(x=>t.includes(x))) return false;
-  // card-number / insert-code gate: THIS exact card, not just this player
-  if(!numberMatches(title, c.card_number)) return false;
+  // Card-number gate. For inserts the code is frequently absent from the title,
+  // so naming the insert set is enough: these sets carry one card per player, so
+  // player + insert name already pins the exact card. Requiring the code here
+  // was throwing away most of the real market.
+  const ins=insertName(c.set_name);
+  const insHit=ins ? t.includes(ins.toLowerCase()) : false;
+  if(!insHit && !numberMatches(title, c.card_number)) return false;
   // parallel-category gate
   const cat=category(c.parallel); const ser=serial(c.parallel);
   const hasRef=t.includes('refractor')||t.includes('raywave')||t.includes('prism');
