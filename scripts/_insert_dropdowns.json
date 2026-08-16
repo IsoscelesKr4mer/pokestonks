@@ -1,0 +1,843 @@
+[
+  {
+    "d": {
+      "key": "WC",
+      "set": "2026 Topps Chrome (Wrecking Crew insert)",
+      "title": "2026 Topps Chrome Wrecking Crew Insert You Pick Your Card Baseball",
+      "parallel": "Wrecking Crew"
+    },
+    "vars": [
+      {
+        "label": "WC-1 - Aaron Judge",
+        "sku": "PYP-WC-362",
+        "price": 199,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1570.jpg"
+        ],
+        "ids": [
+          362
+        ]
+      },
+      {
+        "label": "WC-2 - Shohei Ohtani",
+        "sku": "PYP-WC-363",
+        "price": 599,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1574.jpg"
+        ],
+        "ids": [
+          363
+        ]
+      },
+      {
+        "label": "WC-3 - Kyle Schwarber",
+        "sku": "PYP-WC-283",
+        "price": 199,
+        "qty": 2,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1304.jpg"
+        ],
+        "ids": [
+          380,
+          283
+        ]
+      },
+      {
+        "label": "WC-5 - Cal Raleigh",
+        "sku": "PYP-WC-364",
+        "price": 199,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1576.jpg"
+        ],
+        "ids": [
+          364
+        ]
+      },
+      {
+        "label": "WC-7 - Pete Crow-Armstrong",
+        "sku": "PYP-WC-86",
+        "price": 249,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0479.jpg"
+        ],
+        "ids": [
+          86
+        ]
+      },
+      {
+        "label": "WC-12 - Jackson Chourio",
+        "sku": "PYP-WC-62",
+        "price": 199,
+        "qty": 2,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0475.jpg"
+        ],
+        "ids": [
+          62,
+          264
+        ]
+      },
+      {
+        "label": "WC-13 - Freddie Freeman",
+        "sku": "PYP-WC-278",
+        "price": 199,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1294.jpg"
+        ],
+        "ids": [
+          278
+        ]
+      },
+      {
+        "label": "WC-15 - Ketel Marte",
+        "sku": "PYP-WC-207",
+        "price": 199,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0979.jpg"
+        ],
+        "ids": [
+          207
+        ]
+      },
+      {
+        "label": "WC-17 - Oneil Cruz",
+        "sku": "PYP-WC-158",
+        "price": 199,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0660.jpg"
+        ],
+        "ids": [
+          158
+        ]
+      },
+      {
+        "label": "WC-18 - Mike Trout",
+        "sku": "PYP-WC-206",
+        "price": 199,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0977.jpg"
+        ],
+        "ids": [
+          206
+        ]
+      },
+      {
+        "label": "WC-19 - Spencer Torkelson",
+        "sku": "PYP-WC-365",
+        "price": 199,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1578.jpg"
+        ],
+        "ids": [
+          365
+        ]
+      },
+      {
+        "label": "WC-20 - Jose Ramirez",
+        "sku": "PYP-WC-85",
+        "price": 199,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0477.jpg"
+        ],
+        "ids": [
+          85
+        ]
+      },
+      {
+        "label": "WC-22 - Elly De La Cruz",
+        "sku": "PYP-WC-366",
+        "price": 199,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1572.jpg"
+        ],
+        "ids": [
+          366
+        ]
+      },
+      {
+        "label": "WC-24 - Samuel Basallo",
+        "sku": "PYP-WC-141",
+        "price": 249,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0626.jpg"
+        ],
+        "ids": [
+          141
+        ]
+      },
+      {
+        "label": "WC-25 - Roman Anthony",
+        "sku": "PYP-WC-321",
+        "price": 199,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1463.jpg"
+        ],
+        "ids": [
+          321
+        ]
+      }
+    ]
+  },
+  {
+    "d": {
+      "key": "91CB",
+      "set": "2026 Topps Chrome (1991 Topps Baseball insert)",
+      "title": "2026 Topps Chrome 1991 Topps Baseball Insert You Pick Your Card",
+      "parallel": "1991 Topps Baseball"
+    },
+    "vars": [
+      {
+        "label": "91CB-3 - Bryce Harper",
+        "sku": "PYP-91CB-75",
+        "price": 149,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0453.jpg"
+        ],
+        "ids": [
+          75
+        ]
+      },
+      {
+        "label": "91CB-6 - Mike Trout",
+        "sku": "PYP-91CB-360",
+        "price": 199,
+        "qty": 2,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1565.jpg"
+        ],
+        "ids": [
+          360,
+          215
+        ]
+      },
+      {
+        "label": "91CB-8 - Mookie Betts",
+        "sku": "PYP-91CB-324",
+        "price": 199,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1457.jpg"
+        ],
+        "ids": [
+          324
+        ]
+      },
+      {
+        "label": "91CB-11 - Juan Soto",
+        "sku": "PYP-91CB-359",
+        "price": 199,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1563.jpg"
+        ],
+        "ids": [
+          359
+        ]
+      },
+      {
+        "label": "91CB-12 - Fernando Tatis Jr.",
+        "sku": "PYP-91CB-140",
+        "price": 199,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0624.jpg"
+        ],
+        "ids": [
+          140
+        ]
+      },
+      {
+        "label": "91CB-17 - Samuel Basallo",
+        "sku": "PYP-91CB-270",
+        "price": 149,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1278.jpg"
+        ],
+        "ids": [
+          270
+        ]
+      },
+      {
+        "label": "91CB-18 - Bubba Chandler",
+        "sku": "PYP-91CB-356",
+        "price": 149,
+        "qty": 2,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1539.jpg"
+        ],
+        "ids": [
+          356,
+          242
+        ]
+      },
+      {
+        "label": "91CB-19 - Roman Anthony",
+        "sku": "PYP-91CB-325",
+        "price": 299,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1459.jpg"
+        ],
+        "ids": [
+          325
+        ]
+      },
+      {
+        "label": "91CB-21 - Sal Stewart",
+        "sku": "PYP-91CB-269",
+        "price": 249,
+        "qty": 2,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1276.jpg"
+        ],
+        "ids": [
+          269,
+          361
+        ]
+      },
+      {
+        "label": "91CB-24 - Kazuma Okamoto",
+        "sku": "PYP-91CB-358",
+        "price": 249,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1561.jpg"
+        ],
+        "ids": [
+          358
+        ]
+      },
+      {
+        "label": "91CB-25 - Chase Burns",
+        "sku": "PYP-91CB-69",
+        "price": 199,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_chase_burns_chrome_front_v2.jpg"
+        ],
+        "ids": [
+          69
+        ]
+      },
+      {
+        "label": "91CB-26 - Christian Moore",
+        "sku": "PYP-91CB-357",
+        "price": 149,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1541.jpg"
+        ],
+        "ids": [
+          357
+        ]
+      },
+      {
+        "label": "91CB-27 - Owen Caissie",
+        "sku": "PYP-91CB-157",
+        "price": 199,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0658.jpg"
+        ],
+        "ids": [
+          157
+        ]
+      }
+    ]
+  },
+  {
+    "d": {
+      "key": "BTP",
+      "set": "2026 Topps Chrome (Big Ticket Players insert)",
+      "title": "2026 Topps Chrome Big Ticket Players Insert You Pick Your Card",
+      "parallel": "Big Ticket Players"
+    },
+    "vars": [
+      {
+        "label": "BTP-1 - Mike Trout",
+        "sku": "PYP-BTP-63",
+        "price": 199,
+        "qty": 2,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_62_mike-trout_1.jpg"
+        ],
+        "ids": [
+          63,
+          381
+        ]
+      },
+      {
+        "label": "BTP-3 - Shohei Ohtani",
+        "sku": "PYP-BTP-374",
+        "price": 499,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1557.jpg"
+        ],
+        "ids": [
+          374
+        ]
+      },
+      {
+        "label": "BTP-6 - Corbin Carroll",
+        "sku": "PYP-BTP-153",
+        "price": 199,
+        "qty": 2,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0650.jpg"
+        ],
+        "ids": [
+          382,
+          153
+        ]
+      },
+      {
+        "label": "BTP-9 - Jose Ramirez",
+        "sku": "PYP-BTP-74",
+        "price": 199,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0451.jpg"
+        ],
+        "ids": [
+          74
+        ]
+      },
+      {
+        "label": "BTP-11 - Juan Soto",
+        "sku": "PYP-BTP-138",
+        "price": 199,
+        "qty": 2,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0620.jpg"
+        ],
+        "ids": [
+          138,
+          383
+        ]
+      },
+      {
+        "label": "BTP-12 - Jackson Chourio",
+        "sku": "PYP-BTP-284",
+        "price": 199,
+        "qty": 2,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1306.jpg"
+        ],
+        "ids": [
+          384,
+          284
+        ]
+      },
+      {
+        "label": "BTP-15 - James Wood",
+        "sku": "PYP-BTP-375",
+        "price": 199,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1555.jpg"
+        ],
+        "ids": [
+          375
+        ]
+      },
+      {
+        "label": "BTP-16 - Bobby Witt Jr.",
+        "sku": "PYP-BTP-265",
+        "price": 199,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1248.jpg"
+        ],
+        "ids": [
+          265
+        ]
+      },
+      {
+        "label": "BTP-19 - Bryce Harper",
+        "sku": "PYP-BTP-322",
+        "price": 199,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1461.jpg"
+        ],
+        "ids": [
+          322
+        ]
+      },
+      {
+        "label": "BTP-20 - Fernando Tatis Jr.",
+        "sku": "PYP-BTP-213",
+        "price": 199,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0991.jpg"
+        ],
+        "ids": [
+          213
+        ]
+      },
+      {
+        "label": "BTP-23 - Roman Anthony",
+        "sku": "PYP-BTP-281",
+        "price": 249,
+        "qty": 2,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1300.jpg"
+        ],
+        "ids": [
+          281,
+          73
+        ]
+      },
+      {
+        "label": "BTP-24 - Chase Burns",
+        "sku": "PYP-BTP-376",
+        "price": 199,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1559.jpg"
+        ],
+        "ids": [
+          376
+        ]
+      }
+    ]
+  },
+  {
+    "d": {
+      "key": "RV",
+      "set": "2026 Topps Chrome (Chrome Rivals insert)",
+      "title": "2026 Topps Chrome Rivals Insert You Pick Your Card Baseball Card",
+      "parallel": "Chrome Rivals"
+    },
+    "vars": [
+      {
+        "label": "RVA-1 - David Ortiz",
+        "sku": "PYP-RV-136",
+        "price": 199,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0614.jpg"
+        ],
+        "ids": [
+          136
+        ]
+      },
+      {
+        "label": "RVA-2 - Mike Piazza",
+        "sku": "PYP-RV-282",
+        "price": 199,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1302.jpg"
+        ],
+        "ids": [
+          282
+        ]
+      },
+      {
+        "label": "RVA-7 - Yadier Molina",
+        "sku": "PYP-RV-263",
+        "price": 199,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1244.jpg"
+        ],
+        "ids": [
+          263
+        ]
+      },
+      {
+        "label": "RVA-13 - Manny Ramirez",
+        "sku": "PYP-RV-280",
+        "price": 199,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1298.jpg"
+        ],
+        "ids": [
+          280
+        ]
+      },
+      {
+        "label": "RVA-24 - Christian Yelich",
+        "sku": "PYP-RV-377",
+        "price": 199,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1545.jpg"
+        ],
+        "ids": [
+          377
+        ]
+      },
+      {
+        "label": "RVA-25 - Fernando Tatis Jr.",
+        "sku": "PYP-RV-378",
+        "price": 249,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1543.jpg"
+        ],
+        "ids": [
+          378
+        ]
+      },
+      {
+        "label": "RVH-16 - Reggie Jackson",
+        "sku": "PYP-RV-208",
+        "price": 349,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0981.jpg"
+        ],
+        "ids": [
+          208
+        ]
+      }
+    ]
+  },
+  {
+    "d": {
+      "key": "FS",
+      "set": "2026 Topps Chrome (Future Stars insert)",
+      "title": "2026 Topps Chrome Future Stars Insert You Pick Your Card Baseball",
+      "parallel": "Future Stars"
+    },
+    "vars": [
+      {
+        "label": "FS-2 - Colson Montgomery",
+        "sku": "PYP-FS-379",
+        "price": 199,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1580.jpg"
+        ],
+        "ids": [
+          379
+        ]
+      },
+      {
+        "label": "FS-3 - JJ Wetherholt",
+        "sku": "PYP-FS-279",
+        "price": 299,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1296.jpg"
+        ],
+        "ids": [
+          279
+        ]
+      },
+      {
+        "label": "FS-6 - Kevin McGonigle",
+        "sku": "PYP-FS-145",
+        "price": 449,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0634.jpg"
+        ],
+        "ids": [
+          145
+        ]
+      },
+      {
+        "label": "FS-7 - Jac Caglianone",
+        "sku": "PYP-FS-214",
+        "price": 249,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0993.jpg"
+        ],
+        "ids": [
+          214
+        ]
+      },
+      {
+        "label": "FS-8 - Roman Anthony",
+        "sku": "PYP-FS-266",
+        "price": 249,
+        "qty": 2,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1250.jpg"
+        ],
+        "ids": [
+          266,
+          68
+        ]
+      },
+      {
+        "label": "FS-10 - Carson Benge",
+        "sku": "PYP-FS-79",
+        "price": 199,
+        "qty": 2,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0463.jpg"
+        ],
+        "ids": [
+          79,
+          385
+        ]
+      }
+    ]
+  },
+  {
+    "d": {
+      "key": "PTP",
+      "set": "2026 Topps Chrome (Past to Present insert)",
+      "title": "2026 Topps Chrome Past to Present Insert You Pick Your Card",
+      "parallel": "Past to Present"
+    },
+    "vars": [
+      {
+        "label": "PTP-3 - Jackie Robinson / Mookie Betts",
+        "sku": "PYP-PTP-82",
+        "price": 199,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0469.jpg"
+        ],
+        "ids": [
+          82
+        ]
+      },
+      {
+        "label": "PTP-12 - Luis Gonzalez / Corbin Carroll",
+        "sku": "PYP-PTP-323",
+        "price": 199,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1465.jpg"
+        ],
+        "ids": [
+          323
+        ]
+      },
+      {
+        "label": "PTP-15 - Edgar Martinez / Cal Raleigh",
+        "sku": "PYP-PTP-367",
+        "price": 199,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1553.jpg"
+        ],
+        "ids": [
+          367
+        ]
+      },
+      {
+        "label": "PTP-19 - Adrian Beltre / Corey Seager",
+        "sku": "PYP-PTP-368",
+        "price": 199,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1549.jpg"
+        ],
+        "ids": [
+          368
+        ]
+      },
+      {
+        "label": "PTP-23 - Ozzie Smith / Masyn Winn",
+        "sku": "PYP-PTP-369",
+        "price": 249,
+        "qty": 2,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1551.jpg"
+        ],
+        "ids": [
+          369,
+          83
+        ]
+      },
+      {
+        "label": "PTP-24 - Will Clark / Matt Chapman",
+        "sku": "PYP-PTP-370",
+        "price": 249,
+        "qty": 2,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1547.jpg"
+        ],
+        "ids": [
+          370,
+          159
+        ]
+      }
+    ]
+  },
+  {
+    "d": {
+      "key": "P",
+      "set": "2026 Topps Chrome (Perspectives insert)",
+      "title": "2026 Topps Chrome Perspectives Insert You Pick Your Card Baseball",
+      "parallel": "Perspectives"
+    },
+    "vars": [
+      {
+        "label": "P-3 - Nick Kurtz",
+        "sku": "PYP-P-371",
+        "price": 349,
+        "qty": 2,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1535.jpg"
+        ],
+        "ids": [
+          371,
+          317
+        ]
+      },
+      {
+        "label": "P-6 - Ronald Acuna Jr.",
+        "sku": "PYP-P-372",
+        "price": 299,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1533.jpg"
+        ],
+        "ids": [
+          372
+        ]
+      },
+      {
+        "label": "P-8 - Paul Skenes",
+        "sku": "PYP-P-151",
+        "price": 499,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0646.jpg"
+        ],
+        "ids": [
+          151
+        ]
+      },
+      {
+        "label": "P-10 - Derek Jeter",
+        "sku": "PYP-P-373",
+        "price": 399,
+        "qty": 1,
+        "pics": [
+          "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1537.jpg"
+        ],
+        "ids": [
+          373
+        ]
+      }
+    ]
+  }
+]
