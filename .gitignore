@@ -77,3 +77,7 @@ drizzle/relations.ts
 # personal/scratch reference material kept outside source
 docs/references/
 .claude/
+
+# Raw capture footage. 400MB+ files, GitHub rejects anything over 100MB
+# and these blocked 9 commits from pushing on 2026-08-16. Keep them local.
+VM_Videos/
