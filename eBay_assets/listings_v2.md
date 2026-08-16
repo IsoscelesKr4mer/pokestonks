@@ -805,6 +805,14 @@ These live on eBay only. No catalog_item_id, no sync mapping, no auto P&L. Track
   - **Inventory guard:** only 2 megas exist, so the single listing had to come down before the twofer went up or the same two boxes would have been committed twice. Verified after publish: 2 held, 2 committed.
   - Tradeoff accepted: a single-box buyer is now locked out of the mega. If the twofer sits, split it back into a qty-2 single at $124.99.
 - **🟢 LIVE Value:** eBay #168593831308 · offer 226210622011 · SKU CHROMEUPD-NBA-VALUE · mapped 1x ci135079 · **$64.99 x qty 2** · cost $45.92 · net $55.85 → **+$9.93/box** · break-even $53.50
+
+**Status as of 2026-08-11:**
+
+- **Value box is fully closed out.** 3 bought, 3 sold, 0 held, **$23.50 realized on $141.58**. Listing #168594314671 shows Completed, QuantitySold 3. The last two went together on 08-10 at full ask to one buyer (order 18-15001-05305, $129.98). **Michael had declined a $120 offer for the pair earlier that same day and was right to**: holding was worth **$8.66 more after fees** and more than doubled the profit on those two units ($15.27 vs $6.61). The lesson is to size an offer against the *margin*, not against the ask, and to weight a recent full-price sale on the same listing as demand evidence.
+- **⚫ Mega is CLOSED OUT too. 7 bought, 7 sold, 0 held, $102.04 realized on $643.28.** Sale prices across the run: $119.99 x3, $129.99, 2x $129.99 together, and $134.99 last.
+  - **The last box sold 65 minutes after the price cut.** It had sat at $139.99 since 08-08 with **zero watchers**; Michael called the cut to $134.99 at 00:50 UTC on 08-11 and it sold at 01:55 UTC (order 27-14986-18444, sale 462, lot #542 @ $93.96). Buyer total $151.21 (item + $6.37 ship + $9.85 eBay-collected tax), fee $20.44 = 13.25% x $151.21 + $0.40 exactly, **net $114.55, profit $20.59, 22% ROI**.
+  - **The cut cost $4.34 against a hypothetical $139.99 sale, and was clearly worth it.** Two days of zero watchers is the signal; a stale ask on an in-print retail box does not age well. Worth remembering the next time a box sits: the $4-5 haircut is cheap relative to sitting on inventory that is still being restocked at retail.
+- **Whole 2025-26 Chrome Update NBA position is now flat: $125.54 realized** ($102.04 mega + $23.50 value) on $784.86 of cost.
 - Both category 261332, location edmonds-wa, Ground Advantage calculated, buyer pays. Mega 16 oz, Value 12 oz, 8x8x4.
 - **Titles:** `2025-26 Topps Chrome Update Basketball Mega Box SEALED IN HAND Flagg` (68) · `2025-26 Topps Chrome Update Basketball Value Box SEALED IN HAND 28 Cards` (72)
 - **SEALED is the differentiator, and it is quantified.** Topps shipped presale boxes with the **seal broken** to deter resellers (Michael's catch). His Dick's boxes are sealed. On release day the one **unsealed** mega sold at **$119.99** while sealed in-hand singles sold at $115, $122, $124.95, $124.99, $125, $127.99, $129.99, $130, $130, $140 — **median $126.50**. So the seal is worth roughly $7-10 and the title leads with SEALED IN HAND.
@@ -812,6 +820,98 @@ These live on eBay only. No catalog_item_id, no sync mapping, no auto P&L. Track
 - **Correction to the 2026-08-05 lot guidance.** That note said sealed-box lots always sell at a discount, which held for the Chrome baseball. **It does not hold here.** Release-day multi-box lots sold at a *premium*: x2 at $269.99 ($135/box) and $260 ($130/box), x3 at $390 ($130/box), x5 at $640 ($128/box), against a $126.50 single median. Scarcity flips it. Still listed as qty 2 rather than a twofer, because a qty-2 listing lets one buyer take both and also serves single buyers.
 - **Value box has no comp.** No Update value box had sold at listing time; the value-box page on SportsCardsPro carries base-release sales from March 2026 ($56-$75), a different product. $64.99 is inferred from the mega's ~1.5x-retail multiple applied to the $45 value retail. `ci135079.manual_market_cents` is deliberately NULL. Re-price once real ones sell.
 - **Cost basis:** Dick's Northgate, 2026-08-06 10:13 AM, store 1419 trans 1600. Limit 2 per item. Mega $85.00 list and Value $45.00 list, less a $20 reward certificate earned on the previous day's Chrome baseball run (spread -6.54 x2 mega, -3.46 x2 value), + 10.55% tax. Subtotal $240.00, tax $25.32, **paid $265.32**, reconciles exactly to $86.74 and $45.92 per box.
+
+### Pokemon First Partner Illustration Collection, Series 3 (listed 2026-08-10)
+
+- **🟢 LIVE 2026-08-10:** eBay #168604150072 · offer 232196236011 · SKU FPIC-S3 · mapped **1x ci135080 per unit** · category 261044 · location edmonds-wa
+- **Ask:** $33.99 + **Ground Advantage Calculated, buyer pays** (269110723012) · **Qty:** 2 → **1 held** · **Cost:** $19.88/box
+- **✅ ONE SOLD IN 5 HOURS 40 MINUTES.** Listed 2026-08-10 23:39 UTC, sold 08-11 05:19 UTC. Order 15-15007-44126, sale 463. Buyer total $43.54 (item $33.99 + $6.95 ship + $2.60 tax), fee $6.17, **net $27.82, profit $7.94, 40% ROI.** One left at the same price.
+- **⚠️ I nearly cut this price on a listing that had already sold.** A few hours after the sale I ran a comp scan, found 71% of sellers cheaper on delivered price, and recommended dropping to $29.99. Michael: *"No I already sold a first partner at that price."* **The lesson is to query orders BEFORE diagnosing a pricing problem** — an order is a fact, a comp scan is inference. Recorded as `feedback_dont_price_to_active_median`.
+- **This listing also disproves the blanket version of that rule.** Both this and the Bowman mega went live the same evening priced at roughly the active median; this one sold in under six hours and Bowman drew zero views in sixteen. The difference is price point and field size: a $37 impulse buy tolerates a median ask, a $100 commodity with 140 competitors does not.
+- **Title:** `Pokemon TCG First Partner Illustration Collection Series 3 Sealed 3 Promo Cards` (79 chars)
+- **Photos:** `FirstPartner_IllustrationCollection_S3_reshoot_01_front.JPEG` (leads), `_02_back.JPEG`. Marble reshoot, swapped in ~1h after go-live, replacing the car-seat originals. **Reshoots got NEW filenames on purpose**: eBay copies images to its own CDN at publish time and will not reliably re-fetch an unchanged URL, so overwriting in place can silently leave the old photos live.
+- **UPC 196214157217**, read off the barcode on the back panel. Series 3 had no catalog row at all, so ci135080 was created from TCGCSV group 24584 / product 695400.
+- **Cost basis:** Fred Meyer Shoreline (18325 Aurora Ave N), receipt 08/10/26 16:20, lot #548. 2x $17.99 = $35.98 + $3.78 tax (10.5%) = **$39.76, $19.88/box**. Retail shelf, not the vending machine.
+- **⚠️ This first went live at $36.99 with FREE shipping and Michael killed it within four minutes:** *"You offered free shipping? wtf don't do that ever."* **Standing rule now, no exceptions, on any listing.** The `Free Shipping Ground Advantage` policy created for it (273025909012) has been deleted and the account is back to its original four policies. See `feedback_never_offer_free_shipping` in memory.
+  - **The correct move when the field is all free-shipping is to cut the item price, not the shipping model.** Hence $33.99, which lands at ~$40.49 delivered, still at the market median, instead of the ~$43.50 that $36.99 plus shipping would have shown.
+  - **Buyer-paid also just nets more.** Shipping is a wash against the label, so it never comes out of his pocket, whereas free shipping came straight off the item price: **$8.35/box vs $5.31/box**, despite the lower sticker.
+- **Pricing basis, eBay Browse active scan 2026-08-10 (n=59 single-box listings, delivered = item + shipping):** low $27.99, **median $39.98**, dense cluster $35.00-$40.00, with most of the inventory parked at $39.99 and ~15 listings under $37. TCGCSV market the same day $37.19.
+- **Priced to move rather than to squeeze**, because Series 3 is in print (presale listings were still active in the scan) and **Series 2 fell from $74.57 in May to $33.03 today**. Series 1 went the other way, $66.85 now, so the series do not behave alike and holding is not a free option.
+- **Contents taken from the back panel only, nothing inferred:** 1 booster pack with 3 of 9 illustration rare-style promo cards (Hoenn, Kalos, Paldea first partners), 2 Mega Evolution Series booster packs, 1 sticker sheet. The two boosters visible through the blister on these copies are Pitch Black and Chaos Rising, but the box does not state which sets are included so **that stayed out of the copy**.
+- Verified live with Trading `GetItem` after the fix: Active, $33.99, qty 2, HideFromSearch false, **ShippingType Calculated, profile "Ground Advantage Calculated", no FreeShipping flag**, UPC present.
+
+### 2025-26 Bowman Basketball Mega Box (listed 2026-08-10)
+
+- **🟢 LIVE 2026-08-10:** eBay #168604274457 · offer 232239087011 · SKU BOWMAN-NBA-2026-MEGA · mapped **1x ci135081 per unit** · category 261332 · location edmonds-wa
+- **Ask:** ~~$99.99~~ → **$89.99** (cut 2026-08-11) + Ground Advantage Calculated, buyer pays · **Qty:** 2 · **Cost:** $66.29/box · **net ~$76.67 → +$10.38/box, +$20.77 for both** · **break-even ask $78.02**
+- **⚠️ THE $99.99 LAUNCH PRICE WAS MY ERROR AND IT DREW ZERO VIEWS IN 16 HOURS.** Michael: *"My Bowman boxes have zero views. I think you priced it way too aggressively."*
+  - **Root cause: I priced to the MEDIAN OF ACTIVE LISTINGS.** Actives are by definition the inventory that has not sold, so on a commodity with 140 identical competitors the ask median measures what is failing to move. Worse, I wrote in the listing script that I was "deliberately not chasing the crowded $85-$90 band" when the crowd is exactly where the transactions happen.
+  - **The number I should have computed is RANK.** At $99.99 the listing sat **73rd of 140 by delivered price, with 70 sellers cheaper.** At $89.99 that is 33 cheaper. Percentile of price is not the same as position in the buyer's queue.
+  - **Diagnosed before repricing, so this was not a guess:** `HideFromSearch: false` and the listing appears in buyer-side Browse search at rank 36 of 200. Visibility was fine; price was the only variable.
+  - **Sold comps are unavailable on this account.** eBay returns a 1832-byte error page for sold-listing scrapes even with the browser-UA curl trick, and Marketplace Insights is not approved. The correct response to having asks-only data is to say so and anchor low, which I did not do. Rule recorded in memory as `feedback_dont_price_to_active_median`.
+  - **Next step if still dead in ~48h: $84.99** (13 cheaper, $6.05/box). Below that it stops being worth the handling; break-even is $78.02.
+- **Title:** `2025-26 Bowman NBA Basketball Mega Box SEALED IN HAND 42 Cards Cooper Flagg` (75 chars)
+- **Photos:** `BowmanNBA_MegaBox_reshoot_01_front.JPEG` (leads), `_02_back.JPEG`. Marble reshoot, swapped in ~35 min after go-live, replacing the dashboard originals. New filenames on purpose, see the note on the First Partner listing.
+- **Cost basis:** lot #549, 2026-08-10, 2 boxes. $59.99 shelf (read off the tag in his photo) **+ an INFERRED 10.5% tax** = $66.29/box, $132.58. **Confirm against the receipt** and correct the lot if the store or rate differs.
+- **UPC 887521155583 was not on the box panel he photographed** (that is the legal panel with the QR code). Verified instead against two independent retailers that agree exactly: DA Card World structured data `gtin12` and Steel City Collectibles `gtin13` `0887521155583`. The 887521 prefix matches his other Topps boxes.
+- **Pricing basis, comp-scan 2026-08-10 (n=159 active, delivered):** floor **$75-$79**, body **$85-$120**, **median $99.97**, Q3 $119.99. $99.99 is the median, not an outlier ask.
+  - **Deliberately not chasing the crowded $85-$90 band.** At $89.99 the profit is $10.18/box against a $78.25 break-even, too thin to be worth handling. **The floor is only ~$12 under cost**, which is the real risk on this position, so there is no undercutting your way out. If it sits a week, $89.99 is the next step, and that is the last stop worth taking.
+- **Contents are Beckett-sourced, not invented.** The box front says only "Look for Autograph* Cards". Beckett's mega-specific page gives 6 packs x 7 cards = 42, and per box 11 Mojo base parallels + 1 insert + 1 Mega Rookies or Mega Prospect. **Autographs are stated as a chase, NOT a guarantee**, and the copy repeats Topps' own warning that some may be redemptions.
+- Verified live with Trading `GetItem`: Active, $99.99, qty 2, HideFromSearch false, **ShippingType Calculated (Ground Advantage Calculated)**, UPC present.
+
+### Shrouded Fable split test + Prismatic/Destined Rivals relist (2026-08-11)
+
+**Michael's call, and the better version of what I proposed.** I recommended splitting all six SF bundles into singles. He countered: *"why dont we start w/ 2 singles of SF and 2 quantity of the twofer to test the theory and not nuke the listing that already has a watcher on it."* Right on both counts, it preserves the twofer's history and watcher and still tests the format hypothesis.
+
+- **🟢 SF SINGLE, NEW:** eBay #168606265372 · SKU SF-BUNDLE-SINGLE · mapped **1x ci5283 per unit** · **$57.99 x qty 2** · cost $35.37 · **+$14.43/bundle**
+- **🟡 SF TWOFER, shrunk:** #168592071604 · **qty 3 → 2** · $109.99 unchanged · 2x2 + 2x1 = **6 of 6 held, no overcommit**
+- **Price cut from my own $62.99 draft to $57.99.** $62.99 was the active MEDIAN, the same trap that killed the Bowman listing that morning. Scan (n=87 delivered): low $49.99, **Q1 $57.50**, median $62.99, Q3 $75.32. The twofer at $54.99/bundle was already under Q1, so **SF was never overpriced, the format was the suspect.**
+- **⚠️ REAL FIND: the SF twofer had NO UPC and never had.** Live listing and inventory record both empty, running since 08-05 with one watcher. That is the same defect that made the NBA Chrome boxes invisible on release day, so **the format may not have been the main problem at all.** Backfilled to **820650413513**.
+- **The UPC could not be looked up.** Shrouded Fable ships in **two box footprints with different barcodes assigned at random**, confirmed independently, so it had to be read off Michael's box. He photographed it: `0 820650 413513`, item code 290-41351, check digit validates.
+- Photos: `ShroudedFable_BoosterBundle_single_reshoot_01_front.JPEG` + `_02_back.JPEG`, marble reshoot sent for this listing.
+
+- **🟢 PRISMATIC EVOLUTIONS + DESTINED RIVALS TWOFER, relisted:** eBay #168606266070 (new ID; the old #168570958691 stayed Completed) · SKU DRPRIS-TWOFER · mapped **1x ci19776 + 1x ci17235** · **$159.99 x qty 1** · cost $60.00 · **net ~$136.93, +$76.93**
+  - **Priced off a real sold, not a scan.** The identical combo sold at **$159.99 on 2026-07-28** to argpea0. Current sum-of-parts: PE bundle (n=127) low $74.99 / Q1 $82.88 / med $89.99, DR bundle (n=141) low $61 / Q1 $70 / med $79, so **$153-$169**. The proven number sits inside the band, so it did not move.
+  - **No UPC on purpose**, it is two different products in one listing so no single barcode describes it. preflight was passed `expectUpc: false` rather than bypassed.
+  - Michael floated adding a Shrouded Fable to this combo to drag SF along. **Declined**: it would park his only PE and only DR bundle in a ~$220 listing with a thinner buyer pool, and it treats the wrong problem.
+
+### Destined Rivals single-pack blister twofer, Eevee + Zarude (listed 2026-08-12)
+
+- **🟢 LIVE:** eBay #168609434868 · offer 234367477011 · SKU DR-BLISTER-TWOFER · mapped **1x ci17246 (Eevee) + 1x ci17247 (Zarude)** · category 183456 · **$29.99 x qty 1**
+- **Cost $7.17/blister, $14.34 the pair** · net ~$24.69 · **+$10.35, 72% ROI** · break-even ask $18.06
+- **Title:** `Pokemon Destined Rivals Blister Lot of 2 Eevee Zarude Promo Coin Sealed` (71 chars)
+- **Price is Michael's number.** Sum of parts at vault market is **$31.20** (Eevee $17.81 + Zarude $13.39), so $29.99 is $1.21 under, inside clean-number noise rather than a real discount.
+- **This was the buy of the week on a percentage basis.** $6.49 shelf at Fred Meyer against a **$9.85 loose Destined Rivals booster pack**, so he bought the pack below market and got the promo, coin and TCG Live code for free.
+- **Cost basis correction:** originally logged as lot #553 = 2x Zarude. Michael caught it (*"sorry looks like it was one eevee and one zarude"*), so #553 was cut to qty 1 Zarude and **#554 created for 1x Eevee**. Tax is an INFERRED 10.5%; he did not say which Fred Meyer and Lynnwood runs 10.7%.
+- **UPC 820650853319**, read off both backs. **Both promo variants carry the SAME barcode** since it is an assorted SKU where only the promo differs, so the UPC does not identify which promo is inside. Check digit validates.
+- Contents quoted verbatim from the back panel: *"1 Scarlet & Violet-Destined Rivals booster pack, 1 promo card, 1 Pokemon coin, and a code card for Pokemon TCG Live"*. Nothing inferred.
+- Category 183456 needs `Set` free-text and `Configuration` SELECTION_ONLY at exactly `Pack`.
+
+---
+
+### Destined Rivals Booster Bundle — SINGLE (listed 2026-08-16)
+
+**Item:** 168617483804 · **Price:** $64.99 · **Qty:** 4 · **SKU:** `DR-BUNDLE-SINGLE`
+**Title:** Pokemon Destined Rivals Booster Bundle Sealed 6 Booster Packs Scarlet Violet (76 chars)
+- **Photos:** `DestinedRivals_BoosterBundle_single_01_front.jpg`, `DestinedRivals_BoosterBundle_single_02_back.jpg`
+- **Mapping:** 1x ci17235 per unit sold.
+- **Net:** $55.98 on $30.00 cost → **+$25.98 per bundle.**
+- **Comps 2026-08-16** (n=148 active single bundles, lots/cases/displays/ETBs filtered out): low $59.00, **Q1 $65.00**, med $70.00, Q3 $80.00. Priced at Q1, not the median, per [[feedback_dont_price_to_active_median]].
+
+### Prismatic Evolutions Booster Bundle — SINGLE (listed 2026-08-16)
+
+**Item:** 168617484171 · **Price:** $79.99 · **Qty:** 1 · **SKU:** `PE-BUNDLE-SINGLE`
+**Title:** Pokemon Prismatic Evolutions Booster Bundle Sealed 6 Booster Packs Scarlet (74 chars)
+- **Photos:** `PrismaticEvolutions_BoosterBundle_single_01_front.jpg`, `PrismaticEvolutions_BoosterBundle_single_02_back.jpg`
+- **Mapping:** 1x ci19776 per unit sold.
+- **Net:** $68.99 on $30.00 cost → **+$38.99.**
+- **Comps 2026-08-16** (n=141 active single bundles): low $75.00, **Q1 $80.00**, med $87.99, Q3 $95.00.
+
+**Inventory reconciliation for both, worth repeating.** Four mappings touch these two products and on paper committed 5 Prismatic against 2 held. Checking each mapped listing against live eBay, three are **Completed** and commit nothing; only 168606266070 (PE+DR combo, $159.99) is Active. Real position was 4 DR and 1 PE free, which is the quantity listed. **A mapping only commits stock while its listing is Active** — count against live status, never against the mappings table alone.
+
+**No UPC on either.** Michael's call. The barcode panel is not in these photos, and the bundle ships in more than one box footprint with different barcodes, so it cannot be looked up; it has to come off his box.
+
+**Open question:** the PE+DR combo at $159.99 is asking $15 over sum-of-parts now that the singles are up ($80 + $65 = $145), and each single reaches a bigger pool than the combo does.
 
 ---
 
