@@ -98,7 +98,7 @@ async function main() {
   }
 
   if (!plan.size) { console.log('nothing to settle'); await sql.end(); return; }
-  const byId = new Map(rows.map((r: any) => [r.id, r]));
+  const byId = new Map<number, any>(rows.map((r: any) => [r.id, r]));
   console.log(`${plan.size} rows to settle:\n`);
   for (const [id, p] of [...plan].sort((a, b) => String(byId.get(a[0])!.card_number).localeCompare(String(byId.get(b[0])!.card_number)))) {
     const r: any = byId.get(id);
