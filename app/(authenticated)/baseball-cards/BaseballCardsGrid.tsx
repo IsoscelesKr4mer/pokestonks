@@ -12,7 +12,7 @@ import { AddCardDialog } from './AddCardDialog';
 import { ShareCollectionButton } from './ShareCollectionButton';
 import type { BaseballCardStatus } from '@/lib/validation/baseballCard';
 
-type Mode = 'selling' | 'pc';
+type Mode = 'selling' | 'pc' | 'sold';
 type SellFilter = 'all' | 'needs_back' | BaseballCardStatus;
 
 export function BaseballCardsGrid({ initialCards, shareToken }: { initialCards: BaseballCardRow[]; shareToken?: string | null }) {
@@ -22,11 +22,26 @@ export function BaseballCardsGrid({ initialCards, shareToken }: { initialCards: 
   const [sellFilter, setSellFilter] = useState<SellFilter>('all');
   const [q, setQ] = useState('');
 
-  const sellable = useMemo(() => cards.filter((c) => c.for_sale), [cards]);
-  // PC means "kept, never offered". A sold card also carries for_sale = false,
-  // because it is no longer for sale, so filtering on that alone dragged every
-  // sale into the PC tab. Exclude sold explicitly.
+  // Sold cards used to fall through every tab. Selling filtered on for_sale,
+  // which most sales flip to false; PC then excluded status = 'sold' to keep
+  // them out of the collection. Net effect: 10 of 13 sales were invisible on
+  // the site, including the $69.69 Schlittler. Sold is now its own view keyed
+  // on status alone, so a sale shows up regardless of its for_sale flag.
+  const soldCards = useMemo(
+    () =>
+      cards
+        .filter((c) => c.status === 'sold')
+        .sort((a, b) => (b.sold_date ?? '').localeCompare(a.sold_date ?? '')),
+    [cards]
+  );
+  // The selling pipeline is live inventory only, so sold drops out of it too.
+  const sellable = useMemo(() => cards.filter((c) => c.for_sale && c.status !== 'sold'), [cards]);
+  // PC means "kept, never offered", which is distinct from sold.
   const pcCards = useMemo(() => cards.filter((c) => !c.for_sale && c.status !== 'sold'), [cards]);
+  const soldTotal = useMemo(
+    () => soldCards.reduce((sum, c) => sum + (c.sold_price_cents ?? 0), 0),
+    [soldCards]
+  );
 
   // Sell-flow counts are over sellable cards only (PC lives in its own tab).
   const counts = useMemo(() => {
@@ -62,17 +77,25 @@ export function BaseballCardsGrid({ initialCards, shareToken }: { initialCards: 
       )
     : mode === 'pc'
       ? pcCards
-      : sellFiltered;
+      : mode === 'sold'
+        ? soldCards
+        : sellFiltered;
 
+  // 'sold' is a mode now, so it no longer belongs in the pipeline chips.
   const chips: { key: SellFilter; label: string; count: number }[] = [
     { key: 'all', label: 'All', count: counts.all },
-    ...STATUS_ORDER.map((s) => ({ key: s as SellFilter, label: STATUS_META[s].label, count: counts[s] })),
+    ...STATUS_ORDER.filter((s) => s !== 'sold').map((s) => ({
+      key: s as SellFilter,
+      label: STATUS_META[s].label,
+      count: counts[s],
+    })),
     { key: 'needs_back', label: 'Needs Back', count: counts.needs_back },
   ];
 
   const modes: { key: Mode; label: string; count: number }[] = [
     { key: 'selling', label: 'Selling', count: sellable.length },
     { key: 'pc', label: 'PC', count: pcCards.length },
+    { key: 'sold', label: 'Sold', count: soldCards.length },
   ];
 
   return (
@@ -139,6 +162,25 @@ export function BaseballCardsGrid({ initialCards, shareToken }: { initialCards: 
         </div>
       )}
 
+      {mode === 'sold' && !query && soldCards.length > 0 && (
+        <div className="flex flex-wrap items-baseline gap-x-6 gap-y-1 rounded-2xl border border-divider bg-vault px-[18px] py-[14px]">
+          <div className="grid gap-0.5">
+            <span className="text-[11px] font-mono uppercase tracking-[0.14em] text-meta">Cards sold</span>
+            <span className="text-[20px] font-semibold tabular-nums tracking-[-0.01em]">{soldCards.length}</span>
+          </div>
+          <div className="grid gap-0.5">
+            <span className="text-[11px] font-mono uppercase tracking-[0.14em] text-meta">Gross</span>
+            <span className="text-[20px] font-semibold tabular-nums tracking-[-0.01em]">{formatCents(soldTotal)}</span>
+          </div>
+          <div className="grid gap-0.5">
+            <span className="text-[11px] font-mono uppercase tracking-[0.14em] text-meta">Best sale</span>
+            <span className="text-[20px] font-semibold tabular-nums tracking-[-0.01em]">
+              {formatCents(Math.max(...soldCards.map((c) => c.sold_price_cents ?? 0)))}
+            </span>
+          </div>
+        </div>
+      )}
+
       {shown.length === 0 ? (
         <div className="bg-vault border border-divider rounded-2xl p-8 text-center">
           <p className="text-[13px] text-text-muted">
@@ -148,7 +190,9 @@ export function BaseballCardsGrid({ initialCards, shareToken }: { initialCards: 
                 ? `No cards match "${q.trim()}".`
                 : mode === 'pc'
                   ? 'No cards in your personal collection yet.'
-                  : 'No cards match this filter.'}
+                  : mode === 'sold'
+                    ? 'Nothing sold yet.'
+                    : 'No cards match this filter.'}
           </p>
         </div>
       ) : (
@@ -170,6 +214,7 @@ function CardTile({ card }: { card: BaseballCardRow }) {
   );
   const [lightbox, setLightbox] = useState<number | null>(null);
   const subtitle = [card.set_name, card.year ? String(card.year) : null].filter(Boolean).join(' · ');
+  const sold = card.status === 'sold';
 
   // The tile is no longer one big link: tapping the photo opens the full-size
   // viewer, while the text block still navigates to the card detail page.
@@ -197,17 +242,31 @@ function CardTile({ card }: { card: BaseballCardRow }) {
       <Link href={`/baseball-cards/${card.id}`} className="grid gap-1.5">
         {/* Badges live below the image so they never clip the card art or wash out over it. */}
         <div className="flex flex-wrap gap-1">
-          {!card.for_sale && <PcBadge />}
+          {/* A sold card carries for_sale = false, which was painting it as a PC
+              keeper. Sold wins over PC. */}
+          {!card.for_sale && !sold && <PcBadge />}
           <StatusBadge status={card.status} />
           {card.for_sale && card.needs_back_photo && <NeedsBackBadge />}
         </div>
         <div className="text-[13px] font-semibold leading-[1.3] line-clamp-2">{card.player}</div>
         <div className="text-[11px] font-mono text-meta truncate">{subtitle || '--'}</div>
         {card.parallel && <div className="text-[11px] text-text-muted truncate">{card.parallel}</div>}
-        {card.asking_price_cents != null && (
-          <div className="mt-[10px] border-t border-divider pt-[10px] text-[16px] font-semibold tabular-nums tracking-[-0.01em]">
-            {formatCents(card.asking_price_cents)}
+        {/* Show what it actually fetched, not what it was asking. */}
+        {sold ? (
+          <div className="mt-[10px] flex items-baseline justify-between gap-2 border-t border-divider pt-[10px]">
+            <span className="text-[16px] font-semibold tabular-nums tracking-[-0.01em]">
+              {card.sold_price_cents != null ? formatCents(card.sold_price_cents) : '--'}
+            </span>
+            {card.sold_date && (
+              <span className="text-[11px] font-mono text-meta">{card.sold_date.slice(0, 10)}</span>
+            )}
           </div>
+        ) : (
+          card.asking_price_cents != null && (
+            <div className="mt-[10px] border-t border-divider pt-[10px] text-[16px] font-semibold tabular-nums tracking-[-0.01em]">
+              {formatCents(card.asking_price_cents)}
+            </div>
+          )
         )}
       </Link>
     </div>
