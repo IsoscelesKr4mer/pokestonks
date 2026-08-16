@@ -891,7 +891,7 @@ These live on eBay only. No catalog_item_id, no sync mapping, no auto P&L. Track
 
 ### Destined Rivals Booster Bundle — SINGLE (listed 2026-08-16)
 
-**Item:** 168617483804 · **Price:** $64.99 · **Qty:** 4 · **SKU:** `DR-BUNDLE-SINGLE`
+**Item:** 168617483804 · **Price:** $64.99 · **Qty:** 5 · **SKU:** `DR-BUNDLE-SINGLE`
 **Title:** Pokemon TCG Scarlet Violet Destined Rivals Booster Bundle Sealed 6 Packs (72 chars)
 - **Photos:** `DestinedRivals_BoosterBundle_single_01_front.jpg`, `DestinedRivals_BoosterBundle_single_02_back.jpg`
 - **Mapping:** 1x ci17235 per unit sold.
@@ -900,7 +900,7 @@ These live on eBay only. No catalog_item_id, no sync mapping, no auto P&L. Track
 
 ### Prismatic Evolutions Booster Bundle — SINGLE (listed 2026-08-16)
 
-**Item:** 168617484171 · **Price:** $79.99 · **Qty:** 1 · **SKU:** `PE-BUNDLE-SINGLE`
+**Item:** 168617484171 · **Price:** $79.99 · **Qty:** 2 · **SKU:** `PE-BUNDLE-SINGLE`
 **Title:** Pokemon TCG Scarlet Violet Prismatic Evolutions Booster Bundle Sealed 6 Packs (77 chars)
 - **Photos:** `PrismaticEvolutions_BoosterBundle_single_01_front.jpg`, `PrismaticEvolutions_BoosterBundle_single_02_back.jpg`
 - **Mapping:** 1x ci19776 per unit sold.
@@ -913,7 +913,16 @@ These live on eBay only. No catalog_item_id, no sync mapping, no auto P&L. Track
 
 **Titles corrected 2026-08-16.** The PE title originally ended in a bare "Scarlet": the full set name took it to 83 characters against the 80 limit, so the tail was trimmed and left a dangling word that reads like a broken listing. Michael caught it. **Never trim a title mid-phrase.** Shorten something harmless instead: dropping the ampersand (eBay search ignores it) and using "6 Packs" rather than "6 Booster Packs" bought nine characters and let the whole set name stay. Both now follow the house pattern `Pokemon TCG Scarlet Violet <Set> Booster Bundle Sealed 6 Packs`.
 
-**Open question:** the PE+DR combo at $159.99 is asking $15 over sum-of-parts now that the singles are up ($80 + $65 = $145), and each single reaches a bigger pool than the combo does.
+**Combo killed 2026-08-16.** Michael: *"kill the dr/pe twofer and add to their signle quntities"*. The PE+DR combo 168606266070 ($159.99, SKU `DRPRIS-TWOFER`) was withdrawn and its stock moved onto the singles: **DR 4 -> 5, PE 1 -> 2**. It had been asking $15 over sum-of-parts while tying up one of each.
+
+**Order of operations, which matters.** The combo was ended BEFORE the quantities went up, so no unit was ever committed to two Active listings at once. The guard that re-checks held-minus-committed has to skip the listing being ended as well as the one being raised, or a dry run refuses the raise purely because the withdraw has not happened yet.
+
+**Every bundle is now committed exactly once:** SF twofer 2x2 + SF single 2 = 6 held; DR single 5 = 5 held; PE single 2 = 2 held.
+
+### Shrouded Fable Booster Bundle — price cut 2026-08-16
+
+- **Single** 168606265372: **$57.99 -> $54.99** (qty 2). Now matches the twofer's per-bundle price exactly rather than sitting $3 above it.
+- **Twofer** 168592071604 unchanged at $109.99 (qty 2 units x 2 bundles), which is already $54.99 a bundle.
 
 ---
 
