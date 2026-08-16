@@ -887,6 +887,15 @@ These live on eBay only. No catalog_item_id, no sync mapping, no auto P&L. Track
 - Contents quoted verbatim from the back panel: *"1 Scarlet & Violet-Destined Rivals booster pack, 1 promo card, 1 Pokemon coin, and a code card for Pokemon TCG Live"*. Nothing inferred.
 - Category 183456 needs `Set` free-text and `Configuration` SELECTION_ONLY at exactly `Pack`.
 
+**Retitled 2026-08-16 after the listing sat at 0 views.** The word this market runs on is **"Checklane"**, and the title did not have it. From Michael's own sold search for "Destined Rivals Blister Eevee", it is in most of the sold titles: $16.31 single Eevee, $63.99 swirl lot of 3, $99.88 single, $119.99 lot of 5, $49.95 4-pack, $26.01 lot of 16. A listing missing the word cannot match a search for it.
+
+  was: `Pokemon Destined Rivals Blister Lot of 2 Eevee Zarude Promo Coin Sealed` (71)
+  now: `Pokemon TCG Destined Rivals Checklane Blister Lot of 2 Eevee Zarude Sealed` (74)
+
+Added "Checklane" and "TCG", dropped "Coin" which nobody searches on. **Price was never the problem** and was left at $27.99: the two-blister comps are $24.99 (Aug 12, same Eevee + Zarude pair) and $30.00 (Aug 8), so it already sat mid-band. Diagnose 0 views as a discoverability problem before touching price.
+
+**Not added: "Swirl".** A swirl lot sold at roughly $21 a blister against ~$16 plain, so it is a real premium term, but whether these particular blisters have swirls has not been confirmed off the cards.
+
 ---
 
 ### Destined Rivals Booster Bundle — SINGLE (listed 2026-08-16)
