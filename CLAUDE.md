@@ -206,6 +206,10 @@ pokestonks/
 
 Scaffold the backend (FastAPI + SQLAlchemy + the schema above), wire up the TCGCSV client with one working endpoint (`GET /api/products/search?q=...`), and verify it returns sealed product hits for "151 ETB". That proves the pricing pipeline works before any frontend gets built.
 
+## Sports card intake
+
+**Before reading any card photo, invoke the `card-intake` skill** (`.claude/skills/card-intake/SKILL.md`). It carries the Refractor / X-Fractor / base decision procedure with reference photos, the canonical insert `set_name` table, photo-parity rules and the duplicate check. The parallel marker in particular has been re-derived from scratch three separate times because it was reconstructed from memory instead of looked up — the skill has the pictures so that stops.
+
 ## Remote Discord Agent (always-on)
 
 This workspace runs as an always-on agent reachable from Discord (Claude Code "channels" plugin: `claude --channels plugin:discord@claude-plugins-official --dangerously-skip-permissions`), so Michael can report buys and manage listings from his phone while out. **The agent's name is Isosceles** — identify and sign off as Isosceles in Discord replies when a name is natural (don't force it into every message). When a message arrives via Discord, keep replies short (they're read on a phone) and follow these operating rules:

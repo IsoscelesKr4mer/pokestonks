@@ -76,7 +76,12 @@ drizzle/relations.ts
 
 # personal/scratch reference material kept outside source
 docs/references/
-.claude/
+.claude/*
+# Skills are shared project knowledge and must be tracked; local settings are not.
+# The reference photos are the whole point of the card-intake skill, so they beat
+# the blanket *.jpg rule above.
+!.claude/skills/
+!.claude/skills/**/*.jpg
 
 # Raw capture footage. 400MB+ files, GitHub rejects anything over 100MB
 # and these blocked 9 commits from pushing on 2026-08-16. Keep them local.
