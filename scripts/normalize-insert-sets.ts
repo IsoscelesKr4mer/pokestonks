@@ -32,7 +32,11 @@ const BY_PREFIX: [string, string][] = [
   ['91CB-', `${TC} (1991 Topps 75 Years insert)`],
   ['PTP-', `${TC} (Past to Present insert)`],
   ['BTP-', `${TC} (Big Ticket Player insert)`],
+  // Chrome Rivals ships in HOME and AWAY variants, coded RVH- and RVA-. Only
+  // RVA- was listed here at first, which left Reggie Jackson RVH-16 sitting
+  // under plain "2026 Topps Chrome" and missing from the Rivals count entirely.
   ['RVA-', `${TC} (Chrome Rivals insert)`],
+  ['RVH-', `${TC} (Chrome Rivals insert)`],
   ['WC-', `${TC} (Wrecking Crew insert)`],
   ['FS-', `${TC} (Future Stars insert)`],
   ['SN-', `${TC} (Static Noise insert)`],
