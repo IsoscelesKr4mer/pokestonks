@@ -33,7 +33,21 @@
 import { config } from 'dotenv';
 import postgres from 'postgres';
 import { browseToken } from './lib/card-comps';
+import { readFileSync, writeFileSync, existsSync } from 'fs';
 config({ path: '.env.local' });
+
+/**
+ * eBay Browse has a DAILY call cap and a full below-AA sweep is ~930 players.
+ * Two sweeps in an afternoon exhausted it, and every lookup then came back 429.
+ * Cache on disk so re-runs cost nothing: whether a player has a 1st Bowman on
+ * the market does not change hour to hour.
+ */
+const CACHE_FILE = 'scripts/_bowman_cache.json';
+type Cached = { n: number; min: number | null; at: string };
+const cache: Record<string, Cached> = existsSync(CACHE_FILE)
+  ? JSON.parse(readFileSync(CACHE_FILE, 'utf8')) : {};
+const CACHE_DAYS = 14;
+const fresh = (c: Cached) => (Date.now() - Date.parse(c.at)) / 864e5 < CACHE_DAYS;
 
 const DAYS = Number(process.argv.find((a) => a.startsWith('--days='))?.split('=')[1] ?? 45);
 const MAX_PRICE = Number(process.argv.find((a) => a.startsWith('--max-price='))?.split('=')[1] ?? 0);
@@ -86,20 +100,62 @@ async function debuted(ids: number[]) {
   }
   return out;
 }
+
+/**
+ * WHERE EACH PLAYER IS RIGHT NOW.
+ *
+ * rosterType=fullSeason is CUMULATIVE: it lists everyone who suited up for the
+ * club at any point this year, including players long since promoted. That put
+ * Felnin Celesten and Jonny Farmelo on the Everett roster after both had moved
+ * up to Double-A Arkansas. Michael, twice: "felnin and farmelo are in AA now in
+ * arkansas... dont poison my chat with old info", then "you need to have a
+ * better source for these players".
+ *
+ * So the roster is only used to discover WHO to consider. The authoritative
+ * answer to what level a player is at is his own currentTeam, and anyone whose
+ * current club is not one of the below-AA clubs in these six orgs is dropped.
+ * This also makes the old highest-level dedupe unnecessary: one player has
+ * exactly one current team.
+ */
+async function currentTeams(ids: number[]) {
+  const out = new Map<number, { id: number; name: string }>();
+  for (let i = 0; i < ids.length; i += 100) {
+    const batch = ids.slice(i, i + 100);
+    try {
+      const j = await (await fetch(
+        `https://statsapi.mlb.com/api/v1/people?personIds=${batch.join(',')}&hydrate=currentTeam`)).json();
+      for (const p of j.people ?? []) {
+        const ct = p.currentTeam;
+        if (ct?.id) out.set(Number(p.id), { id: Number(ct.id), name: String(ct.name ?? '') });
+      }
+    } catch { /* unknown current team -> dropped below, better than guessing */ }
+  }
+  return out;
+}
 type Row = {
   player: string; pos: string; from: string; when: string; sortWhen: string;
   personId: number; mlb: boolean; level: number;
   mine: Owned[]; bowman: number | null; cheapest: number | null;
 };
 
-/** Cheapest active 1st Bowman for this player, and how many are listed. */
-async function firstBowman(tok: string, player: string) {
+/**
+ * Cheapest active 1st Bowman for this player, and how many are listed.
+ *
+ * Returns null when the answer is UNKNOWN (rate limited, network error). It
+ * must never return zero for a failure: a 429 that reads as "no cards exist"
+ * silently empties the ACQUIRE list and looks exactly like a real result.
+ */
+async function firstBowman(tok: string, player: string): Promise<{ n: number; min: number | null } | null> {
   const q = `${player} 1st bowman`;
+  const hit = cache[q];
+  if (hit && fresh(hit)) return { n: hit.n, min: hit.min };
   try {
     const r = await fetch(
       `https://api.ebay.com/buy/browse/v1/item_summary/search?q=${encodeURIComponent(q)}&category_ids=261328&limit=50`,
       { headers: { Authorization: `Bearer ${tok}`, 'X-EBAY-C-MARKETPLACE-ID': 'EBAY_US' } });
+    if (r.status === 429) return null;
     const j = await r.json();
+    if (j.errors) return null;
     const surname = nameKey(player).split(' ').pop()!;
     // must name the player and say 1st Bowman; graded copies are not what he
     // wants to hand over a rail for
@@ -109,8 +165,10 @@ async function firstBowman(tok: string, player: string) {
         return t.includes(surname) && /1st\s*bowman|first bowman/.test(t) && !/psa|bgs|sgc|cgc|graded|slab/.test(t);
       })
       .map((i: any) => Number(i.price?.value)).filter((v: number) => v > 0 && v < 5000);
-    return { n: prices.length, min: prices.length ? Math.min(...prices) : null };
-  } catch { return { n: 0, min: null }; }
+    const out = { n: prices.length, min: prices.length ? Math.min(...prices) : null };
+    cache[q] = { ...out, at: new Date().toISOString() };
+    return out;
+  } catch { return null; }
 }
 
 async function main() {
@@ -186,6 +244,26 @@ AA and above are excluded, that is where a player has actually left the league.
       });
     }
   }
+  // Re-seat every player on his CURRENT club, and drop anyone who has climbed
+  // out of the pool. The roster call only told us who to look at.
+  const allowed = new Map<number, { label: string; when: string; sortWhen: string; level: number }>();
+  for (const s2 of sources) allowed.set(s2.teamId, { label: s2.label, when: s2.when, sortWhen: s2.sortWhen, level: s2.level });
+  const nowAt = await currentTeams([...new Set(rows.map((r) => r.personId))]);
+  const before = rows.length;
+  rows = rows.filter((r) => {
+    const ct = nowAt.get(r.personId);
+    if (!ct || !allowed.has(ct.id)) return false;
+    const a = allowed.get(ct.id)!;
+    r.from = a.label; r.when = a.when; r.sortWhen = a.sortWhen; r.level = a.level;
+    return true;
+  });
+  {
+    const seen2 = new Map<string, Row>();
+    for (const r of rows) if (!seen2.has(nameKey(r.player))) seen2.set(nameKey(r.player), r);
+    rows = [...seen2.values()];
+  }
+  console.log(`  ${before} roster entries -> ${rows.length} players actually still below AA in these orgs`);
+
   const vets = await debuted(rows.map((r) => r.personId));
   for (const r of rows) r.mlb = vets.has(r.personId);
   const rehab = rows.filter((r) => r.mlb).length;
@@ -203,33 +281,36 @@ ${rows.length} players across ${sources.length} rosters` +
     const tok = await browseToken();
     process.stdout.write(`checking eBay for 1st Bowmans (${rows.length} players)`);
     const queue = [...rows];
-    let done = 0;
-    await Promise.all(Array.from({ length: 6 }, async () => {
+    let done = 0, failed = 0, stop = false;
+    await Promise.all(Array.from({ length: 4 }, async () => {
       for (;;) {
+        if (stop) return;
         const row = queue.shift();
         if (!row) return;
         const r = await firstBowman(tok, row.player);
-        row.bowman = r.n; row.cheapest = r.min;
+        if (r === null) {
+          failed++;
+          // one 429 means the daily cap is gone; keep whatever is cached and stop
+          if (failed > 20) { stop = true; return; }
+        } else { row.bowman = r.n; row.cheapest = r.min; }
         if (++done % 100 === 0) process.stdout.write('.');
         await sleep(60);
       }
     }));
+    writeFileSync(CACHE_FILE, JSON.stringify(cache));
     console.log(' done');
+    if (failed) {
+      console.log(`
+  !! ${failed} eBay lookups FAILED (rate limit or network).`);
+      console.log('     The ACQUIRE list below is INCOMPLETE. Cached answers were used where');
+      console.log('     available; re-run tomorrow to fill the rest. Never read a short list');
+      console.log('     here as "nothing to buy".');
+    }
+    const unknown = rows.filter((r) => r.bowman === null).length;
+    if (unknown) console.log(`  ${unknown} players still unchecked`);
   }
 
-  // A player can appear on several rosters, because fullSeason lists every club
-  // he suited up for this year. Keep ONE line per player and prefer his highest
-  // level, which is where he is now. Michael: "Cova is already in everett how do
-  // you think i got all those autos" - Cova shows on both Inland Empire and
-  // Everett, and labelling him a future Everett arrival was simply wrong.
-  const seen = new Map<string, Row>();
-  // NOTE the direction: a LOWER sportId is a HIGHER level (13 High-A, 14
-  // Single-A, 16 rookie), so ascending sportId puts the current club first.
-  for (const r of rows.sort((a, b) => a.level - b.level || a.sortWhen.localeCompare(b.sortWhen))) {
-    const k = nameKey(r.player);
-    if (!seen.has(k)) seen.set(k, r);
-  }
-  rows = [...seen.values()];
+
 
   const bring = rows.filter((r) => r.mine.some((m) => !m.signed));
   const signed = rows.filter((r) => r.mine.length && r.mine.every((m) => m.signed));

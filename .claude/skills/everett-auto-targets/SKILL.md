@@ -93,14 +93,28 @@ Three sections come out:
 - The eBay pass is roughly 110ms per player, so a single visiting roster (~50)
   takes under a minute and `--future` (~1,100 players) is a long run. Use
   `--no-ebay` when you only need the roster and ownership cross-reference.
-- **A player appears on every roster he suited up for this year**, because
-  `fullSeason` is cumulative. Collapse to one line per player and keep his
-  **highest level**, which is where he is now. Watch the direction: a LOWER
-  sportId is a HIGHER level (13 High-A, 14 Single-A, 16 rookie), so sort
-  ascending. Getting this backwards labelled Ricardo Cova a future Everett
-  arrival when he is already there, which is where Michael got his autos:
-  *"Cova is already in everett how do you think i got all those autos"*. It also
-  triple-counted players into the ACQUIRE list, inflating it from 74 to 170.
+- **NEVER trust a roster call for where a player is now.** `rosterType=fullSeason`
+  is CUMULATIVE: it lists everyone who suited up for the club at any point this
+  season, including players long since promoted. It had Felnin Celesten and
+  Jonny Farmelo on Everett after both moved up to Double-A Arkansas, and it had
+  Ricardo Cova as a future arrival when he is already there. Michael, twice:
+  *"felnin and farmelo are in AA now in arkansas... dont poison my chat with old
+  info"*, then *"you need to have a better source for these players"*.
+
+  The roster call is only used to discover **who to consider**. Each player is
+  then re-seated on his own `currentTeam`
+  (`people?personIds=...&hydrate=currentTeam`) and dropped if that club is not
+  one of the below-AA clubs in these six orgs. On the first corrected run this
+  cut 1,502 roster entries to 931 real players. It also removes the need for any
+  highest-level dedupe, since a player has exactly one current team.
+- **A 429 must never look like a zero.** eBay Browse has a daily call cap and a
+  full sweep is ~930 lookups; two sweeps exhausted it and every lookup returned
+  429. The original code caught the error and returned "0 listings", which is
+  indistinguishable from "this player has no 1st Bowman", and quietly emptied
+  the ACQUIRE list. `firstBowman` now returns **null** for unknown, stops after
+  20 failures, and the report says loudly that the list is incomplete. Results
+  are cached to `scripts/_bowman_cache.json` for 14 days so re-runs cost no
+  quota.
 - The eBay pass runs six concurrent. Sequential was fine for one roster but the
   full below-AA sweep is 1,500 players and ran past ten minutes.
 - **`rosterType=fullSeason` includes MLB players on rehab.** A Single-A roster
