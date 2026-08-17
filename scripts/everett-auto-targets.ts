@@ -38,6 +38,16 @@ config({ path: '.env.local' });
 const DAYS = Number(process.argv.find((a) => a.startsWith('--days='))?.split('=')[1] ?? 45);
 const MAX_PRICE = Number(process.argv.find((a) => a.startsWith('--max-price='))?.split('=')[1] ?? 0);
 const FUTURE = process.argv.includes('--future');
+/**
+ * Offseason planning. Deliberately EXCLUDES the current High-A rosters: those
+ * players mostly graduate to Double-A next season and leave the Northwest
+ * League, so buying their cards to sign at Everett next year is backwards.
+ * Today's Single-A is next year's NWL, which is exactly Michael's own example -
+ * Ethan Holliday in Rockies A ball arriving at Spokane. Rookie ball is included
+ * only with --rookie, since DSL and complex players are several years out.
+ */
+const OFFSEASON = process.argv.includes('--offseason');
+const ROOKIE_TOO = process.argv.includes('--rookie');
 const NO_EBAY = process.argv.includes('--no-ebay');
 const sql = postgres(process.env.DATABASE_URL_DIRECT!, { prepare: false });
 
@@ -51,8 +61,30 @@ const nameKey = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]
   .replace(/[^a-z ]/g, ' ').split(/\s+/).filter((w) => w && !['jr', 'sr', 'ii', 'iii', 'iv'].includes(w)).join(' ');
 
 type Owned = { id: number; set: string; num: string; parallel: string; signed: boolean };
+
+/**
+ * rosterType=fullSeason includes MLB players on rehab assignments, so a
+ * Single-A roster can contain Shane Bieber, Alek Manoah, Yusei Kikuchi. They
+ * are real autograph targets if they happen to be in town, but they are NOT
+ * next season's Northwest League, so they must not sit in an offseason
+ * acquisition list. Anyone with an mlbDebutDate has already been up and is
+ * marked accordingly instead of being silently projected to High-A.
+ */
+async function debuted(ids: number[]) {
+  const out = new Set<number>();
+  for (let i = 0; i < ids.length; i += 100) {
+    const batch = ids.slice(i, i + 100);
+    try {
+      const j = await (await fetch(
+        `https://statsapi.mlb.com/api/v1/people?personIds=${batch.join(',')}&fields=people,id,mlbDebutDate`)).json();
+      for (const p of j.people ?? []) if (p.mlbDebutDate) out.add(Number(p.id));
+    } catch { /* leave unmarked rather than wrongly excluding */ }
+  }
+  return out;
+}
 type Row = {
   player: string; pos: string; from: string; when: string; sortWhen: string;
+  personId: number; mlb: boolean;
   mine: Owned[]; bowman: number | null; cheapest: number | null;
 };
 
@@ -85,8 +117,11 @@ async function main() {
   const teams = (await api(`teams?sportId=${HIGH_A}&season=${season}`)).teams
     .filter((t: any) => t.league?.id === NWL_LEAGUE);
   const byId = new Map<number, any>(teams.map((t: any) => [t.id, t]));
+  // ALL SIX orgs, Seattle included. Away players are the easier ask, but
+  // Michael still wants Everett's own roster: "no I def want it to incluide
+  // Everett's roster". He has 81 home dates a year to work them.
   const orgs = new Map<string, string>();
-  for (const t of teams) if (t.id !== EVERETT) orgs.set(t.parentOrgName, t.name);
+  for (const t of teams) orgs.set(t.parentOrgName, t.name);
 
   const sched = await api(`schedule?sportId=${HIGH_A}&teamId=${EVERETT}&startDate=${iso(today)}&endDate=${iso(end)}`);
   const visits = new Map<number, string[]>();
@@ -98,6 +133,9 @@ async function main() {
       visits.get(a)!.push(day.date);
     }
   }
+  if (OFFSEASON) console.log(`OFFSEASON PLAN: Single-A${ROOKIE_TOO ? ' + rookie' : ''} rosters of all six NWL orgs, Seattle included.
+Current High-A is excluded on purpose, those players graduate to AA and leave the league.
+`);
   console.log(`EVERETT HOME GAMES, next ${DAYS} days`);
   if (!visits.size) console.log('  none scheduled. Try --days=200 or wait for next season.');
   for (const [id, d] of visits) console.log(`  ${byId.get(id)?.name}  ${d[0]} to ${d[d.length - 1]}  (${d.length} games)`);
@@ -116,11 +154,15 @@ async function main() {
   }
 
   const sources: { label: string; teamId: number; when: string; sortWhen: string }[] = [];
-  for (const [id, d] of visits) sources.push({ label: byId.get(id)?.name ?? String(id), teamId: id, when: `${d[0]} to ${d[d.length - 1]}`, sortWhen: d[0] });
-  if (FUTURE) {
-    for (const sportId of [SINGLE_A, ROOKIE]) {
+  if (!OFFSEASON) {
+    for (const [id, d] of visits) sources.push({ label: byId.get(id)?.name ?? String(id), teamId: id, when: `${d[0]} to ${d[d.length - 1]}`, sortWhen: d[0] });
+    // the home side, always available across the whole homestand calendar
+    sources.push({ label: 'Everett AquaSox (HOME)', teamId: EVERETT, when: 'any home game', sortWhen: '0000' });
+  }
+  if (FUTURE || OFFSEASON) {
+    for (const sportId of OFFSEASON ? (ROOKIE_TOO ? [SINGLE_A, ROOKIE] : [SINGLE_A]) : [SINGLE_A, ROOKIE]) {
       for (const t of (await api(`teams?sportId=${sportId}&season=${season}`)).teams.filter((x: any) => orgs.has(x.parentOrgName))) {
-        sources.push({ label: `${t.name} -> ${orgs.get(t.parentOrgName)}`, teamId: t.id, when: 'future promotion', sortWhen: '9999' });
+        sources.push({ label: `${t.name} -> ${orgs.get(t.parentOrgName)}`, teamId: t.id, when: OFFSEASON ? 'next season' : 'future promotion', sortWhen: '9999' });
       }
     }
   }
@@ -131,12 +173,20 @@ async function main() {
     for (const p of r.roster ?? []) {
       rows.push({
         player: p.person.fullName, pos: p.position?.abbreviation ?? '', from: s.label,
-        when: s.when, sortWhen: s.sortWhen, mine: owned.get(nameKey(p.person.fullName)) ?? [],
-        bowman: null, cheapest: null,
+        when: s.when, sortWhen: s.sortWhen, personId: Number(p.person.id), mlb: false,
+        mine: owned.get(nameKey(p.person.fullName)) ?? [], bowman: null, cheapest: null,
       });
     }
   }
-  console.log(`\n${rows.length} players across ${sources.length} rosters`);
+  const vets = await debuted(rows.map((r) => r.personId));
+  for (const r of rows) r.mlb = vets.has(r.personId);
+  const rehab = rows.filter((r) => r.mlb).length;
+  console.log(`
+${rows.length} players across ${sources.length} rosters` +
+    (rehab ? `, ${rehab} already MLB-debuted (rehab assignments, not next season's NWL)` : ''));
+  // An MLB veteran on rehab is not a future High-A visitor. Keep him out of the
+  // offseason projection; in-season he is still a legitimate target.
+  if (OFFSEASON) rows = rows.filter((r) => !r.mlb);
 
   if (!NO_EBAY) {
     const tok = await browseToken();

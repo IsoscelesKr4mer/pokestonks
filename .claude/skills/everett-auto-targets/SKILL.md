@@ -14,7 +14,21 @@ npx tsx scripts/everett-auto-targets.ts --days=200      # rest of the season
 npx tsx scripts/everett-auto-targets.ts --future        # add the feeder levels
 npx tsx scripts/everett-auto-targets.ts --max-price=15  # only cheap buys
 npx tsx scripts/everett-auto-targets.ts --no-ebay       # skip price lookups, fast
+npx tsx scripts/everett-auto-targets.ts --offseason     # plan next season (see below)
 ```
+
+## Offseason mode is the main event
+
+`--offseason` is what to run between seasons, and it deliberately **excludes the
+current High-A rosters**. Those players mostly graduate to Double-A and leave the
+Northwest League, so buying their cards to sign at Everett next year is
+backwards. Today's **Single-A** is next year's NWL, which is Michael's own
+example: Ethan Holliday in Rockies A ball arrives at Spokane. Add `--rookie` to
+reach further out, though DSL and complex players are several years away.
+
+It walks the Single-A affiliate of **all six** NWL orgs, Seattle included.
+Everett's own roster is in scope: away players are the easier ask, but he has 81
+home dates a year to work the home side too.
 
 ## Why the Northwest League makes this tractable
 
@@ -28,7 +42,7 @@ so every road team at Everett comes from a fixed pool of five organisations:
 | Spokane Indians | Colorado Rockies |
 | Tri-City Dust Devils | Los Angeles Angels |
 | Vancouver Canadians | Toronto Blue Jays |
-| *Everett AquaSox* | *Seattle Mariners (home)* |
+| Everett AquaSox | Seattle Mariners (home) |
 
 A prospect anywhere in those five systems eventually passes through Everett as
 he climbs. That is what `--future` covers: it walks Single-A and rookie ball for
@@ -38,8 +52,13 @@ Spokane visitor next year, Jojo Parker in the Blue Jays system is a Vancouver
 visitor.
 
 **Away players are the soft target.** The crowd swarms the home dugout, so the
-visiting side is reachable. The tool therefore never suggests Everett's own
-roster; the home team is the hard ask, not the opportunity.
+visiting side is reachable. Everett's own roster is still included, because
+there are 81 home dates to work it: *"no I def want it to incluide Everett's
+roster"*.
+
+**Affiliations move, so never name an affiliate from memory.** In 2026 the
+Mariners' Single-A club is the Inland Empire 66ers, not Modesto. The tool reads
+every club and parent org from the API on each run for exactly this reason.
 
 ## The output that matters is ACQUIRE, not BRING
 
@@ -74,6 +93,11 @@ Three sections come out:
   `--no-ebay` when you only need the roster and ownership cross-reference.
 - A player can appear on two rosters (rehab assignment, complex-league entry).
   The tool collapses to one line per player, keeping the soonest visit.
+- **`rosterType=fullSeason` includes MLB players on rehab.** A Single-A roster
+  can contain Shane Bieber, Alek Manoah or Yusei Kikuchi, and projecting them
+  into next season's Northwest League is nonsense. Anyone with an `mlbDebutDate`
+  is filtered out of `--offseason` (35 of 400 on the first run). In-season they
+  are left in, because a rehabbing big leaguer at Everett is a genuine target.
 
 ## When the schedule is empty
 
