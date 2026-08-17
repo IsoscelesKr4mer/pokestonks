@@ -171,6 +171,17 @@ function itemXml(d: SetDef, vars: Variation[]) {
     // Trading rejects the listing without this: "Card Condition (40001) is a
     // required field." 400010 is the same descriptor list-single-cards.ts sends
     // through the Inventory API for raw near-mint singles.
+    // Set package details AT CREATION. ESE is flat-rate so eBay never demands
+    // them, and a listing without them makes the label flow default to 1x1x1
+    // every time. Worse, ReviseFixedPriceItem will NOT add them later to a
+    // multi-variation listing: it answers Ack=Success and silently drops them.
+    // Creation is the only chance. Matches the Hobby Armor Shell Mailer, 7 x
+    // 4.35, under 0.4 oz empty, so 1 oz packed.
+    `<ShippingPackageDetails>` +
+      `<ShippingIrregular>false</ShippingIrregular><ShippingPackage>Letter</ShippingPackage>` +
+      `<WeightMajor unit="lbs">0</WeightMajor><WeightMinor unit="oz">1</WeightMinor>` +
+      `<PackageLength>7</PackageLength><PackageWidth>4.35</PackageWidth><PackageDepth>0.25</PackageDepth>` +
+    `</ShippingPackageDetails>` +
     `<ConditionID>4000</ConditionID>` +
     `<ConditionDescriptors><ConditionDescriptor><Name>40001</Name><Value>400010</Value></ConditionDescriptor></ConditionDescriptors>` +
     `<Country>US</Country><Currency>USD</Currency><Location>Edmonds, WA</Location><PostalCode>98026</PostalCode>` +
