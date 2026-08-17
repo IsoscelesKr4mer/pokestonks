@@ -185,12 +185,23 @@ hide one of the two players behind a false `x2`. Group by number **and** player.
 
 ## 5b. Counts are a floor, not the truth
 
-Michael photographs **one** copy of the cheap inserts, because they sell through
-a quantity dropdown rather than as individual listings. So the vault legitimately
-holds fewer rows than his team bags, and a gap is not automatically an error.
-Ask before chasing one. When he reports bag counts, add the extra copies as
-`needs_photos` with an empty `photo_urls` and no price, noting that the
-`card_number` is assumed to match the copy already logged.
+The vault deliberately holds fewer rows than Michael physically owns, in two
+separate ways. A gap is **not** automatically an error, and "fixing" one by
+inventing a row makes the data worse.
+
+**Cheap inserts:** he photographs one copy, because they sell through a quantity
+dropdown rather than as individual listings. When he reports bag counts, add the
+extra copies as `needs_photos` with an empty `photo_urls` and no price, noting
+that the `card_number` is assumed to match the copy already logged.
+
+**PC duplicates are not logged at all.** One row stands for the card, however
+many copies he owns. *"I have like 6 or 7 of them i just didnt add dupes to the
+pc on the site. I have dupes of a lot of my pc."* On 2026-08-16 a photo showed
+four signed Cova sapphires against three rows, I read the difference as a missing
+card and created one, and it had to be deleted and folded back.
+
+So: when the physical count exceeds the row count, **ask, or record it as a note
+on the existing row**. Do not create a row to close the gap.
 
 ## 6. When unsure, stop
 
