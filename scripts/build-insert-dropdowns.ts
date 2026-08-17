@@ -175,12 +175,12 @@ function itemXml(d: SetDef, vars: Variation[]) {
     // them, and a listing without them makes the label flow default to 1x1x1
     // every time. Worse, ReviseFixedPriceItem will NOT add them later to a
     // multi-variation listing: it answers Ack=Success and silently drops them.
-    // Creation is the only chance. Matches the Hobby Armor Shell Mailer, 7 x
-    // 4.35, under 0.4 oz empty, so 1 oz packed.
+    // Creation is the only chance. 7 x 5 x 1 at 2 oz are the numbers Michael
+    // actually ships and is billed $1.07 for, against $1.29 collected.
     `<ShippingPackageDetails>` +
       `<ShippingIrregular>false</ShippingIrregular><ShippingPackage>Letter</ShippingPackage>` +
-      `<WeightMajor unit="lbs">0</WeightMajor><WeightMinor unit="oz">1</WeightMinor>` +
-      `<PackageLength>7</PackageLength><PackageWidth>4.35</PackageWidth><PackageDepth>0.25</PackageDepth>` +
+      `<WeightMajor unit="lbs">0</WeightMajor><WeightMinor unit="oz">2</WeightMinor>` +
+      `<PackageLength>7</PackageLength><PackageWidth>5</PackageWidth><PackageDepth>1</PackageDepth>` +
     `</ShippingPackageDetails>` +
     `<ConditionID>4000</ConditionID>` +
     `<ConditionDescriptors><ConditionDescriptor><Name>40001</Name><Value>400010</Value></ConditionDescriptor></ConditionDescriptors>` +

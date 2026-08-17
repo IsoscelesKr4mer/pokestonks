@@ -14,10 +14,11 @@
  * to 1x1x1. The Ground Advantage listings are fine precisely because calculated
  * shipping refuses to publish without dimensions.
  *
- * Values come from the mailer he actually uses, a Hobby Armor Shell Mailer
- * Incognito: 7" x 4.35", under 0.4 oz empty. Add a card in a penny sleeve and a
- * Card Saver and it is comfortably under an ounce, so 1 oz is the honest round
- * number. Depth is 0.25", the thickness ESE allows.
+ * Values are the ones Michael actually ships and has been billed for, NOT the
+ * mailer's spec sheet: "should be 2oz not 1oz. 2 oz w/ 7x5x1 cost me $1.07 and
+ * i charge $1.29". So 7 x 5 x 1 at 2 oz. I had derived 7 x 4.35 x 0.25 at 1 oz
+ * from the Shell Mailer packaging, which is the empty envelope, not a packed
+ * one that has cleared the counter at a known price. His receipt wins.
  *
  * ShippingPackage is `Letter`, which is what ESE actually is.
  *
@@ -36,8 +37,8 @@ import { config } from 'dotenv';
 config({ path: '.env.local' });
 
 const APPLY = process.argv.includes('--apply');
-const LENGTH = '7', WIDTH = '4.35', DEPTH = '0.25';
-const WEIGHT_OZ = '1';
+const LENGTH = '7', WIDTH = '5', DEPTH = '1';
+const WEIGHT_OZ = '2';
 const PACKAGE = 'Letter';
 
 function findKey(o: any, k: string): string | undefined {
