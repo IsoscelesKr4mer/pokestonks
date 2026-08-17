@@ -942,3 +942,20 @@ Use `scripts/set-bundle-qty.ts <sku> <qty> --apply` for this. It refuses to over
 - New SKUs get their own section with title, body, photos, and the net/margin line.
 - When a listing sells, log the sale in PokeStonks (platform + fees) and decrement the qty here.
 - When market moves materially, re-pull prices and update the ask, keeping the never-negative floor.
+
+---
+
+### Disney Lorcana: Attack of the Vine! — repriced 2026-08-17
+
+Both were sitting at 0 watchers since 7/29-7/30 and both were priced **over** market.
+
+| item | product | was | now | cost | market (TCGCSV) | net at new price |
+|---|---|---|---|---|---|---|
+| 168573778601 | Illumineer's Trove, qty 4 | $89.99 | **$79.99** | $55.00 | **$82.57** (low $75.85) | $68.99, **+$13.99** each |
+| 168574098363 | 12 Sleeved Booster Packs | $132.00 | **$109.99** | $79.44 | **$9.57/pack** (low $9.00) | $95.02, **+$15.58** |
+
+Trove break-even is $63.86; the 12-lot break-even is $92.03. The 12-lot was asking $11.00 a pack against a $9.57 market, and 12 at straight market is $114.84, so $109.99 is market less the usual lot discount.
+
+**LORCANA HAD NO MARKET DATA AT ALL until today.** The nightly sync only pulled TCGplayer category 3 (Pokemon), so every Lorcana item read `market no snapshot` and the only market figure available was one Michael quoted from memory. `catalog_items.tcgplayer_product_id` was already populated, so the fix was purely pointing the sync at the right category: **3 Pokemon, 71 Lorcana TCG, 85 Pokemon Japan**. Use `scripts/sync-market-prices-category.ts <categoryId> --apply`.
+
+**Lesson worth keeping:** when eBay Browse is rate limited, that is one blocked path, not no path. TCGCSV is the primary sealed-price source per CLAUDE.md and needs no auth. Michael: *"umm why cant you... theyre on TCG and you can look at comps on ebay"*.
