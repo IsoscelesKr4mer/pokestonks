@@ -39,20 +39,24 @@ const DAYS = Number(process.argv.find((a) => a.startsWith('--days='))?.split('='
 const MAX_PRICE = Number(process.argv.find((a) => a.startsWith('--max-price='))?.split('=')[1] ?? 0);
 const FUTURE = process.argv.includes('--future');
 /**
- * Offseason planning. Deliberately EXCLUDES the current High-A rosters: those
- * players mostly graduate to Double-A next season and leave the Northwest
- * League, so buying their cards to sign at Everett next year is backwards.
- * Today's Single-A is next year's NWL, which is exactly Michael's own example -
- * Ethan Holliday in Rockies A ball arriving at Spokane. Rookie ball is included
- * only with --rookie, since DSL and complex players are several years out.
+ * Offseason planning: EVERYTHING BELOW DOUBLE-A in the six NWL organisations,
+ * so High-A, Single-A and rookie ball.
+ *
+ * An earlier version dropped the current High-A rosters on the theory that they
+ * all graduate to AA. Michael: "That's not true some of these guys just got
+ * pulled up in the last week. Let's just keep it at <AA." Promotions run
+ * continuously, so a player who reached High-A days ago is very much still an
+ * NWL body next season. AA and above is the real cutoff, because that is where
+ * a player has left the league for good.
  */
 const OFFSEASON = process.argv.includes('--offseason');
-const ROOKIE_TOO = process.argv.includes('--rookie');
 const NO_EBAY = process.argv.includes('--no-ebay');
 const sql = postgres(process.env.DATABASE_URL_DIRECT!, { prepare: false });
 
 const NWL_LEAGUE = 126, EVERETT = 403;
 const HIGH_A = 13, SINGLE_A = 14, ROOKIE = 16;
+/** Everything below Double-A. AA and up have left the Northwest League. */
+const BELOW_AA = [HIGH_A, SINGLE_A, ROOKIE];
 
 const api = async (p: string) => (await fetch(`https://statsapi.mlb.com/api/v1/${p}`)).json();
 const iso = (d: Date) => d.toISOString().slice(0, 10);
@@ -84,7 +88,7 @@ async function debuted(ids: number[]) {
 }
 type Row = {
   player: string; pos: string; from: string; when: string; sortWhen: string;
-  personId: number; mlb: boolean;
+  personId: number; mlb: boolean; level: number;
   mine: Owned[]; bowman: number | null; cheapest: number | null;
 };
 
@@ -133,8 +137,8 @@ async function main() {
       visits.get(a)!.push(day.date);
     }
   }
-  if (OFFSEASON) console.log(`OFFSEASON PLAN: Single-A${ROOKIE_TOO ? ' + rookie' : ''} rosters of all six NWL orgs, Seattle included.
-Current High-A is excluded on purpose, those players graduate to AA and leave the league.
+  if (OFFSEASON) console.log(`OFFSEASON PLAN: every roster below Double-A in the six NWL orgs (High-A, Single-A, rookie), Seattle included.
+AA and above are excluded, that is where a player has actually left the league.
 `);
   console.log(`EVERETT HOME GAMES, next ${DAYS} days`);
   if (!visits.size) console.log('  none scheduled. Try --days=200 or wait for next season.');
@@ -153,16 +157,20 @@ Current High-A is excluded on purpose, those players graduate to AA and leave th
     });
   }
 
-  const sources: { label: string; teamId: number; when: string; sortWhen: string }[] = [];
+  const sources: { label: string; teamId: number; when: string; sortWhen: string; level: number }[] = [];
   if (!OFFSEASON) {
-    for (const [id, d] of visits) sources.push({ label: byId.get(id)?.name ?? String(id), teamId: id, when: `${d[0]} to ${d[d.length - 1]}`, sortWhen: d[0] });
+    for (const [id, d] of visits) sources.push({ label: byId.get(id)?.name ?? String(id), teamId: id, when: `${d[0]} to ${d[d.length - 1]}`, sortWhen: d[0], level: HIGH_A });
     // the home side, always available across the whole homestand calendar
-    sources.push({ label: 'Everett AquaSox (HOME)', teamId: EVERETT, when: 'any home game', sortWhen: '0000' });
+    sources.push({ label: 'Everett AquaSox (HOME)', teamId: EVERETT, when: 'any home game', sortWhen: '0000', level: HIGH_A });
   }
   if (FUTURE || OFFSEASON) {
-    for (const sportId of OFFSEASON ? (ROOKIE_TOO ? [SINGLE_A, ROOKIE] : [SINGLE_A]) : [SINGLE_A, ROOKIE]) {
+    for (const sportId of OFFSEASON ? BELOW_AA : [SINGLE_A, ROOKIE]) {
       for (const t of (await api(`teams?sportId=${sportId}&season=${season}`)).teams.filter((x: any) => orgs.has(x.parentOrgName))) {
-        sources.push({ label: `${t.name} -> ${orgs.get(t.parentOrgName)}`, teamId: t.id, when: OFFSEASON ? 'next season' : 'future promotion', sortWhen: '9999' });
+        const dest = orgs.get(t.parentOrgName)!;
+        sources.push({
+          label: t.name === dest ? `${t.name} (already NWL)` : `${t.name} -> ${dest}`,
+          teamId: t.id, when: OFFSEASON ? 'next season' : 'future promotion', sortWhen: '9999', level: sportId,
+        });
       }
     }
   }
@@ -173,7 +181,7 @@ Current High-A is excluded on purpose, those players graduate to AA and leave th
     for (const p of r.roster ?? []) {
       rows.push({
         player: p.person.fullName, pos: p.position?.abbreviation ?? '', from: s.label,
-        when: s.when, sortWhen: s.sortWhen, personId: Number(p.person.id), mlb: false,
+        when: s.when, sortWhen: s.sortWhen, level: s.level, personId: Number(p.person.id), mlb: false,
         mine: owned.get(nameKey(p.person.fullName)) ?? [], bowman: null, cheapest: null,
       });
     }
@@ -189,22 +197,35 @@ ${rows.length} players across ${sources.length} rosters` +
   if (OFFSEASON) rows = rows.filter((r) => !r.mlb);
 
   if (!NO_EBAY) {
+    // Sequential at ~110ms was fine for one roster, but sweeping every level
+    // below AA is 1,000+ players and it ran past ten minutes. Six at a time
+    // keeps it polite and finishes in a couple of minutes.
     const tok = await browseToken();
-    process.stdout.write('checking eBay for 1st Bowmans');
-    for (const [i, row] of rows.entries()) {
-      const r = await firstBowman(tok, row.player);
-      row.bowman = r.n; row.cheapest = r.min;
-      await sleep(110);
-      if (i % 25 === 0) process.stdout.write('.');
-    }
+    process.stdout.write(`checking eBay for 1st Bowmans (${rows.length} players)`);
+    const queue = [...rows];
+    let done = 0;
+    await Promise.all(Array.from({ length: 6 }, async () => {
+      for (;;) {
+        const row = queue.shift();
+        if (!row) return;
+        const r = await firstBowman(tok, row.player);
+        row.bowman = r.n; row.cheapest = r.min;
+        if (++done % 100 === 0) process.stdout.write('.');
+        await sleep(60);
+      }
+    }));
     console.log(' done');
   }
 
-  // A player can appear on more than one roster (a rehab assignment, or a
-  // complex-league entry alongside his club), so collapse to one line per
-  // player and keep the soonest visit.
+  // A player can appear on several rosters, because fullSeason lists every club
+  // he suited up for this year. Keep ONE line per player and prefer his highest
+  // level, which is where he is now. Michael: "Cova is already in everett how do
+  // you think i got all those autos" - Cova shows on both Inland Empire and
+  // Everett, and labelling him a future Everett arrival was simply wrong.
   const seen = new Map<string, Row>();
-  for (const r of rows.sort((a, b) => a.sortWhen.localeCompare(b.sortWhen))) {
+  // NOTE the direction: a LOWER sportId is a HIGHER level (13 High-A, 14
+  // Single-A, 16 rookie), so ascending sportId puts the current club first.
+  for (const r of rows.sort((a, b) => a.level - b.level || a.sortWhen.localeCompare(b.sortWhen))) {
     const k = nameKey(r.player);
     if (!seen.has(k)) seen.set(k, r);
   }

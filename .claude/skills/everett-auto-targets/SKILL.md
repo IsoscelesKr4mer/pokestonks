@@ -19,16 +19,18 @@ npx tsx scripts/everett-auto-targets.ts --offseason     # plan next season (see 
 
 ## Offseason mode is the main event
 
-`--offseason` is what to run between seasons, and it deliberately **excludes the
-current High-A rosters**. Those players mostly graduate to Double-A and leave the
-Northwest League, so buying their cards to sign at Everett next year is
-backwards. Today's **Single-A** is next year's NWL, which is Michael's own
-example: Ethan Holliday in Rockies A ball arrives at Spokane. Add `--rookie` to
-reach further out, though DSL and complex players are several years away.
+`--offseason` sweeps **every roster below Double-A** in all six NWL
+organisations: High-A, Single-A and rookie ball. AA and above is the cutoff,
+because that is where a player has actually left the league.
 
-It walks the Single-A affiliate of **all six** NWL orgs, Seattle included.
-Everett's own roster is in scope: away players are the easier ask, but he has 81
-home dates a year to work the home side too.
+An earlier version dropped the current High-A rosters, reasoning that they all
+graduate to AA. That was wrong. Michael: *"That's not true some of these guys
+just got pulled up in the last week. Let's just keep it at <AA."* Promotions run
+continuously, so someone who reached High-A days ago is still an NWL body next
+season.
+
+Everett's own roster is in scope. Away players are the easier ask, but there are
+81 home dates a year to work the home side too.
 
 ## Why the Northwest League makes this tractable
 
@@ -91,8 +93,16 @@ Three sections come out:
 - The eBay pass is roughly 110ms per player, so a single visiting roster (~50)
   takes under a minute and `--future` (~1,100 players) is a long run. Use
   `--no-ebay` when you only need the roster and ownership cross-reference.
-- A player can appear on two rosters (rehab assignment, complex-league entry).
-  The tool collapses to one line per player, keeping the soonest visit.
+- **A player appears on every roster he suited up for this year**, because
+  `fullSeason` is cumulative. Collapse to one line per player and keep his
+  **highest level**, which is where he is now. Watch the direction: a LOWER
+  sportId is a HIGHER level (13 High-A, 14 Single-A, 16 rookie), so sort
+  ascending. Getting this backwards labelled Ricardo Cova a future Everett
+  arrival when he is already there, which is where Michael got his autos:
+  *"Cova is already in everett how do you think i got all those autos"*. It also
+  triple-counted players into the ACQUIRE list, inflating it from 74 to 170.
+- The eBay pass runs six concurrent. Sequential was fine for one roster but the
+  full below-AA sweep is 1,500 players and ran past ten minutes.
 - **`rosterType=fullSeason` includes MLB players on rehab.** A Single-A roster
   can contain Shane Bieber, Alek Manoah or Yusei Kikuchi, and projecting them
   into next season's Northwest League is nonsense. Anyone with an `mlbDebutDate`
