@@ -30,10 +30,12 @@ const IDS = process.argv.slice(3).filter((a) => /^\d+$/.test(a)).map(Number);
 const sql = postgres(process.env.DATABASE_URL_DIRECT!, { prepare: false });
 
 // Current LIVE you-pick item numbers, verified against active listings 2026-08-14.
+// Rebuilt 2026-08-18 to sort the dropdowns; every item id changed. Old ids were
+// chrome 168602424531, finest 168602424592, bowman 168602363352.
 const LISTINGS: Record<string, { item: string; prefix: string }> = {
-  chrome: { item: '168602424531', prefix: 'CHROME' },
-  finest: { item: '168602424592', prefix: 'FINEST' },
-  bowman: { item: '168602363352', prefix: 'BOWMAN' },
+  chrome: { item: '168622320644', prefix: 'CHROME' },
+  finest: { item: '168622312679', prefix: 'FINEST' },
+  bowman: { item: '168622311437', prefix: 'BOWMAN' },
 };
 
 function shortParallel(p: string | null): string {

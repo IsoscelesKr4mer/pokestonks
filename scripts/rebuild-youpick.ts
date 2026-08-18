@@ -49,10 +49,11 @@ const WHICH = process.argv[2];
 const APPLY = process.argv.includes('--apply');
 const sql = postgres(process.env.DATABASE_URL_DIRECT!, { prepare: false });
 
+// Rebuilt 2026-08-18 to sort the dropdowns; every item id changed.
 const LISTINGS: Record<string, string> = {
-  chrome: '168602424531',
-  finest: '168602424592',
-  bowman: '168602363352',
+  chrome: '168622320644',
+  finest: '168622312679',
+  bowman: '168622311437',
 };
 
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
