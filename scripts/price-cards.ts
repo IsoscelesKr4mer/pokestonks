@@ -140,7 +140,11 @@ async function main(){
   const tok=await token();
   const cards=await sql`SELECT id,player,set_name,year,card_number,parallel,status,asking_price_cents FROM baseball_cards
     WHERE for_sale=true AND status NOT IN ('listed','sold')
-    AND coalesce(notes,'') NOT ILIKE '%AUCTION%' AND coalesce(notes,'') NOT ILIKE '%no auto-price%'
+    -- Match 'auto-price' loosely, not the exact phrase 'no auto-price'. The
+    -- Jack Winkler RA-JWI note said "Do not auto-price" and slipped straight
+    -- through the old filter, so an on-card /250 rookie autograph got priced at
+    -- $12.99 off five comps by a script that was explicitly told to leave it.
+    AND coalesce(notes,'') NOT ILIKE '%AUCTION%' AND coalesce(notes,'') NOT ILIKE '%auto-price%'
     AND coalesce(notes,'') NOT ILIKE '%in-person auto%'
     AND coalesce(notes,'') NOT ILIKE '%confirm parallel%' AND coalesce(parallel,'') NOT ILIKE '%(CONFIRM)%'
     ORDER BY id`;
