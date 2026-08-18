@@ -137,7 +137,10 @@ async function main() {
       // Calculated shipping is rejected without a packageType.
       packageWeightAndSize: c.ask > 2000
         ? { packageType: 'PACKAGE_THICK_ENVELOPE', dimensions: { length: 8, width: 4, height: 1, unit: 'INCH' }, weight: { value: 3, unit: 'OUNCE' }, shippingIrregular: false } // 4x8 bubble mailer, the size Michael stocks
-        : { dimensions: { width: 4, length: 6, height: 1, unit: 'INCH' }, weight: { value: 2, unit: 'OUNCE' }, shippingIrregular: false },
+        // eBay Standard Envelope. 7 x 5 x 1 at 2 oz are the numbers Michael
+        // actually ships and is billed $1.07 for. Setting them here is what stops
+        // the label flow defaulting to 1x1x1 every time.
+        : { packageType: 'LETTER', dimensions: { width: 5, length: 7, height: 1, unit: 'INCH' }, weight: { value: 2, unit: 'OUNCE' }, shippingIrregular: false },
       availability: { shipToLocationAvailability: { quantity: 1 } },
       product: {
         title, description: desc, brand: 'Topps', mpn: 'Does Not Apply',
