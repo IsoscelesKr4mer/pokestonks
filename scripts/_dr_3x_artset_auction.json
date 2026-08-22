@@ -1,0 +1,65 @@
+{
+  "Title": "Pokemon TCG Destined Rivals 12 Sleeved Booster Packs 3x All 4 Arts Sealed Lot",
+  "Description": "<p>12x sealed Pokemon TCG Scarlet &amp; Violet Destined Rivals sleeved booster packs, three complete sets of all four sleeve arts.</p><p><strong>The four arts, three of each:</strong></p><ul><li>Cynthia with Garchomp</li><li>Giovanni with Mewtwo</li><li>Ethan with Ho-Oh</li><li>The Team Rocket grunt art with Weezing</li></ul><p>Each booster pack contains 10 cards and 1 Basic Energy, so 132 cards total across the twelve packs. The Destined Rivals expansion has over 240 cards.</p><p>Sleeved packs come on their retail hanging card, so every art is intact for display.</p><p>Ships within 1 business day.</p><p>Smoke-free home. Buy with confidence, check my feedback. Thanks for looking.</p>",
+  "PrimaryCategory": {
+    "CategoryID": "183456"
+  },
+  "StartPrice": "0.99",
+  "ListingType": "Chinese",
+  "ListingDuration": "Days_7",
+  "Quantity": "1",
+  "ConditionID": "1000",
+  "Country": "US",
+  "Currency": "USD",
+  "Location": "Edmonds, Washington",
+  "PostalCode": "98026",
+  "DispatchTimeMax": "1",
+  "SKU": "DR-SLEEVED-ARTSET4-3X-AUCTION",
+  "ScheduleTime": "2026-08-24T01:00:00.000Z",
+  "ProductListingDetails": {
+    "UPC": "820650104398",
+    "IncludeeBayProductDetails": "true"
+  },
+  "ItemSpecifics": {
+    "NameValueList": [
+      {
+        "Name": "Game",
+        "Value": "Pokémon TCG"
+      },
+      {
+        "Name": "Set",
+        "Value": "Destined Rivals"
+      },
+      {
+        "Name": "Configuration",
+        "Value": "Pack"
+      },
+      {
+        "Name": "Language",
+        "Value": "English"
+      }
+    ]
+  },
+  "PictureDetails": {
+    "PictureURL": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/DestinedRivals_SleevedPack_ArtSet4_3x_01_twelve_packs.jpg"
+  },
+  "SellerProfiles": {
+    "SellerShippingProfile": {
+      "ShippingProfileID": "269110723012"
+    },
+    "SellerReturnProfile": {
+      "ReturnProfileID": "269110705012"
+    },
+    "SellerPaymentProfile": {
+      "PaymentProfileID": "273540269012"
+    }
+  },
+  "ShippingPackageDetails": {
+    "ShippingPackage": "PackageThickEnvelope",
+    "PackageLength": "8",
+    "PackageWidth": "8",
+    "PackageDepth": "4",
+    "WeightMajor": "1",
+    "WeightMinor": "8"
+  }
+}

@@ -959,3 +959,344 @@ Trove break-even is $63.86; the 12-lot break-even is $92.03. The 12-lot was aski
 **LORCANA HAD NO MARKET DATA AT ALL until today.** The nightly sync only pulled TCGplayer category 3 (Pokemon), so every Lorcana item read `market no snapshot` and the only market figure available was one Michael quoted from memory. `catalog_items.tcgplayer_product_id` was already populated, so the fix was purely pointing the sync at the right category: **3 Pokemon, 71 Lorcana TCG, 85 Pokemon Japan**. Use `scripts/sync-market-prices-category.ts <categoryId> --apply`.
 
 **Lesson worth keeping:** when eBay Browse is rate limited, that is one blocked path, not no path. TCGCSV is the primary sealed-price source per CLAUDE.md and needs no auth. Michael: *"umm why cant you... theyre on TCG and you can look at comps on ebay"*.
+
+---
+
+### Destined Rivals Sleeved Booster Pack — Art Set of 4, qty listing (drafted 2026-08-18)
+
+- **🟢 LIVE 2026-08-18:** eBay **#168623627775** · offer 239576206011 · verified Active + HideFromSearch:false via Trading API · [view](https://www.ebay.com/itm/168623627775)
+- **SKU:** `DR-SLEEVED-ARTSET4` · **category 183456** (CCG Sealed Packs) · condition **NEW** · location edmonds-wa
+- **Ask:** $46.99 · **Qty: 13** (all 13 complete sets, 52 of 52 packs held) · **Cost:** $30.96/set ($7.74 x 4) · **Net:** ~$39.40 → **+$8.44/set, 27.3% ROI** · 13 sets = **+$109.72**
+- **Title:** `Pokemon TCG Destined Rivals 4 Sleeved Booster Packs All 4 Arts Sealed 44 Cards` (78 chars)
+- **Mapping:** row #79, 4x ci17232 per listing unit. Qty is PER unit, so one sale decrements sleeved held by 4, not 1.
+- **UPC:** 820650104398 (off the back panel; item 10-10689-101)
+- **Aspects:** `Set` = Destined Rivals (free text), `Configuration` = `Pack` (SELECTION_ONLY, exactly "Pack", not "Booster Pack")
+- **Photos:** `DestinedRivals_SleevedPack_ArtSet4_01_front.JPEG` (all four arts face up, the count and the full art set are both verifiable in frame, leads), `_02_back.JPEG`. Both hosted on Supabase.
+- **Shipping:** Ground Advantage Calculated (269110723012), buyer pays. Package 8x8x4 at 12 oz (4 sleeved packs ~5.6 oz plus shipper and filler). **GA applied cleanly through the policy this time** (`ShippingService: USPSParcel` on the live item), no eBay UI fix needed.
+- **Publish gotcha, new one:** `packageWeightAndSize.packageType: "MAILING_BOX"` fails publish with `Invalid <ShippingPackage>`. Neither working SKU sets `packageType` at all. **Omit the field**, eBay defaults to PackageThickEnvelope and calculated shipping works fine.
+
+**Body:**
+
+> 4x sealed Pokemon TCG Scarlet & Violet Destined Rivals sleeved booster packs, one of each of the four sleeve arts.
+>
+> The four arts: Cynthia with Garchomp, Giovanni with Mewtwo, the Team Rocket grunt art with Weezing, and Ho-Oh.
+>
+> Each booster pack contains 10 cards and 1 Basic Energy, so 44 cards total across the four packs. The Destined Rivals expansion has over 240 cards.
+>
+> Sleeved packs come on their retail hanging card, so all four arts are intact for display.
+>
+> Ships within 1 business day.
+
+**Cost basis:** Safeway store 1297, 23632 Hwy 99 Edmonds, 2026-08-18 11:34. 52 packs at $6.99 shelf = $363.48 + $38.89 tax = **$402.37**, so **$7.74/pack** at a 10.7% effective rate. Lot #578.
+
+**Pricing.** Art Bundle [Set of 4] market is **$47.09** (low $41.74) as of 2026-08-17, and sum-of-parts on the single sleeved pack is $44.88 ($11.22 x 4). $46.99 sits just under market and above parts, which is right for a bundle per the no-discount rule. Break-even is **$37.02**.
+
+**Why art sets and not 52 singles.** At the tax-included $7.74 basis a single sleeved pack at $11.22 nets ~$9.10, so **+$1.36 a pack, 18%**. The art set nets **+$8.44, 27%**. Same inventory, half again the ROI, one package instead of four, and 13 listings-worth of handling instead of 52. The singles lane is only worth reopening if the sets stall.
+
+**The sleeved premium does not survive into bulk.** Sleeved holds $11.22 while the loose DR pack slid 12% in five days ($9.60 to $8.41). That gap is a singles-and-small-bundle premium, paid for the sleeve art and the retail hanger. A 36-pack bulk lot prices off the loose pack, so at a $7.74 basis the bulk lane nets close to nothing. This is why the whole position goes out as sets of 4.
+
+**Why the whole peg got bought at once.** Michael had never seen sleeved packs at this store and did not expect a restock, so the usual "buy a test batch, the shelf will keep" staging did not apply. 52 was the compromise against his opening plan of 100.
+
+---
+
+### Destined Rivals 36-pack lot — cut and repriced 2026-08-18
+
+`DR-36LOT-R2` #168519091676, offer 201311692011: **qty 3 → 1**, **$389.99 → $339.99**.
+
+It was asking **$10.83/pack against an $8.41 market**, 29% over. It sold three times in June at $396, but the loose pack was ~$9.90 then, so the ask was only 11% over. The market slid and the ask never followed. **No DR pack sale since 2026-06-23**, two months at 2 watchers.
+
+The real cost was not the stale price, it was the **commitment**: 3 x 36 = **108 of 133 loose packs locked** to a listing that was not moving, leaving only 25 free. Cutting to qty 1 frees 72 packs for the art sets and keeps one bulk ticket alive at $9.44/pack.
+
+**Verification note.** Straight after `update_offer` the Trading API still read `Quantity: 3` while REST read `availableQuantity: 1`; a later read showed 1 in both. I first wrote that up as pure propagation lag. **The Kayou raise on 2026-08-19 showed that is not the whole story** — see the qty-change procedure below. Re-read before acting either way; the Trading API is the truth for what buyers see.
+
+### Destined Rivals Booster Pack — Art Set of 4, qty listing (drafted 2026-08-18)
+
+- **🟢 LIVE 2026-08-18:** eBay **#168623729004** · offer 239590565011 · verified Active + HideFromSearch:false via Trading API · [view](https://www.ebay.com/itm/168623729004)
+- **SKU:** `DR-LOOSE-ARTSET4` · category 183456 · condition NEW · location edmonds-wa
+- **Ask:** $38.99 · **Qty: 22** · **Cost:** $20.00/set ($5.00 x 4) · **Net:** ~$32.62 → **+$12.62/set, 63% ROI** · 22 sets = **+$277.64**
+- **Title:** `Pokemon TCG Destined Rivals 4 Booster Packs Art Set All 4 Arts Sealed 44 Cards` (78 chars)
+- **Mapping:** row #80, 4x ci17236 per listing unit
+- **UPC:** 196214123175 — **different from the sleeved pack's 820650104398.** Loose and sleeved are separate products with separate barcodes; do not reuse one for the other. Loose item no. 10-10157-101, sleeved 10-10689-101.
+- **Photos:** `DestinedRivals_LoosePack_ArtSet4_01_front.JPEG` (four arts face up, leads), `_02_back.JPEG`. Hosted on Supabase.
+- **Shipping:** Ground Advantage Calculated (269110723012), buyer pays. 8x8x4 at 8 oz.
+- **Preflight:** passes clean, no errors or warnings.
+
+**Inventory reconciliation.** Michael sorted by pack art: **Mewtwo 31, Ho-Oh 22, grunts 43, Cynthia/Garchomp 37 = 133**, against a vault read of 130. The 3-pack gap was booked as lot #579 at the standard $5.00 vending price. **Complete sets are capped by the smallest art, so 22 sets**, using 88 packs. With the 36-lot cut to qty 1, committed is 36, so 97 are free and 88 fits with 9 spare. Leftover arts after the sets: 9 Mewtwo, 21 grunts, 15 Cynthia, 0 Ho-Oh.
+
+**Why the loose art set is the best lane in the whole DR position.** The art bundle SKU (ci17251) is **$39.00** against $33.64 sum-of-parts, a **15.9% premium** — proportionally far bigger than the sleeved set's 4.9%. Combined with the $5.00 vending basis it nets **+$12.62/set** against **+$6.88** for the same four packs sold as singles, and beats the repriced 36-lot on a per-pack basis ($3.16 vs $2.99) on a $39 ticket instead of $340.
+
+**Caution:** the loose art bundle market is thinner than sleeved, $30.00 low against a $39.00 market (23% spread) versus $41.74/$47.09 (11%) for sleeved. Expect to have room to cut.
+
+**Trainer names are confirmed from the pack back**, not inferred: *"Join forces with the likes of Cynthia and Garchomp ex, Ethan and Ho-Oh ex... fight alongside Team Rocket's Pokemon like Mewtwo ex, under the command of Giovanni!"* The live sleeved listing's description was updated the same day to name Ethan, which it had hedged on before this photo arrived.
+
+---
+
+### Kayou Naruto Earth Scroll Collector Box (listed 2026-08-19)
+
+- **🟢 LIVE 2026-08-19:** eBay **#168625893567** · offer 240881606011 · verified Active + HideFromSearch:false via Trading API · [view](https://www.ebay.com/itm/168625893567)
+- **SKU:** `KAYOU-NARUTO-EARTHSCROLL-BOX` · **category 261044** (Toys & Hobbies > Collectible Card Games > **CCG Sealed Boxes**, not 183456 which is for loose packs) · condition NEW · location edmonds-wa
+- **Ask:** $17.99 · **Qty: 2** · **Cost:** $11.06/box · **Net:** ~$14.84 → **+$3.78/box, 34% ROI** · both = **+$7.56**
+- **Title:** `Kayou Naruto Earth Scroll Collector Box Sealed 5 Packs 35 Cards 3 UR+ Guaranteed` (exactly 80 chars)
+- **Mapping:** row #81, 1x ci135082 per unit
+- **EAN:** 6937187418998 · **MPN:** NR-KP-DZJLH-002-5P-NA
+- **Aspects:** category 261044 requires **Game** and **Set** (both FREE_TEXT, SINGLE). `Configuration` is SELECTION_ONLY with exactly one legal value, **"Box"**. Year Manufactured only offers 2026/2025.
+- **Photos:** `KayouNaruto_EarthScroll_CollectorBox_01_front.JPEG` (leads), `_02_back.JPEG` (the spec panel, which is where every content claim comes from). Hosted on Supabase.
+- **Shipping:** Ground Advantage Calculated, buyer pays, 8x8x4 at 8 oz.
+- **Preflight:** passes clean.
+
+**First non-Pokemon, non-sports sealed item in the vault.** Catalog item **ci135082** was created by hand (`kind: sealed`, product_type `Collector Box`) because **TCGCSV does not cover Kayou or Naruto at all** — the category list has 90 entries and none of them match. `manual_market_cents` is seeded at **$19.95**, which is the Walmart and Amazon retail list, **not a traded market price**. This item will never get a nightly price snapshot.
+
+**Contents come from the box back, and they contradict the retail listings.** Walmart and Amazon both advertise "8 cards per pack, 40 cards total". The box itself says **7 cards per pack, 5 packs**, and the printed probability table confirms it (3R+2SR+2SSR = 7, and 3R+2SR+1SSR+1 hit = 7). The listing uses **35 cards**, matching the physical product.
+
+**The selling angle is the guaranteed hit rate**, which is printed on the box: 3 of the 5 packs carry a UR / Diamond UR / AR / MR / CR slot, so **three UR-or-better per box**. 132 types across 8 tiers.
+
+**Cost basis is estimated, not receipted.** $9.99 shelf grossed up at the 10.7% effective WA rate observed on the 08-18 Safeway receipt = **$11.06**. Lot #580. Fix the lot if the real receipt differs.
+
+**Recommendation given before the buy, for the record:** don't load up. The Kayou secondary market is singles-driven and concentrated in premium lines (Jin Chapter, Tier 4/EX), not $9.99 entry boxes; commons and uncommons are near-zero resale. No eBay sold comps were obtainable (the eBay MCP is seller-side only and the Browse-API pricer is unbuilt), so the only anchor is the $19.95 retail list. Michael bought 2 and asked for them to be listed, which is a sensible size to test the thesis. **These two are the experiment. If they sell near $17.99, the retail spread is real and worth revisiting.**
+
+---
+
+### 2026 Topps Chrome Logofractor Edition Box — PRESALE (listed 2026-08-19)
+
+- **🟢 LIVE 2026-08-19:** eBay **#168625923960** · offer 240889085011 · verified Active + HideFromSearch:false via Trading API · [view](https://www.ebay.com/itm/168625923960)
+- **SKU:** `TOPPSCHROME-2026-LOGOFRACTOR-PRESALE` · category 261332 (Sports Trading Cards > Sealed Trading Card Boxes) · NEW · edmonds-wa
+- **Ask:** $179.99 · **Qty: 2 of 3 bought** (1 held) · **Cost:** $132.83/box est. · **Net:** ~$152.05 → **+$19.22/box, 14.5%**
+- **Title:** `2026 Topps Chrome Logofractor Edition Baseball Box PRESALE Sealed 30 Cards` (74 chars)
+- **Mapping:** row #82, 1x ci135083 per unit
+- **Photo:** `ToppsChrome2026_Logofractor_Box_01_front.JPEG`, cropped out of Michael's topps.com screenshot so the browser chrome and the $119.99 retail price are not in frame. Single image; preflight warns a back shot would help and there isn't one until the boxes land.
+- **Shipping:** Ground Advantage Calculated, buyer pays, 8x8x4 at 1 lb.
+- No UPC (`expectUpc: false`) — presale, box not in hand, so there is no barcode to read. **Add it when the boxes arrive.**
+
+**THE MARGIN HERE IS THIN AND THE FLOOR IS HIGH.** At a $132.83 landed cost the **break-even ask is $157.30**, so a $119.99 MSRP box has to clear **31% over MSRP just to break even**. The ladder:
+
+| ask | net | profit |
+|---|---|---|
+| $159.99 | $135.11 | +$2.28 |
+| $169.99 | $143.58 | +$10.75 |
+| **$179.99** | **$152.05** | **+$19.22** |
+| $189.99 | $160.52 | +$27.69 |
+
+Anything under about $170 is not worth the packing. **Do not "cut to move" below $165 on this one** — that is the mistake the ladder exists to prevent.
+
+**No sold comps were obtainable.** The eBay MCP is seller-side only and the Browse-API pricer is unbuilt, so $179.99 is set off MSRP plus the break-even floor, not off observed sales. It is a deliberately high opening ask on a release-day product with room to come down.
+
+**Presale wording is reused verbatim from the Bowman Chrome hobby presale** (#168603386928): paid at checkout, ships when it arrives, cancel for full refund any time before it ships if Topps slips. Difference worth noting: **Bowman was dated to a future release (Sept 9), this one released the same day it was ordered (2026-08-19)**, so the copy says "ships as soon as it arrives" rather than naming a future date. eBay's 30-day presale window is the binding constraint, and a product already released comfortably fits it.
+
+**Cost basis is estimated.** $119.99 x 1.107 = $132.83, assuming Topps charged WA sales tax and free shipping on the $359.97 order. Lot #581. **Get the Topps order total and correct it** — the break-even moves with it, and at these margins a $10 error is half the profit.
+
+**Michael's other presale, for context: the Bowman Chrome hobby box at $499.99 has been live since 08-10 with 1 watcher and no sale.** Presales in this store have not yet proven they move.
+
+---
+
+### Prismatic Evolutions Booster Bundle — qty 3 → 4 (2026-08-19)
+
+`PE-BUNDLE-SINGLE` #168617484171, $79.99 unchanged. Raised via `scripts/set-bundle-qty.ts PE-BUNDLE-SINGLE 4 --apply`, which checked held-minus-commitments first (held 4, committed to other Active listings 0, free 4) and verified the live qty afterwards. Trading API confirms Quantity 4, price $79.99, policies intact.
+
+Stock came from lot #583, a vending pull off **Edmonds Safeway at 15:58 on the :58:30 mark** at the standard $30.00 bundle price.
+
+**This is the best margin in the Pokemon inventory right now:** market $89.92 (low $78.76) on 2026-08-19 against a $79.99 ask, so the listing sits *under* market. Cost $30.00, net ~$67.35, **+$37.35 a bundle**. All four are committed to this one listing and nothing else draws on ci19776.
+
+---
+
+### Kayou Naruto Earth Scroll Collector Box — qty 2 → 6 (2026-08-19)
+
+`KAYOU-NARUTO-EARTHSCROLL-BOX` #168625893567, $17.99 unchanged. Michael bought **4 more** (lot #584) after the listing drew views and a watcher, taking held to **6, all committed here**. Total invested **$66.36**.
+
+**He bought against my advice, and the reason was better than my advice.** I said don't add until these two sell, on the grounds that the Kayou secondary is singles-driven and undeveloped. What I could not see was demand on *his* listing: eBay's seller API exposes watchers but not views, so "a good amount of views" is a signal only he has. Views plus a watcher on a two-day-old listing for a brand with no TCGCSV coverage is genuine information, and it beats my inference from blog posts about the category.
+
+**Still unproven, and the flag stands:** 1 watcher, 0 sales, and $17.99 against a $19.95 Walmart/Amazon list is a thin gap once the buyer adds shipping. The test is a sale, not a watcher.
+
+**Cost basis corrected 2026-08-19 from the receipt.** Store is **Target NORTHGATE** (302 NE Northgate Way, Seattle), not Edmonds — there is no Edmonds Target, that was my assumption on both lots. Real rate is **WA 10.55%**, not the 10.7% I carried over from the Safeway receipt, so **$11.05/box**. Held 6, invested **$66.30**.
+
+**Target enforces a 2-box limit per transaction on this SKU.** The afternoon buy of 4 was rung as two separate transactions of 2; the receipt on file (04:39 PM, DPCI 361010108, 2 @ $9.99, $22.09) covers one of them. Kept as one lot of 4 since the cost basis is identical.
+
+**A receipt for part of a buy is not the whole buy.** I briefly cut the listing 6 → 4 because the receipt showed 2 against a reported 4, which read as an oversell. It was not; the second transaction simply had no photo. Restored to 6. The cut itself was the right instinct against overselling, but **ask before cutting when the only conflict is a missing receipt rather than a contradicted one** — nothing had sold in eight hours and the question would have cost nothing.
+
+---
+
+### Procedure: changing quantity on an Inventory-API listing
+
+Learned the hard way raising Kayou Naruto 2 → 6 on 2026-08-19.
+
+**`ebay_update_offer` with a new `availableQuantity` is not reliably enough on its own.** After that call REST reported `availableQuantity: 6` and `listingStatus: ACTIVE`, but the Trading API kept reporting `Quantity: 2` across repeated reads and a full `get_active_listings` sweep. The live listing genuinely still offered 2.
+
+**What fixed it instantly:** replacing the inventory item with `availability.shipToLocationAvailability.quantity` set to the new number. The next `ebay_get_listing` read `Quantity: 6`.
+
+**So the procedure is:**
+1. `ebay_update_offer` with the new `availableQuantity` (keep price and all three policy IDs in the payload).
+2. `ebay_create_inventory_item` (replace) with the same quantity in `availability`.
+3. **Verify with `ebay_get_listing`,** not `get_offer`. REST will happily report the new number while buyers still see the old one.
+
+`scripts/set-bundle-qty.ts` already does the right thing and self-verifies, which is why the Prismatic raise the same evening went through cleanly in one step. **Prefer that script**; it only knows PE / DR / SF bundle SKUs today, so extend its `KNOWN` map rather than hand-rolling offer updates for new SKUs.
+
+### Kayou Naruto — repriced $17.99 → $19.99 (2026-08-19)
+
+Qty 6 unchanged. **+$4.73/box, 42.8% ROI** at $11.05 cost, against +$3.03 (27.4%) at $17.99. A $2 move for a 56% lift in profit per box, taken because the listing was drawing views and a watcher on day one and had never been tested above retail-minus-two-dollars.
+
+**Correct fee model for cheap items, this is the point worth keeping.** The house shortcut `net = ask x 0.847` is fitted to Michael's *average* order size and **overstates net on sub-$20 items**. eBay charges 13.25% of the FULL order total (item + shipping + buyer tax) **plus a fixed $0.40**, and on an $18 item the fixed fee alone is 2.2% while the fee levied on the buyer's shipping and tax is proportionally large. Compute directly instead:
+
+```
+net_on_item = ask + ship - [0.1325 * (ask + ship) * (1 + tax_rate) + 0.40] - ship
+            = 0.85352*ask - 0.14648*ship - 0.40      (at WA 10.55%)
+```
+
+At $17.99 with $6 shipping that is **$14.08, not the $15.24 the shortcut implies** — a $1.16/box error, which on a $3 margin is 38% of the profit. Break-even ask on this SKU is **$14.44**.
+
+Ladder at $6 shipping: $19.99 → +$4.73 (42.8%) · $21.99 → +$6.44 (58.3%) · $24.99 → +$9.00 (81.5%).
+
+**Use the shortcut for $100+ sealed, use the direct formula under about $30.**
+
+---
+
+## Listing audit, 2026-08-20
+
+Triggered by finding a wrong card number in a live title. Checked all **53 active listings**: title card numbers against the vault, quantity against held stock, and sync mappings.
+
+### Fixed during the audit
+
+**`#168612706439` Shohei Ohtani base, $30.49 — title and description said #7, the card is #1.** The 08-16 misread fix corrected the vault row but never touched the live listing, so the wrong number sat in front of buyers for four days. Both fixed.
+
+**`#168555750100` Ohtani RWB Refractor, $99.99 — same error, fixed earlier the same night.**
+
+**Three Ohtani rows have now been logged as #7 when the card is #1.** Treat "Ohtani #7" in 2026 Topps Chrome as wrong on sight. Related: whenever a `baseball_cards` row is corrected, **check whether that card has a live listing** — the vault fix does not propagate. Both halves need changing, and the title lives on the inventory item while the description lives on the offer.
+
+### Open, needs Michael
+
+**`#168622312679` Finest you-pick has a variation labelled `9 - Munetaka Murakami - Base COMMON RC`. It should be 5.** The dropdown therefore shows **two entries starting "9"** (the other, Justin Crawford, is correct). A buyer picking the Murakami still gets the right player and parallel, only the number on the label is wrong.
+
+Per `scripts/reorder-youpick.ts`, proven 2026-08-18: **existing variation values cannot be renamed** and the order is fixed when a variation is first added. So the options are:
+1. **Leave it.** Cheapest. Cosmetic, and the buyer receives the card the label names.
+2. **Remove that variation and re-add it as `5 - ...`.** Accurate, but it lands at the bottom of the dropdown out of number order.
+3. **Rebuild the listing.** Correct and sorted, costs the listing's age, watchers and search standing.
+
+**`#168603386928` Bowman Chrome Hobby Box PRESALE, $499.99, live since 08-10 — completely absent from the vault.** No catalog item, no purchase lot, no sync mapping. There is no cost basis for it and if it sells, nothing books. This is the single largest unrecorded obligation in the store. Needs the Topps order total to log properly.
+
+### Clean
+
+- **No oversell.** Every one of the 53 active listings is covered by held stock; 13 catalog items are committed across them.
+- **All 25 single-card listings' titles now match their vault card numbers.**
+- The Arozarena bobblehead has no mapping, which is correct: bobbleheads are deliberately non-vault.
+- 63 mapping rows point at ended listings. Harmless (every commitment calculation filters to Active first) but worth pruning.
+
+
+### Aaron Judge base collapsed, and why the X-Fractor looked underpriced (2026-08-19)
+
+Michael: *"why is the x-fractor judge listed cheaper than my base judge and why are there two different prices for the base judges?"*
+
+The Chrome you-pick was showing the same card twice at two prices:
+
+```
+$2.99  100 - Aaron Judge - Base
+$4.99  100 - Aaron Judge - Base #2
+$4.49  100 - Aaron Judge - X-Fractor
+```
+
+**The X-Fractor was not underpriced. The $4.99 base was overpriced, from a contaminated comp sample.**
+
+| card | comps | range | median | ask |
+|---|---|---|---|---|
+| Base, row 61 | 20, base-filtered | $1.50-$3.00 | $3.00 | $2.99 |
+| Base, row 349 | 15 | $0.99-**$439.99** | $5.00 | $4.99 |
+| X-Fractor, row 433 | 31 | $3.49-$18.00 | $4.99 | $4.49 |
+
+That $439.99 top end is a graded or autographed Judge that leaked into a raw-base query and pulled the median from about $3 to $5. Row 61's note says "20 **base** comps" over a tight $1.50-$3.00 and landed at $2.99. So the real order is **base $2.99 < X-Fractor $4.49**, which is right; it only read as inverted because one row quoted a bad number.
+
+**A wide comp range is the tell.** $0.99 to $439.99 across 15 listings is not a market, it is two markets in one sample. Worth a guard in `price-cards.ts`: when the high is some large multiple of the median, treat the sample as polluted and fall back rather than trusting the median.
+
+Fixed by `scripts/collapse-judge-base-0819.ts`: kept the $2.99 entry at **quantity 2**, deleted the duplicate, brought row 349's vault price to $2.99. Variations 144 -> 143.
+
+**Deleting a variation** needs `<Delete>true</Delete>` on the variation AND its value removed from the `VariationSpecificsSet`; the set must match the survivors exactly. The script asserts `QuantitySold = 0` first, because deleting a variation that has sold would break the order history.
+
+**Swept all three you-picks afterwards for the same defect: chrome 143, finest 55, bowman 34 variations, zero duplicated cards remaining.**
+
+### Kayou Naruto twofer, and better photos on both (2026-08-19 evening Pacific)
+
+**🟢 LIVE `#168627240754`** · SKU `KAYOU-NARUTO-EARTHSCROLL-2PK` · offer 241407324011 · **$39.99 x qty 1** (2 boxes) · category 261044 · mapped row #83, **2x ci135082 per unit** · [view](https://www.ebay.com/itm/168627240754)
+**Title:** `Kayou Naruto Earth Scroll Collector Box Lot of 2 Sealed 10 Packs 70 Cards` (73 chars)
+
+Single listing `#168625893567` cut **qty 6 -> 4** in the same pass, so committed is 4 + 2 = **6 against 6 held. Nothing spare, nothing oversold.**
+
+**Priced at sum-of-parts, no discount:** 2 x $19.99 = $39.98, listed at $39.99.
+
+**The twofer nets MORE than two singles, which inverts the usual bundle worry.** At the $11.05 basis:
+
+| | net | profit |
+|---|---|---|
+| 2 singles at $19.99 | $15.78 each | **+$9.46**, two shipments |
+| twofer at $39.99 | $32.70 | **+$10.60**, one shipment |
+
+The cause is the fee structure, not the price. eBay's fixed **$0.40** and the 13.25% levied on the buyer's **shipping** are charged per ORDER. Doubling the item value while paying that overhead once is worth about $1.14 here. **On cheap items a bundle beats singles on margin as well as on effort**, which is the opposite of the instinct that a bundle has to concede something. The cheaper the item, the more the per-order overhead dominates, so this only holds at the low end.
+
+**Photos: two rounds in ten minutes.** The first replacement swapped out the in-store checkout shots for daylight marble-background photos. Michael then sent proper dark-background studio shots and those are what went live. Hosted under **`_v2` filenames rather than overwriting**, because eBay copies images to its own CDN at revise time and will not necessarily re-fetch an unchanged URL. New name, guaranteed refresh.
+
+Twofer's lead photo shows **both boxes**, so the quantity is legible in the search thumbnail rather than only in the title.
+
+### Zero-view diagnosis: the DR and Prismatic bundles had no UPC (2026-08-20)
+
+Michael: *"theres destined rivals bundles selling for at and above my lis price all day but somehow my listing has 1 view with no watchers what did you fuck up"*
+
+**He was right and the cause was the documented one.** `DR-BUNDLE-SINGLE` (#168617483804, $64.99, qty 6) had **no UPC** and only **6 item aspects**. Same for `PE-BUNDLE-SINGLE`. Without a UPC eBay cannot tie the listing to its catalog product page, which is exactly the failure that gave the 2025-26 Chrome Update NBA listings zero views on release day.
+
+**Price was not the problem and his own screenshot proved it.** Sold DR bundles that same day ran **$54 to $70, clustering $58-66**. At $64.99 he was mid-band. Correctly priced, structurally invisible.
+
+**Fixed:**
+
+| | UPC | MPN | aspects |
+|---|---|---|---|
+| DR bundle | **196214111387** | 100-10638 | 6 -> 16 |
+| Prismatic bundle | **196214112544** | 100-10111 | 6 -> 16 |
+
+Both confirmed live: `ProductListingDetails.UPC` present with `IncludeeBayProductDetails: true`.
+
+Barcodes came off the boxes Michael photographed. Note the printed barcode is an **EAN-13 with a leading zero** (`0 196214 111387`); the 12-digit UPC-A eBay wants is the number **without** that leading zero. Also note Pokemon has moved from the old **820650** prefix to **196214** on newer product, so an 820650 guess would have been wrong on both of these.
+
+**Swept the rest of the sealed listings.** Better than feared, only one more gap:
+
+- have a UPC: SF bundle single AND twofer (820650413513), DR blister twofer (820650853319), FPIC S3 (196214157217), Finest mega (887521166220), DR/loose art sets, both Kayou boxes
+- **`LOR-AOTV-TROVE` has NO UPC, 4 units at $79.99 = $320 of inventory.** Needs a barcode photo.
+- legitimately exempt: `DR-36LOT-R2` and `LOR-AOTV-SLEEVED-4A` are custom lots of loose packs with no single retail barcode; the Logofractor presale is not in hand yet.
+
+**Note the SF twofer carries the single bundle's UPC.** A lot of two identical retail items should still carry that item's UPC, same as the DR blister twofer does. Do that for every multi-of-the-same-thing listing.
+
+**Process fix, not a memory fix.** `scripts/lib/preflight.ts` already checks for a UPC and exists *because* of the NBA incident, but these bundles were published without it running. It needs wiring into every publish path rather than depending on remembering to call it.
+
+**Lorcana Trove closed the last gap (2026-08-20).** `LOR-AOTV-TROVE` #168573778601, 4 units at $79.99. Barcode is **EAN-13 `4050368900579`** (Ravensburger, German `4` prefix), so unlike the Pokemon codes it does NOT reduce to a 12-digit UPC-A.
+
+**Setting only `ean` did nothing.** The inventory item accepted it, the weight change took, and the live listing came back with **no `ProductListingDetails` block at all**. Setting **`upc` to the same 13-digit value** put it on the listing immediately: `ProductListingDetails.UPC: 4050368900579`.
+
+**So on eBay US, put the GTIN in `upc` regardless of whether it is a 12-digit UPC-A or a 13-digit EAN.** The `ean` field alone does not reach a US listing. Send both if you like, but `upc` is the one that does the work. This would have failed silently and looked identical to a listing with no barcode.
+
+Description also needed the **offer** updated, not just the inventory item, to pick up the added pack-odds sentence. Same split as always: title and identifiers on the inventory item, description on the offer.
+
+**Every sealed listing that can carry a barcode now has one.**
+
+---
+
+### Destined Rivals Sleeved Booster Pack, 3x art set of 4 — AUCTION (drafted 2026-08-22)
+
+- **🟢 LIVE (scheduled) 2026-08-22:** eBay **#168632581778** · SKU `DR-SLEEVED-ARTSET4-3X-AUCTION` · [view](https://www.ebay.com/itm/168632581778) · verified `ListingType: Chinese`, `HideFromSearch: false` via Trading API
+- **Michael's first auction.** Scheduled start **2026-08-23 18:00 PDT**, closes **2026-08-30 18:00 PDT** (Sunday evening, the busiest close window). $0.10 scheduling fee.
+- **Format:** Auction (`Chinese`), **start $0.99**, no reserve, `Days_7`, bid increment $0.05 · **category 183456** (CCG Sealed Packs) · condition NEW
+- **12 packs = 3 complete art sets** (3 each of Ho-Oh, Team Rocket grunts, Cynthia, Giovanni)
+- **Cost:** $92.88 (12 x $7.74, lot578 Safeway 8/18) · **break-even close $109.66** · market $11.12/pack = $133.44 · three sets BIN at $46.99 gross $140.97
+- **Title:** `Pokemon TCG Destined Rivals 12 Sleeved Booster Packs 3x All 4 Arts Sealed Lot` (77 chars)
+- **Mapping:** row #84, **12x ci17232 per listing unit**. One sale decrements sleeved held by 12, not 1.
+- **UPC:** 820650104398 · **Set** = Destined Rivals · **Configuration** = `Pack`
+- **Photo:** `DestinedRivals_SleevedPack_ArtSet4_3x_01_twelve_packs.jpg`, hosted on Supabase. One frame, all 12 packs, 3 of each art, count verifiable.
+- **Shipping:** Ground Advantage calculated (269110723012), buyer pays. Package 8x8x4 at 1 lb 8 oz.
+- **Inventory:** `DR-SLEEVED-ARTSET4` #168623627775 cut **13 -> 10** units before drafting (held 52 packs, 40 committed, 12 free). Verified live via Trading API.
+
+**Why an auction at all.** 13 sleeved art sets at $46.99 and 22 loose sets at $38.99 had both sat since 8/18 at **0 watchers**. Nothing was moving at BIN, so this is price discovery, not a pricing change. Michael's call on the $0.99 start over a $99.99 floor: *"that might stunt momentum we want lots of bidders because when someone gets outbid theyre more likely to keep bidding."* Correct read of auction behaviour, and a high start on an auction just reads as a BIN with extra steps.
+
+**A 12-pack bulk lot does not undercut the $46.99 single-set BIN comp.** Bulk lots always clear under sum-of-parts and buyers price them as a separate product, so a $110 close here does not tell anyone art sets are worth $36. See [[reference-art-set-premium]].
+
+**I misstated the BIN comparison first time round and Michael caught it.** I wrote "three sets BIN would net $119.40, so the auction has to close at $140.97 to beat them," which reads as though the auction faces a higher bar. It does not: **$140.97 is just 3 x $46.99**, the same gross either way at the same 13.25%. Putting the net next to the gross made it look like a handicap. The auction is in fact marginally *cheaper* per dollar, one $0.40 fixed fee instead of three and one shipment instead of three: at an equal $140.97 gross the auction nets $121.89 against $121.09 for three BIN sales.
+
+**I WRONGLY TOLD HIM AUCTIONS WERE A UI JOB.** The reasoning was that `ebay_create_listing` is `AddFixedPriceItem` and cannot carry `ListingType: Chinese`, which is true of the MCP tool. But the MCP is not the only path: half the scripts here already POST raw XML to `https://api.ebay.com/ws/api.dll`, so **`AddItem` was always available** — same endpoint, same IAF token, same `sell.inventory` scope, only the call name and `ListingType` differ. Michael: *"paste ready? wtf? no you make the listing for me what are you new?"* He was right. `scripts/list-dr-3x-artset-auction.ts` does it. Same lesson as the eBay Browse rate limit: **one blocked path is not no path.**
+
+**Two blockers on the way through, both new:**
+
+1. **`AddItem` rejected the standard payment profile.** `Immediate Pay Managed` (269110704012) has `immediatePay: true`, and eBay refuses that on an auction with no Buy It Now price: *"To require immediate payment, you must specify a Buy It Now price"* (error 21917141). His account had only that one payment policy, so I created a second, **`Auction Managed (no immediate pay)` = 273540269012**, `immediatePay: false`. **Every future auction needs that profile, not the immediate-pay one.**
+2. **Category 183456 requires the `Game` aspect** and the value must be **`Pokémon TCG` with the accented é** (error 21919303). `Set` and `Configuration` alone are not enough on a Trading-API `AddItem`; the Inventory API path had been supplying `Game` invisibly.
+
+**Timing:** 2026-08-22 is a Saturday, so a 7-day started that night would have closed Saturday 8/29. Used `ScheduleTime` to start it **Sunday 8/23 6pm Pacific** instead, for a **Sunday 8/30 6pm close**. Costs $0.10 and buys the best close window of the week.

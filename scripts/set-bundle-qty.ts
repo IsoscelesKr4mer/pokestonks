@@ -24,11 +24,18 @@ const APPLY = process.argv.includes('--apply');
 const QTY = Number(QTY_ARG);
 const sql = postgres(process.env.DATABASE_URL_DIRECT!, { prepare: false });
 
-/** sku -> the listing and the catalog item it draws from */
-const KNOWN: Record<string, { item: string; catalogItemId: number; label: string }> = {
+/**
+ * sku -> the listing and the catalog item it draws from.
+ *
+ * perUnit is how many of the catalog item ONE listing unit consumes, matching
+ * the mapping row. It is 1 for a plain single but 4 for an art-set listing, and
+ * the oversell guard compares packs to packs, so it has to be right.
+ */
+const KNOWN: Record<string, { item: string; catalogItemId: number; label: string; perUnit?: number }> = {
   'PE-BUNDLE-SINGLE': { item: '168617484171', catalogItemId: 19776, label: 'Prismatic Evolutions Booster Bundle' },
   'DR-BUNDLE-SINGLE': { item: '168617483804', catalogItemId: 17235, label: 'Destined Rivals Booster Bundle' },
   'SF-BUNDLE-SINGLE': { item: '168606265372', catalogItemId: 5283, label: 'Shrouded Fable Booster Bundle' },
+  'DR-SLEEVED-ARTSET4': { item: '168623627775', catalogItemId: 17232, label: 'Destined Rivals Sleeved Booster Pack, art set of 4', perUnit: 4 },
 };
 
 function findKey(o: any, k: string): string | undefined {
@@ -107,10 +114,14 @@ async function main() {
   const free = held - elsewhere;
   const now = await live(tok, cfg.item);
 
+  const perUnit = cfg.perUnit ?? 1;
+  const needed = QTY * perUnit;
+
   console.log(`${cfg.label}`);
   console.log(`  held ${held}, committed to other Active listings ${elsewhere}, free ${free}`);
   console.log(`  listing ${cfg.item} [${now.status}] $${now.price}  qty ${now.avail} -> ${QTY}`);
-  if (QTY > free) { console.error(`  REFUSING: ${QTY} would oversell, only ${free} free`); process.exit(1); }
+  if (perUnit !== 1) console.log(`  ${perUnit}x per unit, so ${QTY} units needs ${needed} of ${free} free`);
+  if (needed > free) { console.error(`  REFUSING: ${QTY} units needs ${needed}, only ${free} free`); process.exit(1); }
   if (now.status !== 'Active') { console.error('  listing is not Active'); process.exit(1); }
   if (!APPLY) { console.log('\ndry run'); await sql.end(); return; }
 
