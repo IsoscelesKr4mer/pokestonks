@@ -1300,3 +1300,22 @@ Description also needed the **offer** updated, not just the inventory item, to p
 2. **Category 183456 requires the `Game` aspect** and the value must be **`Pokémon TCG` with the accented é** (error 21919303). `Set` and `Configuration` alone are not enough on a Trading-API `AddItem`; the Inventory API path had been supplying `Game` invisibly.
 
 **Timing:** 2026-08-22 is a Saturday, so a 7-day started that night would have closed Saturday 8/29. Used `ScheduleTime` to start it **Sunday 8/23 6pm Pacific** instead, for a **Sunday 8/30 6pm close**. Costs $0.10 and buys the best close window of the week.
+
+
+---
+
+### Seattle Mariners '10s 50 Seasons Pin, qty listing (listed 2026-08-23)
+
+- **🟢 LIVE 2026-08-23:** eBay **#168634383417** · offer 244221678011 · SKU `PIN-MARINERS-50S-10S-FELIX` · verified Active + `HideFromSearch: false` via Trading API · [view](https://www.ebay.com/itm/168634383417)
+- **Ask:** $19.99 · **Qty: 10** · **Cost: $0.00** (SGA, free with game admission) · pure margin
+- **Title:** `Seattle Mariners 50 Seasons Pin 6/7 '10s King Felix Hernandez K SGA 2026 New` (76 chars)
+- **Category 24410** (Sports Mem > Fan Apparel & Souvenirs > Baseball-MLB) · condition **NEW** · **BIN only, no Best Offer**
+- **Aspects:** `Product` = Pin, `Player` = Felix Hernandez, `Team` = Seattle Mariners, `League` = Major League Baseball (MLB), `Sport` = Baseball, `Officially Licensed` = Yes
+- **Photo:** `Mariners_50Seasons_Pin_10s_Felix_01_front.jpg`, hosted on Supabase. Single in-stadium shot; a back-of-card shot is still wanted, the "PIN GIVEAWAY 6 OF 7" line is half-hidden behind the poly bag.
+- **Shipping:** Ground Advantage calculated (269110723012), buyer pays. Package **6x4x1 at 3 oz**, quotes ~$5 and matches the $5.17 delivery on the sold comp.
+
+**Not a bobblehead, and the package size is the whole difference.** Same SGA recipe as [[project_bobblehead_listings]] (category 24410, condition NEW, GA calculated, BIN only, no vault row) but a pin ships in a padded envelope. Declaring the bobblehead's 2 lb 9x6x6 would have quoted the buyer ~$9 instead of ~$5 on a $19.99 item. `scripts/list-mariners-50seasons-pin.ts`.
+
+**Category trap again.** eBay also suggests **50130 "Pins"**, but that sits under *Vintage* Sports Memorabilia, exactly the same trap as 73424 "Bobble Heads". Modern SGA comps live in 24410.
+
+**Priced off one sold comp, and the print run says do not sit on these.** The same pin sold **$22.50 + $5.17 delivery on 2026-08-23**, day of the giveaway. Research on the promo (Michael: *"DYOR on the giveaway"*): **'10s Pin Day, 8/23, presented by KeyBank, first 10,000 fans**. Ten thousand is a big run, so there is **no scarcity angle** and the word "limited" stays out of the copy. The series is **7 pins**, 4 at games ('00s 7/19, 50 Seasons 8/9, '10s 8/23, '20s 9/26) with the rest at KeyBank branches, so supply on top of supply. $22.50 is day-of pricing; expect it to soften as sellers list through the week. Sell into the early window rather than holding all ten.
