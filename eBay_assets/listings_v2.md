@@ -1536,7 +1536,20 @@ $48.95 gross. `baseball_cards` now **28 sold, $290.73 lifetime**.
 - **🔴 #168636640650 ENDED same day** — the first build, ordered by collector number. Replaced by the alphabetical rebuild below.
 - **Title:** `MTG The Hobbit You Pick Your Card Singles Magic the Gathering LOTR Foil Rare` (76)
 - **Category 183454** (Toys & Hobbies > Collectible Card Games > **CCG Individual Cards**) — the singles sibling of the 183456 he already uses for sealed packs
-- **Ask $47.70 total** against **$9.40** of Scryfall comp · `scripts/build-hob-pyp.ts`
+- **Ask $47.70 total** against **$9.40** of Scryfall comp · **cost $14.00** (2 Play Boosters at $7) · `scripts/build-hob-pyp.ts`
+
+**WHAT THE LISTING IS WORTH DEPENDS ENTIRELY ON ORDER SIZE, and the swing is $17.** Same 30 cards, same prices:
+
+| how they sell | orders | fees | net | per card |
+|---|---|---|---|---|
+| one at a time | 30 | **$24.43** | **$23.27** (49% of ask) | $0.78 |
+| pairs | 15 | $15.73 | $31.97 | $1.07 |
+| threes | 10 | $12.74 | $34.96 | $1.17 |
+| **sixes** | 5 | $9.83 | **$37.87** (79%) | $1.26 |
+| tens | 3 | $8.65 | $39.05 | $1.30 |
+| one buyer takes all | 1 | $7.48 | **$40.22** (84%) | $1.34 |
+
+**Single-card sales burn $24.43 of fees on a $47.70 listing — half the money — purely from the $0.40 per-order floor repeating 30 times instead of 5.** This is the quantified version of the point Michael made and I initially got wrong. Realistic expectation is the rares and foils clear while a tail of $0.10 commons sits at $1.49, landing somewhere near **$15-25 net** against the $14 cost.
 - Labels are `<name> - <R/U/C[ Foil]> - #<collector #>`, e.g. `Attercop - C - #116`. Tokens included.
 
 Michael: *"just make the damn pyc and i can add to it if i feel like i want to."*
@@ -1558,3 +1571,13 @@ Michael: *"just make the damn pyc and i can add to it if i feel like i want to."
 **Growing it:** new variations CAN be appended to a live multi-variation listing via `ReviseFixedPriceItem`, but the **order of existing variations is fixed at creation**, so additions land at the bottom rather than slotting into collector-number order. Same constraint recorded for the Chrome you-picks (commit 97b678b).
 
 **⚠️ MTG STILL HAS NO HOME IN THE DB.** These 30 cards exist **only as eBay variations**. `baseball_cards` is sport-scoped and the vault is sealed product, so a Hobbit sale has nothing to book against and will not appear in any P&L. Flagged to Michael; needs building before this line grows.
+
+
+**WHAT TO BUY FOR SINGLES FLIPPING (asked 2026-08-24): none of it, and especially not more Play Boosters.**
+
+- **Play Boosters are draft product**, and the experiment is already run: **$14 in, $9.40 of comp out**. 14 cards where 11 are dime commons. Not variance, design.
+- **Collector Boosters** hold every card worth having (Gleaming Gold Smaug, surge foils, the $200-600 cards) but a Collector Box is **~$780 for 12 packs, ~$65 a pack**, and openers call the set *"big wins or big fails"*. That is a slot machine.
+- **Pull rates on this set are running higher than any recent Universes Beyond release**, so the singles market is expected to **correct hard once supply lands** — buying into a falling market, the same presale decay that took the 30th Celebration stickers down 49% in nine days.
+- Meanwhile **sealed Hobbit is up 79.9% in 30 days.**
+
+**So the play is the one he already runs: buy sealed, sell sealed** ([[feedback_never_break_sealed_for_packs]]). If he genuinely wants a singles line, the low-variance product is a **Commander deck** — fixed decklist, so every card can be priced before spending a dollar. And **the lever on the you-pick is more cards, not better packs**: netting $38 instead of $23 comes from buyers filling six slots, which 30 cards cannot support. The cheap path to that volume is buying a bulk collection and cherry-picking, not opening $7 packs.
