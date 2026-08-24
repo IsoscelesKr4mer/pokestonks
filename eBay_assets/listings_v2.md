@@ -1473,3 +1473,26 @@ The stickers have given up roughly half. **The bundle is the one item holding**,
 **Data-quality caveat stated to him:** these are **TCGplayer market prices, not eBay solds**, and presale books are thin — the Exeggutor's `low` ($44.92) sits *above* its `market` ($36.51), which is what thin data looks like. eBay comps remain unreachable ([[project_card_pricing_module]]).
 
 Six bundles is enough to split into a single, a twofer and a 3-pack rather than one lot, per [[reference_art_set_premium]] and the usual bundle-pricing rule.
+
+
+---
+
+### Lorcana 4-pack, $33 offer declined 2026-08-24
+
+`LOR-AOTV-SLEEVED-4A` #168621432361, $37.99, qty 3, 0 sold, **Best Offer still OFF** — so both the $32 (8/22) and $33 (8/24) offers arrived as **messages**, not eBay offers. Same buyer walking themselves up, which is a signal to counter, not to accept.
+
+| | |
+|---|---|
+| cost (4 x $6.62, lot509) | $26.48 |
+| **break-even ask** | **$32.29** |
+| their $33 | net $27.04 → **+$0.56** |
+| counter $36 | net $29.61 → +$3.13 |
+| full $37.99 | net $31.31 → +$4.83 |
+
+**Told him no, counter $36.**
+
+**The price snapshot was 7 days stale and refreshing it changed the answer.** `market_prices` had 2026-08-17 because **Lorcana (category 71) is still not in the nightly sync** — the open follow-up from 8/17 was never closed. Ran `scripts/sync-market-prices-category.ts 71 --apply`: sleeved pack **$9.57 → $10.06** and the Trove $82.57 → $86.60. So the market *rose 5%* while he was being negotiated down, and **his $37.99 ask is now below the $40.24 sum-of-parts**. Always refresh a thin, unsynced category before pricing off it.
+
+**CORRECTED A NUMBER I GAVE HIM SATURDAY.** I quoted the $32 offer as **+$0.62** using the `x 0.847` shortcut. Measured against his real pin orders, the 13.25% applies to **shipping and collected sales tax as well as the item**, so $32 was actually about **−$0.30**, a small loss. At these margins that flips accept to decline, so it was worth correcting out loud. See the 0.791 finding above and [[reference_ebay_fee_rate]].
+
+**These 4-packs are structurally thin.** $6.62 in against a $10.06 market means even a full-ask sale is $4.83, and all three lots together are ~$14.50. There is no margin to discount away — the value in sleeved packs lives in the art-set framing, not the raw packs.
