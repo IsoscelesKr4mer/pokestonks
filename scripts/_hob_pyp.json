@@ -1,0 +1,572 @@
+{
+ "Title": "MTG The Hobbit You Pick Your Card Singles Magic the Gathering LOTR Foil Rare",
+ "Description": "<![CDATA[<p>Magic: The Gathering <strong>The Hobbit</strong> singles. <strong>Pick your card from the dropdown above.</strong> The photo changes with your selection, so you see the exact card you are buying.</p><p>All cards pulled from Play Boosters and sleeved straight away. Near Mint or better. Foils are marked \"Foil\" in the dropdown.</p><p>Each card ships in a penny sleeve and toploader, with tracking. Ships within 1 business day.</p><p>Buying several? Add them all to your cart and they ship together in one package.</p><p>Smoke-free home. Buy with confidence, check my feedback. Thanks for looking.</p>]]>",
+ "PrimaryCategory": {
+  "CategoryID": "183454"
+ },
+ "ConditionID": 4000,
+ "ConditionDescriptors": {
+  "ConditionDescriptor": {
+   "Name": "40001",
+   "Value": "400010"
+  }
+ },
+ "Country": "US",
+ "Currency": "USD",
+ "Location": "Edmonds, Washington",
+ "PostalCode": "98026",
+ "ListingDuration": "GTC",
+ "ListingType": "FixedPriceItem",
+ "DispatchTimeMax": 1,
+ "SellerProfiles": {
+  "SellerPaymentProfile": {
+   "PaymentProfileID": "269110704012"
+  },
+  "SellerReturnProfile": {
+   "ReturnProfileID": "269110705012"
+  },
+  "SellerShippingProfile": {
+   "ShippingProfileID": "272052757012"
+  }
+ },
+ "ItemSpecifics": {
+  "NameValueList": [
+   {
+    "Name": "Game",
+    "Value": "Magic: The Gathering"
+   },
+   {
+    "Name": "Set",
+    "Value": "The Hobbit"
+   },
+   {
+    "Name": "Language",
+    "Value": "English"
+   },
+   {
+    "Name": "Finish",
+    "Value": "Mixed"
+   },
+   {
+    "Name": "Graded",
+    "Value": "No"
+   },
+   {
+    "Name": "Card Type",
+    "Value": "Magic: The Gathering"
+   }
+  ]
+ },
+ "PictureDetails": {
+  "PictureURL": [
+   "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0004_Belladonna_Took.jpg",
+   "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0187_The_Lonely_Mountain.jpg",
+   "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0092_Desert_Were_Worm.jpg",
+   "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0010_Dwarven_Shortsword_foil.jpg",
+   "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0063_Crude_Bent_Blade_foil.jpg",
+   "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0189_Plains_foil.jpg",
+   "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0035_Confusticate_and_Bebother.jpg",
+   "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0052_Ravenhill_Flock.jpg",
+   "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0116_Attercop.jpg",
+   "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0163_Silvan_Reveler.jpg",
+   "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0175_Key_to_the_Side_Door.jpg",
+   "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0100_Goblin_town_Flunkies.jpg"
+  ]
+ },
+ "Variations": {
+  "VariationSpecificsSet": {
+   "NameValueList": {
+    "Name": "Card",
+    "Value": [
+     "0182 - Elvenking's Halls - C",
+     "0010 - Dwarven Shortsword - C Foil",
+     "0092 - Desert Were-Worm - R",
+     "0125 - Galion, Elvenking's Butler - U",
+     "0022 - The Mountain-king's Return - U",
+     "0052 - Ravenhill Flock - U",
+     "0038 - Elvenking's Harper - C",
+     "0010 - Dwarven Shortsword - C",
+     "0116 - Attercop - C",
+     "0157 - Goblin Plate Mail - C",
+     "0021 - Moment of Glory - C",
+     "0043 - Lakeshore Apothecary - C",
+     "0085 - Stony-Voiced Goblins - C",
+     "0108 - Ragged Short Spear - C",
+     "0002 - Human Soldier Token - Token",
+     "0163 - Silvan Reveler - U",
+     "0050 - Old Fat Spider Can't See Me - U",
+     "0175 - Key to the Side-Door - U",
+     "0162 - Patient Instructor - C",
+     "0101 - Gundabad Opportunist - C",
+     "0100 - Goblin-town Flunkies - C",
+     "0133 - Ordinary Bear - C",
+     "0018 - Lake-town Lookout - C",
+     "0035 - Confusticate and Bebother - C",
+     "0081 - Reverent Howl - C",
+     "0007 - Bear Token - Token",
+     "0189 - Plains - C Foil",
+     "0063 - Crude Bent Blade - C Foil",
+     "0004 - Belladonna Took - R",
+     "0187 - The Lonely Mountain - R"
+    ]
+   }
+  },
+  "Variation": [
+   {
+    "SKU": "PYP-HOB-0182",
+    "StartPrice": "1.49",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": {
+      "Name": "Card",
+      "Value": "0182 - Elvenking's Halls - C"
+     }
+    }
+   },
+   {
+    "SKU": "PYP-HOB-0010F",
+    "StartPrice": "1.49",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": {
+      "Name": "Card",
+      "Value": "0010 - Dwarven Shortsword - C Foil"
+     }
+    }
+   },
+   {
+    "SKU": "PYP-HOB-0092",
+    "StartPrice": "1.49",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": {
+      "Name": "Card",
+      "Value": "0092 - Desert Were-Worm - R"
+     }
+    }
+   },
+   {
+    "SKU": "PYP-HOB-0125",
+    "StartPrice": "1.49",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": {
+      "Name": "Card",
+      "Value": "0125 - Galion, Elvenking's Butler - U"
+     }
+    }
+   },
+   {
+    "SKU": "PYP-HOB-0022",
+    "StartPrice": "1.49",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": {
+      "Name": "Card",
+      "Value": "0022 - The Mountain-king's Return - U"
+     }
+    }
+   },
+   {
+    "SKU": "PYP-HOB-0052",
+    "StartPrice": "1.49",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": {
+      "Name": "Card",
+      "Value": "0052 - Ravenhill Flock - U"
+     }
+    }
+   },
+   {
+    "SKU": "PYP-HOB-0038",
+    "StartPrice": "1.49",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": {
+      "Name": "Card",
+      "Value": "0038 - Elvenking's Harper - C"
+     }
+    }
+   },
+   {
+    "SKU": "PYP-HOB-0010",
+    "StartPrice": "1.49",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": {
+      "Name": "Card",
+      "Value": "0010 - Dwarven Shortsword - C"
+     }
+    }
+   },
+   {
+    "SKU": "PYP-HOB-0116",
+    "StartPrice": "1.49",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": {
+      "Name": "Card",
+      "Value": "0116 - Attercop - C"
+     }
+    }
+   },
+   {
+    "SKU": "PYP-HOB-0157",
+    "StartPrice": "1.49",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": {
+      "Name": "Card",
+      "Value": "0157 - Goblin Plate Mail - C"
+     }
+    }
+   },
+   {
+    "SKU": "PYP-HOB-0021",
+    "StartPrice": "1.49",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": {
+      "Name": "Card",
+      "Value": "0021 - Moment of Glory - C"
+     }
+    }
+   },
+   {
+    "SKU": "PYP-HOB-0043",
+    "StartPrice": "1.49",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": {
+      "Name": "Card",
+      "Value": "0043 - Lakeshore Apothecary - C"
+     }
+    }
+   },
+   {
+    "SKU": "PYP-HOB-0085",
+    "StartPrice": "1.49",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": {
+      "Name": "Card",
+      "Value": "0085 - Stony-Voiced Goblins - C"
+     }
+    }
+   },
+   {
+    "SKU": "PYP-HOB-0108",
+    "StartPrice": "1.49",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": {
+      "Name": "Card",
+      "Value": "0108 - Ragged Short Spear - C"
+     }
+    }
+   },
+   {
+    "SKU": "PYP-HOB-0002",
+    "StartPrice": "1.49",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": {
+      "Name": "Card",
+      "Value": "0002 - Human Soldier Token - Token"
+     }
+    }
+   },
+   {
+    "SKU": "PYP-HOB-0163",
+    "StartPrice": "1.49",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": {
+      "Name": "Card",
+      "Value": "0163 - Silvan Reveler - U"
+     }
+    }
+   },
+   {
+    "SKU": "PYP-HOB-0050",
+    "StartPrice": "1.49",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": {
+      "Name": "Card",
+      "Value": "0050 - Old Fat Spider Can't See Me - U"
+     }
+    }
+   },
+   {
+    "SKU": "PYP-HOB-0175",
+    "StartPrice": "1.49",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": {
+      "Name": "Card",
+      "Value": "0175 - Key to the Side-Door - U"
+     }
+    }
+   },
+   {
+    "SKU": "PYP-HOB-0162",
+    "StartPrice": "1.49",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": {
+      "Name": "Card",
+      "Value": "0162 - Patient Instructor - C"
+     }
+    }
+   },
+   {
+    "SKU": "PYP-HOB-0101",
+    "StartPrice": "1.49",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": {
+      "Name": "Card",
+      "Value": "0101 - Gundabad Opportunist - C"
+     }
+    }
+   },
+   {
+    "SKU": "PYP-HOB-0100",
+    "StartPrice": "1.49",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": {
+      "Name": "Card",
+      "Value": "0100 - Goblin-town Flunkies - C"
+     }
+    }
+   },
+   {
+    "SKU": "PYP-HOB-0133",
+    "StartPrice": "1.49",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": {
+      "Name": "Card",
+      "Value": "0133 - Ordinary Bear - C"
+     }
+    }
+   },
+   {
+    "SKU": "PYP-HOB-0018",
+    "StartPrice": "1.49",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": {
+      "Name": "Card",
+      "Value": "0018 - Lake-town Lookout - C"
+     }
+    }
+   },
+   {
+    "SKU": "PYP-HOB-0035",
+    "StartPrice": "1.49",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": {
+      "Name": "Card",
+      "Value": "0035 - Confusticate and Bebother - C"
+     }
+    }
+   },
+   {
+    "SKU": "PYP-HOB-0081",
+    "StartPrice": "1.49",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": {
+      "Name": "Card",
+      "Value": "0081 - Reverent Howl - C"
+     }
+    }
+   },
+   {
+    "SKU": "PYP-HOB-0007",
+    "StartPrice": "1.49",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": {
+      "Name": "Card",
+      "Value": "0007 - Bear Token - Token"
+     }
+    }
+   },
+   {
+    "SKU": "PYP-HOB-0189F",
+    "StartPrice": "1.49",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": {
+      "Name": "Card",
+      "Value": "0189 - Plains - C Foil"
+     }
+    }
+   },
+   {
+    "SKU": "PYP-HOB-0063F",
+    "StartPrice": "1.49",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": {
+      "Name": "Card",
+      "Value": "0063 - Crude Bent Blade - C Foil"
+     }
+    }
+   },
+   {
+    "SKU": "PYP-HOB-0004",
+    "StartPrice": "4.49",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": {
+      "Name": "Card",
+      "Value": "0004 - Belladonna Took - R"
+     }
+    }
+   },
+   {
+    "SKU": "PYP-HOB-0187",
+    "StartPrice": "1.49",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": {
+      "Name": "Card",
+      "Value": "0187 - The Lonely Mountain - R"
+     }
+    }
+   }
+  ],
+  "Pictures": {
+   "VariationSpecificName": "Card",
+   "VariationSpecificPictureSet": [
+    {
+     "VariationSpecificValue": "0182 - Elvenking's Halls - C",
+     "PictureURL": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0182_Elvenking_s_Halls.jpg"
+    },
+    {
+     "VariationSpecificValue": "0010 - Dwarven Shortsword - C Foil",
+     "PictureURL": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0010_Dwarven_Shortsword_foil.jpg"
+    },
+    {
+     "VariationSpecificValue": "0092 - Desert Were-Worm - R",
+     "PictureURL": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0092_Desert_Were_Worm.jpg"
+    },
+    {
+     "VariationSpecificValue": "0125 - Galion, Elvenking's Butler - U",
+     "PictureURL": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0125_Galion_Elvenking_s_Butler.jpg"
+    },
+    {
+     "VariationSpecificValue": "0022 - The Mountain-king's Return - U",
+     "PictureURL": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0022_The_Mountain_king_s_Return.jpg"
+    },
+    {
+     "VariationSpecificValue": "0052 - Ravenhill Flock - U",
+     "PictureURL": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0052_Ravenhill_Flock.jpg"
+    },
+    {
+     "VariationSpecificValue": "0038 - Elvenking's Harper - C",
+     "PictureURL": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0038_Elvenking_s_Harper.jpg"
+    },
+    {
+     "VariationSpecificValue": "0010 - Dwarven Shortsword - C",
+     "PictureURL": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0010_Dwarven_Shortsword.jpg"
+    },
+    {
+     "VariationSpecificValue": "0116 - Attercop - C",
+     "PictureURL": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0116_Attercop.jpg"
+    },
+    {
+     "VariationSpecificValue": "0157 - Goblin Plate Mail - C",
+     "PictureURL": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0157_Goblin_Plate_Mail.jpg"
+    },
+    {
+     "VariationSpecificValue": "0021 - Moment of Glory - C",
+     "PictureURL": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0021_Moment_of_Glory.jpg"
+    },
+    {
+     "VariationSpecificValue": "0043 - Lakeshore Apothecary - C",
+     "PictureURL": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0043_Lakeshore_Apothecary.jpg"
+    },
+    {
+     "VariationSpecificValue": "0085 - Stony-Voiced Goblins - C",
+     "PictureURL": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0085_Stony_Voiced_Goblins.jpg"
+    },
+    {
+     "VariationSpecificValue": "0108 - Ragged Short Spear - C",
+     "PictureURL": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0108_Ragged_Short_Spear.jpg"
+    },
+    {
+     "VariationSpecificValue": "0002 - Human Soldier Token - Token",
+     "PictureURL": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0002_Human_Soldier_Token.jpg"
+    },
+    {
+     "VariationSpecificValue": "0163 - Silvan Reveler - U",
+     "PictureURL": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0163_Silvan_Reveler.jpg"
+    },
+    {
+     "VariationSpecificValue": "0050 - Old Fat Spider Can't See Me - U",
+     "PictureURL": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0050_Old_Fat_Spider_Can_t_See_Me.jpg"
+    },
+    {
+     "VariationSpecificValue": "0175 - Key to the Side-Door - U",
+     "PictureURL": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0175_Key_to_the_Side_Door.jpg"
+    },
+    {
+     "VariationSpecificValue": "0162 - Patient Instructor - C",
+     "PictureURL": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0162_Patient_Instructor.jpg"
+    },
+    {
+     "VariationSpecificValue": "0101 - Gundabad Opportunist - C",
+     "PictureURL": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0101_Gundabad_Opportunist.jpg"
+    },
+    {
+     "VariationSpecificValue": "0100 - Goblin-town Flunkies - C",
+     "PictureURL": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0100_Goblin_town_Flunkies.jpg"
+    },
+    {
+     "VariationSpecificValue": "0133 - Ordinary Bear - C",
+     "PictureURL": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0133_Ordinary_Bear.jpg"
+    },
+    {
+     "VariationSpecificValue": "0018 - Lake-town Lookout - C",
+     "PictureURL": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0018_Lake_town_Lookout.jpg"
+    },
+    {
+     "VariationSpecificValue": "0035 - Confusticate and Bebother - C",
+     "PictureURL": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0035_Confusticate_and_Bebother.jpg"
+    },
+    {
+     "VariationSpecificValue": "0081 - Reverent Howl - C",
+     "PictureURL": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0081_Reverent_Howl.jpg"
+    },
+    {
+     "VariationSpecificValue": "0007 - Bear Token - Token",
+     "PictureURL": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0007_Bear_Token.jpg"
+    },
+    {
+     "VariationSpecificValue": "0189 - Plains - C Foil",
+     "PictureURL": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0189_Plains_foil.jpg"
+    },
+    {
+     "VariationSpecificValue": "0063 - Crude Bent Blade - C Foil",
+     "PictureURL": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0063_Crude_Bent_Blade_foil.jpg"
+    },
+    {
+     "VariationSpecificValue": "0004 - Belladonna Took - R",
+     "PictureURL": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0004_Belladonna_Took.jpg"
+    },
+    {
+     "VariationSpecificValue": "0187 - The Lonely Mountain - R",
+     "PictureURL": "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/HOB_0187_The_Lonely_Mountain.jpg"
+    }
+   ]
+  }
+ }
+}

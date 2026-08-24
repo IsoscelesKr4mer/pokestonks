@@ -1526,3 +1526,26 @@ $48.95 gross. `baseball_cards` now **28 sold, $290.73 lifetime**.
 **The apparent double-sale that was not one.** Misiorowski #196 X-Fractor looked like it sold twice, 8/10 at $4.99 and 8/23 at $16.49. **He owned two identical copies** — row #268's own notes recorded that the 8/10 sale was booked on row #347, the copy with no live variation. So the second copy genuinely sold, at the corrected ask. **The row's notes settled it; a blind status flip would have looked like an oversell.** The $4.99 → $16.49 gap is the you-pick price audit (commit a509a09) paying for itself on a single card.
 
 **Pin update caught in the same pass: 8 sold, 2 left** (was 3 sold 90 minutes earlier). Item revenue **$144.92**, fees **$29.60**, **profit $115.32** on 8 free pins, **$14.42/pin**. Five sold in ~90 minutes at $17.49; recommended raising the last two back to $19.99.
+
+
+---
+
+### MTG The Hobbit "you pick" singles (listed 2026-08-24)
+
+- **🟢 LIVE 2026-08-24:** eBay **#168636640650** · [view](https://www.ebay.com/itm/168636640650) · verified Active, `HideFromSearch: false`, **30 variations, 30 per-variation picture sets**, eBay Standard Envelope
+- **Title:** `MTG The Hobbit You Pick Your Card Singles Magic the Gathering LOTR Foil Rare` (76)
+- **Category 183454** (Toys & Hobbies > Collectible Card Games > **CCG Individual Cards**) — the singles sibling of the 183456 he already uses for sealed packs
+- **Ask $47.70 total** against **$9.40** of Scryfall comp · `scripts/build-hob-pyp.ts`
+- Labels are `<collector #> - <name> - <R/U/C>`, foils suffixed `Foil`, tokens included
+
+Michael: *"just make the damn pyc and i can add to it if i feel like i want to."*
+
+**He was right and I was wrong, twice, before this got built.** First I priced the rip off a **web-search snippet** and called it $4-5 of garbage; Scryfall said **$9.40**, with Belladonna Took at **$4.11** not the $1.29 the search returned ([[reference_scryfall_mtg_prices]]). Then I argued against a you-pick using **per-card** fee math — but a you-pick is a multi-buy, so one order amortises the $0.40 floor across six cards instead of paying it six times. That is the same effect the pin twofer demonstrated the same day. His line: *"no card is too small especially for playability like MTG - that shit adds up."* The 23 cards under $0.25 summed to **$3.16**, a third of the pile.
+
+**Pricing: $1.49 floor, matching the baseball you-picks.** Comps here run $0.08-$4.11, so only Belladonna Took clears the floor ($4.49 ask). **The floor is the format**: a you-pick sells selection and combined shipping, not TCGplayer parity, and below ~$1.49 the fee floor eats the card whole.
+
+**VERIFY CAUGHT A HARD ERROR BEFORE ANYTHING WENT LIVE.** `VerifyAddFixedPriceItem` rejected the first payload: *"Card Condition (40001) is a required field."* **Category 183454 requires the `ConditionDescriptors` block exactly like 261328 does, and an ItemSpecific literally named "Card Condition" does NOT satisfy it.** Fixed with `ConditionDescriptor { Name: '40001', Value: '400010' }` (Near Mint or Better). **Always Verify before AddFixedPriceItem** — the same discipline `build-pyp-group.ts` documents, and it cost nothing to be wrong.
+
+**Growing it:** new variations CAN be appended to a live multi-variation listing via `ReviseFixedPriceItem`, but the **order of existing variations is fixed at creation**, so additions land at the bottom rather than slotting into collector-number order. Same constraint recorded for the Chrome you-picks (commit 97b678b).
+
+**⚠️ MTG STILL HAS NO HOME IN THE DB.** These 30 cards exist **only as eBay variations**. `baseball_cards` is sport-scoped and the vault is sealed product, so a Hobbit sale has nothing to book against and will not appear in any P&L. Flagged to Michael; needs building before this line grows.
