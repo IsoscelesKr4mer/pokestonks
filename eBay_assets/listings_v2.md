@@ -1525,6 +1525,28 @@ $48.95 gross. `baseball_cards` now **28 sold, $290.73 lifetime**.
 
 **The apparent double-sale that was not one.** Misiorowski #196 X-Fractor looked like it sold twice, 8/10 at $4.99 and 8/23 at $16.49. **He owned two identical copies** — row #268's own notes recorded that the 8/10 sale was booked on row #347, the copy with no live variation. So the second copy genuinely sold, at the corrected ask. **The row's notes settled it; a blind status flip would have looked like an oversell.** The $4.99 → $16.49 gap is the you-pick price audit (commit a509a09) paying for itself on a single card.
 
+**✅ SOLD OUT 10/10 on 2026-08-24, under 24 hours from listing. FINAL PROFIT $141.25.**
+
+Listed 2026-08-23 15:51 PDT, last unit gone ~14:30 PDT the next day. Fastest sell-through in the file.
+
+| order | qty | item | ship | fee | due seller |
+|---|---|---|---|---|---|
+| 27-15041-15984 | 1 | $19.99 | $5.24 | $4.11 | $21.12 |
+| 02-15086-20136 | 1 | $19.99 | $5.17 | $4.18 | $20.98 |
+| 12-15068-67666 | 1 | $17.49 | $5.17 | $3.77 | $18.89 |
+| 03-15085-01827 | **2** | $34.98 | $7.30 | $6.15 | $36.13 |
+| 16-15063-08880 | 1 | $17.49 | $5.17 | $3.81 | $18.85 |
+| 14-15067-44637 | 1 | $17.49 | $5.24 | $3.77 | $18.96 |
+| 25-15048-34199 | 1 | $17.49 | $5.17 | $3.81 | $18.85 |
+| 07-15081-16238 | 1 | $16.62 | $5.24 | $3.64 | $18.22 |
+| 21-15055-77277 | 1 | $16.62 | $5.17 | $3.67 | $18.12 |
+
+Item revenue **$178.16**, fees **$36.91**, **net $141.25**, **$14.13/pin**, cost basis **$0**. eBay deposits **$190.12**; the extra $48.87 is collected shipping going out across 9 packages. **Reconciles exactly:** item + shipping − fees = $190.12 = `totalDueSeller`.
+
+**Effective fee rate finished at 20.7% of item revenue**, worse than the 19.7% measured at 5 units, because the last two went at $16.62 and the fixed $0.40 is a bigger bite out of a cheaper item. **On cheap items the headline 13.25% is always a lie, and the gap widens as you discount.**
+
+**The playbook is proven and repeatable: the '20s pin drops 2026-09-26.** Same 50 Seasons series, same first-10,000-fans structure. Grab 10, list same day, price to move, expect ~$140 in about a day.
+
 **Pin update caught in the same pass: 8 sold, 2 left** (was 3 sold 90 minutes earlier). Item revenue **$144.92**, fees **$29.60**, **profit $115.32** on 8 free pins, **$14.42/pin**. Five sold in ~90 minutes at $17.49; recommended raising the last two back to $19.99.
 
 
