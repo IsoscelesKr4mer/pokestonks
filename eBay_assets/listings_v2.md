@@ -1378,3 +1378,26 @@ Two from the 8/16 giveaway: one sealed, one signed. `scripts/list-aquasox-retro-
 **`lineItemCost` in the Fulfillment API is the LINE TOTAL, not the unit price.** Multiplying it by `quantity` inflated the twofer to $69.96 and made the pin revenue read $127.43. Caught it because the derived figure no longer reconciled to `totalDueSeller` ($36.13). **Always reconcile computed revenue against `totalDueSeller` before quoting a number.**
 
 **The twofer was the best sale of the five: $14.42/pin against $13.72 for the single at the same $17.49** — one $0.40 fixed fee and one package instead of two. Bundling beat the price cut.
+
+
+---
+
+### Randy Arozarena 2025 Mariners bobblehead — repriced 2026-08-24
+
+- **#168566579473** · offer 217229008011 · SKU `BBL-AROZARENA-2025` · category 24410 · **$29.99 -> $19.99**, verified live
+- **Title fixed too:** `2025 Seattle Mariners Randy Arozarena Bobblehead SGA New in Box` (63) -> `2025 Seattle Mariners Randy Arozarena Bobblehead SGA Giveaway New in Box MLB` (76)
+- **Cost $0.00** (SGA), so break-even is $0 and net at $19.99 is ~**$15.20**, all profit
+
+Michael: *"lets price my arozarena bobblehead to sell im sick of looking at it."*
+
+**The diagnosis was findability as much as price, so both changed at once.** 28 days live with **0 watchers, 0 leads, 0 sold**. July's comp work put the sold NIB cluster at **$24-30 and it was listed at the very top of it**, against 9+ active listings of the same bobblehead. Dropping to the middle of a cluster nothing is selling from would have been pointless; $19.99 undercuts the whole field and clears the sub-$20 price filters that $24.99 sits above. **Zero watchers in a month is not a price signal, it is a nobody-saw-it signal** — hence the title.
+
+**17 of 80 title characters were unused on a listing with no watchers.** Cheapest possible fix. Added "Giveaway" and "MLB".
+
+**Deliberately did NOT add the giveaway date.** Competitors title theirs "SGA 5/27/25", but it was a **3-day giveaway** and both 5/27/25 and 5/29/25 appear across active listings, so asserting one would be fabrication ([[feedback_no_fabricated_product_specifics]]). Asked Michael to read the date off the box — it is a keyword every rival uses and he does not.
+
+**Could not measure rank, and said so.** eBay item pages time out under WebFetch and refuse plain curl, and the MCP is seller-side only, so there is no way to pull the current competing asks from here. This is the third time the gap has bitten — see [[project_card_pricing_module]]. Priced off the known sold cluster plus competitor count instead, and told him that is what the number rests on.
+
+**Best Offer recommended but NOT enabled.** His standing rule is BIN-only on bobbleheads (2026-07-26), so it stays off until he says otherwise. Flagged that "price to sell" + 28 dead days + $0 cost is the textbook case for it, with an auto-accept around $16.
+
+**Traffic report is unavailable:** `ebay_get_traffic_report` returns *"Insufficient permissions"* — the token lacks the analytics scope. Watch count from `GetMyeBaySelling` is the only engagement signal available.
