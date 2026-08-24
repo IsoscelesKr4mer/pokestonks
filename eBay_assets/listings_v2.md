@@ -1532,11 +1532,12 @@ $48.95 gross. `baseball_cards` now **28 sold, $290.73 lifetime**.
 
 ### MTG The Hobbit "you pick" singles (listed 2026-08-24)
 
-- **🟢 LIVE 2026-08-24:** eBay **#168636640650** · [view](https://www.ebay.com/itm/168636640650) · verified Active, `HideFromSearch: false`, **30 variations, 30 per-variation picture sets**, eBay Standard Envelope
+- **🟢 LIVE 2026-08-24:** eBay **#168636653046** · [view](https://www.ebay.com/itm/168636653046) · verified Active, `HideFromSearch: false`, **30 variations A-Z, 30 per-variation picture sets**, eBay Standard Envelope
+- **🔴 #168636640650 ENDED same day** — the first build, ordered by collector number. Replaced by the alphabetical rebuild below.
 - **Title:** `MTG The Hobbit You Pick Your Card Singles Magic the Gathering LOTR Foil Rare` (76)
 - **Category 183454** (Toys & Hobbies > Collectible Card Games > **CCG Individual Cards**) — the singles sibling of the 183456 he already uses for sealed packs
 - **Ask $47.70 total** against **$9.40** of Scryfall comp · `scripts/build-hob-pyp.ts`
-- Labels are `<collector #> - <name> - <R/U/C>`, foils suffixed `Foil`, tokens included
+- Labels are `<name> - <R/U/C[ Foil]> - #<collector #>`, e.g. `Attercop - C - #116`. Tokens included.
 
 Michael: *"just make the damn pyc and i can add to it if i feel like i want to."*
 
@@ -1545,6 +1546,14 @@ Michael: *"just make the damn pyc and i can add to it if i feel like i want to."
 **Pricing: $1.49 floor, matching the baseball you-picks.** Comps here run $0.08-$4.11, so only Belladonna Took clears the floor ($4.49 ask). **The floor is the format**: a you-pick sells selection and combined shipping, not TCGplayer parity, and below ~$1.49 the fee floor eats the card whole.
 
 **VERIFY CAUGHT A HARD ERROR BEFORE ANYTHING WENT LIVE.** `VerifyAddFixedPriceItem` rejected the first payload: *"Card Condition (40001) is a required field."* **Category 183454 requires the `ConditionDescriptors` block exactly like 261328 does, and an ItemSpecific literally named "Card Condition" does NOT satisfy it.** Fixed with `ConditionDescriptor { Name: '40001', Value: '400010' }` (Near Mint or Better). **Always Verify before AddFixedPriceItem** — the same discipline `build-pyp-group.ts` documents, and it cost nothing to be wrong.
+
+**REBUILT ALPHABETICAL WITHIN 10 MINUTES.** Michael: *"you should make the listing alphabetical for people trying to complete their deck"* / *"the cards are just super random right now"*. He was right on both counts.
+
+**Sorting alone would not have fixed it — the label format had to flip too.** The first build led with the collector number (`0116 - Attercop - C`). Sorted by name, the numbers would have run 116, 7, 4, 35, 63 down the dropdown and looked *more* random. Name first is the only format an alphabetical list reads correctly in: **`Attercop - C - #116`**.
+
+**The underlying mistake was copying the sports you-pick format without asking who is shopping.** A baseball buyer hunts by **card number**; an **MTG deck-builder hunts by card name**. Same mechanism, opposite sort key. Worth remembering for any future non-sports you-pick.
+
+**Rebuild, not revision, and end-before-create.** Variation order is fixed at creation and `ReviseFixedPriceItem` can append but never reorder, so re-sorting requires a new listing. `HOB_REPLACES=<old item> ... --apply` ends the old listing **before** creating the new one, so the same 30 physical cards are never buyable in two places. eBay returned a **duplicate-listing Warning** on verify — expected when rebuilding against your own live listing, and it cleared once the original ended.
 
 **Growing it:** new variations CAN be appended to a live multi-variation listing via `ReviseFixedPriceItem`, but the **order of existing variations is fixed at creation**, so additions land at the bottom rather than slotting into collector-number order. Same constraint recorded for the Chrome you-picks (commit 97b678b).
 

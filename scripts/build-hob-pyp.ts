@@ -73,11 +73,25 @@ const CARDS: Card[] = [
 const slug = (s: string) => s.replace(/[^a-zA-Z0-9]+/g, '_').replace(/^_|_$/g, '');
 const pad = (n: number) => String(n).padStart(4, '0');
 
+/**
+ * NAME FIRST, number last, sorted alphabetically. Michael: "you should make the
+ * listing alphabetical for people trying to complete their deck" and "the cards
+ * are just super random right now".
+ *
+ * This is a real difference from the sports you-picks: a baseball buyer hunts by
+ * card number, an MTG deck-builder hunts by card NAME. Leading with the collector
+ * number would also make an alphabetical dropdown look scrambled, because the
+ * numbers would run out of order down the list.
+ */
 function label(c: Card): string {
   const rar = c.rar === 'T' ? 'Token' : c.rar;
-  let l = `${pad(c.n)} - ${c.name} - ${rar}${c.foil ? ' Foil' : ''}`;
+  let l = `${c.name} - ${rar}${c.foil ? ' Foil' : ''} - #${c.n}`;
   if (l.length > 50) l = l.slice(0, 50).trim();
   return l;
+}
+/** Alphabetical by printed name; the foil copy sits just after its nonfoil twin. */
+function byName(a: Card, b: Card) {
+  return a.name.localeCompare(b.name, 'en') || Number(!!a.foil) - Number(!!b.foil);
 }
 function price(c: Card): number {
   // Comp when it clears the floor, else the floor. Round up to a .49/.99 point.
@@ -135,6 +149,7 @@ async function main() {
     'C:/Users/Michael/AppData/Local/Temp/claude/C--Users-Michael-Documents-Claude-Pokemon-Portfolio/8f5be84b-2585-4211-a731-c00cf48257a5/scratchpad/mtg_files.json', 'utf8'));
   if (files.length !== 30) throw new Error(`expected 30 photos, got ${files.length}`);
 
+  CARDS.sort(byName);
   const seen = new Set<string>();
   for (const c of CARDS) {
     c.price = price(c);
@@ -222,6 +237,22 @@ async function main() {
   for (const m of vres.matchAll(/<(ShortMessage|LongMessage)>([^<]*)<\/\1>/g)) console.log('  ', m[1] + ':', m[2].slice(0, 200));
   if (vack !== 'Success' && vack !== 'Warning') { console.error('VERIFY FAILED, nothing created'); process.exit(1); }
   if (!APPLY) { writeFileSync('scripts/_hob_pyp.json', JSON.stringify(item, null, 1)); console.log('\ndry run, payload written to scripts/_hob_pyp.json'); return; }
+
+  // Replacing an earlier build: END IT FIRST. Variation ORDER is fixed at
+  // creation and ReviseFixedPriceItem cannot reorder, so re-sorting means a new
+  // listing. Ending before creating means the same 30 physical cards are never
+  // buyable in two places at once — the ordering rule build-pyp-group.ts sets out.
+  const REPLACES = process.env.HOB_REPLACES;
+  if (REPLACES) {
+    const endXml = `<?xml version="1.0" encoding="utf-8"?>` +
+      `<EndFixedPriceItemRequest xmlns="urn:ebay:apis:eBLBaseComponents">` +
+      `<ErrorLanguage>en_US</ErrorLanguage><WarningLevel>High</WarningLevel>` +
+      `<ItemID>${REPLACES}</ItemID><EndingReason>NotAvailable</EndingReason>` +
+      `</EndFixedPriceItemRequest>`;
+    const er = await trading(tok, 'EndFixedPriceItem', endXml);
+    console.log(`ended ${REPLACES}: ${er.match(/<Ack>(\w+)<\/Ack>/)?.[1]}`);
+    for (const m of er.matchAll(/<LongMessage>([^<]*)<\/LongMessage>/g)) console.log('   ', m[1].slice(0, 120));
+  }
 
   const res = await trading(tok, 'AddFixedPriceItem', wrap('AddFixedPriceItem'));
   const ack = res.match(/<Ack>(\w+)<\/Ack>/)?.[1];
