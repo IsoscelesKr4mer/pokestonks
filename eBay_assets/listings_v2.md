@@ -1581,3 +1581,31 @@ Michael: *"just make the damn pyc and i can add to it if i feel like i want to."
 - Meanwhile **sealed Hobbit is up 79.9% in 30 days.**
 
 **So the play is the one he already runs: buy sealed, sell sealed** ([[feedback_never_break_sealed_for_packs]]). If he genuinely wants a singles line, the low-variance product is a **Commander deck** — fixed decklist, so every card can be priced before spending a dollar. And **the lever on the you-pick is more cards, not better packs**: netting $38 instead of $23 comes from buyers filling six slots, which 30 cards cannot support. The cheap path to that volume is buying a bulk collection and cherry-picking, not opening $7 packs.
+
+
+---
+
+### Kayou Naruto Earth Scroll boxes — "views and watchers but no sales" (checked 2026-08-24)
+
+**The premise did not survive the check.** Michael: *"why do these naruto boxes get so many views and watchers w/ no sales?"*
+
+| listing | ask | qty | watchers | live since |
+|---|---|---|---|---|
+| #168625893567 single box | $19.99 | 4 | **2** | 2026-08-19 (5 days) |
+| #168627240754 lot of 2 | $39.99 | 1 | **0** | 2026-08-20 (4 days) |
+
+Across **all 55 active listings he has 25 watchers total**, and the most-watched item has 4. Two watchers ranks 5th of 55 — which feels like a lot beside his usual zeros but is two people clicking a heart. **Five days is also not a stall**: the Arozarena bobblehead sat **28 days at 0 watchers**, which is.
+
+**Views are not observable.** `ebay_get_traffic_report` returns *"Insufficient permissions"* — the token has no analytics scope, so **watch count from `GetMyeBaySelling` is the only engagement signal available**. Said so rather than inventing a view number.
+
+**The real problem is margin, not sell-through.** Cost **$11.05/box** (Target Northgate, 2026-08-19), 6 boxes, **$66.30** in.
+
+| | ask | net | profit |
+|---|---|---|---|
+| single x4 | $19.99 | $15.91 | $4.86 ea |
+| lot of 2 x1 | $39.99 | $32.80 | $10.70 |
+| **all six** | | **$96.44** | **$30.14** |
+
+**Six boxes, six listings, six packages = $30.** One Destined Rivals bundle costs $30 at the machine and nets ~$54, so **the entire Naruto position is worth about 1.25 DR bundles.**
+
+**On the advice he was given at the machine** (*"start buying naruto because it's so much easier to sell than pokemon"*): possibly true for someone selling **in person, in volume** — but **moving fast and being worth the time are different things**. At a $20 ask with $5 shipping and the 19.7% effective fee drag, velocity does not rescue the margin. Guidance given: let these ride, do not buy more above ~$11, and consider **Best Offer** on the single to convert the 2 watchers.
