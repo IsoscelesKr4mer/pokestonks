@@ -48,9 +48,9 @@ async function main() {
   console.log(`${orders.length} eBay orders since ${SINCE.slice(0, 10)}\n`);
 
   const synced: any = await sql`SELECT ebay_order_id, sale_group_id, skipped FROM ebay_synced_orders`;
-  const seen = new Map(synced.map((r: any) => [r.ebay_order_id, r]));
+  const seen = new Map<string, { sale_group_id: string; skipped: boolean }>(synced.map((r: any) => [String(r.ebay_order_id), r]));
   const maps: any = await sql`SELECT ebay_item_id, mappings FROM ebay_listing_mappings`;
-  const byItem = new Map(maps.map((m: any) => [String(m.ebay_item_id), m.mappings]));
+  const byItem = new Map<string, unknown>(maps.map((m: any) => [String(m.ebay_item_id), m.mappings]));
 
   const gaps: any[] = [];
   for (const o of orders.sort((a, b) => a.creationDate.localeCompare(b.creationDate))) {
