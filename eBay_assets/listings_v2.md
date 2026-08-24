@@ -1307,12 +1307,20 @@ Description also needed the **offer** updated, not just the inventory item, to p
 ### Seattle Mariners '10s 50 Seasons Pin, qty listing (listed 2026-08-23)
 
 - **🟢 LIVE 2026-08-23:** eBay **#168634383417** · offer 244221678011 · SKU `PIN-MARINERS-50S-10S-FELIX` · verified Active + `HideFromSearch: false` via Trading API · [view](https://www.ebay.com/itm/168634383417)
-- **Ask:** $19.99 · **Qty: 10** · **Cost: $0.00** (SGA, free with game admission) · pure margin
+- **Ask:** ~~$19.99~~ **$17.49** (cut 2026-08-24 on Michael's call after an undercutter appeared) · **Qty: 8 of 10** · **Cost: $0.00** (SGA, free with game admission) · pure margin
 - **Title:** `Seattle Mariners 50 Seasons Pin 6/7 '10s King Felix Hernandez K SGA 2026 New` (76 chars)
 - **Category 24410** (Sports Mem > Fan Apparel & Souvenirs > Baseball-MLB) · condition **NEW** · **BIN only, no Best Offer**
 - **Aspects:** `Product` = Pin, `Player` = Felix Hernandez, `Team` = Seattle Mariners, `League` = Major League Baseball (MLB), `Sport` = Baseball, `Officially Licensed` = Yes
 - **Photo:** `Mariners_50Seasons_Pin_10s_Felix_01_front.jpg`, hosted on Supabase. Single in-stadium shot; a back-of-card shot is still wanted, the "PIN GIVEAWAY 6 OF 7" line is half-hidden behind the poly bag.
 - **Shipping:** Ground Advantage calculated (269110723012), buyer pays. Package **6x4x1 at 3 oz**, quotes ~$5 and matches the $5.17 delivery on the sold comp.
+
+**⚡ TWO SOLD IN THE FIRST 51 MINUTES at $19.99** (listed 15:51 PDT, sold 16:32 and 16:42), both fulfilled with tracking same night. Orders `27-15041-15984` and `02-15086-20136`: $19.99 + $5.17/$5.24 shipping, fees $4.18/$4.11, **$20.98 and $21.12 due seller**, so **~$15.85 net per pin after the label** and all of it margin. **~$31.70 realized on the two.**
+
+**Price cut to $17.49 on 2026-08-24** at Michael's instruction: *"Sold two and someone undercut me so adjust my listing to $17.49."* Done and verified, but flagged back to him that two sales in 51 minutes is not a price problem, and that an undercutter does not take the sale automatically once this listing has sales history. Recommendation on file: if the next one moves inside a day, go back to $19.99 and let the cheap sellers burn through their stock.
+
+**The 0.847 net shortcut is too generous on cheap items.** Observed net here is **0.791 of item price**, not 0.847, because the 13.25% is charged on collected sales tax and shipping too and those are a big share of a $25 order. So the $19.99 -> $17.49 cut costs ~$2.00 net per pin, ~$16 across the remaining 8. Use observed fees from a real order over the heuristic whenever one exists. See [[reference_ebay_fee_rate]].
+
+**No marketplace visibility.** Could not verify the undercutter's price: the eBay MCP is seller-side only, no active-listing search. Same gap the card pricing module is meant to close ([[project_card_pricing_module]]).
 
 **Not a bobblehead, and the package size is the whole difference.** Same SGA recipe as [[project_bobblehead_listings]] (category 24410, condition NEW, GA calculated, BIN only, no vault row) but a pin ships in a padded envelope. Declaring the bobblehead's 2 lb 9x6x6 would have quoted the buyer ~$9 instead of ~$5 on a $19.99 item. `scripts/list-mariners-50seasons-pin.ts`.
 
