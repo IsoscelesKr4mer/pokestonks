@@ -1327,3 +1327,33 @@ Description also needed the **offer** updated, not just the inventory item, to p
 **Category trap again.** eBay also suggests **50130 "Pins"**, but that sits under *Vintage* Sports Memorabilia, exactly the same trap as 73424 "Bobble Heads". Modern SGA comps live in 24410.
 
 **Priced off one sold comp, and the print run says do not sit on these.** The same pin sold **$22.50 + $5.17 delivery on 2026-08-23**, day of the giveaway. Research on the promo (Michael: *"DYOR on the giveaway"*): **'10s Pin Day, 8/23, presented by KeyBank, first 10,000 fans**. Ten thousand is a big run, so there is **no scarcity angle** and the word "limited" stays out of the copy. The series is **7 pins**, 4 at games ('00s 7/19, 50 Seasons 8/9, '10s 8/23, '20s 9/26) with the rest at KeyBank branches, so supply on top of supply. $22.50 is day-of pricing; expect it to soften as sellers list through the week. Sell into the early window rather than holding all ten.
+
+
+---
+
+### 2026 Everett AquaSox Retro Jersey SGA, size L x2 (listed 2026-08-24)
+
+Two from the 8/16 giveaway: one sealed, one signed. `scripts/list-aquasox-retro-jerseys.ts`.
+
+| | item | ask | SKU |
+|---|---|---|---|
+| **Sealed, never opened** | **#168635016388** · offer 244385278011 | **$39.99** | `JERSEY-AQUASOX-RETRO-2026-L-SEALED` |
+| **Signed by Reid Easterly** | **#168635017754** · offer 244385459011 | **$49.99** | `JERSEY-AQUASOX-RETRO-2026-L-EASTERLY` |
+
+- Both verified Active, `HideFromSearch: false`, **category 24441**, Ground Advantage calculated (USPSParcel), qty 1 each, condition NEW, **BIN only**, **cost $0.00** (SGA)
+- **Titles:** `2026 Everett AquaSox Retro Jersey SGA 8/16 Limited 1000 Sealed Large Mariners` (77) · `Reid Easterly Signed 2026 Everett AquaSox Retro Jersey SGA 8/16 Large Mariners` (78)
+- **Package:** 12x9x2 at 12 oz. Comps charged $7.77 and $9.55 delivery, so this is in line.
+- **Photos:** `AquaSox_RetroJersey_2026_Sealed_01_bagged.jpg` · `AquaSox_RetroJersey_2026_Easterly_01_front.jpg` (leads, the back does not read as an AquaSox jersey at gallery size) · `_02_back_signed.jpg`. **Signature closeup still wanted** so the autograph can lead the thumbnail, per [[feedback_premium_must_be_in_title_and_thumbnail]].
+- **Aspects:** `Product` = Jersey, `Team` = Everett AquaSox, `Sport` = Baseball, `Size` = L; signed one adds `Player` = Reid Easterly, `Autographed` = Yes, `Original/Reproduction` = Original. eBay renamed `Country/Region of Manufacture` to `Country of Origin` itself, which is the benign **25402** warning.
+
+**Category 24441 "Baseball-Minors", NOT 24410.** The AquaSox are MiLB and eBay's own category suggestions rank 24441 first for minor-league apparel. 24410 (Baseball-MLB) is right for the Mariners pin and the bobbleheads, wrong here. Third different category trap in this family of items, after 50130 "Pins" and 73424 "Bobble Heads" both sitting under *Vintage*.
+
+**DYOR on the giveaway caught a factual error before it shipped.** The **50** on the back is **Community Transit's 50th anniversary**, not a player number: the 8/16 game was a Community Transit 50-years celebration and the jersey is co-branded. **Reid Easterly wears #22** (confirmed by the club's own Signature Sunday graphic). I was about to write it up as a #50 jersey. Michael: *"DYOR on the giveaway."*
+
+**Scarcity is real here, unlike the pin.** Replica retro jersey to the **first 1,000 fans, one per person** (not per ticket), so **"Limited 1000" earned a place in the title** — same standard as the Bryan Woo bobblehead in [[project_bobblehead_listings]]. Contrast the '10s Mariners pin at 10,000, where "limited" stayed out of the copy entirely.
+
+**Autograph provenance is the pitch on the signed one.** Signed in person at **Signature Sunday on the concourse, 8/16, the same day as the giveaway** — Michael was there and got it signed himself, so the copy says exactly that. Easterly is a Duke undrafted free agent who reached High-A in his first full pro season and **won a Mariners Minor League Award for July 2026**, which is the line that gives an unranked-prospect auto a reason to exist.
+
+**Priced on rank, not median, because there were no solds.** Both comps Michael supplied were **active asks**: $49.99 for a 2XL and $34.99 for an L marked "last one". Sealed went $5 over the only same-size competitor because sealed-in-bag genuinely beats an opened one; the signed one took the 2XL's $49.99 on the theory an autograph beats two sizes up. **If the sealed one sits a week, $34.99 is the move.** See [[feedback_dont_price_to_active_median]].
+
+**Best Offer left OFF** on both, per his standing BIN-only rule for the SGA flips, though both comps run OBO. Flagged to him as a live option.
