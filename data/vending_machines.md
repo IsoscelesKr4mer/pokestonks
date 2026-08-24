@@ -6,13 +6,176 @@ multiple, or nothing. Times can change; Michael updates them and I revise here.
 
 | Machine | Location | Drop times (minutes past the hour) | Last updated |
 |---|---|---|---|
-| Edmonds Safeway | Edmonds, WA (his main machine, "Safeway") | **:16 and :46** (was :07/:37, confirmed 3x) | 2026-08-08 |
-| Shoreline Fred Meyer | Shoreline, WA | **:17 and :47** (confirmed 3x) | 2026-08-08 |
+| Edmonds Safeway | Edmonds, WA (his main machine, "Safeway") | **:25 and :55 (±1 min), CONFIRMED TWICE with no purchase** | 2026-08-24 |
+| Shoreline Fred Meyer | Shoreline, WA | **:26 and :56, UNVERIFIED** (was :15:30/:45:30) | 2026-08-21 |
+| Shoreline Safeway | Shoreline, WA (further down Aurora, past Fred Meyer) | **:07 and :37** | 2026-08-13 |
 | Winco | Edmonds area, near the Safeway machine | :15 and :45 | 2026-07-12 |
-| Shoreline Safeway | Shoreline, WA (further down Aurora, past Fred Meyer) | :25 and :55, secondhand tip says :22-ish and :52-ish* | 2026-07-30 |
+
+### ✅✅ EDMONDS :55 CONFIRMED A SECOND TIME, 2026-08-24 morning. Two clean reads now.
+
+Michael asked for the time at **09:54**, tapped the **09:55** mark, and a **Mega Evolution booster pack** came out. **He left it.**
+
+| time | tap | result |
+|---|---|---|
+| 09:55 | tapped | **Mega Evolution booster pack appeared, not bought** |
+
+**Why this one counts as much as the 8/21 read.** It is independent on both axes that mattered: a different day of the week (Monday vs Friday) and a different time of day (morning vs evening), and once again **no purchase anywhere near it**. The :25/:55 pair now rests on **two uncontaminated observations** rather than one, which is the first time any mark in this file has been reproduced cleanly.
+
+**It also lands dead on the mark, not in a window.** The 8/21 evidence bracketed a drop to :51-:55 and called it :55; this one hit at exactly :55 on the first tap. That removes the remaining slack at the bottom of that window.
+
+**What is still not established:** whether :25 fires. Every clean read so far has been a :55. The :25 half is inferred purely from the 30-minute cadence that every other machine in this file follows, and has never been directly observed at Edmonds. **A single clean :25 test would finish this machine off.**
+
+Pack economics on what he passed up: market **$8.17**, low $6.64 (2026-08-23) against **$5.00** vending, so ~$3 gross on a single pack. He has not bought a Mega Evolution pack since **2026-07-11**, so walking away from it is consistent with how he has been treating that set.
+
+### ✅ EDMONDS PINNED TO ~:55 (so ~:25 / :55), 2026-08-21 evening. **First clean measurement in this file.**
+
+Michael ran the no-purchase test the same evening and it worked first try:
+
+| time | tap | result |
+|---|---|---|
+| 17:50 | tapped | dead, empty screen |
+| **17:55** | tapped | **four products appeared: Perfect Order pack, Pitch Black bundle, Chaos Rising pack, Pitch Black pack** |
+
+**He bought none of them.** That is what makes this the best evidence in the log. Every previous "confirmed" mark rested on a tap where he *bought* something, which is the one action that appears to pull stock in. Here product arrived with no purchase anywhere near it.
+
+**Two things it settles:**
+
+1. **A drop lands between :51 and :55.** Cross that with this afternoon's window (dead 12:40, product already sitting at 13:05, so a drop in 12:41-13:04) and the overlap is **:51 to :55**. Call it **:55**, and the 30-minute cadence makes the pair **:25 / :55**.
+2. **Buying does NOT cause the drop.** The strong version of the pull-in theory is dead: four items appeared with no purchase at all. Purchases may still *accelerate* a queued drop, which is why an on-mark buy remains weak evidence, but the schedule runs on its own.
+
+**Practical:** arrive by :53 and tap through :57, same for :23 through :27. His reported minute carries about a minute of slop, and the documented +30s offset means the real instant may be :55:30.
+
+**Note this is one minute off the :56/:26 he reported at Shoreline Fred Meyer today.** Within reporting slop those are the same schedule, which strengthens the read that the operator reprogrammed both machines together. Worth checking whether Shoreline Safeway also moved off :07/:37.
+
+**What he left, and it was the right call.** Nothing in the four was worth much: Pitch Black bundle last snapshot $42.32 but that price is from 2026-07-19, so about $6 net over the $30 vending cost; the three packs run $5.47, $5.48 and $6.43 against $5.00. No missed money here.
+
+### ❓ EDMONDS WENT UNKNOWN, 2026-08-21 afternoon (resolved that evening, see above). **:40 is dead and my ":40 CONFIRMED" call this morning was wrong.**
+
+Retracting what I wrote at 10am. I upgraded :40 from inferred to CONFIRMED off a **buy** at 09:40, and this file already says in plain terms that **buying on a minute is weaker evidence than watching a drop land on it.** I broke that rule and it took half a day to fall over.
+
+What actually happened today, all firsthand:
+
+| time | tap | result |
+|---|---|---|
+| 09:40 | bought | 2 packs (DR + Surging Sparks) |
+| **12:40** | tapped | **dead, empty screen** |
+| **13:05** | tapped | **three packs already sitting** |
+
+**The 13:05 find is the informative one.** He arrived early for the :10 and product was already there, so **a drop landed between 12:41 and 13:04.** Neither :10 nor :40 puts a drop in that window. The pair cannot be :10/:40 as of this afternoon.
+
+And the 09:40 buy is fully explained without :40 existing at all: stock from an earlier drop sits on the screen until someone takes it, so finding two packs at :40 says only that something dropped *before* :40.
+
+**🎯 LEADING CANDIDATE: :26 / :56.** (Confirmed the same evening as ~:25/:55, one minute off. See above.)
+
+**Original reasoning:** A drop at **12:56** explains both the dead 12:40 and the three packs at 13:05, and it is the same pair Michael reported at **Shoreline Fred Meyer today** (:26/:56), which raises the possibility the operator reprogrammed both machines. It is also within two minutes of Edmonds' own long-running **:28/:58**, and this machine is documented as reverting to marks it has used before.
+
+**Try :56 first, then :26, then :58 and :28.** Tap through the following half-minute before calling any of them dead.
+
+### ⚠️ A PURCHASE MAY ACCELERATE A DROP, BUT IT DOES NOT CAUSE ONE. (Revised the same evening.)
+
+**Revision:** the 17:55 test above had four products appear with no purchase whatsoever, so drops run on their own schedule. What follows still holds as a reason to distrust on-mark *buys* as timing evidence, but the strong claim that buying causes the drop is wrong.
+
+Michael, on the 13:05 buy: *"when I bought it it pulled in the next drop."* He saw the same thing yesterday at 14:10, and there is an older instance in this file, the ":48 trigger buy" that pulled a Chaos Rising.
+
+**Why this matters more than the marks themselves.** Dead taps produce nothing and cost nothing, but the tap where he *buys* is the one that seems to release product. That means an on-mark **purchase** is close to worthless as timing evidence, because the purchase may be causing the drop it is being used to measure. Yesterday's 14:10 multi-drop after three dead taps looked like the cleanest mark evidence in this log; if buying pulls stock in, it is not clean at all.
+
+**🧪 THE CLEAN TEST, and it requires buying nothing.** Clicking the machine reveals what is available without committing to a purchase, so:
+
+1. Arrive with the screen empty (verify by tapping).
+2. Tap once a minute from about :20 through :30, and again :50 through :00.
+3. Note the minute new product **appears**, and do not buy until after that.
+
+That measures the schedule instead of measuring his own buying.
+
+
+### ⚠️ SHORELINE FRED MEYER MOVED, 2026-08-21. New marks **:26 / :56, NOT VERIFIED**.
+
+Michael's report: *"new time at fred meyer unverified is :56 :26"* — he flagged it as unverified himself, so treat it that way. It replaces :15:30/:45:30, which had held since 08-14.
+
+**Two things worth noting.** :26/:56 is within a couple of minutes of Edmonds' old :28/:58, which supports the standing read that these machines cycle through a small shared set of marks rather than drifting freely. And the Shoreline route pairing is dead for now: Shoreline Safeway is :07/:37 and Fred Meyer at :56/:26 is no longer 8 minutes behind it, so the two-machines-per-cycle run does not work until this is pinned down.
+
+**What would settle it:** stand it from about :22 with nothing sitting in the machine and tap every minute through the half-minute.
+
+### 🔄 EDMONDS SAFEWAY MOVED AGAIN, MID-DAY, 2026-08-20. New mark **:10**.
+
+The old :28/:58 **worked at 10:58 that same morning** (Destined Rivals pack, logged) and was dead by early afternoon. This is the first time a shift has been caught happening *within a single day*.
+
+Michael's own test, which is as clean as this gets:
+
+| time | who | result |
+|---|---|---|
+| ~13:58 | Michael | dead — third dead pull in a row on the old mark |
+| 14:08 | Michael | dead |
+| 14:09 | another customer | dead |
+| **14:10** | Michael | **multi-drop**: Surging Sparks, Destined Rivals + 2 unidentified |
+
+Three dead taps a minute apart either side of :10, then a pile of product on :10. That is not an early tap or a leftover, and the accumulated multi-drop is what you would expect if the machine had been holding stock through the dead old marks.
+
+**:40 was INFERRED from the 30-minute cadence when this was written, and it never got confirmed.** A 09:40 buy on 2026-08-21 looked like confirmation, but the mark was dead at 12:40 the same day and product turned up off-mark at 13:05. See the retraction at the top of the file.
+
+**This machine moves more than any other in the fleet:** :28/:58 → :07/:37 (2026-07-27) → back to :28/:58 (confirmed 2026-08-14) → :10 (2026-08-20) → :25/:55 (observed 2026-08-21 evening). When Michael says a mark feels dead here, believe him and stand the machine; the base rate of "it changed" is high for Edmonds specifically.
+
+**⏱️ THE MARKS CARRY A 30-SECOND OFFSET. Michael timed it 2026-08-14:** *"It's actually 415.30, I found out. So, yeah, it's worth noting. Same with Safeway. Safeway is 28.30."*
+
+Drops land at **:15:30** at Fred Meyer and **:28:30** at Edmonds Safeway, not on the round minute. Every mark in this file should be read as **plus thirty seconds**. (Both of those specific marks have since moved. The **+30s offset itself still applies** to whatever the current marks are.)
+
+**This matters more than it sounds.** Standing a mark and tapping at :28:00 is half a minute early, which looks exactly like a miss and is probably behind some of the "the mark moved" scares in this log. Tap through the half-minute before calling a mark dead.
+
+**All three updated by Michael on 2026-08-13:** *"0737 is the Safeway in shoreline time, and then 1545 is the shoreline Fred Meyer. And then we also confirmed that the Edmond Safeway is now 2858."*
+
+**✅ BOTH SHORELINE MARKS FIELD-TESTED THE SAME EVENING AND BOTH HIT.** Michael took a Destined Rivals bundle off **Shoreline Safeway at 17:37** and another off **Shoreline Fred Meyer at 17:45**, on one run.
+
+**🚗 ROUTE: the two Shoreline machines double up.** Their marks are 8 minutes apart (:37 → :45, and :07 → :15) and so is the drive. Hit Safeway on the :07 or :37, then Fred Meyer on the :15 or :45. That is two machines per half-hour cycle instead of one, and he just proved the timing works. **⚠️ SUPERSEDED 2026-08-21:** Fred Meyer moved to :26/:56, so the 8-minute gap is gone and this route does not currently work. See the top of the file.
+
+Two of these overturn what was in this table, so note what changed:
+
+- **Shoreline Fred Meyer moved :17/:47 → :15/:45.** The old :17 was logged as "confirmed 3x" off on-mark buys at 16:17, 12:17 and 15:17. A two-minute shift is exactly the size of error that repeated on-mark *purchases* cannot distinguish from a real mark, since a pack bought at :17 may have dropped at :15. **Buying on a minute is weaker evidence than watching a drop land on it.**
+- **Shoreline Safeway moved :25/:55 → :07/:37**, which retires the ":22-ish/:52-ish" secondhand tip that was never resolved.
+- **Edmonds :28/:58 is now CONFIRMED**, closing the question that ran from 08-10. It is also a **revert**: Edmonds ran :28/:58 until 07-27, then :07/:37, then :16/:46, and is now back. **When a mark dies here, try the other known marks before standing there for half an hour.**
 
 Notes:
-- **:16/:46 CONFIRMED A THIRD TIME, 2026-08-08.** Both marks hit back to back in one visit: a Destined Rivals pack at **12:46** and another at **13:16**. Two consecutive marks in a single sitting is the strongest form of this test, because it pins the 30-minute cadence as well as the offset. Edmonds is settled at :16/:46.
+- **❌ DEAD THEORY: "an unsold item blocks its slot." Michael killed this on 2026-08-11 and he is right.**
+
+  *"Singles dont block the drop. If no one buys anything all the screen will be full of products available by the end of the day. Every single one. I know this because when people jam the machines so no one can buy anything when you click it after a few hours it looks like a godscreen but that's just because no one can buy anything so it just keeps stacking."*
+
+  A jammed machine keeps accumulating product for hours. **Drops continue regardless of whether anything sold, so an occupied slot cannot be stopping the schedule.** Do not revive this theory.
+
+- **✅ EDMONDS :28/:58 CONFIRMED 2026-08-13.** Michael: *"we also confirmed that the Edmond Safeway is now 2858."* The history of how this was worked out is below and is worth keeping, because the errors in it were mine and they repeat.
+
+  **2026-08-13: Michael pulled an Ascended Heroes bundle at 12:28, on the mark.** That is the cleanest mark evidence since the schedule went unstable.
+
+  **Why I had moved it to :30, and why that was wrong.** On 08-11 he stood the :26 and the :28 with nothing dropping, then bought a sitting single at what he reported as *"like 11:30 or 11:31"* and a Prismatic bundle appeared. I treated that approximate phone time as a measurement. **Two to three minutes of reporting slop collapses the whole thing into :28**, and one soft timestamp should not have outweighed the standing model.
+
+  **July had already said :28/:58 repeatedly** and I discounted it: purchase #487 pulled at **1:28**, #479 at **5:58**, and #497 was logged at 5:43 as explicitly *between* the :28 and :58 marks.
+
+  **Confirmed later the same day.** The 12:28 pull was the turning point; Michael closed it out that evening.
+
+- **EDMONDS IS RESCHEDULING FASTER AND FASTER. Measured from drop_log.csv, not impression:**
+
+  | era | marks | first seen | last seen | days held |
+  |---|---|---|---|---|
+  | 1 | :28/:58 | 2026-07-08 | 2026-07-23 | **16+** |
+  | 2 | :07/:37 | 2026-07-26 | 2026-08-06 | **12** |
+  | 3 | :16/:46 | 2026-08-07 | 2026-08-09 | **3** |
+  | 4 | unknown, est :28/:58 | 2026-08-10 | | |
+
+  **16 days, then 12, then 3.** Michael spotted this before it was measured: *"Seems like they are changing the time more frequently now."* He is right and the trend is steep.
+
+  **Two practical consequences:**
+  1. **An Edmonds mark older than about three days is a guess, not a fact.** Treat the table as a starting point and expect to re-derive it on arrival.
+  2. **The reverse is now true of Shoreline Fred Meyer.** It used to be the unstable one, five changes, but it has held **:17** cleanly from 2026-08-02 through 08-08, seven days and counting. The machines have swapped roles.
+
+  **If the trend continues the marks may become effectively unpredictable**, at which point the winning tactic stops being "arrive on the mark" and becomes "arrive whenever and tap, because loads sit for a while anyway" (see the seven-product screen photo from 08-08).
+
+- **EDMONDS 2026-08-10: :16/:46 IS DEAD. The replacement is a working estimate of :28/:58 and is NOT confirmed.** Michael pushed back on my calling it confirmed and he is right.
+  - **What is actually solid:** he stood the **:16 himself and nothing dropped.** That is firsthand and it kills :16/:46.
+  - **What is not:** the :28 figure came from another shopper. He cannot verify she tapped every minute leading up to it, so the drop may have landed earlier and simply been found at :28. He also cannot verify her clock. His words: *"I just know that it's not :16 and tentatively going w/ her :28 figure until i can confirm."*
+  - **My early-pull argument was weaker than I presented it.** I claimed the :48 trigger buy pulling a Chaos Rising proved the next mark was :58. It does not. It proves a drop was **queued and close to :48**, which is equally consistent with :50, :52 or :55. It rules out the next mark being 28 minutes away, nothing more. I stated a range as a point.
+  - **Best current read:** second mark somewhere around **:50 to :58**, so the pair is roughly **:20/:50 through :28/:58**. Treat :28/:58 as the leading candidate, not fact.
+  - **What would settle it:** be at the machine with nothing sitting from about :18, tap every single minute, and record the exact minute of the drop. Only a firsthand minute-by-minute stand counts.
+  - **:28/:58 would be a revert, not a new schedule.** Edmonds ran :28/:58 until 2026-07-27, then :07/:37, then :16/:46. If it lands back on :28/:58 the machine cycles through a small set of marks rather than drifting, which is worth knowing: when a mark dies, try the other known marks before standing there for half an hour.
+  - **Not arguing the change itself.** He has now called a mark change before proof twice and been right both times. Test it, do not defend the table.
+- **:16/:46 held 2026-08-07 to 2026-08-10, confirmed 3x while it lasted, now superseded by the dead :16 above.** Both marks hit back to back in one visit: a Destined Rivals pack at **12:46** and another at **13:16**. Two consecutive marks in a single sitting is the strongest form of this test, because it pins the 30-minute cadence as well as the offset. Edmonds is settled at :16/:46.
   - **How deep a load can get: seven products at once.** Michael's screen photo at 12:46 showed Pitch Black, Chaos Rising, Mega Evolution, Destined Rivals, Journey Together and Surging Sparks packs, plus a Chaos Rising bundle, all available, with only the Pitch Black bundle and Perfect Order pack sold out. DR was still buyable at the next mark.
     - This is a **depth** data point, not a mechanic. Unsold stock staying put is how the machine has always worked and is documented all over the notes below (the whole leftover / early-pull model depends on it). I briefly wrote this up as if it overturned a "one item per drop" assumption; that assumption was mine alone and it was never in this file. Michael: *"I never assumed that speak for yourself. If something doesn't get bought it doesn't go away in the next drop."*
   - Fourth bundle sighting since the drought broke (Chaos Rising, skip-tier, left).
