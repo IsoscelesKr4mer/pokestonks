@@ -1357,3 +1357,24 @@ Two from the 8/16 giveaway: one sealed, one signed. `scripts/list-aquasox-retro-
 **Priced on rank, not median, because there were no solds.** Both comps Michael supplied were **active asks**: $49.99 for a 2XL and $34.99 for an L marked "last one". Sealed went $5 over the only same-size competitor because sealed-in-bag genuinely beats an opened one; the signed one took the 2XL's $49.99 on the theory an autograph beats two sizes up. **If the sealed one sits a week, $34.99 is the move.** See [[feedback_dont_price_to_active_median]].
 
 **Best Offer left OFF** on both, per his standing BIN-only rule for the SGA flips, though both comps run OBO. Flagged to him as a live option.
+
+**Photos reworked 2026-08-24, and two lessons.** Michael: *"you should use the promo as the cover especially for the one in the wrapper you cant even tell what it looks like right now and on the signed one the photos need to be rotated they are sideways right now."*
+
+- **Sealed listing now leads with the club promo shot** (`AquaSox_RetroJersey_2026_Promo_01_front.jpg`), bagged photo second as proof it is still sealed. A folded jersey in a poly bag tells a buyer nothing about the jersey. **Signed listing still leads with the real front shot** — on an autographed item the thumbnail should be the actual item, and his stated reason (cannot tell what it looks like) only applied to the sealed one. Promo sits third there.
+- **The signed photos were genuinely sideways, not an EXIF problem.** Both were 2880x2160 landscape with the jersey lying rotated and **no orientation tag at all** (`exif_orientation=None`), so there was nothing for a viewer to honour. Fixed with a real 90 degree counter-clockwise pixel rotation. Direction was **verified by rendering both candidates and reading them**, not guessed.
+- **Re-uploaded the rotated files under NEW filenames (`_v2`).** eBay caches vendor images by URL, so overwriting the same Supabase object can leave the old sideways image live. Change the filename whenever the pixels change.
+
+**PIN P&L, 5 sold, from real order data (2026-08-24).** Item revenue **$92.45**, eBay fees **$18.21**, so **$74.24 profit** at $0 cost, **$14.85/pin**. eBay pays $97.12; the extra $22.88 is collected shipping that goes to USPS across 4 labels. Sales tax $6.80 is remitted by eBay and never his.
+
+| order | units | item | ship | fee | due seller |
+|---|---|---|---|---|---|
+| 27-15041-15984 | 1 | $19.99 | $5.24 | $4.11 | $21.12 |
+| 02-15086-20136 | 1 | $19.99 | $5.17 | $4.18 | $20.98 |
+| 12-15068-67666 | 1 | $17.49 | $5.17 | $3.77 | $18.89 |
+| 03-15085-01827 | **2** | $34.98 | $7.30 | $6.15 | $36.13 |
+
+**Effective fee rate is 19.7% of item revenue, not 13.25%.** The 13.25% also lands on collected shipping and sales tax, which are a third of a ~$25 order. **On cheap items the drag is far worse than the headline rate** — confirms and sharpens [[reference_ebay_fee_rate]] and the 0.791 figure recorded above.
+
+**`lineItemCost` in the Fulfillment API is the LINE TOTAL, not the unit price.** Multiplying it by `quantity` inflated the twofer to $69.96 and made the pin revenue read $127.43. Caught it because the derived figure no longer reconciled to `totalDueSeller` ($36.13). **Always reconcile computed revenue against `totalDueSeller` before quoting a number.**
+
+**The twofer was the best sale of the five: $14.42/pin against $13.72 for the single at the same $17.49** — one $0.40 fixed fee and one package instead of two. Bundling beat the price cut.
