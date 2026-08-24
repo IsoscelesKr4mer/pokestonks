@@ -1435,3 +1435,41 @@ Michael: *"lets price my arozarena bobblehead to sell im sick of looking at it."
 **Best Offer recommended but NOT enabled.** His standing rule is BIN-only on bobbleheads (2026-07-26), so it stays off until he says otherwise. Flagged that "price to sell" + 28 dead days + $0 cost is the textbook case for it, with an auto-accept around $16.
 
 **Traffic report is unavailable:** `ebay_get_traffic_report` returns *"Insufficient permissions"* — the token lacks the analytics scope. Watch count from `GetMyeBaySelling` is the only engagement signal available.
+
+
+---
+
+### 30th Celebration price audit, 2026-08-24
+
+Michael: *"Can you run a price audit on all my 30th anniversary products based on comps and my ROI if I sold at comp prices?"* `scripts/audit-30th.ts`.
+
+| item | held | cost/ea | comp | net/ea | profit/ea | ROI |
+|---|---|---|---|---|---|---|
+| **PC Elite Trainer Box** (ci134518) | 2 | $66.41 | $493.92 | $420.16 | +$353.75 | **533%** |
+| **Booster Bundle** (ci133883) | 6 | $29.82 | $89.95 | $75.26 | +$45.44 | **152%** |
+| Tech Sticker [Lucario] (ci133872) | 1 | $16.59 | $42.29 | $34.77 | +$18.18 | 110% |
+| Tech Sticker [Alolan Exeggutor] (ci133870) | 1 | $16.59 | $36.51 | $29.83 | +$13.24 | 80% |
+| Knock Out Collection (ci133878) | 1 | $11.06 | $29.34 | $23.69 | +$12.63 | 114% |
+
+**Cost $355.98 → net at comp $1,380.17 → profit $1,024.19, ROI 287.7%.** ETBs + bundles are **95%** of it. **All five are unlisted.**
+
+Net models 13.25% on item + shipping + an assumed 9% buyer tax, plus $0.40, with per-type shipping (ETB $14, bundle $9, collection $7).
+
+**EVERY ONE IS A PRE-ORDER. Release 2026-09-16.** Ordered 2026-07-15 from Pokemon Center and still inbound — his own lot notes said so, and `catalog_items.release_date` confirms 2026-09-16 across the set. **The first version of this audit read them as sellable stock; they are not.** Selling means a presale listing (he already runs Bowman Chrome and Logofractor presales) and 23 days is inside eBay's 30-day presale window. **Check `release_date` before treating any recent Pokemon Center lot as inventory.**
+
+**Presale decay is visible in his own snapshots, and it is not uniform.** Nine days, 8/14 → 8/23:
+
+| item | 8/14 | 8/23 | change |
+|---|---|---|---|
+| **Booster Bundle** | $92.72 | $89.95 | **−3.0%** |
+| PC ETB | $529.54 | $493.92 | −6.7% |
+| Tech Sticker [Lucario] | $67.02 | $42.29 | **−36.9%** |
+| Tech Sticker [Alolan Exeggutor] | $71.14 | $36.51 | **−48.7%** |
+
+The stickers have given up roughly half. **The bundle is the one item holding**, which flips it from "sell everything now" to **ETBs list now, bundles can wait**: the ETBs carry the most dollars and are sliding ~$3.50/box/day.
+
+**The bundles were missing from the first audit because they had never been logged.** Michael: *"You didnt include my bundles."* Checked every purchase ever recorded against a 30th item including deleted lots, and every ME-era set — four lots, no bundles, and zero bundles held in any Mega Evolution set. **The gap was the vault's, not the query's.** Logged from his order screenshot as `pu593`/`pu594`: 3x @ $26.94 = $80.82 + $8.64 tax = $89.46 per order, **$29.82/bundle tax-in**, order placed twice = 6 bundles for $178.92. **Booked as two lots of 3, not one of 6**, so FIFO stays honest if only one order lands.
+
+**Data-quality caveat stated to him:** these are **TCGplayer market prices, not eBay solds**, and presale books are thin — the Exeggutor's `low` ($44.92) sits *above* its `market` ($36.51), which is what thin data looks like. eBay comps remain unreachable ([[project_card_pricing_module]]).
+
+Six bundles is enough to split into a single, a twofer and a 3-pack rather than one lot, per [[reference_art_set_premium]] and the usual bundle-pricing rule.
