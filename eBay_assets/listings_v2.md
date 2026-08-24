@@ -1009,6 +1009,40 @@ The real cost was not the stale price, it was the **commitment**: 3 x 36 = **108
 
 **Verification note.** Straight after `update_offer` the Trading API still read `Quantity: 3` while REST read `availableQuantity: 1`; a later read showed 1 in both. I first wrote that up as pure propagation lag. **The Kayou raise on 2026-08-19 showed that is not the whole story** — see the qty-change procedure below. Re-read before acting either way; the Trading API is the truth for what buyers see.
 
+> **🔴 THE 8/18 CUT NEVER TOOK. Caught 2026-08-24, six days later.** Michael asked for his Destined Rivals pack count and the reconciliation exposed it: the live listing was still serving **`Quantity: 3`**. The "later read showed 1 in both" above was wrong, or it reverted. Root cause is the documented one — the 8/18 change went through `update_offer` **only**, and quantity also lives on the **inventory item**; set one without the other and the offer reports the new number while buyers keep seeing the old. **This is exactly why [[reference_ebay_qty_change_procedure]] exists, and I still wrote it off as lag on the day.**
+>
+> **The cost of missing it: a live 57-pack oversell.** 36-lot at 3 x 36 = 108 plus loose art sets at 22 x 4 = 88 is **196 packs committed against 139 held**. Both selling out would have left him owing 57 packs he does not own.
+>
+> Fixed 2026-08-24 via `scripts/set-bundle-qty.ts DR-36LOT-R2 1 --apply`, which does inventory item **and** offer. **The inventory PUT returned a 500 and applied anyway** ([[reference_ebay_publish_verify_trading_api]]) — verified `Quantity: 1` on the Trading API rather than trusting the error. Position after: **124 of 139 loose committed, 15 free**; sleeved **52 of 52** (40 art sets + 12 auction), none free.
+>
+> **`set-bundle-qty.ts` now knows `DR-36LOT-R2` (perUnit 36), `DR-LOOSE-ARTSET4` (4) and `DR-SLEEVED-ARTSET4` (4).** Its guard refuses qty 3 outright: *"108 needs 108, only 51 free."* **Route every qty change on these through it** — the guard is the thing that would have caught this on day one.
+
+### Destined Rivals pack count, 2026-08-24
+
+**191 loose + sleeved packs held**, plus **43 more sealed inside product** (6 bundles = 36, 7 blisters = 7) that stay sealed per [[feedback_never_break_sealed_for_packs]].
+
+| | held | FIFO open-lot cost | market | value |
+|---|---|---|---|---|
+| Loose (ci17236) | **139** | $5.00 ($695.00) | $9.24 | $1,284 |
+| Sleeved (ci17232) | **52** | $7.74 ($402.48) | $10.90 | $567 |
+| | **191** | **$1,097.48** | | **$1,851** |
+
+Lifetime on loose: bought 310, sold 171.
+
+**All formats: 234 packs.**
+
+| format | held | packs each | packs |
+|---|---|---|---|
+| Loose booster pack (ci17236) | 139 | 1 | **139** |
+| Sleeved booster pack (ci17232) | 52 | 1 | **52** |
+| Booster bundle (ci17235) | 6 | 6 (from `pack_count`) | **36** |
+| Single pack blister (ci17246 x4, ci17247 x3) | 7 | 1 | **7** |
+| | | | **234** |
+
+**The first total the vault produced was 227, and it was wrong.** Single Pack Blisters had a **null `pack_count`**, so every pack roll-up silently skipped them. Fixed with `scripts/fix-blister-packcount.ts --apply`: **`pack_count = 1` on 93 Single Pack Blisters**, so the DB does the arithmetic instead of a human remembering to add blisters in.
+
+**Five rows deliberately left null:** the `[Set of 2]` variants (Astral Radiance, Lost Origin, Scarlet & Violet, Silver Tempest, Temporal Forces). A "Single Pack Blister **[Set of 2]**" is two blisters and therefore two packs; the obvious `name ILIKE '%Single Pack Blister%'` sweep would have flattened them to 1 and undercounted. Caught it by reading the dry-run output instead of trusting the filter.
+
 ### Destined Rivals Booster Pack — Art Set of 4, qty listing (drafted 2026-08-18)
 
 - **🟢 LIVE 2026-08-18:** eBay **#168623729004** · offer 239590565011 · verified Active + HideFromSearch:false via Trading API · [view](https://www.ebay.com/itm/168623729004)

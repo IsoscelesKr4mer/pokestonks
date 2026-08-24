@@ -36,6 +36,8 @@ const KNOWN: Record<string, { item: string; catalogItemId: number; label: string
   'DR-BUNDLE-SINGLE': { item: '168617483804', catalogItemId: 17235, label: 'Destined Rivals Booster Bundle' },
   'SF-BUNDLE-SINGLE': { item: '168606265372', catalogItemId: 5283, label: 'Shrouded Fable Booster Bundle' },
   'DR-SLEEVED-ARTSET4': { item: '168623627775', catalogItemId: 17232, label: 'Destined Rivals Sleeved Booster Pack, art set of 4', perUnit: 4 },
+  'DR-LOOSE-ARTSET4': { item: '168623729004', catalogItemId: 17236, label: 'Destined Rivals Booster Pack, art set of 4', perUnit: 4 },
+  'DR-36LOT-R2': { item: '168519091676', catalogItemId: 17236, label: 'Destined Rivals 36 Sealed Booster Packs Lot', perUnit: 36 },
 };
 
 function findKey(o: any, k: string): string | undefined {
