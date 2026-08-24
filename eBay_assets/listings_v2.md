@@ -1496,3 +1496,33 @@ Six bundles is enough to split into a single, a twofer and a 3-pack rather than 
 **CORRECTED A NUMBER I GAVE HIM SATURDAY.** I quoted the $32 offer as **+$0.62** using the `x 0.847` shortcut. Measured against his real pin orders, the 13.25% applies to **shipping and collected sales tax as well as the item**, so $32 was actually about **−$0.30**, a small loss. At these margins that flips accept to decline, so it was worth correcting out loud. See the 0.791 finding above and [[reference_ebay_fee_rate]].
 
 **These 4-packs are structurally thin.** $6.62 in against a $10.06 market means even a full-ask sale is $4.83, and all three lots together are ~$14.50. There is no margin to discount away — the value in sleeved packs lives in the art-set framing, not the raw packs.
+
+
+---
+
+### Unlogged-sales reconciliation, 2026-08-24
+
+Michael: *"I have a number of unlogged sales i tihnk you should catch up on."* `scripts/reconcile-ebay-sales-0824.ts` (read-only) then `scripts/book-card-sales-0824.ts --apply`.
+
+**38 eBay orders since 2026-07-20. 6 genuinely unlogged, all baseball cards, all booked.**
+
+| # | card | sold | date (Pacific) | order |
+|---|---|---|---|---|
+| 4 | Wyatt Sanford Green Mojo Refractor | $9.00 | 2026-08-22 | 21-15047-83095 |
+| 268 | Jacob Misiorowski X-Fractor | $16.49 | 2026-08-23 | 23-15048-17235 |
+| 348 | Jacob Misiorowski Refractor | $15.49 | 2026-08-23 | 23-15048-17235 |
+| 287 | Yoshinobu Yamamoto X-Fractor | $3.99 | 2026-08-23 | 23-15048-17235 |
+| 424 | Cal Raleigh X-Fractor #9 | $1.99 | 2026-08-23 | 23-15048-17235 |
+| 326 | Cal Raleigh X-Fractor #5 | $1.99 | 2026-08-23 | 23-15048-17235 |
+
+$48.95 gross. `baseball_cards` now **28 sold, $290.73 lifetime**.
+
+**🔴 "NO DEDUP ROW" DOES NOT MEAN "UNBOOKED". THE VAULT HAD ZERO GAPS.** Six sealed orders from 8/07-8/08 (Chrome Update NBA, **$814.93**) have no `ebay_synced_orders` row and read as gaps on a naive check. They are already booked as **sa454-sa459** with the order IDs in their notes — entered by hand, and **hand-entry never writes the dedup row**. Re-booking them would have **double-counted $815 of revenue**. The dedup table only tracks orders that went through the sync flow; it is not an index of what is booked. **Always check `sales` itself before writing, never the dedup table alone.** This is the mirror of the known "deleting a synced sale orphans the dedup row" failure ([[reference_ebay_sync_mapping_qty]]).
+
+**Classify before reporting.** The reconciler tags every line VAULT / CARD / NON-VAULT, because the three have completely different homes: `sales` rows for the sealed vault, the `baseball_cards` row for cards, and **nothing at all** for pins, bobbleheads and jerseys ([[project_bobblehead_listings]]). 9 of the 31 "unsynced" orders were non-vault SGA flips that are correctly untracked, including **two Bryan Woo bobbleheads on 8/03 at $35 and $40**.
+
+**Dates booked in PACIFIC, not the UTC eBay returns.** Order 23-15048-17235 is 2026-08-24 00:22 UTC = **2026-08-23** Pacific; five cards would have been dated a day late. Same trap as [[feedback_date_column_timezone]].
+
+**The apparent double-sale that was not one.** Misiorowski #196 X-Fractor looked like it sold twice, 8/10 at $4.99 and 8/23 at $16.49. **He owned two identical copies** — row #268's own notes recorded that the 8/10 sale was booked on row #347, the copy with no live variation. So the second copy genuinely sold, at the corrected ask. **The row's notes settled it; a blind status flip would have looked like an oversell.** The $4.99 → $16.49 gap is the you-pick price audit (commit a509a09) paying for itself on a single card.
+
+**Pin update caught in the same pass: 8 sold, 2 left** (was 3 sold 90 minutes earlier). Item revenue **$144.92**, fees **$29.60**, **profit $115.32** on 8 free pins, **$14.42/pin**. Five sold in ~90 minutes at $17.49; recommended raising the last two back to $19.99.
