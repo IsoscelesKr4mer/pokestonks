@@ -1698,4 +1698,23 @@ Live TCGCSV (category **68** = One Piece Card Game):
 
 **Position, still unlisted after 22 days:** 4 boxes @ **$26.56** = $106.24, bought 2026-08-03. Market $37.00 and holding steady ($38.07 → $37.02 across five days). At **$35.99** that is **~$29.50 net each, ~$118 for four**. Offered to draft the qty-4 listing, same shape as the Lorcana Trove.
 
+**🔴 I MISREAD THE QUESTION FIRST TIME.** Michael never claimed the promos were the hits: *"I didnt say there were guaranteed hits. There are genuine chases in the booster packs, not the promos. I'm saying why these illustration boxes are better to rip as opposed to a booster box from ebay that's mappable."* His argument was about **pack provenance**, and I answered a point about promo value he had not made. **His unsearched argument is legitimate** — packs inside an Illustration Box are guaranteed untouched, where a booster box bought off eBay may already have been case-mapped and picked. That is a real edge and it is exactly why these packs are worth more than the same packs bought loose from a reseller.
+
+**THE ACTUAL CHASES (OP-16, The Time of Battle):** 3 Admiral **Manga Rares** — Borsalino, Sakazuki, Kuzan — at **$1,500-1,600 and climbing**. **Secret Rares** (Ace) launched $180-250, settled to a **$90-140** floor. Plus 6 Special Rares, 1 Treasure Rare and a deep alt-art pool.
+
+**Pull rates.** Bandai publishes none; these are aggregated community estimates and should be quoted as such.
+
+| | odds | 1 box = 4 packs | all 4 boxes = 16 packs |
+|---|---|---|---|
+| SR (any) | 1 in 3.5 | 74% | 99.5% |
+| Alt Art | 1 in 12 | 29% | 75% |
+| **Secret Rare** | 1 in 24 | **16%** | **49%** |
+| Special Rare | 1 in 160 | 2.5% | 9.5% |
+| Manga Rare | 1 in 288 | 1.4% | 5.4% |
+| Manga Rare (OP16-specific est) | 1 in 864 | 0.5% | 1.8% |
+
+**The thin sealed margin is what makes ripping defensible.** $29.50 net against $26.56 cost is **$2.94/box, 11% ROI, $11.76 for all four**. Expected card value from 4 packs is roughly **$8-20**, so **ripping is still negative EV** — but the distribution is fat-tailed, and one Secret Rare at 16%/box roughly matches the entire sealed outcome. **Recommendation given: rip ONE, list the other three.** One box is a $29.50 lottery ticket with a 16% shot at a card worth more than the whole sealed position; four boxes trades $118 of certainty for a coin flip.
+
+**Lesson for me:** when he gives a reason for wanting to do something, engage with the reason he actually gave. I priced the promos, which was true and irrelevant, instead of researching pack chases, which was the question.
+
 **Tooling note:** `https://tcgcsv.com/tcgplayer/categories` is not a valid endpoint (returns an HTML page, not JSON). Use `/tcgplayer/<categoryId>/groups` and `/products` and `/prices` directly, as `scripts/sync-market-prices-category.ts` does. **One Piece is category 68**, alongside 3 Pokemon, 71 Lorcana, 85 Pokemon Japan.
