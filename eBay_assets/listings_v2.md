@@ -1631,3 +1631,30 @@ Across **all 55 active listings he has 25 watchers total**, and the most-watched
 **Six boxes, six listings, six packages = $30.** One Destined Rivals bundle costs $30 at the machine and nets ~$54, so **the entire Naruto position is worth about 1.25 DR bundles.**
 
 **On the advice he was given at the machine** (*"start buying naruto because it's so much easier to sell than pokemon"*): possibly true for someone selling **in person, in volume** — but **moving fast and being worth the time are different things**. At a $20 ask with $5 shipping and the 19.7% effective fee drag, velocity does not rescue the margin. Guidance given: let these ride, do not buy more above ~$11, and consider **Best Offer** on the single to convert the 2 watchers.
+
+
+---
+
+### TradePost sale — 4 Prismatic Evolutions bundles (2026-08-22, booked 2026-08-25)
+
+Receipt: order **E0D2ADCF**, sold 2026-08-22 09:47 PDT, **4x @ $71.71 = $286.84**, one UPS label **-$8.12** (1Z1493G20308806428), **payout $278.72**.
+
+- Cost **$120.00** (pu552/571/575/583, four $30 vending lots 8/11 to 8/19)
+- **Realized profit $158.72, ROI 132%** · sale group `bda239ca-a2a2-4444-be31-203044af67dd`, rows 466-469
+- **He is now at ZERO Prismatic bundles.** The eBay `PE-BUNDLE-SINGLE` #168617484171 was already **Completed**, so no oversell existed; `set-bundle-qty.ts` confirmed 0 held / 0 committed.
+
+**BOOKING A NO-COMMISSION MARKETPLACE: put the seller-paid shipping into `fees_cents`.** TradePost takes no commission but **the seller pays shipping** — the mirror image of eBay, where the buyer pays and the platform takes 13.25% of it. The $8.12 label is allocated **$2.03/bundle** into `fees_cents` so net-per-sale lands on the true **$69.68** payout. Booking it as a fee-free $71.71 sale would have **overstated realized profit by $8.12**.
+
+**How it stacked up, which is what he asked:**
+
+| route | per bundle | four | profit |
+|---|---|---|---|
+| **TradePost (actual)** | **$69.68** | **$278.72** | **$158.72** |
+| eBay at his $79.99 ask | ~$68 | ~$272 | ~$152 |
+| Card show at 80% of the 8/22 market | $64.41 | $257.64 | $137.64 |
+
+eBay net is derived from **his own PE bundle history** (~15% of item price in fees: $13.96 on $93.04 on 6/01, $24.46 on $159.99 on 7/28), not a model.
+
+**THE REASON TRADEPOST WON IS SHIPPING, AND IT GENERALISES.** One **$8.12** label carried all four. On eBay that is four buyers, four packages, and eBay charges **13.25% on the buyer-paid shipping** — roughly **$1.19 of pure fee per sale plus $0.40 each**, about **$6.40 of cost that exists only because the units ship separately**. **Rule: when a buylist pays close to the eBay net, multi-unit shipping tips it — one box beats four.** Same mechanism that made the pin twofer the best pin sale ($14.42/pin vs $13.72).
+
+**Timing footnote, stated honestly:** PE market was **$80.51** on 8/22, so he sold at **89% of market** that day; it has since run to **$89.38** (8/24), after dipping to $77.68 on 8/23. On the day, he beat every real alternative.
