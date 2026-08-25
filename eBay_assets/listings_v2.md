@@ -1333,6 +1333,19 @@ Description also needed the **offer** updated, not just the inventory item, to p
 1. **`AddItem` rejected the standard payment profile.** `Immediate Pay Managed` (269110704012) has `immediatePay: true`, and eBay refuses that on an auction with no Buy It Now price: *"To require immediate payment, you must specify a Buy It Now price"* (error 21917141). His account had only that one payment policy, so I created a second, **`Auction Managed (no immediate pay)` = 273540269012**, `immediatePay: false`. **Every future auction needs that profile, not the immediate-pay one.**
 2. **Category 183456 requires the `Game` aspect** and the value must be **`Pokémon TCG` with the accented é** (error 21919303). `Set` and `Configuration` alone are not enough on a Trading-API `AddItem`; the Inventory API path had been supplying `Game` invisibly.
 
+**⏱ MID-AUCTION, 2026-08-25: $85.69 with 13 BIDS, 5 days to run** (closes 8/30 18:00 PDT). Break-even is **$110.03**, so it is $24 short with the final-hour run still ahead.
+
+**The format question is already answered, whatever the close.** 13 bids in ~36 hours against **zero bids and zero sales in 7 days** on the BIN art sets (`DR-SLEEVED-ARTSET4` $46.99 qty 10, `DR-LOOSE-ARTSET4` $38.99 qty 22, both live since 8/18). Demand for this product exists at auction and does not at fixed price.
+
+**Asked 2026-08-25 whether to buy more sleeved packs at $6.99 ($7.72 tax-in) from Safeway. Answer: not until the auction closes.** A sleeved pack is worth two different things depending on channel:
+
+| channel | net/pack | vs $7.72 cost |
+|---|---|---|
+| art set at $46.99 | $9.74 | **+$2.00** |
+| auction at $85.69 | $6.00 | **−$1.72** |
+
+The art-set math works but has produced no sales in 7 days; the auction has all the demand and is currently pricing the packs **below replacement cost**. He already holds **52 packs / $402.48**, all committed, nothing sold. **Sunday's close is the decision:** above $110 the format works and restocking is justified; $85-95 says these net ~$6-7/pack, under his cost, and he should stop buying. Market is also drifting: **$11.12 (8/21) → $10.87 (8/24)**.
+
 **Timing:** 2026-08-22 is a Saturday, so a 7-day started that night would have closed Saturday 8/29. Used `ScheduleTime` to start it **Sunday 8/23 6pm Pacific** instead, for a **Sunday 8/30 6pm close**. Costs $0.10 and buys the best close window of the week.
 
 
