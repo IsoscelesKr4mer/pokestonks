@@ -1725,6 +1725,29 @@ Only hit was **Sabo OP15-046 SR**, everything else below SR. **Crucially, OP15-0
 
 **Remaining position: 3 boxes, $79.68 cost, ~$88 net sealed.** Do not open them. The one thing the rip bought is first-hand evidence that these are worth more sealed than open.
 
+**✅ DECISION 2026-08-25: HOLD, NOT LIST.** Michael: *"maybe we just sit on these until the next set comes out as all the previous sets have gone way up."* **The data backs him hard.** Every Illustration Box on TCGCSV today:
+
+| volume | market |
+|---|---|
+| **Vol. 1** | **$269.44** |
+| Vol. 2 | $142.07 |
+| Vol. 3 | $91.04 |
+| Vol. 4 | $81.53 |
+| Vol. 5 | $99.93 |
+| **Vol. 6** | **$103.04** |
+| **Vol. 7 (his)** | **$37.00** |
+| Vol. 8 | $38.10 |
+
+All launched in the same **$30-40** band. **Vol. 6, the volume immediately before his, is at $103.** Three boxes at Vol. 6 money is **~$300 against ~$88 today.**
+
+**But the trigger is NOT the next release, and that part of his plan needed correcting.** **Vol. 8 already exists and is already priced at $38.10 — and Vol. 7 is still $37.** The next volume has effectively landed and did nothing. The driver is **going out of print and retail stock drying up**; Bandai does not reprint these, so supply only shrinks. That lift arrives months-to-years after sell-through, not the week a new volume drops. **This is a year-plus hold, not a wait-for-Vol-9 trade.**
+
+**Two caveats stated to him rather than glossed:**
+1. **Snapshot, not a time series.** I can see what old volumes cost today; I cannot see Vol. 6's price history to prove it climbed from $35. The inference is strong because they all launched in the same band, but it is an inference.
+2. **Not a clean ramp by age.** Vol. 4 ($81.53) is cheaper than Vol. 3 ($91.04) and Vol. 5 ($99.93). **Which promos are in the box matters as much as age**, and Vol. 1 and 2 sit well ahead of the pattern.
+
+`scripts/q-op-ib-history.ts` regenerates this table from TCGCSV category 68.
+
 **Lesson for me:** when he gives a reason for wanting to do something, engage with the reason he actually gave. I priced the promos, which was true and irrelevant, instead of researching pack chases, which was the question.
 
 **Tooling note:** `https://tcgcsv.com/tcgplayer/categories` is not a valid endpoint (returns an HTML page, not JSON). Use `/tcgplayer/<categoryId>/groups` and `/products` and `/prices` directly, as `scripts/sync-market-prices-category.ts` does. **One Piece is category 68**, alongside 3 Pokemon, 71 Lorcana, 85 Pokemon Japan.
