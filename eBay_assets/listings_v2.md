@@ -1671,3 +1671,31 @@ eBay net is derived from **his own PE bundle history** (~15% of item price in fe
 **THE REASON TRADEPOST WON IS SHIPPING, AND IT GENERALISES.** One **$8.12** label carried all four. On eBay that is four buyers, four packages, and eBay charges **13.25% on the buyer-paid shipping** — roughly **$1.19 of pure fee per sale plus $0.40 each**, about **$6.40 of cost that exists only because the units ship separately**. **Rule: when a buylist pays close to the eBay net, multi-unit shipping tips it — one box beats four.** Same mechanism that made the pin twofer the best pin sale ($14.42/pin vs $13.72).
 
 **Timing footnote, stated honestly:** PE market was **$80.51** on 8/22, so he sold at **89% of market** that day; it has since run to **$89.38** (8/24), after dipping to $77.68 on 8/23. On the day, he beat every real alternative.
+
+
+---
+
+### One Piece Illustration Box Vol. 7 — rip or sell? (asked 2026-08-25)
+
+Michael was considering ripping one *"to sell the hits"*, reasoning that booster boxes get case-mapped and searched for their guaranteed hits while Illustration Boxes do not. **Answer: don't rip — there are no hits in the box to chase.**
+
+**IB-07 contents are 4 booster packs + 2 promos, and the promos are FIXED.** Every box holds the same Silvers Rayleigh and the same Shakuyaku (alt-art OP14-108 / OP14-107). Nothing in the product is random except the 4 packs.
+
+Live TCGCSV (category **68** = One Piece Card Game):
+
+| | market |
+|---|---|
+| Silvers Rayleigh promo (709094) | **$1.25** |
+| Shakuyaku promo (709096) | **$0.99** |
+| 2x OP-15 "Adventure on Kami's Island" packs | $15.18 ($7.59 ea) |
+| 2x OP-16 "The Time of Battle" packs | $13.86 ($6.93 ea) |
+| **contents** | **$31.28** |
+| **sealed box (694721)** | **$37.00** |
+
+**The two "guaranteed hits" are worth $2.24 combined.** Ripping turns a $37.00 item into $31.28 of parts — **$5.72 destroyed before listing anything**, then six items to sell instead of one. Sealed at $35.99 nets ~$29.50; ripped and sold as a pack lot, realistically ~$24 plus two promos too cheap to list individually.
+
+**On the mapping premise: correct instinct, wrong product.** Case/box mapping IS real and well documented in One Piece — booster boxes carry a fixed hit count in a known arrangement, shops search the case, and the picked-over boxes go out the door. That is a genuine reason to distrust sealed booster boxes. **But an Illustration Box cannot be searched because there is nothing in it to find.** No random hit slot. Which is also exactly why ripping one has no upside.
+
+**Position, still unlisted after 22 days:** 4 boxes @ **$26.56** = $106.24, bought 2026-08-03. Market $37.00 and holding steady ($38.07 → $37.02 across five days). At **$35.99** that is **~$29.50 net each, ~$118 for four**. Offered to draft the qty-4 listing, same shape as the Lorcana Trove.
+
+**Tooling note:** `https://tcgcsv.com/tcgplayer/categories` is not a valid endpoint (returns an HTML page, not JSON). Use `/tcgplayer/<categoryId>/groups` and `/products` and `/prices` directly, as `scripts/sync-market-prices-category.ts` does. **One Piece is category 68**, alongside 3 Pokemon, 71 Lorcana, 85 Pokemon Japan.
