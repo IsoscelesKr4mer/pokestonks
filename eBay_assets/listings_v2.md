@@ -1715,6 +1715,16 @@ Live TCGCSV (category **68** = One Piece Card Game):
 
 **The thin sealed margin is what makes ripping defensible.** $29.50 net against $26.56 cost is **$2.94/box, 11% ROI, $11.76 for all four**. Expected card value from 4 packs is roughly **$8-20**, so **ripping is still negative EV** — but the distribution is fat-tailed, and one Secret Rare at 16%/box roughly matches the entire sealed outcome. **Recommendation given: rip ONE, list the other three.** One box is a $29.50 lottery ticket with a 16% shot at a card worth more than the whole sealed position; four boxes trades $118 of certainty for a coin flip.
 
+**🔴 HE RIPPED ONE ON 2026-08-25. IT RETURNED ABOUT $1.**
+
+Only hit was **Sabo OP15-046 SR**, everything else below SR. **Crucially, OP15-046 exists twice**: base SR at **$0.74** and Alternate Art SR at **$8.71**. Cropped and enlarged the bottom-right corner of his photo to check — `OP15-046` `SR` with **no star above it**, so it is the **base at $0.74**. The full-bleed art and manga-panel background make it *look* like an alt art; **One Piece base SRs are full-art too, and the star is the only reliable tell** ([[reference_one_piece_card_identification]]).
+
+**Result: ~$1 of cards against the $29.50 the box would have netted sealed. The rip cost ~$28** ($26.56 of cost, ~$28.50 of opportunity). Expected value from 4 packs was $8-20 and it landed under; the 16% Secret Rare did not come, which is what 16% usually does.
+
+**This was my recommendation as much as his** — I said rip one, list the other three — and it is worth owning that plainly rather than filing it as his gamble. The EV was correctly described as negative before he opened it; the tail just did not hit.
+
+**Remaining position: 3 boxes, $79.68 cost, ~$88 net sealed.** Do not open them. The one thing the rip bought is first-hand evidence that these are worth more sealed than open.
+
 **Lesson for me:** when he gives a reason for wanting to do something, engage with the reason he actually gave. I priced the promos, which was true and irrelevant, instead of researching pack chases, which was the question.
 
 **Tooling note:** `https://tcgcsv.com/tcgplayer/categories` is not a valid endpoint (returns an HTML page, not JSON). Use `/tcgplayer/<categoryId>/groups` and `/products` and `/prices` directly, as `scripts/sync-market-prices-category.ts` does. **One Piece is category 68**, alongside 3 Pokemon, 71 Lorcana, 85 Pokemon Japan.
