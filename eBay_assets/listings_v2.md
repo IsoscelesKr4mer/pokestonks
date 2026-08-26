@@ -1800,3 +1800,24 @@ Fresh prices first — the nightly sync had not run since 8/24, so `scripts/sync
 **No UPC on any of the four** — product not in hand, no barcode to read, same exemption the Logofractor presale carries. **Add them when the boxes land on 2026-09-16**; a missing UPC is what killed views on the NBA listings ([[feedback_listing_preflight_upc]]).
 
 **Photos are the vault catalog images converted to JPEG and copied into the `ebay-listings` bucket under stable names** rather than linked from `catalog/`. That bucket is owned by the image pipeline and a refresh could otherwise swap the picture underneath a live listing.
+
+
+---
+
+### Wyatt Sanford Green Mojo — one card, two listings (fixed 2026-08-26)
+
+Michael: *"How do I still have a Wyatt Sanford green mojo still listed when I already sold and shipped that???"*
+
+**Two `baseball_cards` rows describe the SAME physical card**: **#4** (`2026 Bowman Chrome Prospects`, "Green Mojo Refractor (approx /399)") and **#171** (`2026 Bowman Chrome`, "Green Mojo Refractor /399 (227/399)"). Both fronts read **227/399** on the same BCP-66.
+
+**It had already been caught, and the fix did not hold.** #171's own notes, written **2026-08-17**: *"DUPLICATE ROW of card #4, same physical card... removed from sale so the same serial cannot be listed twice."* Listing **168622269907 was created 2026-08-18 05:47 UTC = 2026-08-17 22:47 PDT — about 47 minutes after that note.** A bulk lister ran straight behind the fix and put it back up.
+
+Then **#4 sold 2026-08-22 for $9.00** (order 21-15047-83095) and shipped, leaving #171's listing live for a card that had left the house.
+
+**Fixed:** `168622269907` ended (QuantitySold 0, so no buyer was affected), #171 set `for_sale=false`, `status='photographed'`, eBay ids and asking price cleared, row kept for its photos. `scripts/fix-sanford-dupe-0826.ts`.
+
+**🔴 WHY THE GUARD FAILED, BECAUSE IT WILL REPEAT.** The bulk lister selects `for_sale = true AND status IN ('listed','priced','photographed')`. #171 was `for_sale=true` / `status='listed'` — a perfect match. **The only thing keeping a known duplicate off eBay was a single boolean, and that boolean was flipped back within the hour.** A note in `notes` is documentation, not a constraint.
+
+**Swept for the same shape and found 3 more:** #5 Eric Hartman, #102 Bryan Reynolds, #152 Yordan Alvarez were all `status='sold'` with `for_sale=true`. All three pointed at **Completed** listings so nothing was live, and `status='sold'` kept them out of the lister's filter regardless — the belt held where the braces slipped. Cleared with `scripts/fix-sold-forsale-flags.ts`; **zero sold-but-for-sale rows remain**.
+
+**Proposed real fix (not built, offered to him):** have the lister refuse to list a card when another row shares the same player + card number + parallel + serial, so a duplicate cannot return on a flag flip.
