@@ -1,3 +1,5 @@
+export {}; // module scope: these scripts have no imports, and without this TS
+// treats them as global and their top-level main()/get() collide across files.
 /**
  * Price every card from the 2026-08-24 two-Play-Booster Hobbit rip off Scryfall,
  * which carries TCGplayer prices per printing (nonfoil and foil separately).

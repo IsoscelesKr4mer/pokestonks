@@ -1,3 +1,5 @@
+export {}; // module scope: these scripts have no imports, and without this TS
+// treats them as global and their top-level main()/get() collide across files.
 /** Price the two IB-07 promos off TCGCSV, the same source the vault syncs from. */
 const WANT = new Set([709094, 709096, 694721]);
 async function get(u: string) {

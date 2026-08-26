@@ -1,3 +1,5 @@
+export {}; // module scope: these scripts have no imports, and without this TS
+// treats them as global and their top-level main()/get() collide across files.
 /** Every One Piece Illustration Box on TCGCSV, to test the "older ones went up" thesis. */
 async function get(u: string) {
   const r = await fetch(u, { headers: { 'User-Agent': 'pokestonks/0.1' } });
