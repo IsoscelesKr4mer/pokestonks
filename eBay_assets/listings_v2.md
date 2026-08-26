@@ -1821,3 +1821,30 @@ Then **#4 sold 2026-08-22 for $9.00** (order 21-15047-83095) and shipped, leavin
 **Swept for the same shape and found 3 more:** #5 Eric Hartman, #102 Bryan Reynolds, #152 Yordan Alvarez were all `status='sold'` with `for_sale=true`. All three pointed at **Completed** listings so nothing was live, and `status='sold'` kept them out of the lister's filter regardless — the belt held where the braces slipped. Cleared with `scripts/fix-sold-forsale-flags.ts`; **zero sold-but-for-sale rows remain**.
 
 **Proposed real fix (not built, offered to him):** have the lister refuse to list a card when another row shares the same player + card number + parallel + serial, so a duplicate cannot return on a flag flip.
+
+
+---
+
+### TradePost — 2x Bowman NBA Mega Box, $150 (2026-08-26)
+
+He asked *"i can sell both my boxes on tradepost for $150 total then i pay for shipping should i take it"*, then sent the TradePost sold confirmation.
+
+**Sold, booked, realized $9.42.** Gross **$150.00** ($75/box), cost **$132.58** ($66.29/box, pu549 Fred Meyer 2026-08-10), shipping **$8.00 ESTIMATED**. **eBay listing 168604274457 ended and verified `Ended`** — he held 0 boxes with 2 still listed at $89.99, which was the urgent part.
+
+**Why take it — it was a dead heat, and the tiebreakers decided it:**
+
+| route | net | profit |
+|---|---|---|
+| **TradePost $150** | ~$142.00 | **~$9.42** |
+| eBay both at $84.99 | $142.32 | $9.74 |
+| eBay both at $89.99 (the live ask) | $150.88 | $18.30 |
+
+**TradePost and eBay-at-$84.99 were 32 cents apart.** The $89.99 row looked better but had produced **nothing in 15 days at 0 watchers**; moving them meant $84.99 or less, which erased the gap. Their offer was **88% of his realistic ask**, right on the threshold from the bundle work (Prismatic won at 90%, Destined Rivals was a wash at 86%) — and unlike the bundles, eBay had given him zero on this product.
+
+**THE REAL FINDING IS THE BUY PRICE, NOT THE EXIT.** He paid **$66.29** at Fred Meyer for a box whose single-box sold comps cluster at **$79-85 item price, ~$89-95 all-in**, making **break-even $79.30 the day he bought it**. His $89.99 + ~$8 shipping was ~$98 all-in, above every single-box comp on his own screenshot. Same shape as the Kayou Naruto boxes: grocery-store sealed keeps landing 5-10% margins that one slow month erases. **Treat $66 NBA megas as a no under ~$60.**
+
+**Reading his sold-comps screenshot: most of the "expensive" ones were not single boxes.** $1,999.99 was a **20-box lot** ($100/box), $157.98 a **2-box lot** ($79/box), $147.50 a mixed lot with Chrome + Hoops + a Jordan card. Only two genuine singles cleared above the cluster — **$122.40 and $127.99, both from sellers running free shipping + Best Offer**, one with 38.8K feedback. Reported that to him but did **not** recommend free shipping ([[feedback_never_offer_free_shipping]]); cutting the item price reaches the same all-in and nets more.
+
+**🔴 SCRIPT BUG CAUGHT IN USE: the booking loop iterated LOTS, not UNITS.** pu549 is one lot of qty 2, so it booked a single sale and left the second box showing as held. The Prismatic version had worked only because that sale was four separate lots of one. Caught it on the output line (`NBA mega boxes now held: 1`), booked the missing unit into the same `sale_group_id`, and fixed the script to expand each lot to its remaining units. **Always check the trailing held count after booking a multi-unit sale.**
+
+**Shipping is an estimate and is flagged as such.** The TradePost "CHA CHING" screen shows the sale price but not the label. $8.00 booked into `fees_cents` (based on the $8.12 PE label for a heavier box) so realized profit is not overstated by ~$8; **replace with the real figure when the payout screen posts.**
