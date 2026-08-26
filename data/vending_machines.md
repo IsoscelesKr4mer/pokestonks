@@ -11,6 +11,27 @@ multiple, or nothing. Times can change; Michael updates them and I revise here.
 | Shoreline Safeway | Shoreline, WA (further down Aurora, past Fred Meyer) | **:07 and :37** | 2026-08-13 |
 | Winco | Edmonds area, near the Safeway machine | :15 and :45 | 2026-07-12 |
 
+## What the machines actually stock
+
+**Bundles currently in rotation** (Michael, 2026-08-26): **Prismatic Evolutions, Destined Rivals, Ascended Heroes, Chaos Rising, Pitch Black, Journey Together.** That is the list — a product existing on TCGplayer says nothing about whether the machine carries it.
+
+His own log agrees. Every bundle that has ever appeared in `drop_log.csv`, bought or just seen:
+
+| bundle | appearances | still current? |
+|---|---|---|
+| Ascended Heroes | 10 | ✅ |
+| Prismatic Evolutions | 10 | ✅ |
+| Destined Rivals | 8 | ✅ |
+| Pitch Black | 7 | ✅ (seen often, never bought) |
+| Chaos Rising | 5 | ✅ |
+| Journey Together | 2 | ✅ |
+| White Flare | 5 | ❌ rotated out, last bought 2026-07-20 |
+| Black Bolt | 1 | ❌ rotated out, last bought 2026-07-08 |
+
+Purchases also show **Perfect Order** (last 2026-06-30) and **Phantasmal Flames** (last 2026-05-30), both rotated out. So the roster turns over roughly quarterly, and **Pitch Black is in the machine but he has never bought one** — which is why it shows in `seen` rows and not in purchases.
+
+**Practical rule: price a sighting against the roster, not against the catalog.** On 2026-08-26 I mis-heard a Mega Evolution booster PACK as a bundle, priced it as one, and told him he had passed up ~$22. Mega Evolution bundles are **not stocked in these machines at all**, and the pack was worth about $1.50 net over the $5.00 vending price. Leaving it was correct.
+
 ### ✅✅ EDMONDS :55 CONFIRMED A SECOND TIME, 2026-08-24 morning. Two clean reads now.
 
 Michael asked for the time at **09:54**, tapped the **09:55** mark, and a **Mega Evolution booster pack** came out. **He left it.**
