@@ -13,7 +13,7 @@ multiple, or nothing. Times can change; Michael updates them and I revise here.
 
 ## What the machines actually stock
 
-**Bundles currently in rotation** (Michael, 2026-08-26): **Prismatic Evolutions, Destined Rivals, Ascended Heroes, Chaos Rising, Pitch Black, Journey Together.** That is the list — a product existing on TCGplayer says nothing about whether the machine carries it.
+**Bundles currently in rotation** (Michael, 2026-08-26): **Prismatic Evolutions, Destined Rivals, Ascended Heroes, Chaos Rising, Pitch Black, Journey Together, Perfect Order.** That is the list — a product existing on TCGplayer says nothing about whether the machine carries it.
 
 His own log agrees. Every bundle that has ever appeared in `drop_log.csv`, bought or just seen:
 
@@ -28,7 +28,9 @@ His own log agrees. Every bundle that has ever appeared in `drop_log.csv`, bough
 | White Flare | 5 | ❌ rotated out, last bought 2026-07-20 |
 | Black Bolt | 1 | ❌ rotated out, last bought 2026-07-08 |
 
-Purchases also show **Perfect Order** (last 2026-06-30) and **Phantasmal Flames** (last 2026-05-30), both rotated out. So the roster turns over roughly quarterly, and **Pitch Black is in the machine but he has never bought one** — which is why it shows in `seen` rows and not in purchases.
+**Perfect Order is still stocked** even though he has not bought a bundle since 2026-06-30 — the drop log has **24 Perfect Order sightings**, the most recent on **2026-08-21**. **Phantasmal Flames** (last purchase 2026-05-30) does appear to be gone. So the roster turns over roughly quarterly, and **Pitch Black is in the machine but he has never bought one**, which is why it shows in `seen` rows and not in purchases.
+
+**🔴 READ THE DROP LOG FOR AVAILABILITY, NOT THE PURCHASE TABLE.** I made this mistake twice in one message: I said Pitch Black was absent (it has 7 log appearances, all `seen`) and that Perfect Order had rotated out (24 sightings, latest 8/21). **A gap in purchases means he stopped buying it, not that the machine stopped stocking it.** White Flare (last seen 2026-07-20) and Black Bolt (last seen 2026-07-12) are genuinely gone — the drop log agrees there.
 
 **Practical rule: price a sighting against the roster, not against the catalog.** On 2026-08-26 I mis-heard a Mega Evolution booster PACK as a bundle, priced it as one, and told him he had passed up ~$22. Mega Evolution bundles are **not stocked in these machines at all**, and the pack was worth about $1.50 net over the $5.00 vending price. Leaving it was correct.
 
