@@ -1751,3 +1751,35 @@ All launched in the same **$30-40** band. **Vol. 6, the volume immediately befor
 **Lesson for me:** when he gives a reason for wanting to do something, engage with the reason he actually gave. I priced the promos, which was true and irrelevant, instead of researching pack chases, which was the question.
 
 **Tooling note:** `https://tcgcsv.com/tcgplayer/categories` is not a valid endpoint (returns an HTML page, not JSON). Use `/tcgplayer/<categoryId>/groups` and `/products` and `/prices` directly, as `scripts/sync-market-prices-category.ts` does. **One Piece is category 68**, alongside 3 Pokemon, 71 Lorcana, 85 Pokemon Japan.
+
+
+---
+
+### 30th Celebration — hold the PC ETBs, list the rest (decided 2026-08-26)
+
+Michael: *"I think we list all my 30th anniversary stuff besides the Pokemon Center ATBs"*, then *"I'm pretty sure the only new ETBs moving forward will be non pokemon center ETBs"*.
+
+Fresh prices first — the nightly sync had not run since 8/24, so `scripts/sync-market-prices-category.ts 3 --apply` was run before advising (57 snapshots written for 2026-08-26).
+
+| item | comp | net/ea | since 8/14 |
+|---|---|---|---|
+| **PC ETB** x2 | $493.12 | $419.48 | **−6.9%** |
+| Bundle x6 | $89.89 | $75.21 | −3.1% |
+| Sticker Lucario | $39.92 | $32.74 | −40.4% |
+| Sticker Exeggutor | $37.65 | $30.80 | −47.1% |
+| Knock Out | $29.00 | $23.40 | −5.5% |
+
+**🔴 I ARGUED AGAINST HOLDING THE ETBs AND I WAS WRONG. THE COMPARISON WAS BAD.** I called the ETB "the only thing still bleeding" by measuring it against bundles and stickers. **Its actual comparable is the STANDARD 30th ETB**, and against that it is the strongest item in the set:
+
+| | 8/14 | 8/26 | |
+|---|---|---|---|
+| Standard 30th ETB (ci133869) | $191.47 | $164.96 | **−13.8%** |
+| **PC ETB (ci134518)** | $529.54 | $493.12 | **−6.9%** |
+
+**The premium has been WIDENING, not compressing: 2.54x on 8/17 → 2.99x today.** The market is repricing the Pokemon Center version *up* relative to the standard one, which is exactly his thesis. **Always compare a product to its own comparable before calling it weak.**
+
+**Verified about the product:** genuinely Pokemon Center exclusive, **11 packs instead of 9**, and **two full-art Nidorina promos, one carrying the Pokemon Center logo** that exists in no other product. **Not verified:** his claim that future ETBs will all be non-PC — that is a forward call on Pokémon's roadmap and nothing found supports or refutes it. Told him to treat that part as his read, not data.
+
+**Caveat that survives:** the whole 30th complex is negative into release, so "holding better" still means losing more slowly, and **9/16 is when Pokemon Center ships every preorder and the float expands**. If the premium widens through release he is right; if release is when it compresses, that is the scenario that hurts.
+
+**Decision: hold both PC ETBs. List 6 bundles + 2 stickers + 1 Knock Out — $538 net, $315 profit, all presale to 2026-09-16** (21 days out, inside eBay's 30-day presale window).
