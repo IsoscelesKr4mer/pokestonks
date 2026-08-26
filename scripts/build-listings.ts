@@ -48,7 +48,7 @@ function capTitle(parts: string[], num: string | null): string {
 
 async function main() {
   const rows = await sql`SELECT id,player,set_name,year,card_number,parallel,asking_price_cents,notes,photo_urls
-    FROM baseball_cards WHERE for_sale=true AND status='priced' AND asking_price_cents IS NOT NULL
+    FROM baseball_cards WHERE for_sale=true AND duplicate_of_id IS NULL AND status='priced' AND asking_price_cents IS NOT NULL
     AND coalesce(notes,'') NOT ILIKE '%in-person auto%'
     AND coalesce(notes,'') NOT ILIKE '%confirm parallel%' AND coalesce(parallel,'') NOT ILIKE '%(CONFIRM)%' ORDER BY asking_price_cents DESC`;
   const out: any[] = []; const graded: string[] = []; const longTitles: string[] = [];

@@ -104,6 +104,7 @@ async function loadRows(g: GroupDef): Promise<Row[]> {
            ebay_item_id, ebay_sku, photo_urls, COALESCE(notes,'') AS notes
     FROM baseball_cards
     WHERE for_sale = true
+      AND duplicate_of_id IS NULL
       AND status IN ('listed','priced','photographed')
       AND asking_price_cents IS NOT NULL
       AND asking_price_cents <= 1000

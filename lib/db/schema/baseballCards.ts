@@ -1,6 +1,7 @@
 import {
   pgTable,
   bigserial,
+  bigint,
   uuid,
   text,
   integer,
@@ -47,6 +48,17 @@ export const baseballCards = pgTable(
     ebaySku: text('ebay_sku'),
     soldPriceCents: integer('sold_price_cents'),
     soldDate: date('sold_date'),
+    /**
+     * Set when this row is a SECOND RECORD of the card in another row, not a
+     * second copy of the card. Owning two identical cards is normal and both
+     * stay sellable; this is only for one card catalogued twice.
+     *
+     * The `duplicate_not_for_sale` CHECK makes for_sale=true impossible while
+     * this is set, so a lister that tries to relist the duplicate fails loudly
+     * instead of quietly minting a rival listing. Added after the same Wyatt
+     * Sanford card was listed twice and one copy sold and shipped.
+     */
+    duplicateOfId: bigint('duplicate_of_id', { mode: 'number' }),
     notes: text('notes'),
     createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
     updatedAt: timestamp('updated_at', { withTimezone: true }).defaultNow().notNull(),
@@ -65,6 +77,16 @@ export const baseballCards = pgTable(
     soldPriceCheck: check(
       'baseball_cards_sold_price_nonneg',
       sql`${t.soldPriceCents} IS NULL OR ${t.soldPriceCents} >= 0`
+    ),
+    duplicateOfIdx: index('baseball_cards_duplicate_of_idx').on(t.duplicateOfId),
+    duplicateNotSelfCheck: check(
+      'baseball_cards_duplicate_not_self',
+      sql`${t.duplicateOfId} IS NULL OR ${t.duplicateOfId} <> ${t.id}`
+    ),
+    // The whole point: a row marked as a duplicate record can never be for sale.
+    duplicateNotForSaleCheck: check(
+      'baseball_cards_duplicate_not_for_sale',
+      sql`${t.duplicateOfId} IS NULL OR ${t.forSale} = false`
     ),
     ownPolicy: pgPolicy('own baseball_cards', {
       for: 'all',

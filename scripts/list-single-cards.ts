@@ -91,17 +91,46 @@ async function main() {
   // caught that twice. If another vault row for the same card is already
   // listed, the right move is to raise that listing's quantity, not create a
   // rival one, so refuse and say so.
-  const dupes: any = await sql`
+  // Refuse duplicate RECORDS before anything is published. The CHECK constraint
+  // would stop the `for_sale=true` write at the end anyway, but by then the eBay
+  // listing exists and only the DB write fails — the worst possible ordering.
+  const dupRows: any = await sql`
+    SELECT id, duplicate_of_id FROM baseball_cards
+    WHERE id = ANY(${IDS}) AND duplicate_of_id IS NOT NULL`;
+  if (dupRows.length) {
+    console.error('REFUSING: these rows are duplicate records of another card, not separate cards.');
+    for (const d of dupRows) console.error(`  #${d.id} is a duplicate record of #${d.duplicate_of_id}`);
+    console.error('List the original row instead, or clear duplicate_of_id if that is wrong.');
+    process.exit(1);
+  }
+
+  // 2026-08-26: this guard existed and still let the same Wyatt Sanford card get
+  // listed twice, because it matched `parallel` and `set_name` EXACTLY. The two
+  // rows read "Green Mojo Refractor (approx /399)" vs "Green Mojo Refractor /399
+  // (227/399)", and "2026 Bowman Chrome Prospects" vs "2026 Bowman Chrome". Same
+  // card, different strings, no match — so it minted a rival listing and one copy
+  // later sold and shipped while the other stayed live.
+  //
+  // Now compares a NORMALISED parallel (parentheticals and /N serials stripped)
+  // and drops set_name from the join, since card_number already pins the card.
+  //
+  // No backslashes in these regexes on purpose: '\(' and '\\(' both reach
+  // Postgres as a bare '(' and silently turn the pattern into a capture group
+  // that eats the whole string. POSIX classes survive JS escaping.
+  const NORM = `btrim(regexp_replace(regexp_replace(regexp_replace(
+    lower(coalesce(%s.parallel,'base')), '[(][^)]*[)]', '', 'g'),
+    '[[:space:]]*/[[:space:]]*[0-9]+', '', 'g'),
+    '[[:space:]]+', ' ', 'g'))`;
+  const dupes: any = await sql.unsafe(`
     SELECT a.id AS want, b.id AS existing, b.ebay_item_id, b.ebay_sku, b.asking_price_cents AS ask
     FROM baseball_cards a
     JOIN baseball_cards b
       ON b.id <> a.id
      AND lower(b.player) = lower(a.player)
-     AND lower(b.set_name) = lower(a.set_name)
      AND coalesce(b.card_number,'') = coalesce(a.card_number,'')
-     AND lower(coalesce(b.parallel,'')) = lower(coalesce(a.parallel,''))
+     AND ${NORM.replace(/%s/g, 'b')} = ${NORM.replace(/%s/g, 'a')}
      AND b.status = 'listed' AND b.ebay_item_id IS NOT NULL
-    WHERE a.id = ANY(${IDS})`;
+    WHERE a.id = ANY($1)`, [IDS as any]);
   if (dupes.length) {
     console.error('REFUSING: these cards are already listed under another vault row.');
     for (const d of dupes) {
