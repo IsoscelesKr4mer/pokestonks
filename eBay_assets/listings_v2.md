@@ -1783,3 +1783,20 @@ Fresh prices first — the nightly sync had not run since 8/24, so `scripts/sync
 **Caveat that survives:** the whole 30th complex is negative into release, so "holding better" still means losing more slowly, and **9/16 is when Pokemon Center ships every preorder and the float expands**. If the premium widens through release he is right; if release is when it compresses, that is the scenario that hurts.
 
 **Decision: hold both PC ETBs. List 6 bundles + 2 stickers + 1 Knock Out — $538 net, $315 profit, all presale to 2026-09-16** (21 days out, inside eBay's 30-day presale window).
+
+**🟢 ALL FOUR LIVE 2026-08-26**, `scripts/list-30th-presale.ts`. Verified Active via Trading API, category **261044** (CCG Sealed Boxes, same as the DR bundle and FPIC collection), `HideFromSearch: false`, Ground Advantage calculated, photo attached, each mapped **1x per unit**.
+
+| listing | SKU | ask | qty | comp |
+|---|---|---|---|---|
+| **#168639528385** Booster Bundle | `P30TH-BUNDLE` | **$89.99** | **6** | $89.89 |
+| **#168639528904** Tech Sticker Lucario | `P30TH-STICKER-LUCARIO` | $39.99 | 1 | $39.92 |
+| **#168639529399** Tech Sticker Alolan Exeggutor | `P30TH-STICKER-EXEGGUTOR` | $37.99 | 1 | $37.65 |
+| **#168639530062** Knock Out Collection | `P30TH-KNOCKOUT` | $28.99 | 1 | $29.00 |
+
+**Contents came from Pokemon's own product showcase, not inference.** The two Collections have `pack_count` NULL in the catalog, so there was nothing internal to rely on: **Booster Bundle 6 packs; Tech Sticker Collection 3 packs + foil promo + tech sticker sheet; Knock Out Collection 2 packs + foil Eevee + plastic coin.**
+
+**PRESALE is in every title and restated in every description with the 9/16 date.**
+
+**No UPC on any of the four** — product not in hand, no barcode to read, same exemption the Logofractor presale carries. **Add them when the boxes land on 2026-09-16**; a missing UPC is what killed views on the NBA listings ([[feedback_listing_preflight_upc]]).
+
+**Photos are the vault catalog images converted to JPEG and copied into the `ebay-listings` bucket under stable names** rather than linked from `catalog/`. That bucket is owned by the image pipeline and a refresh could otherwise swap the picture underneath a live listing.
