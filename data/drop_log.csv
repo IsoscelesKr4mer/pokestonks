@@ -179,34 +179,34 @@ date,day,time_local,location,result,product,qty,unit_cost,notes
 2026-07-27,Monday,17:37,Edmonds Safeway,hit,Destined Rivals Booster Bundle,1,30.00,:37 mark - CONFIRMS the new Safeway :37 partner mark; bought (DR = want)
 2026-07-28,Tuesday,10:05,Edmonds Safeway,hit,Destined Rivals Booster Pack,2,5.00,2 sitting right after a fresh restock (clerk closed door); bought both; nothing pulled after
 2026-07-28,Tuesday,10:07,Edmonds Safeway,miss,,,,"waited for :07 - nothing; buying the sitting DR at ~:05 likely already pulled it, OR restock shifted the timing (TBD)"
-2026-07-29,Wednesday,12:07,Edmonds Safeway,hit,Destined Rivals Booster Pack,1,5.00,":07 mark - bought (DR = want); confirms :07 alive after the 7/28 restock question"
-2026-07-29,Wednesday,12:37,Edmonds Safeway,seen,Surging Sparks Booster Pack,0,,":37 mark produced - single SS pack; left it"
-2026-07-29,Wednesday,12:37,Edmonds Safeway,seen,Pitch Black Booster Pack,0,,":37 mark produced alongside the SS single; left it (PB skip-tier)"
+2026-07-29,Wednesday,12:07,Edmonds Safeway,hit,Destined Rivals Booster Pack,1,5.00,:07 mark - bought (DR = want); confirms :07 alive after the 7/28 restock question
+2026-07-29,Wednesday,12:37,Edmonds Safeway,seen,Surging Sparks Booster Pack,0,,:37 mark produced - single SS pack; left it
+2026-07-29,Wednesday,12:37,Edmonds Safeway,seen,Pitch Black Booster Pack,0,,:37 mark produced alongside the SS single; left it (PB skip-tier)
 2026-07-29,Wednesday,14:23,Shoreline Fred Meyer,hit,Destined Rivals Booster Pack,2,5.00,":23 mark (drop lands :22:30) - bought both; time inferred from a ~2:29pm report, confirm if off"
-2026-07-29,Wednesday,16:23,Shoreline Fred Meyer,hit,Destined Rivals Booster Pack,2,5.00,":23 mark again (2nd FM trip today) - bought both"
-2026-07-29,Wednesday,18:07,Edmonds Safeway,hit,Destined Rivals Booster Pack,1,5.00,":07 mark again (3rd confirmed :07/:37 drop today) - bought"
+2026-07-29,Wednesday,16:23,Shoreline Fred Meyer,hit,Destined Rivals Booster Pack,2,5.00,:23 mark again (2nd FM trip today) - bought both
+2026-07-29,Wednesday,18:07,Edmonds Safeway,hit,Destined Rivals Booster Pack,1,5.00,:07 mark again (3rd confirmed :07/:37 drop today) - bought
 2026-07-30,Thursday,16:12,Edmonds Safeway,hit,Surging Sparks Booster Pack,1,5.00,"got there 4:12, late for the :07; nobody had tapped so this IS the :07 output sitting untapped - counts as a productive :07"
-2026-07-30,Thursday,16:12,Edmonds Safeway,hit,Destined Rivals Booster Pack,1,5.00,"same untapped :07 drop as the SS pack - two packs came out of that one mark"
-2026-07-31,Friday,10:07,Edmonds Safeway,hit,Destined Rivals Booster Pack,1,5.00,":07 mark - bought"
-2026-07-31,Friday,12:37,Edmonds Safeway,hit,Destined Rivals Booster Pack,1,5.00,":37 mark - single DR pack; bought (2nd Safeway trip today)"
-2026-07-31,Friday,14:37,Edmonds Safeway,hit,Surging Sparks Booster Pack,1,5.00,":37 mark - single SS pack; bought (3rd Safeway trip today)"
-2026-08-01,Saturday,18:07,Edmonds Safeway,hit,Destined Rivals Booster Pack,1,5.00,":07 mark - single DR pack; bought"
-2026-08-02,Sunday,10:17,Shoreline Fred Meyer,hit,Destined Rivals Booster Pack,1,5.00,"off-mark (:23/:53 are the marks) - DR pack sitting from an earlier drop; bought it and NOTHING pulled forward"
+2026-07-30,Thursday,16:12,Edmonds Safeway,hit,Destined Rivals Booster Pack,1,5.00,same untapped :07 drop as the SS pack - two packs came out of that one mark
+2026-07-31,Friday,10:07,Edmonds Safeway,hit,Destined Rivals Booster Pack,1,5.00,:07 mark - bought
+2026-07-31,Friday,12:37,Edmonds Safeway,hit,Destined Rivals Booster Pack,1,5.00,:37 mark - single DR pack; bought (2nd Safeway trip today)
+2026-07-31,Friday,14:37,Edmonds Safeway,hit,Surging Sparks Booster Pack,1,5.00,:37 mark - single SS pack; bought (3rd Safeway trip today)
+2026-08-01,Saturday,18:07,Edmonds Safeway,hit,Destined Rivals Booster Pack,1,5.00,:07 mark - single DR pack; bought
+2026-08-02,Sunday,10:17,Shoreline Fred Meyer,hit,Destined Rivals Booster Pack,1,5.00,off-mark (:23/:53 are the marks) - DR pack sitting from an earlier drop; bought it and NOTHING pulled forward
 2026-08-03,Monday,10:04,Edmonds Safeway,hit,Destined Rivals Booster Pack,2,5.00,"off-mark at :04 - NOT a fresh drop, 2 DR packs were already sitting; bought both. Nothing pulled forward. Michael unsure whether the :07/:37 marks still hold, he has not been going as often"
 2026-08-03,Monday,12:34,Edmonds Safeway,hit,Destined Rivals Booster Pack,1,5.00,"bought the sitting DR at :34, 3 min before the :37 - the buy PULLED THE :37 DROP IN EARLY. Early-pull mechanic CONFIRMED STILL ALIVE (answers the 8/2 software-patch worry)"
-2026-08-03,Monday,12:34,Edmonds Safeway,seen,Mega Evolution Booster Pack,0,,"came out of the pulled-forward :37 drop alongside a Journey Together single; left it"
-2026-08-03,Monday,12:34,Edmonds Safeway,seen,Journey Together Booster Pack,0,,"same pulled-forward :37 drop as the Mega Evolution single; left it. Real 12:37 slot should now be dead"
-2026-08-03,Monday,13:07,Edmonds Safeway,seen,Surging Sparks Booster Pack,0,,":07 mark produced on time while he stood there - CONFIRMS :07 still alive. Left it"
+2026-08-03,Monday,12:34,Edmonds Safeway,seen,Mega Evolution Booster Pack,0,,came out of the pulled-forward :37 drop alongside a Journey Together single; left it
+2026-08-03,Monday,12:34,Edmonds Safeway,seen,Journey Together Booster Pack,0,,same pulled-forward :37 drop as the Mega Evolution single; left it. Real 12:37 slot should now be dead
+2026-08-03,Monday,13:07,Edmonds Safeway,seen,Surging Sparks Booster Pack,0,,:07 mark produced on time while he stood there - CONFIRMS :07 still alive. Left it
 2026-08-03,Monday,13:07,Edmonds Safeway,seen,Chaos Rising Booster Pack,0,,"same :07 drop, product ID uncertain (Michael was not sure, maybe Chaos Rising). Left it"
 2026-08-03,Monday,13:37,Edmonds Safeway,seen,Pitch Black Booster Pack,0,,":37 mark produced on time after a ~15 min wait - THIRD mark confirmation today. Single PB pack, skip-tier; logged as seen/not bought (he vented rather than saying he bought it - correct me if he grabbed it)"
 2026-08-03,Monday,16:07,Edmonds Safeway,seen,Journey Together Booster Pack,0,,":07 mark on time - FOURTH mark confirmation today. 3-item drop (2x JT + 1x ME). Logged as seen/not bought, matching the 12:34 precedent where he left JT and ME singles; correct me if he grabbed them"
-2026-08-03,Monday,16:07,Edmonds Safeway,seen,Journey Together Booster Pack,0,,"second JT single from the same :07 three-item drop"
-2026-08-03,Monday,16:07,Edmonds Safeway,seen,Mega Evolution Booster Pack,0,,"third item from the same :07 drop alongside the 2 JT singles"
-2026-08-03,Monday,17:37,Edmonds Safeway,hit,Destined Rivals Booster Pack,1,5.00,":37 mark - FIFTH mark confirmation today. Multi-item drop with a Surging Sparks; bought both"
-2026-08-03,Monday,17:37,Edmonds Safeway,hit,Surging Sparks Booster Pack,1,5.00,"same :37 multi-item drop as the DR; bought"
-2026-08-03,Monday,17:37,Edmonds Safeway,seen,Mega Evolution Booster Pack,0,,"appeared in the machine after clicking (Charlotte was clicking) - looks like another early-pull of the next drop. Left it"
+2026-08-03,Monday,16:07,Edmonds Safeway,seen,Journey Together Booster Pack,0,,second JT single from the same :07 three-item drop
+2026-08-03,Monday,16:07,Edmonds Safeway,seen,Mega Evolution Booster Pack,0,,third item from the same :07 drop alongside the 2 JT singles
+2026-08-03,Monday,17:37,Edmonds Safeway,hit,Destined Rivals Booster Pack,1,5.00,:37 mark - FIFTH mark confirmation today. Multi-item drop with a Surging Sparks; bought both
+2026-08-03,Monday,17:37,Edmonds Safeway,hit,Surging Sparks Booster Pack,1,5.00,same :37 multi-item drop as the DR; bought
+2026-08-03,Monday,17:37,Edmonds Safeway,seen,Mega Evolution Booster Pack,0,,appeared in the machine after clicking (Charlotte was clicking) - looks like another early-pull of the next drop. Left it
 2026-08-04,Tuesday,11:07,Edmonds Safeway,hit,Ascended Heroes Booster Bundle,1,30.00,"AH bundle on the :07 mark; sold to Mario (Hawaii) $80 same day, Venmo received"
-2026-08-05,Wednesday,16:18,Shoreline Fred Meyer,seen,Pitch Black Booster Bundle,0,,"NEW MARK :18 confirmed - clicked at :18 after a couple of earlier clicks and it dropped. Multi-item drop. Second bundle in two days after the 8/04 AH bundle ended the drought; Pitch Black is skip-tier so he left it"
+2026-08-05,Wednesday,16:18,Shoreline Fred Meyer,seen,Pitch Black Booster Bundle,0,,NEW MARK :18 confirmed - clicked at :18 after a couple of earlier clicks and it dropped. Multi-item drop. Second bundle in two days after the 8/04 AH bundle ended the drought; Pitch Black is skip-tier so he left it
 2026-08-05,Wednesday,16:18,Shoreline Fred Meyer,seen,Chaos Rising Booster Pack,0,,same :18 multi-item drop; left it
 2026-08-05,Wednesday,16:18,Shoreline Fred Meyer,seen,Surging Sparks Booster Pack,0,,same :18 multi-item drop; left it
 2026-08-05,Wednesday,16:18,Shoreline Fred Meyer,seen,Perfect Order Booster Pack,0,,same :18 multi-item drop; left it
@@ -230,14 +230,14 @@ date,day,time_local,location,result,product,qty,unit_cost,notes
 2026-08-08,Saturday,12:46,Edmonds Safeway,seen,Mega Evolution Booster Pack,0,,"loaded-screen snapshot; available at 4.49 sticker, not bought"
 2026-08-08,Saturday,12:46,Edmonds Safeway,seen,Journey Together Booster Pack,0,,"loaded-screen snapshot; available at 4.49 sticker, not bought"
 2026-08-08,Saturday,12:46,Edmonds Safeway,seen,Surging Sparks Booster Pack,0,,"loaded-screen snapshot; available at 4.49 sticker, not bought"
-2026-08-08,Saturday,15:17,Shoreline Fred Meyer,hit,Destined Rivals Booster Pack,1,5.00,"ON the :17 mark. THIRD clean on-mark confirmation for this machine (after 8/06 16:17 and 8/07 12:17). Michael asked for the mark at 15:14 and hit it three minutes later"
-2026-08-09,Sunday,14:16,Edmonds Safeway,hit,Destined Rivals Booster Bundle,1,30.00,"ON the :16 mark. FOURTH straight on-mark confirmation of :16/:46. A WANTED bundle (DR) rather than skip-tier - fifth bundle since the drought broke and the second desirable one"
+2026-08-08,Saturday,15:17,Shoreline Fred Meyer,hit,Destined Rivals Booster Pack,1,5.00,ON the :17 mark. THIRD clean on-mark confirmation for this machine (after 8/06 16:17 and 8/07 12:17). Michael asked for the mark at 15:14 and hit it three minutes later
+2026-08-09,Sunday,14:16,Edmonds Safeway,hit,Destined Rivals Booster Bundle,1,30.00,ON the :16 mark. FOURTH straight on-mark confirmation of :16/:46. A WANTED bundle (DR) rather than skip-tier - fifth bundle since the drought broke and the second desirable one
 2026-08-10,Monday,,Edmonds Safeway,note,,,,"REPORTED MARK CHANGE to :28/:58, unconfirmed. Michael suspects the schedule moved off :16/:46. Note :28/:58 is the mark Edmonds ran until 2026-07-27, so this would be a revert rather than a new time"
-2026-08-10,Monday,16,Edmonds Safeway,miss,,0,,"Stood the :16 and nothing dropped. First sign the mark had moved off :16/:46"
+2026-08-10,Monday,16,Edmonds Safeway,miss,,0,,Stood the :16 and nothing dropped. First sign the mark had moved off :16/:46
 2026-08-10,Monday,28,Edmonds Safeway,seen,Pitch Black Booster Pack,0,,"Secondhand: another shopper reported a drop at :28 after Michael left, and the Pitch Black was still sitting there when he returned, corroborating it"
 2026-08-10,Monday,48,Edmonds Safeway,seen,Chaos Rising Booster Pack,0,,"EARLY-PULL PROBE. Michael told the other shopper to buy the sitting Pitch Black at :48; it pulled the next drop in early and produced a Chaos Rising. A trigger buy only pulls an ALREADY-QUEUED drop, so the next mark had to be :58. This NARROWS the next mark to roughly :50-:58, it does not pin :58. Not a confirmation"
 2026-08-11,Tuesday,10:38,Edmonds Safeway,hit,Destined Rivals Booster Pack,1,5.00,"OFF-MARK grab of leftover stock. Michael arrived roughly 10 minutes after the drop by his own estimate and nobody had bought it. 10:38 minus ~10 min lands near :28, which is CONSISTENT with the unconfirmed :28 mark but is NOT a confirmation because he did not witness the drop. The reliable signal here is that Edmonds stock SITS: a DR pack survived a full ~10 minutes unbought, matching the 08-08 pattern of loads carrying between marks"
-2026-08-11,Tuesday,11:26,Edmonds Safeway,miss,,0,,"Stood the :26 (one of two reported new marks). Nothing dropped. A Surging Sparks single was already sitting in the machine unsold from an earlier drop"
+2026-08-11,Tuesday,11:26,Edmonds Safeway,miss,,0,,Stood the :26 (one of two reported new marks). Nothing dropped. A Surging Sparks single was already sitting in the machine unsold from an earlier drop
 2026-08-11,Tuesday,11:28,Edmonds Safeway,miss,,0,,"Stood the :28 as well. Nothing dropped, Surging Sparks still sitting. Michael left for his car and wrote it off"
 2026-08-11,Tuesday,11:30,Edmonds Safeway,hit,Surging Sparks Booster Pack,1,5.00,"Bought the sitting Surging Sparks single at ~11:30 and a PRISMATIC EVOLUTIONS BUNDLE appeared. CORRECTED READ: I first wrote this up as a slot-blocking trigger buy. Michael refuted that same day - a jammed machine that nobody can buy from keeps stacking product for hours, so drops continue regardless of what is sitting there and nothing was ever blocked. With blocking ruled out, the bundle appearing at ~:30 is simply a drop landing on its real mark. Combined with the :26 and :28 both coming up empty, this points at a :30 mark, matching the 10:38 pack that had dropped ~10 min earlier (~10:28-10:30)"
 2026-08-12,Wednesday,17:55,Edmonds Safeway,hit,Surging Sparks Booster Pack,1,5.00,"AMBIGUOUS, does not test the mark. Michael bought it at 17:55 but does not know whether it was a fresh drop or stock that had been sitting. Both readings fit the current :00/:30 working estimate: if it was sitting it likely came from the 17:30 mark and sat ~25 min, consistent with the 08-11 finding that Edmonds stock survives well over 10 minutes unbought; if it was fresh it would imply a :55 mark and break the model. Needs a witnessed drop to settle"
@@ -245,11 +245,11 @@ date,day,time_local,location,result,product,qty,unit_cost,notes
 2026-08-13,Thursday,12:28,Edmonds Safeway,seen,Pitch Black Booster Pack,0,,"Sitting in the machine alongside the AH bundle and deliberately left. Confirms again that Edmonds stock accumulates rather than clearing, so a full screen is not evidence of a recent drop"
 2026-08-13,Thursday,,Edmonds Safeway,note,,,,"MARK CONFIRMED :28/:58. Michael closed out the question that had been open since 08-10. This is a REVERT, Edmonds ran :28/:58 until 07-27 then :07/:37 then :16/:46 and is now back on it"
 2026-08-13,Thursday,,Shoreline Fred Meyer,note,,,,"MARK CHANGED :17/:47 -> :15/:45. The old :17 was logged as confirmed 3x, but all three were on-mark PURCHASES (16:17, 12:17, 15:17), and a pack bought at :17 may have dropped at :15. Buying on a minute is weaker evidence than watching a drop land on it"
-2026-08-13,Thursday,,Shoreline Safeway,note,,,,"MARK CHANGED :25/:55 -> :07/:37. Retires the unresolved secondhand :22-ish/:52-ish tip from 07-30"
+2026-08-13,Thursday,,Shoreline Safeway,note,,,,MARK CHANGED :25/:55 -> :07/:37. Retires the unresolved secondhand :22-ish/:52-ish tip from 07-30
 2026-08-13,Thursday,17:37,Shoreline Safeway,hit,Destined Rivals Booster Bundle,1,30.00,"ON the :37. FIRST field test of the :07/:37 mark Michael confirmed earlier the same day, and it hit. Independent validation of the new time"
 2026-08-13,Thursday,17:45,Shoreline Fred Meyer,hit,Destined Rivals Booster Bundle,1,30.00,"ON the :45. FIRST field test of the revised :15/:45 mark (was :17/:47), and it hit. ROUTE NOTE: same run as the Shoreline Safeway :37 bundle eight minutes earlier, so the two Shoreline machines can be doubled up in one trip because their marks sit 8 minutes apart and so does the drive"
 2026-08-14,Friday,13:28,Edmonds Safeway,hit,Destined Rivals Booster Pack,1,5.00,"ON the :28. Another clean on-mark hit since the mark was confirmed on 08-13, so :28/:58 is holding"
-2026-08-14,Friday,13:28,Edmonds Safeway,seen,Mega Evolution Booster Pack,0,,"Also in the machine at the same time and deliberately left. Same load as the DR pack above"
+2026-08-14,Friday,13:28,Edmonds Safeway,seen,Mega Evolution Booster Pack,0,,Also in the machine at the same time and deliberately left. Same load as the DR pack above
 2026-08-14,Friday,15:57,Edmonds Safeway,hit,Destined Rivals Booster Pack,1,5.00,"EARLY PULL, not an on-mark hit. Michael bought at 15:57, one minute before the :58 (time corrected twice: logged as 16:58, then 16:57, actually 15:57, and it came BEFORE the Fred Meyer 16:15 buy), and the purchase pulled the queued drop in early: a Perfect Order pack and a Chaos Rising single came out, both left. CORRECTED: I first logged this as 16:58 ON the mark and called it the confirmation that pins the 30-minute cadence. It is not. A trigger buy shows a drop was ALREADY QUEUED near :58, which is consistent with the mark but is not the same as standing it and watching it land. I made this exact overclaim on the 08-10 early pull and Michael corrected it then too"
 2026-08-14,Friday,15:57,Edmonds Safeway,seen,Perfect Order Booster Pack,0,,"Came out on the early pull triggered by the DR purchase above, left in the machine"
 2026-08-14,Friday,15:57,Edmonds Safeway,seen,Chaos Rising Booster Pack,0,,"Came out on the same early pull, left in the machine"
@@ -261,14 +261,14 @@ date,day,time_local,location,result,product,qty,unit_cost,notes
 2026-08-14,Friday,17:45,Shoreline Fred Meyer,seen,Chaos Rising Booster Pack,0,,"Out on the same :45 drop, left"
 2026-08-15,Saturday,10:24,Edmonds Safeway,note,,,,"TRIGGER BUY, normal mechanics, no mark change. The Surging Sparks was left over from the previous (:58) drop. Michael bought it at 10:24 and that pulled the 10:28 drop in early. I first logged this as 'drop came early, possible mark shift' which was wrong: 10:24 is when he arrived and triggered, not when a drop landed on its own. :28:30 is untouched"
 2026-08-15,Saturday,10:24,Edmonds Safeway,hit,Surging Sparks Booster Pack,1,5.00,"Sitting when he arrived. Bought DELIBERATELY as a trigger to pull the next drop in, and it worked"
-2026-08-15,Saturday,10:24,Edmonds Safeway,hit,Destined Rivals Booster Pack,1,5.00,"Came out on the triggered drop"
-2026-08-15,Saturday,10:24,Edmonds Safeway,hit,Destined Rivals Booster Bundle,1,30.00,"Came out on the triggered drop. Best item of the pull"
+2026-08-15,Saturday,10:24,Edmonds Safeway,hit,Destined Rivals Booster Pack,1,5.00,Came out on the triggered drop
+2026-08-15,Saturday,10:24,Edmonds Safeway,hit,Destined Rivals Booster Bundle,1,30.00,Came out on the triggered drop. Best item of the pull
 2026-08-15,Saturday,10:24,Edmonds Safeway,seen,Perfect Order Booster Pack,0,,"Out on the triggered drop, left"
 2026-08-15,Saturday,10:24,Edmonds Safeway,seen,Chaos Rising Booster Pack,0,,"Out on the triggered drop, left"
 2026-08-15,Saturday,10:58,Edmonds Safeway,hit,Destined Rivals Booster Bundle,1,30.00,"ON the :58, SECOND DR bundle of the day from this machine, back to back with 10:24. Also a DR booster pack on this same drop. FIRST CLEAN :58 landing. The 08-14 attempt at 15:57 was a trigger buy, not a real on-mark drop, so this is what actually confirms the second half of :28:30/:58:30. Michael also noted back-to-back drops both carrying Destined Rivals product, which he has not seen before and which cuts against his one-DR-bundle-per-day assumption"
-2026-08-15,Saturday,14:28,Edmonds Safeway,hit,Prismatic Evolutions Booster Bundle,1,30.00,"ON the :28. Third clean on-mark landing at Edmonds today"
-2026-08-15,Saturday,14:28,Edmonds Safeway,hit,Destined Rivals Booster Pack,2,5.00,"Same :28 drop as the Prismatic bundle"
-2026-08-15,Saturday,14:28,Edmonds Safeway,seen,Pitch Black Booster Bundle,0,,"Out on the same :28 drop and left. SECOND bundle in one drop alongside the Prismatic"
+2026-08-15,Saturday,14:28,Edmonds Safeway,hit,Prismatic Evolutions Booster Bundle,1,30.00,ON the :28. Third clean on-mark landing at Edmonds today
+2026-08-15,Saturday,14:28,Edmonds Safeway,hit,Destined Rivals Booster Pack,2,5.00,Same :28 drop as the Prismatic bundle
+2026-08-15,Saturday,14:28,Edmonds Safeway,seen,Pitch Black Booster Bundle,0,,Out on the same :28 drop and left. SECOND bundle in one drop alongside the Prismatic
 2026-08-15,Saturday,14:28,Edmonds Safeway,seen,Pitch Black Booster Pack,0,,"Out on the same :28 drop, left"
 2026-08-15,Saturday,,Edmonds Safeway,note,,,,"⭐ RULE BROKEN, FIRST TIME ON RECORD. Edmonds put out TWO Destined Rivals bundles on the same day, back to back at 10:24 and 10:58. Michael: ''the first time I''ve ever seen a bundle come back to back on the same machine''. Across the previous six machine-sourced DR bundles no machine had ever repeated a SKU in a day, so this is a genuine first and it kills the one-per-machine-per-day assumption. MY ERROR: he reported this at 10:58 and I logged only the booster pack from that drop, missed the bundle, then wrote a ''rule refinement'' note claiming the rule held per-product. Both were wrong. Bundle backfilled"
 2026-08-15,Saturday,14:58,Edmonds Safeway,hit,Destined Rivals Booster Pack,1,5.00,"ON the :58. Fourth clean on-mark landing at Edmonds today, and the fourth consecutive mark this machine has produced on"
@@ -279,20 +279,20 @@ date,day,time_local,location,result,product,qty,unit_cost,notes
 2026-08-16,Sunday,11:15,Shoreline Fred Meyer,seen,Pitch Black Booster Pack,0,,"Out on the same :15 drop, left"
 2026-08-16,Sunday,11:15,Shoreline Fred Meyer,seen,Mega Evolution Booster Pack,0,,"Out on the same :15 drop, left"
 2026-08-16,Sunday,11:15,Shoreline Fred Meyer,seen,Journey Together Booster Bundle,0,,"Out on the same :15 drop, left. JT bundle market $47.06 against $30 vending, roughly $10 net, his thinnest bundle"
-2026-08-17,Monday,16:15,Shoreline Fred Meyer,hit,Destined Rivals Booster Bundle,1,30.00,"ON the :15"
+2026-08-17,Monday,16:15,Shoreline Fred Meyer,hit,Destined Rivals Booster Bundle,1,30.00,ON the :15
 2026-08-19,Wednesday,09:28,Edmonds Safeway,hit,Destined Rivals Booster Pack,1,5.00,"ON the :28:30 mark. Team Rocket grunt pack art, which is his glut art (22 spare), so it added inventory but unlocked no new art set. Ho-Oh remains the binding art at 0."
-2026-08-19,Wednesday,15:58,Edmonds Safeway,hit,Prismatic Evolutions Booster Bundle,1,30.00,"ON the :58:30 mark. Second clean on-mark landing at this machine today after the 09:28 pack."
+2026-08-19,Wednesday,15:58,Edmonds Safeway,hit,Prismatic Evolutions Booster Bundle,1,30.00,ON the :58:30 mark. Second clean on-mark landing at this machine today after the 09:28 pack.
 2026-08-19,Wednesday,15:58,Edmonds Safeway,seen,Surging Sparks Booster Pack,0,,"Out on the same :58 drop. Left in the machine for the person waiting behind him, not a giveaway from inventory."
-2026-08-20,Thursday,10:58,Edmonds Safeway,hit,Destined Rivals Booster Pack,1,5.00,"ON the :58:30 mark. Pack art not stated; Ho-Oh is the binding art for the loose art-set listing."
-2026-08-20,Thursday,13:45,Shoreline Fred Meyer,hit,Destined Rivals Booster Pack,1,5.00,"ON the :45:30 mark. Same trip as the Fred Meyer First Partner Series 2 restock."
-2026-08-20,Thursday,13:45,Shoreline Fred Meyer,hit,Surging Sparks Booster Pack,1,5.00,"ON the :45:30 mark. Same drop as the Destined Rivals pack."
+2026-08-20,Thursday,10:58,Edmonds Safeway,hit,Destined Rivals Booster Pack,1,5.00,ON the :58:30 mark. Pack art not stated; Ho-Oh is the binding art for the loose art-set listing.
+2026-08-20,Thursday,13:45,Shoreline Fred Meyer,hit,Destined Rivals Booster Pack,1,5.00,ON the :45:30 mark. Same trip as the Fred Meyer First Partner Series 2 restock.
+2026-08-20,Thursday,13:45,Shoreline Fred Meyer,hit,Surging Sparks Booster Pack,1,5.00,ON the :45:30 mark. Same drop as the Destined Rivals pack.
 2026-08-20,Thursday,13:58,Edmonds Safeway,miss,,0,,"Third dead pull in a row on the OLD :58 mark. The :58 had worked at 10:58 the same morning, so the schedule changed mid-day."
-2026-08-20,Thursday,14:08,Edmonds Safeway,miss,,0,,"Tapped after a sandwich break. Nothing."
-2026-08-20,Thursday,14:09,Edmonds Safeway,miss,,0,,"Another customer tapped it. Nothing. Independent confirmation the machine was still dead at :09."
+2026-08-20,Thursday,14:08,Edmonds Safeway,miss,,0,,Tapped after a sandwich break. Nothing.
+2026-08-20,Thursday,14:09,Edmonds Safeway,miss,,0,,Another customer tapped it. Nothing. Independent confirmation the machine was still dead at :09.
 2026-08-20,Thursday,14:10,Edmonds Safeway,hit,Destined Rivals Booster Pack,1,5.00,"NEW MARK :10. Multi-drop after three dead pulls: Surging Sparks, Destined Rivals and two unidentified products. Took only the DR pack."
 2026-08-20,Thursday,14:10,Edmonds Safeway,seen,Surging Sparks Booster Pack,0,,"Out on the same :10 drop, left."
 2026-08-21,Friday,09:40,Edmonds Safeway,hit,Destined Rivals Booster Pack,1,5.00,"Bought at :40, but this does NOT confirm :40 (see the 12:40 miss and the 13:05 off-mark find later the same day). Stock sitting at :40 is consistent with an earlier drop he found rather than one landing on the mark. Surging Sparks pack out at the same time, also bought."
-2026-08-21,Friday,09:40,Edmonds Safeway,hit,Surging Sparks Booster Pack,1,5.00,"Bought at :40 alongside the Destined Rivals pack. Same caveat: a buy on a minute does not establish the mark."
+2026-08-21,Friday,09:40,Edmonds Safeway,hit,Surging Sparks Booster Pack,1,5.00,Bought at :40 alongside the Destined Rivals pack. Same caveat: a buy on a minute does not establish the mark.
 2026-08-21,Friday,12:40,Edmonds Safeway,miss,,0,,"Dead on the :40, the same mark that produced two packs at 09:40 this morning. Nothing on the screen at all."
 2026-08-21,Friday,13:05,Edmonds Safeway,hit,Destined Rivals Booster Pack,1,5.00,"OFF-MARK, arrived early for the :10 and found THREE packs already sitting. So a drop landed between 12:41 and 13:04, which neither :10 nor :40 explains. Bought the DR pack; the purchase appeared to pull the next drop in. Two other packs left, unidentified."
 2026-08-21,Friday,17:50,Edmonds Safeway,miss,,0,,"Dead, empty screen. Second half of the clean no-purchase test with the 17:55 appearance below."
@@ -308,4 +308,4 @@ date,day,time_local,location,result,product,qty,unit_cost,notes
 2026-08-26,Wednesday,12:53,Edmonds Safeway,hit,Surging Sparks Booster Pack,2,5.00,"Sitting stock on the same 12:53 tap as the Prismatic bundle, not a fresh drop. Market $7.83 against $5.00."
 2026-08-26,Wednesday,12:55,Edmonds Safeway,hit,Destined Rivals Booster Pack,1,5.00,"ON the :55 mark. Popped out immediately after he paid for the 12:53 sitting stock. He read it as the purchase pulling the drop — but 12:55 is ALSO exactly when a scheduled drop is due, so the purchase-trigger and schedule explanations are confounded in this observation. Not clean mark evidence either way; the uncontaminated reads remain 2026-08-21 17:55 and 2026-08-24 09:55."
 2026-08-26,Wednesday,12:55,Edmonds Safeway,seen,Chaos Rising Booster Pack,0,,"Left on the screen. He said ""a Chaos Rising"" without specifying pack or bundle; logged as the pack (market $5.54) since that is what the machine usually carries, but the bundle (ci183, $36.63) is possible. Timing within the 12:53-12:55 visit is not pinned down."
-2026-08-26,Wednesday,12:55,Edmonds Safeway,seen,Mega Evolution Booster Bundle,0,,"Left on the screen. Market $63.62 against a $30.00 vending price, so roughly $22 of net upside passed up — worth flagging next time. Timing within the visit not pinned down."
+2026-08-26,Wednesday,12:55,Edmonds Safeway,seen,Mega Evolution Booster Pack,0,,"Left on the screen. CORRECTED 2026-08-26: Michael confirmed it was a booster PACK, not a bundle — I logged ""bundle"" off the transcript and then priced it as one. Market $8.16 against $5.00 vending, so about $1.50 net after fees, not the $22 I told him. Leaving it was fine. Timing within the 12:53-12:55 visit not pinned down."
