@@ -1605,6 +1605,10 @@ Michael: *"just make the damn pyc and i can add to it if i feel like i want to."
 
 **Growing it:** new variations CAN be appended to a live multi-variation listing via `ReviseFixedPriceItem`, but the **order of existing variations is fixed at creation**, so additions land at the bottom rather than slotting into collector-number order. Same constraint recorded for the Chrome you-picks (commit 97b678b).
 
+**🎉 FIRST SALE 2026-08-26, and it validated the format.** Order `24-15071-79511`, **two cards in one order**: **Belladonna Took $4.49** (the $4.11 comp card) and Bear Token $1.49. **$5.98 gross, $1.32 fee, $5.95 to him.** Listed ~21:00, sold by 01:57 Pacific — under five hours. 28 variations left.
+
+**That is the multi-buy he argued for and I initially dismissed:** one order, one $0.40 fixed fee, one envelope, and the buyer took the good card *plus* a token — the tail paying, also his argument. My per-card fee math had been the wrong model.
+
 **⚠️ MTG STILL HAS NO HOME IN THE DB.** These 30 cards exist **only as eBay variations**. `baseball_cards` is sport-scoped and the vault is sealed product, so a Hobbit sale has nothing to book against and will not appear in any P&L. Flagged to Michael; needs building before this line grows.
 
 
