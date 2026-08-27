@@ -1,5 +1,10 @@
 /**
- * MOKiN MOTBO101 Thunderbolt 4 dock. Everything EXCEPT publish.
+ * MOKiN MOTB0101 Thunderbolt 4 dock. Everything EXCEPT publish.
+ *
+ * The model is MOTB0101 with a ZERO, not MOTBO101 with a letter O. I read the
+ * letter off the box label first and got it wrong; the barcode photo settles it
+ * and MOKiN's own listings confirm MOTB0101 is their 15-in-1 Triple 4K dock.
+ * Looking it up beat squinting at the glyph, same as with card numbers.
  *
  *   npx tsx scripts/list-mokin-dock-0827.ts --apply     # photos + inventory + offer, NOT live
  *   npx tsx scripts/list-mokin-dock-0827.ts --publish   # only after Michael says publish
@@ -26,22 +31,22 @@ config({ path: '.env.local' });
 const APPLY = process.argv.includes('--apply');
 const PUBLISH = process.argv.includes('--publish');
 const supa = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
-const SKU = 'MOKIN-MOTBO101-TB4';
+const SKU = 'MOKIN-MOTB0101-TB4';
 const PRICE = '124.99';
 const CATEGORY = '3709';
 const POLICIES = { payment: '269110704012', ret: '269110705012', ship: '269110723012' };
-const TITLE = 'MOKiN MOTBO101 Thunderbolt 4 Docking Station 40Gbps 8K Dual Monitor 2.5GbE SD4.0';
+const TITLE = 'MOKiN MOTB0101 Thunderbolt 4 Dock 15-in-1 Triple 4K 40Gbps 2.5GbE SD4.0 150W PSU';
 
 const INBOX = `${homedir()}/.claude/channels/discord/inbox`;
 const PHOTOS: [string, string][] = [
-  [`${INBOX}/1787868767834-1542658125096558663.jpg`, 'MOKiN_MOTBO101_01_kit.jpg'],
-  [`${INBOX}/1787868768430-1542658126002655293.jpg`, 'MOKiN_MOTBO101_02_box_front.jpg'],
-  [`${INBOX}/1787868768698-1542658126363361341.jpg`, 'MOKiN_MOTBO101_03_spec_label.jpg'],
-  [`${INBOX}/1787868768152-1542658125507592322.jpg`, 'MOKiN_MOTBO101_04_box_contents.jpg'],
+  [`${INBOX}/1787868767834-1542658125096558663.jpg`, 'MOKiN_MOTB0101_01_kit.jpg'],
+  [`${INBOX}/1787868768430-1542658126002655293.jpg`, 'MOKiN_MOTB0101_02_box_front.jpg'],
+  [`${INBOX}/1787868768698-1542658126363361341.jpg`, 'MOKiN_MOTB0101_03_spec_label.jpg'],
+  [`${INBOX}/1787868768152-1542658125507592322.jpg`, 'MOKiN_MOTB0101_04_box_contents.jpg'],
 ];
 
 const DESC = [
-  '<p><strong>MOKiN Thunderbolt 4 Docking Station, model MOTBO101.</strong> Open box, never put into service. Complete with the 150W power adapter, AC cord, Thunderbolt 4 cable and original box. No instruction manual.</p>',
+  '<p><strong>MOKiN 15-in-1 Thunderbolt 4 Docking Station, model MOTB0101.</strong> Open box, never put into service. Complete with the 150W power adapter, AC cord, Thunderbolt 4 cable and original box. No instruction manual.</p>',
   '<p><strong>Specifications, from the box:</strong></p>',
   '<ul>',
   '<li>Thunderbolt 4, up to 40Gbps. Compatible with Thunderbolt 3, USB4 and DP Alt mode</li>',
@@ -49,7 +54,7 @@ const DESC = [
   '<li>USB 3.2, up to 10Gbps, backward compatible</li>',
   '<li>SD 4.0 and microSD 4.0, up to 312MB/s, both slots usable at once</li>',
   '<li>RJ45 Ethernet, 10M/100M/1000M/2.5G</li>',
-  '<li>150W DC power supply included</li>',
+  '<li>150W power adapter included (20.0V, 7.5A), UL Listed E303985</li>',
   '</ul>',
   '<p><strong>Display support:</strong> triple-display output requires Windows. On Apple Silicon Macs this dock drives one external display. That is a macOS limitation affecting every dock of this type, not a fault with this unit.</p>',
   '<p>Smoke-free home. Ships within 1 business day. Buy with confidence, check my feedback.</p>',
@@ -58,8 +63,8 @@ const DESC = [
 const ASPECTS: Record<string, string[]> = {
   Brand: ['MOKiN'],
   Type: ['Docking Station'],
-  Model: ['MOTBO101'],
-  MPN: ['MOTBO101'],
+  Model: ['MOTB0101'],
+  MPN: ['MOTB0101'],
   Color: ['Silver'],
   Ports: ['Thunderbolt 4', 'USB-C', 'USB-A', 'HDMI', 'RJ45 Ethernet', 'SD Card Reader'],
   'Compatible Brand': ['For Apple', 'For Dell', 'For HP', 'For Lenovo'],
@@ -100,6 +105,17 @@ async function main() {
     if (pj.listingId) console.log(`  https://www.ebay.com/itm/${pj.listingId}`);
     return;
   }
+
+  // Nothing is published, so drop any offer/item left under the old misread SKU
+  // rather than leaving a duplicate to trip over later.
+  const OLD = 'MOKIN-MOTBO101-TB4';
+  const stale = await (await fetch(`https://api.ebay.com/sell/inventory/v1/offer?sku=${OLD}`, { headers: auth })).json();
+  for (const o of stale.offers ?? []) {
+    const d = await fetch(`https://api.ebay.com/sell/inventory/v1/offer/${o.offerId}`, { method: 'DELETE', headers: auth });
+    console.log(`deleted stale offer ${o.offerId} -> ${d.status}`);
+  }
+  const di = await fetch(`https://api.ebay.com/sell/inventory/v1/inventory_item/${OLD}`, { method: 'DELETE', headers: auth });
+  console.log(`deleted stale inventory item ${OLD} -> ${di.status}`);
 
   const urls: string[] = [];
   for (const [src, name] of PHOTOS) {
