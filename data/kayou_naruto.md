@@ -99,6 +99,35 @@ At a $11.05 cost and a $15 sealed market, **sell sealed** is the default; the
 CR/AR lottery is the only argument for ripping and Kayou does not publish the
 distribution inside the hit pool, so do not compute an EV for it.
 
+## Card backs are NOT uniform
+
+I told Michael on 2026-08-27 that every Kayou back is the same blue-and-gold
+swirl and that one shared back photo would cover a whole you-pick. He sent
+photos proving otherwise. At least five distinct backs in one box:
+
+- **Green leaf "Ninja Registration" profile back** — per character, carrying the
+  character name, a unique Ninja Registration Number (Tsunade = 002302),
+  birthday, personality, interests and a stat radar chart
+- **Blue jutsu back** — technique name, Taijutsu introduction and rank, ATK/RNG
+- **White cloud swirl** with brush-stroke NARUTO / Shippuden logo
+- **White cloud swirl** with BORUTO: Naruto Next Generations logo
+- **Sepia Hokage Rock** illustrated back
+
+Consequences for listings:
+
+- A single "representative" back photo is misleading, do not shoot one.
+- Show 3-4 gallery photos covering the RANGE of back styles; the variety sells.
+- Per-variation photos stay fronts, since the card code and art are both there.
+- Both sides for anything $25+.
+
+The blue-and-gold-swirl claim came from a general Kayou authenticity article, not
+from this product. Web guidance about "Kayou cards" is written across many waves
+and does not describe any specific box. Check the cards in hand.
+
+Watch for non-`NREA02` codes in the same box. The Boruto- and Shippuden-branded
+backs may belong to a different Kayou product with its own rarity ladder and
+prices; a code that does not start NREA02 must not be priced against this set.
+
 ## Sources
 
 - Kayou official Earth Scroll Series 2: https://www.kayouofficial.com/en-US/series/series-8idoe481
