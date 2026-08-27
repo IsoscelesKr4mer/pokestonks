@@ -56,23 +56,38 @@ Codes often carry an `L3`/`L4`/`L5` suffix. Observed L5 on CR, L4 on AR, L3 on
 UR/SSR, so it appears to track tier. That is read off eBay listings, NOT off
 Kayou's own page, so treat it as a hint and confirm against the rarity code.
 
-### Published pull rates (Kayou official, per pack)
+### Published pull rates
 
-Every pack is `3R + 2SR + 1SSR` plus **one hit slot**, and the hit slot is 50/50:
+**The 5-pack collector box and the 20-pack booster box do not share odds.** Read
+the box back, not the website, for whichever one is in hand.
 
-- 50%: `1 UR`
-- 50%: `1 of SSR / ◇UR / AR / MR / CR`
+**5-pack collector box (NR-KP-DZJLH-002-5P-NA), from the box back:**
 
-So a 5-pack collector box has exactly **5 cards that can matter**, and roughly
-half of those land as a plain ~$10 UR. Everything above UR comes out of the other
-branch, where SSR is the most common outcome.
+- 2 packs of `3R + 2SR + 2SSR` -- no hit slot at all
+- 3 packs of `3R + 2SR + 1SSR + 1 of UR / ◇UR / AR / MR / CR`
+
+Per box that is exactly `15R + 10SR + 7SSR + 3 hits`. **Three hit slots, not
+five**, and the R/SR/SSR counts are fixed, so any box that does not total
+15/10/7 has a miscount or a card still in a wrapper.
+
+Verified against the box Michael opened 2026-08-27: 15 R, 10 SR, 7 SSR, and
+three hits (UR-005, UR-014, MR-001). Exact match on every tier.
+
+**20-pack booster box (NR-KP-DZJ-002A-NA), from Kayou's site:** every pack is
+`3R + 2SR + 1SSR` plus one slot that is 50/50 between a plain UR and the
+`SSR / ◇UR / AR / MR / CR` pool.
+
+Kayou does not publish the distribution *inside* that hit pool for either box, so
+there is no basis for an expected-value number. Do not invent one by weighting on
+card counts.
 
 Prices above are Browse API **active asks** scanned 2026-08-27, not solds. Read
 them as a ceiling. Rescan before pricing anything real.
 
 ## Rip vs sell sealed
 
-Measured on the box opened 2026-08-27 (15R, 10SR, 7SSR, UR-005, UR-014, MR-001):
+Measured on the box opened 2026-08-27 (15R, 10SR, 7SSR, UR-005, UR-014, MR-001).
+All 6 boxes were ripped that day and both sealed listings ended; held qty is 0.
 
 | | Asks | Net after fees | Effort |
 |---|---|---|---|
