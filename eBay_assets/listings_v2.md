@@ -946,7 +946,15 @@ Use `scripts/set-bundle-qty.ts <sku> <qty> --apply` for this. It refuses to over
 - Ground Advantage calculated, buyer pays. **4 lb**, 12x9x4 — weighed by difference
   on a bathroom scale (2.4 lb in hand) plus box and padding, rounded up
 - **No GTIN.** The only barcode on the box is Amazon's X003UZTKEZ, not a UPC
-- Photos: kit shot leads, then box front, spec label, box contents
+- Photos: kit shot leads, then box front, spec label, box contents. **Square
+  crops** (`*_sq.jpg`), recropped 2026-08-27 after listing. The spec label was
+  shot upside down and the box front sideways; both rotated so they read. Anchor
+  the kit shot flush top (carpet along the bottom), centre the rest
+
+**Photo swap gotcha:** eBay copies images to its own CDN at publish and keys off
+the source URL, so re-uploading to the same Supabase path leaves the live
+listing on the old shots. Host under a NEW filename to force the refetch, then
+confirm with Trading API GetItem (`ExternalPictureURL`), not the REST response.
 
 **Pricing:** MOKiN sells it direct at $169.99 (from $220). Exactly one other
 MOTB0101 on eBay, used at $110 with no box mentioned. His is unused and complete,
