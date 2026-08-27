@@ -937,6 +937,36 @@ Use `scripts/set-bundle-qty.ts <sku> <qty> --apply` for this. It refuses to over
 
 ---
 
+### MOKiN MOTB0101 Thunderbolt 4 Dock (15-in-1) — item 168644337111
+
+- **Listed** 2026-08-27 at **$124.99**, qty 1, Open Box, category 3709 Laptop Docking Stations
+- **SKU** MOKIN-MOTB0101-TB4, offer 247427633011
+- **Not a vault item.** No catalog_item, no ebay_listing_mappings row, cost basis $0
+  (employer-bought, return window missed)
+- Ground Advantage calculated, buyer pays. **4 lb**, 12x9x4 — weighed by difference
+  on a bathroom scale (2.4 lb in hand) plus box and padding, rounded up
+- **No GTIN.** The only barcode on the box is Amazon's X003UZTKEZ, not a UPC
+- Photos: kit shot leads, then box front, spec label, box contents
+
+**Pricing:** MOKiN sells it direct at $169.99 (from $220). Exactly one other
+MOTB0101 on eBay, used at $110 with no box mentioned. His is unused and complete,
+so it sits above the used comp and well under retail. Nets ~$104 after fees.
+
+**Two things this listing gets right on purpose:**
+
+The model is **MOTB0101 with a zero**. Read off the box label as MOTBO101 first;
+the barcode photo settled it, and the lookup also corrected the product from the
+16-port dock to the 15-in-1 Triple 4K.
+
+The description says outright that triple-display needs Windows and that Apple
+Silicon gets one external display. No Apple Silicon Mac supports DisplayPort MST,
+which is how this dock drives extra displays, and MOKiN's own spec limits Mac
+dual-screen to Intel and Pro/Max chips. It is not a defect and it costs nothing
+with the Windows buyers this dock suits; it heads off the return.
+
+**If it stalls:** add Best Offer before cutting the price. Thin market, one
+competitor, no reason to lead with a discount.
+
 ## How to keep this file current
 
 - New SKUs get their own section with title, body, photos, and the net/margin line.
