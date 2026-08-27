@@ -975,6 +975,43 @@ with the Windows buyers this dock suits; it heads off the return.
 **If it stalls:** add Best Offer before cutting the price. Thin market, one
 competitor, no reason to lead with a discount.
 
+### Card packaging copy: toploader OR Card Saver I (2026-08-27)
+
+Michael ships some cards in a Card Saver I rather than a toploader, and had
+already shipped a few against copy that promised a toploader. All 30 card
+listings that made a shipping promise now say **"a toploader or Card Saver I"**.
+Verified live 30/30.
+
+**Deliberately not changed:**
+
+- `168576910402` (Ohtani B&W Mini-Diamond, $699.99) promises *"shipped in the
+  magnetic one touch holder shown"*. Different and stricter promise. That card
+  must actually ship in the one-touch.
+- `168626075618` (Donovan autos) and `168600204811` (Waldrep auto) mention
+  toploaders only as **storage history**, not as a shipping promise. True as
+  written, nothing to cover.
+
+**Two mechanisms, and they are not interchangeable.** His card listings were
+built two ways, and editing them takes two different calls:
+
+| Built by | Listings | How to edit the description |
+|---|---|---|
+| `AddFixedPriceItem` (build-pyp-group.ts) | the 9 you-picks | Trading API `ReviseItem` |
+| Inventory API offers | the singles | PUT the **offer**'s `listingDescription` |
+
+`ReviseItem` on an Inventory-API listing fails outright with *"Inventory-based
+listing management is not currently supported by this tool."* Test one before
+running a bulk edit. `scripts/fix-toploader-copy-0827.ts` tries ReviseItem and
+falls back to the offer PUT on that specific error.
+
+Note the live description comes from the **offer's** `listingDescription`, NOT
+the inventory item's `product.description`. Those two have already drifted apart
+on at least one listing.
+
+**Open:** `168561672841` is titled *Garrett Crochet Platinum Vibrations
+Refractor /250* but its description describes a *1957 Topps Purple Refractor
+/250*. Two different cards. Raised with Michael, unresolved.
+
 ## How to keep this file current
 
 - New SKUs get their own section with title, body, photos, and the net/margin line.
