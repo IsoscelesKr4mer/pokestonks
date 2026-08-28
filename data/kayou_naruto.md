@@ -39,6 +39,25 @@ on the chases.
   (`NREA02-◇UR-001L3`). It is NOT the low-numbered URs. I claimed UR-001..004
   were the Diamonds; UR-001 is Jirobo, a $2.19 card. The real Diamonds are
   ◇UR-001..004 (Naruto, Sasuke, Sakura, Kakashi) at $10-20.
+
+  **Telling a ◇UR from a plain UR by eye.** Measured across all 10 UR-family
+  cards Michael owns, so this holds for NREA02 at least:
+
+  | | plain UR | ◇UR |
+  |---|---|---|
+  | vertical name banner | **green**, 8 of 8 | **matches the card** (blue Sasuke, pink Sakura) |
+  | art | full colour | single-colour pop-art halftone |
+
+  Two things that look like tells and are NOT:
+
+  - **The UR badge.** Black ink-splat appears on plain URs too (Jirobo, Rock
+    Lee), and one plain UR (Naruto UR-014) carries a rainbow holo badge
+    instead. Badge style varies within a tier.
+  - **The diamond-shaped emblem** at the head of the name banner. EVERY UR has
+    one, plain included. It is not what the "Diamond" in the name refers to.
+
+  The code is the only proof. Zoom the bottom strip and look for `◇` between
+  the dash and `UR`.
 - **UR-004 Tsunade is $20**, an outlier among plain URs that otherwise run
   $1.50-3.25. Do not price a UR from the tier alone.
 - MR spans $8 (MR-001 Kabuto, The Moon) to $27 (MR-002 Tsunade, Justice).
