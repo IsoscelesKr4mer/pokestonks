@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import { listAllPrices, priceConfidence } from './lib/narutodb';
 (async()=>{
-  const lines=readFileSync('data/naruto_codes_wip.tsv','utf8').trim().split(/\r?\n/).slice(1);
+  const lines=readFileSync('data/naruto_cards_0828.tsv','utf8').trim().split(/\r?\n/).slice(1);
   const prices=await listAllPrices();
   const pm=new Map(prices.map(p=>[p.card_number.toUpperCase(),p]));
   let real=0, ph=0, none=0;

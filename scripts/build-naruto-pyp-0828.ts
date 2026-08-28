@@ -29,6 +29,9 @@ config({ path: '.env.local' });
 
 const APPLY = process.argv.includes('--apply');
 const PUBLISH = process.argv.includes('--publish');
+// Adds/updates variations on the LIVE listing instead of minting a new item
+// number. Recreating would strip the watchers and start the search ranking over.
+const REVISE = process.argv.includes('--revise') ? '168645368919' : null;
 const supa = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
 
 const CATEGORY = '183454'; // Toys & Hobbies > Collectible Card Games > CCG Individual Cards
@@ -232,7 +235,15 @@ async function main() {
   });
 
   const tok = await userToken();
-  const wrap = (call: string) => `<?xml version="1.0" encoding="utf-8"?><${call}Request xmlns="urn:ebay:apis:eBLBaseComponents"><ErrorLanguage>en_US</ErrorLanguage><WarningLevel>High</WarningLevel><Item>${item}</Item></${call}Request>`;
+  const wrap = (call: string) => `<?xml version="1.0" encoding="utf-8"?><${call}Request xmlns="urn:ebay:apis:eBLBaseComponents"><ErrorLanguage>en_US</ErrorLanguage><WarningLevel>High</WarningLevel><Item>${REVISE ? `<ItemID>${REVISE}</ItemID>` : ''}${item}</Item></${call}Request>`;
+
+  if (REVISE) {
+    const res = await trading(tok, 'ReviseFixedPriceItem', wrap('ReviseFixedPriceItem'));
+    console.log(`
+ReviseFixedPriceItem on ${REVISE}: ${res.match(/<Ack>([^<]*)</)?.[1]}`);
+    for (const m of res.matchAll(/<LongMessage>([^<]*)</g)) console.log(`  ${m[1].slice(0, 200)}`);
+    return;
+  }
 
   // Verify first, always. A rejection after creating 32 variations is far more
   // expensive to unpick than one that costs nothing.

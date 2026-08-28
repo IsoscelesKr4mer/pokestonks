@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import { listCardsInSet } from './lib/narutodb';
 (async()=>{
-  const lines=readFileSync('data/naruto_codes_wip.tsv','utf8').trim().split(/\r?\n/).slice(1);
+  const lines=readFileSync('data/naruto_cards_0828.tsv','utf8').trim().split(/\r?\n/).slice(1);
   const have=new Set<string>();
   for(const l of lines){ const c=(l.split('\t')[1]||'').replace('-DUR-','-◇UR-'); if(c&&c!=='?') have.add(c.toUpperCase()); }
   const cards=await listCardsInSet('NREA02');
