@@ -1,8 +1,17 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="description" content="Build your own eBay listing agent with Claude Code: drop card photos in a folder, talk to it from your phone, get listings.">
 <title>Sele's eBay Agent Starter</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400;600&display=swap">
 
+</head>
+<body>
 <style>
   :root {
     --paper:      #f4f6f4;
@@ -179,10 +188,11 @@
   pre .c { color: var(--term-dim); }
 
   /* ---------- prerequisite list ---------- */
-  ul.checks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .7rem; }
-  ul.checks li { display: grid; grid-template-columns: 1.35rem 1fr; gap: .55rem; align-items: start; }
+  ul.checks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .75rem; }
+  ul.checks li { position: relative; padding-left: 1.85rem; }
   ul.checks li::before {
-    content: ""; margin-top: .48em; width: .8rem; height: .8rem;
+    content: ""; position: absolute; left: 0; top: .5em;
+    width: .8rem; height: .8rem;
     border: 1.5px solid var(--accent); border-radius: 2px;
   }
 
@@ -205,9 +215,10 @@
 
   /* ---------- steps ---------- */
   ol.steps { list-style: none; counter-reset: s; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1.4rem; }
-  ol.steps > li { counter-increment: s; display: grid; grid-template-columns: 2.1rem 1fr; gap: .8rem; }
+  ol.steps > li { counter-increment: s; position: relative; padding-left: 2.9rem; }
   ol.steps > li::before {
     content: counter(s);
+    position: absolute; left: 0; top: 0; width: 1.6rem;
     font-family: "JetBrains Mono", ui-monospace, monospace;
     font-size: .82rem; font-weight: 600;
     color: var(--accent);
@@ -232,17 +243,16 @@
   ol.hazards { list-style: none; counter-reset: h; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0; }
   ol.hazards > li {
     counter-increment: h;
-    display: grid; grid-template-columns: 2.4rem 1fr; gap: .8rem;
-    padding: 1.05rem 0;
+    position: relative; padding: 1.05rem 0 1.05rem 3.1rem;
     border-bottom: 1px solid var(--rule-soft);
   }
   ol.hazards > li:first-child { border-top: 1px solid var(--rule); }
   ol.hazards > li::before {
     content: counter(h, decimal-leading-zero);
+    position: absolute; left: 0; top: 1.28rem;
     font-family: "JetBrains Mono", ui-monospace, monospace;
     font-size: .78rem; font-weight: 600;
     color: var(--caution);
-    padding-top: .22rem;
   }
   .hz-t { font-weight: 600; display: block; margin-bottom: .15rem; }
   .hz-b { color: var(--ink-soft); font-size: .96rem; }
@@ -256,9 +266,9 @@
     font-family: "JetBrains Mono", ui-monospace, monospace; font-size: .76rem;
   }
   .filebar .fname { color: var(--ink-soft); letter-spacing: .04em; }
-  .fileacts { display: flex; align-items: center; gap: .6rem; }
+  .fileacts { display: flex; align-items: center; gap: .55rem; }
   .dl {
-    font-weight: 600; text-decoration: none;
+    font-weight: 600; text-decoration: none; white-space: nowrap;
     color: var(--accent-ink); border: 1px solid var(--rule);
     border-radius: 4px; padding: .34rem .7rem; background: var(--surface);
   }
@@ -340,7 +350,7 @@
 <span class="p">$</span> cd ebay-agent</pre>
           </li>
           <li>
-            <p><strong>Put <code>CLAUDE.md</code> in it.</strong> Grab it from <a href="#file">the bottom of this page</a> — download or copy, then save it in the folder. It is the only file you need to begin.</p>
+            <p><strong>Put <code>CLAUDE.md</code> in it.</strong> Grab it from <a href="#file">the bottom of this page</a> — download or copy — and save it in the folder. It is the only file you need to begin.</p>
           </li>
           <li>
             <p><strong>Open Claude Code in that folder.</strong></p>
@@ -830,3 +840,6 @@ confirm `.env.local` is in `.gitignore`.
     });
   })();
 </script>
+
+</body>
+</html>

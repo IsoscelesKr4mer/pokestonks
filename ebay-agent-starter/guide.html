@@ -179,10 +179,11 @@
   pre .c { color: var(--term-dim); }
 
   /* ---------- prerequisite list ---------- */
-  ul.checks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .7rem; }
-  ul.checks li { display: grid; grid-template-columns: 1.35rem 1fr; gap: .55rem; align-items: start; }
+  ul.checks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .75rem; }
+  ul.checks li { position: relative; padding-left: 1.85rem; }
   ul.checks li::before {
-    content: ""; margin-top: .48em; width: .8rem; height: .8rem;
+    content: ""; position: absolute; left: 0; top: .5em;
+    width: .8rem; height: .8rem;
     border: 1.5px solid var(--accent); border-radius: 2px;
   }
 
@@ -205,9 +206,10 @@
 
   /* ---------- steps ---------- */
   ol.steps { list-style: none; counter-reset: s; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1.4rem; }
-  ol.steps > li { counter-increment: s; display: grid; grid-template-columns: 2.1rem 1fr; gap: .8rem; }
+  ol.steps > li { counter-increment: s; position: relative; padding-left: 2.9rem; }
   ol.steps > li::before {
     content: counter(s);
+    position: absolute; left: 0; top: 0; width: 1.6rem;
     font-family: "JetBrains Mono", ui-monospace, monospace;
     font-size: .82rem; font-weight: 600;
     color: var(--accent);
@@ -232,17 +234,16 @@
   ol.hazards { list-style: none; counter-reset: h; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0; }
   ol.hazards > li {
     counter-increment: h;
-    display: grid; grid-template-columns: 2.4rem 1fr; gap: .8rem;
-    padding: 1.05rem 0;
+    position: relative; padding: 1.05rem 0 1.05rem 3.1rem;
     border-bottom: 1px solid var(--rule-soft);
   }
   ol.hazards > li:first-child { border-top: 1px solid var(--rule); }
   ol.hazards > li::before {
     content: counter(h, decimal-leading-zero);
+    position: absolute; left: 0; top: 1.28rem;
     font-family: "JetBrains Mono", ui-monospace, monospace;
     font-size: .78rem; font-weight: 600;
     color: var(--caution);
-    padding-top: .22rem;
   }
   .hz-t { font-weight: 600; display: block; margin-bottom: .15rem; }
   .hz-b { color: var(--ink-soft); font-size: .96rem; }
