@@ -10,8 +10,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400;600&display=swap">
 
-</head>
-<body>
 <style>
   :root {
     --paper:      #f4f6f4;
@@ -294,6 +292,9 @@
     * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
   }
 </style>
+</head>
+<body>
+
 
 <div class="wrap">
 
@@ -332,7 +333,8 @@
         <h2>Before you start</h2>
         <ul class="checks">
           <li><strong>A computer you can leave running</strong>, if you want to drive it from your phone. Mac, Windows or Linux.</li>
-          <li><strong><a href="https://claude.com/claude-code">Claude Code</a></strong> — the terminal version of Claude. Same model you already use, with access to your files and the ability to run commands. Install this first.</li>
+          <li><strong>A paid Claude plan</strong> — Pro, Max, Team or Enterprise. Claude Code is not included in the free tier, so check this before anything else.</li>
+          <li><strong><a href="https://claude.com/claude-code">Claude Code</a></strong> — the same Claude you already use, but able to read your files and run things on your machine. Installed below.</li>
           <li><strong>An eBay seller account</strong> in reasonable standing.</li>
           <li><strong>An eBay <em>developer</em> account</strong> — free, and separate from your seller account, at <a href="https://developer.ebay.com">developer.ebay.com</a>. Sign up now; approval is not instant.</li>
           <li><strong>Node.js and Python.</strong> The agent will tell you if something is missing.</li>
@@ -343,25 +345,59 @@
 
       <section id="go">
         <h2>Setup</h2>
+        <div class="note">
+          <p><strong>Never used a terminal?</strong> It is a window where you type a line and press Enter. That is the whole idea. You will type six lines in total and none of them are dangerous.</p>
+          <p>If you would rather not use one at all, the <a href="https://claude.com/download">Claude desktop app</a> does the same job with a normal window — install that instead of step 2, then skip to step 5. Anthropic also has a <a href="https://code.claude.com/docs/en/terminal-guide">short terminal guide</a> if you want the longer version.</p>
+        </div>
+
         <ol class="steps">
           <li>
-            <p><strong>Make an empty folder.</strong></p>
-<pre><span class="p">$</span> mkdir ebay-agent
-<span class="p">$</span> cd ebay-agent</pre>
+            <p><strong>Open a terminal.</strong></p>
+            <p><strong>Mac:</strong> press <code>Cmd</code>&nbsp;+&nbsp;<code>Space</code>, type <em>Terminal</em>, press Enter.<br>
+            <strong>Windows:</strong> press the Start key, type <em>PowerShell</em>, press Enter.</p>
+            <p>A window opens with a line of text and a blinking cursor. That is it. Leave it open.</p>
           </li>
+
           <li>
-            <p><strong>Put <code>CLAUDE.md</code> in it.</strong> Grab it from <a href="#file">the bottom of this page</a> — download or copy — and save it in the folder. It is the only file you need to begin.</p>
+            <p><strong>Install Claude Code.</strong> Copy the line for your computer, paste it into that window, press Enter.</p>
+            <p><strong>Mac:</strong></p>
+<pre>curl -fsSL https://claude.ai/install.sh | bash</pre>
+            <p><strong>Windows:</strong></p>
+<pre>irm https://claude.ai/install.ps1 | iex</pre>
+            <p>It prints a lot of text and takes a minute. When it stops and gives you the cursor back, it is done.</p>
           </li>
+
           <li>
-            <p><strong>Open Claude Code in that folder.</strong></p>
-<pre><span class="p">$</span> claude</pre>
+            <p><strong>Check it worked.</strong> Type this and press Enter:</p>
+<pre>claude --version</pre>
+            <p>You want a version number back, something like <code>2.1.211 (Claude Code)</code>. If it says <em>command not found</em> instead, close the terminal, open a new one, and try again — the installer needs a fresh window to be seen.</p>
           </li>
+
           <li>
-            <p><strong>Say this:</strong></p>
+            <p><strong>Make a folder for it.</strong> Do this the normal way, in Finder or File Explorer. Put it somewhere you will find again — the desktop is fine. Call it <code>ebay-agent</code>.</p>
+          </li>
+
+          <li>
+            <p><strong>Open a terminal <em>inside</em> that folder.</strong> This part matters: Claude only sees the folder you start it in.</p>
+            <p><strong>Mac:</strong> right-click the folder, choose <em>Services</em> → <em>New Terminal at Folder</em>.<br>
+            <strong>Windows:</strong> open the folder, then right-click the empty space inside it and choose <em>Open in Terminal</em>.</p>
+            <p>If neither option is there, type <code>cd&nbsp;</code> in a terminal, then drag the folder onto the window and press Enter. That does the same thing.</p>
+          </li>
+
+          <li>
+            <p><strong>Start it.</strong></p>
+<pre>claude</pre>
+            <p>The first time, it opens your browser to log in. Sign in with the Claude account your paid plan is on. After that it remembers.</p>
+          </li>
+
+          <li>
+            <p><strong>Put the file in the folder.</strong> Get <code>CLAUDE.md</code> from <a href="#file">the bottom of this page</a> — download or copy — and save it into your <code>ebay-agent</code> folder. The name has to be exactly <code>CLAUDE.md</code>.</p>
+          </li>
+
+          <li>
+            <p><strong>Tell it to begin.</strong> Type this into the Claude window and press Enter:</p>
 <pre>Read CLAUDE.md and start the setup.</pre>
-          </li>
-          <li>
-            <p><strong>Answer its questions and follow along.</strong> It stops after every phase. Read what it built. If an assumption looks wrong, say so — fixing it in phase one is far cheaper than after it has created ninety listings.</p>
+            <p>From here it talks you through the rest. It stops after every phase — read what it did, and if something looks wrong, say so in plain English. Fixing a wrong assumption early is far cheaper than after it has built ninety listings.</p>
           </li>
         </ol>
       </section>
@@ -417,7 +453,7 @@
 
       <section id="file">
         <h2>The file</h2>
-        <p>This is the whole thing. Download it or copy it, save it as <code>CLAUDE.md</code> in your empty folder, and that is step two done. Nothing else needs to come with it.</p>
+        <p>This is the whole thing. Download it or copy it, then save it into your <code>ebay-agent</code> folder. Nothing else needs to come with it.</p>
         <div class="filebox">
           <div class="filebar">
             <span class="fname">CLAUDE.md</span>

@@ -13,15 +13,21 @@ driven from your phone over Discord.
 
 - **A computer you can leave running** if you want the Discord side. Mac,
   Windows or Linux all work.
-- **[Claude Code](https://claude.com/claude-code)** — the terminal version of
-  Claude. If you have only used Claude in a browser, this is the same model with
-  access to your files and the ability to run commands. Install it first.
+- **A paid Claude plan** — Pro, Max, Team or Enterprise. Claude Code is not
+  included in the free tier. Check this before anything else.
+- **[Claude Code](https://claude.com/claude-code)** — the same Claude, able to
+  read your files and run things on your machine. Install with one line:
+  `curl -fsSL https://claude.ai/install.sh | bash` on Mac, or
+  `irm https://claude.ai/install.ps1 | iex` in Windows PowerShell. Confirm it
+  worked with `claude --version`.
+  Would rather not use a terminal at all? The
+  [desktop app](https://claude.com/download) does the same job in a window.
 - **An eBay seller account** in reasonable standing.
 - **An eBay *developer* account** — free, separate from your seller account, at
   [developer.ebay.com](https://developer.ebay.com). Sign up now; approval is not
   instant.
-- **Node.js** (for scripts) and **Python** (for image work). The agent will tell
-  you if something is missing.
+- **Node.js** and **Python**, for the scripts the agent writes. It will tell you
+  if something is missing and how to get it.
 - **Optional:** a Discord account, if you want to run it from your phone.
 
 You do not need to know how to code. You do need to be willing to read what the
