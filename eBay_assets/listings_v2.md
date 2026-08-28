@@ -1012,6 +1012,51 @@ on at least one listing.
 Refractor /250* but its description describes a *1957 Topps Purple Refractor
 /250*. Two different cards. Raised with Michael, unresolved.
 
+### Kayou Naruto Earth Scroll 2 — three listings, 2026-08-28
+
+All from the six boxes ripped 2026-08-27. **Not vault items**: no catalog_item,
+no ebay_listing_mappings. Cost basis is the $66.30 of boxes, currently unassigned
+(see the rip note in `data/kayou_naruto.md`).
+
+| item | what | price |
+|---|---|---|
+| `168645350639` | You-pick, 32 rows / 60 cards, SSR and up | $248.90 total ask |
+| `168645350740` | COMPLETE 20/20 SR set | $24.99 |
+| `168645350776` | Bulk lot, 117 cards (41 spare SR + 76 R) | $29.99 |
+
+Verified live with Trading API GetItem: Active, 32 variations / 60 cards, cats
+183454 and 183455.
+
+**Card identity is not guesswork.** Codes were read off the photo drop
+(`eBay_assets/card drop/IMG_2031-2385`) and every one checked against the
+narutodb NREA02 checklist; all 197 exist. Dropdown labels use narutodb's
+character names, not names read off the art, so a label cannot drift from the
+card. Source of truth: `data/naruto_cards_0828.tsv`.
+
+**Pricing** is narutodb SOLD comps (130point where available) +15%, rounded to
+.49/.99, floored at $2.99. The floor is arithmetic, not greed: at 13.25% + $0.40
+a $1.99 card nets about $1.33.
+
+**Why the SR set is not in the you-pick.** He has exactly ONE complete set --
+SR-005, -009 and -017 sit at a single copy -- and complete sets list at $24-27,
+where the same 20 cards spread through a dropdown would net about a dollar each.
+
+**Two eBay traps, both caught by VerifyAddFixedPriceItem before publishing:**
+
+- The **diamond glyph must map to a letter, not be stripped**. Stripped, the
+  Diamond `NREA02-◇UR-002L3` and the plain `NREA02-UR-002L3` collapse to one
+  SKU; eBay refused with *"Duplicate custom variation label"* naming
+  `npy-nrea02ur002l3`. The same bug in the photo filename would have silently
+  overwritten the Diamond's picture with the plain UR's -- two cards, one file,
+  no error. Use `slug()` in build-naruto-pyp-0828.ts.
+- **Category 183455 (CCG Mixed Card Lots) accepts only ConditionID 1000 or
+  3000 and no ConditionDescriptors.** The 4000-plus-descriptors shape that works
+  in 183454 (CCG Individual Cards) is rejected outright.
+
+Lot photos are **montages of the card fronts already shot**, built by
+build-naruto-lots-0828.ts. A grid of the actual 20 SRs evidences a complete set
+better than a stack photo and needs no new photography.
+
 ## How to keep this file current
 
 - New SKUs get their own section with title, body, photos, and the net/margin line.
