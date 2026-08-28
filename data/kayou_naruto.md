@@ -17,20 +17,31 @@ as the 20-pack booster box (NR-KP-DZJ-002A-NA); only the pack count differs.
 
 | Tier | Name | In set | Art style | Active-ask median |
 |------|------|--------|-----------|-------------------|
-| CR | Creative Rare | 4 | Scroll of Ninja | $75, top card $400+ |
-| AR | Amber Rare | 10 | ukiyo-e battle scenes | $52, top card $250+ |
-| MR | Miracle Rare | 4 | tarot layout | $10-60 by character |
-| ◇UR | Parallel/Diamond UR | 4 | numbered UR-001..004 | $21-45 |
-| UR | Ultra Rare | 15 | pop art, UR-005..015 | **$3-5** |
-| SSR | Super Spark Rare | 25 | - | $2 |
-| SR | Super Rare | 20 | - | bulk |
-| R | Rare | 50 | - | bulk |
+Rightmost column is narutodb's **sold** median (130point), which is the number
+that matters. My earlier figures were eBay *active asks* and ran roughly 2x high
+on the chases.
 
-**The tier code alone does not price a card.** Two traps, both hit on 2026-08-27:
+| Tier | Name | In set | Art style | Sold median | Top card |
+|------|------|--------|-----------|-------------|----------|
+| CR | Creative Rare | 4 | Scroll of Ninja | $85 | Itachi CR-003 **$199.99** |
+| AR | Amber Rare | 10 | ukiyo-e battle scenes | $45 | Naruto AR-008 **$104.99** |
+| MR | Miracle Rare | 4 | tarot layout | $14.99 | Tsunade MR-002 $27.26 |
+| ◇UR | Diamond UR | 4 | own `◇UR` code | $13.79 | Kakashi ◇UR-004 $19.99 |
+| UR | Ultra Rare | 15 | pop art | $1.99 | Tsunade UR-004 $20.00 |
+| SSR | Super Spark Rare | 25 | - | $2.00 | Naruto SSR-009 ~$12 |
+| SR | Super Rare | 20 | - | $1.00 placeholder | - |
+| R | Rare | 50 | - | $0.50 placeholder | - |
+| PR | Promo | 1 | - | $10.72 | - |
 
-- `UR-001` through `UR-004` are the **Diamond parallels** at $21-45. `UR-005`
-  and up are plain URs at $3-5. Same two letters, ten times the money.
-- MR spans $10 (MR-001 Kabuto, The Moon) to $60 (MR-002 Tsunade, Justice).
+**The tier code alone does not price a card.** Traps hit on 2026-08-27:
+
+- **Diamond UR is its own rarity code, written `◇UR`** with the diamond glyph
+  (`NREA02-◇UR-001L3`). It is NOT the low-numbered URs. I claimed UR-001..004
+  were the Diamonds; UR-001 is Jirobo, a $2.19 card. The real Diamonds are
+  ◇UR-001..004 (Naruto, Sasuke, Sakura, Kakashi) at $10-20.
+- **UR-004 Tsunade is $20**, an outlier among plain URs that otherwise run
+  $1.50-3.25. Do not price a UR from the tier alone.
+- MR spans $8 (MR-001 Kabuto, The Moon) to $27 (MR-002 Tsunade, Justice).
 
 A wide tier query also drags in Diamond parallels, graded slabs and multi-card
 lots, which is how a $3 card first got quoted at $10 and a $10 card at $35.
@@ -127,6 +138,29 @@ and does not describe any specific box. Check the cards in hand.
 Watch for non-`NREA02` codes in the same box. The Boruto- and Shippuden-branded
 backs may belong to a different Kayou product with its own rarity ladder and
 prices; a code that does not start NREA02 must not be priced against this set.
+
+## narutodb.com
+
+Public JSON API, no key: `https://api.narutodb.com`. Client in
+`scripts/lib/narutodb.ts`, CLI in `scripts/naruto-lookup.ts`. robots.txt allows
+everything except user pages, which we do not touch.
+
+    /api/sets                    /api/sets/{id}/cards
+    /api/cards/{number}          /api/prices        /api/prices/{number}
+    /api/search?q=&set_id=&rarity_code=
+
+**Use it for the checklist, not as a lone price source.** For NREA02, 132 of 133
+cards carry a price but 48% are source `fixed` (a placeholder: every SR is
+exactly $1.00), 120 of 132 have `sample_size` 0, and **no card anywhere has
+price_low != price_high** -- every number is a single point estimate.
+
+The `merged_ebay_130point` rows are the ones worth quoting: 130point aggregates
+SOLD comps, which eBay's Browse API cannot return at all (Browse is active asks
+only). Sold runs well under ask here, about half on the chase cards.
+
+Verify Michael's card codes through `resolve()` before pricing anything. It
+matches on the full number and falls back to the L-tier-stripped stem, so a
+dropped `L4` still resolves instead of silently going unpriced.
 
 ## Sources
 
