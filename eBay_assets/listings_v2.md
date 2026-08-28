@@ -1020,12 +1020,34 @@ no ebay_listing_mappings. Cost basis is the $66.30 of boxes, currently unassigne
 
 | item | what | price |
 |---|---|---|
-| `168645350639` | You-pick, 32 rows / 60 cards, SSR and up | $248.90 total ask |
+| `168645368919` | You-pick, **90 rows / 177 cards, every tier** | $600.73 total ask |
 | `168645350740` | COMPLETE 20/20 SR set | $24.99 |
-| `168645350776` | Bulk lot, 117 cards (41 spare SR + 76 R) | $29.99 |
+| ~~`168645350639`~~ | first you-pick, SSR+ only | ENDED 2026-08-28 |
+| ~~`168645350776`~~ | bulk lot | ENDED 2026-08-28 |
 
-Verified live with Trading API GetItem: Active, 32 variations / 60 cards, cats
-183454 and 183455.
+177 + 20 = 197, exactly the cards read off the photos. Nothing double-committed.
+Verified live with Trading API GetItem.
+
+**Why the first pair was rebuilt.** Michael: *"Why can't we just put them all in
+the you pick like my baseball card you picks?"* He was right. The reason given
+for bulking the cheap cards -- that eBay's $0.40 fee floor eats them -- was
+wrong, because that fee is **per ORDER**, and this listing offers free combined
+shipping, so a buyer taking eight R cards pays it once. His Chrome you-pick
+already ran 165 rows, so 90 was never near a limit either.
+
+The real argument was already sitting in the bulk listing's own copy: a
+set-completer needs **R-018 specifically** and will pay a few dollars for that
+one card rather than open a 117-card lot. A bulk lot is invisible to exactly the
+buyer most willing to pay.
+
+**One copy of each SR is reserved for the set listing**, so only the 41 spares
+are in the dropdown, and the three single-copy SRs (005, 009, 017) appear only
+in the set. `SR_RESERVED_FOR_SET` in build-naruto-pyp-0828.ts enforces it.
+
+**$600.73 is an ask, not a forecast.** 54 of 90 rows are priced off narutodb
+placeholders (flat $1.00 for SR, $0.50 for R) against a $2.99 floor derived from
+fee arithmetic. The R cards may sit for months. The gain is that they sit
+*findable* rather than buried in a lot.
 
 **Card identity is not guesswork.** Codes were read off the photo drop
 (`eBay_assets/card drop/IMG_2031-2385`) and every one checked against the

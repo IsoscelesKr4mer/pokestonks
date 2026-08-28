@@ -33,10 +33,29 @@ const supa = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUP
 
 const CATEGORY = '183454'; // Toys & Hobbies > Collectible Card Games > CCG Individual Cards
 const POLICIES = { payment: '269110704012', ret: '269110705012', ship: '272052757012' };
-const TITLE = 'Naruto Kayou Earth Scroll 2 You Pick Card SSR UR Diamond MR Holo English NREA02';
+const TITLE = 'Naruto Kayou Earth Scroll 2 You Pick Card R SR SSR UR Diamond MR English NREA02';
 const SRC = `${homedir()}/../..${''}`; // unused, kept explicit below
 const PHOTOS = 'eBay_assets/card drop';
-const TIERS = ['MR', '◇UR', 'UR', 'SSR'];
+// EVERYTHING goes in the dropdown, not just the chases. The fee floor argument
+// for bulking the cheap cards was wrong: eBay's $0.40 is per ORDER, and this
+// listing offers free combined shipping, so a buyer taking eight R cards pays
+// it once. The card a set-completer needs is R-018 specifically, and they will
+// pay a few dollars for that one card rather than open a 117-card bulk lot.
+const TIERS = ['MR', '◇UR', 'UR', 'SSR', 'SR', 'R'];
+
+// One copy of each SR is reserved for the COMPLETE SR set listing
+// (168645350740), so only the SPARES appear here. Three SRs sit at a single
+// copy and therefore never reach the dropdown at all -- listing them in both
+// places would sell the same physical card twice.
+const SR_RESERVED_FOR_SET = 1;
+
+/** eBay caps a variation value at 50 characters and R "names" are episode titles. */
+function label(name: string, tier: string, slot: number): string {
+  const tail = ` - ${tier} ${String(slot).padStart(3, '0')}`;
+  const room = 50 - tail.length;
+  const n = name.length > room ? name.slice(0, room - 1).trimEnd() + '…' : name;
+  return n + tail;
+}
 
 /** narutodb sold comp -> ask. Floor at $2.99; below that eBay's cut eats it. */
 function ask(cents: number): number {
@@ -120,13 +139,15 @@ async function build(): Promise<Row[]> {
     const card = byNum.get(code);
     if (!card) throw new Error(`code not in checklist, refusing to list: ${code}`);
     if (!TIERS.includes(card.rarity_code)) continue;
+    const listable = card.rarity_code === 'SR' ? qty - SR_RESERVED_FOR_SET : qty;
+    if (listable <= 0) continue;
     const comp = priceBy.get(code)?.price_last_cents ?? 0;
     const slot = Number(code.match(/-(\d+)L\d$/)?.[1] ?? 0);
     const tierLabel = card.rarity_code === '◇UR' ? 'Diamond UR' : card.rarity_code;
     rows.push({
-      code, qty, photo, name: card.character_name ?? '?', tier: card.rarity_code, slot,
+      code, qty: listable, photo, name: card.character_name ?? '?', tier: card.rarity_code, slot,
       comp, ask: ask(comp),
-      label: `${card.character_name ?? '?'} - ${tierLabel} ${String(slot).padStart(3, '0')}`,
+      label: label(card.character_name ?? '?', tierLabel, slot),
     });
   }
   const rank = (t: string) => TIERS.indexOf(t);
@@ -162,7 +183,8 @@ async function main() {
   const desc = [
     '<p><strong>Kayou Naruto, Earth Scroll Series 2 (NREA02). Pick your card from the dropdown above.</strong> The photo changes with your selection, so you see the exact card you are buying.</p>',
     '<p>All cards are English NA release, pulled from sealed Kayou collector boxes and straight into sleeves. Near mint or better.</p>',
-    '<p>Rarity runs <strong>MR and Diamond UR over UR over SSR</strong> in this set. Note that UR outranks SSR in Kayou, which is the opposite of most anime TCGs.</p>',
+    '<p>Rarity runs <strong>MR and Diamond UR over UR over SSR over SR over R</strong> in this set. Note that UR outranks SSR in Kayou, which is the opposite of most anime TCGs.</p>',
+    '<p><strong>Building the set?</strong> Every card is listed individually by number, so you can pick exactly the ones you are missing instead of buying a lot full of cards you already have.</p>',
     '<p>Each card ships in a penny sleeve and a toploader or Card Saver I, with tracking. Ships within 1 business day.</p>',
     '<p>Buying several? Add them all to your cart and they ship together in one package.</p>',
     '<p>Smoke-free home. Buy with confidence, check my feedback. Thanks for looking.</p>',
