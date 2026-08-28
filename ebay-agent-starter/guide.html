@@ -1,0 +1,395 @@
+<title>Sele's eBay Agent Starter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400;600&display=swap">
+
+<style>
+  :root {
+    --paper:      #f4f6f4;
+    --surface:    #ffffff;
+    --ink:        #17212a;
+    --ink-soft:   #4a5a66;
+    --ink-faint:  #7c8b95;
+    --rule:       #dbe0dc;
+    --rule-soft:  #e9ede9;
+    --accent:     #0b6b63;
+    --accent-ink: #084e48;
+    --accent-wash:#e2efec;
+    --caution:    #a05a08;
+    --caution-wash:#f6ecdc;
+    --term-bg:    #131b22;
+    --term-ink:   #d6e0e4;
+    --term-dim:   #7d8f99;
+    --term-accent:#5cc2b4;
+
+    --step: clamp(.2rem, .6vw, .35rem);
+    --col: 68ch;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper:      #0e141a;
+      --surface:    #151d25;
+      --ink:        #e7edea;
+      --ink-soft:   #a8b6bd;
+      --ink-faint:  #74868f;
+      --rule:       #27333c;
+      --rule-soft:  #1d262e;
+      --accent:     #46b6a8;
+      --accent-ink: #7fd3c8;
+      --accent-wash:#122b29;
+      --caution:    #d69a4a;
+      --caution-wash:#2a2216;
+      --term-bg:    #0a1015;
+      --term-ink:   #d6e0e4;
+      --term-dim:   #6e808a;
+      --term-accent:#5cc2b4;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper:      #0e141a;
+    --surface:    #151d25;
+    --ink:        #e7edea;
+    --ink-soft:   #a8b6bd;
+    --ink-faint:  #74868f;
+    --rule:       #27333c;
+    --rule-soft:  #1d262e;
+    --accent:     #46b6a8;
+    --accent-ink: #7fd3c8;
+    --accent-wash:#122b29;
+    --caution:    #d69a4a;
+    --caution-wash:#2a2216;
+    --term-bg:    #0a1015;
+    --term-ink:   #d6e0e4;
+    --term-dim:   #6e808a;
+    --term-accent:#5cc2b4;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+    font-size: 1.0625rem;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 78rem; margin: 0 auto; padding: 0 1.5rem 6rem; }
+
+  /* ---------- masthead ---------- */
+  header.mast {
+    border-bottom: 2px solid var(--ink);
+    padding: 3.5rem 0 1.75rem;
+    margin-bottom: 3rem;
+  }
+  .kicker {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: .72rem;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 1.1rem;
+  }
+  h1 {
+    font-family: Archivo, "Helvetica Neue", Arial, sans-serif;
+    font-weight: 700;
+    font-size: clamp(2.4rem, 6vw, 4rem);
+    line-height: 1.02;
+    letter-spacing: -.025em;
+    margin: 0 0 1rem;
+    text-wrap: balance;
+  }
+  .standfirst {
+    font-size: clamp(1.08rem, 1.9vw, 1.3rem);
+    color: var(--ink-soft);
+    max-width: 52ch;
+    margin: 0;
+  }
+
+  /* ---------- layout ---------- */
+  .cols { display: grid; grid-template-columns: minmax(0, var(--col)); gap: 3.5rem; }
+  @media (min-width: 62rem) {
+    .cols { grid-template-columns: 13rem minmax(0, var(--col)); }
+  }
+  nav.spine { display: none; }
+  @media (min-width: 62rem) {
+    nav.spine {
+      display: block;
+      position: sticky; top: 2rem; align-self: start;
+      font-family: "JetBrains Mono", ui-monospace, monospace;
+      font-size: .74rem;
+      line-height: 1.5;
+    }
+    nav.spine ol { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .55rem; }
+    nav.spine a {
+      color: var(--ink-faint); text-decoration: none;
+      display: grid; grid-template-columns: 1.6rem 1fr; gap: .3rem;
+      padding: .18rem 0; border-radius: 3px;
+    }
+    nav.spine a:hover, nav.spine a:focus-visible { color: var(--accent); }
+    nav.spine b { color: var(--rule); font-weight: 600; }
+    nav.spine a:hover b, nav.spine a:focus-visible b { color: var(--accent); }
+  }
+
+  main { min-width: 0; display: flex; flex-direction: column; gap: 3.25rem; }
+  section { scroll-margin-top: 2rem; }
+
+  h2 {
+    font-family: Archivo, "Helvetica Neue", Arial, sans-serif;
+    font-weight: 600;
+    font-size: 1.55rem;
+    letter-spacing: -.012em;
+    line-height: 1.2;
+    margin: 0 0 1.1rem;
+    padding-bottom: .55rem;
+    border-bottom: 1px solid var(--rule);
+    text-wrap: balance;
+  }
+  h3 {
+    font-family: Archivo, "Helvetica Neue", Arial, sans-serif;
+    font-weight: 600; font-size: 1.02rem; letter-spacing: -.005em;
+    margin: 2rem 0 .5rem;
+  }
+  p { margin: 0 0 1.05rem; }
+  p:last-child { margin-bottom: 0; }
+  a { color: var(--accent-ink); text-decoration-thickness: 1px; text-underline-offset: .16em; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+  strong { font-weight: 600; }
+  code {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: .86em;
+    background: var(--rule-soft);
+    padding: .1em .34em;
+    border-radius: 3px;
+  }
+
+  /* ---------- terminal ---------- */
+  pre {
+    background: var(--term-bg);
+    color: var(--term-ink);
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: .84rem;
+    line-height: 1.7;
+    margin: 1.25rem 0;
+    padding: 1.1rem 1.25rem;
+    border-radius: 5px;
+    overflow-x: auto;
+  }
+  pre .p { color: var(--term-accent); user-select: none; }
+  pre .c { color: var(--term-dim); }
+
+  /* ---------- prerequisite list ---------- */
+  ul.checks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: .7rem; }
+  ul.checks li { display: grid; grid-template-columns: 1.35rem 1fr; gap: .55rem; align-items: start; }
+  ul.checks li::before {
+    content: ""; margin-top: .48em; width: .8rem; height: .8rem;
+    border: 1.5px solid var(--accent); border-radius: 2px;
+  }
+
+  /* ---------- phase table ---------- */
+  .tablewrap { overflow-x: auto; margin: 1.25rem 0 0; }
+  table { border-collapse: collapse; width: 100%; font-size: .95rem; }
+  th, td { text-align: left; padding: .68rem .8rem .68rem 0; vertical-align: top; border-bottom: 1px solid var(--rule-soft); }
+  th {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: .68rem; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--ink-faint); font-weight: 600;
+    border-bottom: 1px solid var(--rule);
+  }
+  td.n {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-variant-numeric: tabular-nums;
+    color: var(--accent); font-weight: 600; width: 3.2rem; padding-right: .4rem;
+  }
+  td.what { font-weight: 600; width: 11rem; }
+
+  /* ---------- steps ---------- */
+  ol.steps { list-style: none; counter-reset: s; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1.4rem; }
+  ol.steps > li { counter-increment: s; display: grid; grid-template-columns: 2.1rem 1fr; gap: .8rem; }
+  ol.steps > li::before {
+    content: counter(s);
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: .82rem; font-weight: 600;
+    color: var(--accent);
+    border-top: 2px solid var(--accent);
+    padding-top: .3rem;
+  }
+  ol.steps p { margin-bottom: .45rem; }
+  ol.steps pre { margin: .6rem 0 0; }
+
+  /* ---------- pull note ---------- */
+  .note {
+    background: var(--accent-wash);
+    border-left: 3px solid var(--accent);
+    padding: 1rem 1.2rem;
+    margin: 1.5rem 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .note p { margin-bottom: .5rem; }
+  .note p:last-child { margin-bottom: 0; }
+
+  /* ---------- hazards ---------- */
+  ol.hazards { list-style: none; counter-reset: h; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0; }
+  ol.hazards > li {
+    counter-increment: h;
+    display: grid; grid-template-columns: 2.4rem 1fr; gap: .8rem;
+    padding: 1.05rem 0;
+    border-bottom: 1px solid var(--rule-soft);
+  }
+  ol.hazards > li:first-child { border-top: 1px solid var(--rule); }
+  ol.hazards > li::before {
+    content: counter(h, decimal-leading-zero);
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: .78rem; font-weight: 600;
+    color: var(--caution);
+    padding-top: .22rem;
+  }
+  .hz-t { font-weight: 600; display: block; margin-bottom: .15rem; }
+  .hz-b { color: var(--ink-soft); font-size: .96rem; }
+
+  footer.end {
+    margin-top: 4rem; padding-top: 1.5rem;
+    border-top: 2px solid var(--ink);
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: .74rem; letter-spacing: .04em;
+    color: var(--ink-faint);
+    display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; justify-content: space-between;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+  }
+</style>
+
+<div class="wrap">
+
+  <header class="mast">
+    <p class="kicker">For Sele · Setup guide · Claude Code</p>
+    <h1>Build your own eBay listing agent</h1>
+    <p class="standfirst">Sele — this is the thing you saw Michael using. Drop a pile of card photos in a folder, tell it to go from your phone, get listings back. Here is how to build your own.</p>
+  </header>
+
+  <div class="cols">
+    <nav class="spine" aria-label="Sections">
+      <ol>
+        <li><a href="#what"><b>—</b><span>What this is</span></a></li>
+        <li><a href="#need"><b>—</b><span>Before you start</span></a></li>
+        <li><a href="#go"><b>—</b><span>Setup</span></a></li>
+        <li><a href="#phases"><b>—</b><span>What gets built</span></a></li>
+        <li><a href="#know"><b>—</b><span>Worth knowing</span></a></li>
+        <li><a href="#hazards"><b>—</b><span>What will bite you</span></a></li>
+      </ol>
+    </nav>
+
+    <main>
+
+      <section id="what">
+        <h2>What this is</h2>
+        <p>A starter kit, not a finished program. You put <strong>one file</strong> into an empty folder and open Claude Code there. It interviews you, then builds the agent <em>with</em> you, one phase at a time, stopping after each so you can look at what it did.</p>
+        <p>What you end up with: a folder you dump card photos into, an agent you can talk to from your phone, and eBay listings that get drafted on demand and published only when you say so.</p>
+        <p>It is written for the way you already sell. Nothing here assumes you switch categories or change how you source — it automates the part between having the cards and having them listed.</p>
+        <div class="note">
+          <p><strong>You do not need to know how to code.</strong> You do need to read what the agent proposes and say no when it looks wrong. That part is not optional — it is the part that keeps it accurate.</p>
+        </div>
+      </section>
+
+      <section id="need">
+        <h2>Before you start</h2>
+        <ul class="checks">
+          <li><strong>A computer you can leave running</strong>, if you want to drive it from your phone. Mac, Windows or Linux.</li>
+          <li><strong><a href="https://claude.com/claude-code">Claude Code</a></strong> — the terminal version of Claude. Same model you already use, with access to your files and the ability to run commands. Install this first.</li>
+          <li><strong>An eBay seller account</strong> in reasonable standing.</li>
+          <li><strong>An eBay <em>developer</em> account</strong> — free, and separate from your seller account, at <a href="https://developer.ebay.com">developer.ebay.com</a>. Sign up now; approval is not instant.</li>
+          <li><strong>Node.js and Python.</strong> The agent will tell you if something is missing.</li>
+          <li><strong>A Discord account</strong>, only if you want the phone control.</li>
+        </ul>
+        <p style="margin-top:1.4rem">Budget about two hours for the first pass. Most of that is waiting on eBay's developer console, not on you.</p>
+      </section>
+
+      <section id="go">
+        <h2>Setup</h2>
+        <ol class="steps">
+          <li>
+            <p><strong>Make an empty folder.</strong></p>
+<pre><span class="p">$</span> mkdir ebay-agent
+<span class="p">$</span> cd ebay-agent</pre>
+          </li>
+          <li>
+            <p><strong>Put <code>CLAUDE.md</code> in it.</strong> That is the only file you need to begin.</p>
+          </li>
+          <li>
+            <p><strong>Open Claude Code in that folder.</strong></p>
+<pre><span class="p">$</span> claude</pre>
+          </li>
+          <li>
+            <p><strong>Say this:</strong></p>
+<pre>Read CLAUDE.md and start the setup.</pre>
+          </li>
+          <li>
+            <p><strong>Answer its questions and follow along.</strong> It stops after every phase. Read what it built. If an assumption looks wrong, say so — fixing it in phase one is far cheaper than after it has created ninety listings.</p>
+          </li>
+        </ol>
+      </section>
+
+      <section id="phases">
+        <h2>What gets built</h2>
+        <p>Six phases, in order, each with a checkpoint. The order matters: nothing gets scaffolded until phase zero has established what your cards actually are.</p>
+        <div class="tablewrap">
+          <table>
+            <thead>
+              <tr><th scope="col">Phase</th><th scope="col">Subject</th><th scope="col">You end up with</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="n">00</td><td class="what">Interview</td><td>What you sell, and a tested source of truth for identifying it</td></tr>
+              <tr><td class="n">01</td><td class="what">eBay access</td><td>Working API credentials, stored where they will not leak</td></tr>
+              <tr><td class="n">02</td><td class="what">Discord</td><td>A bot you can talk to from your phone</td></tr>
+              <tr><td class="n">03</td><td class="what">The drop</td><td>A folder that turns a pile of photos into identified cards</td></tr>
+              <tr><td class="n">04</td><td class="what">Pricing</td><td>Comps from real market data, with asks and sales kept apart</td></tr>
+              <tr><td class="n">05</td><td class="what">Listing</td><td>Listings built from one instruction, verified before and after</td></tr>
+              <tr><td class="n">06</td><td class="what">Inventory</td><td>A small table that knows what you hold and what sold</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="know">
+        <h2>Three things worth knowing</h2>
+
+        <h3>It asks before it publishes</h3>
+        <p>That is deliberate, and you should keep it. The agent drafts the listing, shows you the title, the price and why it picked that price, and waits. Everything else can be automatic. That one step should not be.</p>
+
+        <h3>Identifying the card is the hard part</h3>
+        <p>Listing is a solved API call. Knowing that the card in the photo is number 344 and not 345 is where the actual work lives, and it is why the very first question is what you sell. Sports cards need the manufacturer's checklist; Pokémon has TCGCSV; Magic has Scryfall; a niche game may have a community database or nothing at all. If there is no source for your category, say so on day one — the build changes shape, and that is fine.</p>
+
+        <h3>It will be wrong sometimes, and you are the check</h3>
+        <p>It reads small print off photographs and quotes prices from public data. Both of those fail. The version of this that works is the one where you glance at a draft and push back. Nearly every expensive mistake in the build this came from was caught by the seller saying <em>that doesn't look right</em> — and being correct.</p>
+      </section>
+
+      <section id="hazards">
+        <h2>What will bite you</h2>
+        <p>None of these are hypothetical. Each one cost real money or a public correction in the build this guide came from.</p>
+        <ol class="hazards">
+          <li><span class="hz-t">A declared weight is not a measured weight</span><span class="hz-b">Shipping declarations get padded on purpose when the buyer pays. Read one back later as a product spec and your own padding becomes a fact. Weigh things.</span></li>
+          <li><span class="hz-t">Round shipping up only when the buyer pays</span><span class="hz-b">When you buy the label, declare the true weight. Carriers bill to the next whole pound anyway, so padding buys nothing and can push you over a boundary.</span></li>
+          <li><span class="hz-t">eBay caches listing photos by URL</span><span class="hz-b">Re-upload a corrected image to the same path and the old one stays live forever, while every API call reports success. Host it under a new filename.</span></li>
+          <li><span class="hz-t">Verify before you create, and again after you publish</span><span class="hz-b">eBay's verify call runs full validation and creates nothing. After publishing, read the listing back — a create response is not proof that buyers see what you intended.</span></li>
+          <li><span class="hz-t">Look at every image before it goes up</span><span class="hz-b">A crop that quietly ate the product, or a spec label photographed upside down, passes every automated check there is.</span></li>
+          <li><span class="hz-t">Normalising an identifier can merge two different items</span><span class="hz-b">Strip the punctuation out of a code and a special parallel can collapse into its plain counterpart — one SKU, one photo filename, two different cards, and no error message.</span></li>
+          <li><span class="hz-t">Test bulk operations on one item first</span><span class="hz-b">Editing thirty live listings on an untested assumption is how you discover the API refuses your listing type.</span></li>
+          <li><span class="hz-t">Never invent a product detail</span><span class="hz-b">Not a promo name, not a contents count, not a barcode. If the box does not say it and you cannot verify it, leave it out. A GTIN field is allowed to be empty. It is not allowed to be wrong.</span></li>
+        </ol>
+      </section>
+
+      <section id="stuck">
+        <h2>If you get stuck</h2>
+        <p>Tell the agent what happened and paste the exact error. It has eBay's error codes and the common failure modes in its instructions, and eBay's messages are usually precise about what is missing even when they read like nonsense.</p>
+        <p>And if it is genuinely stuck, ask Michael — he has hit most of this already.</p>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="end">
+    <span>Put together for Sele by Michael's agent</span>
+    <span>Built with Claude Code</span>
+  </footer>
+</div>
