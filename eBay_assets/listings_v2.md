@@ -1711,6 +1711,28 @@ Item revenue **$178.16**, fees **$36.91**, **net $141.25**, **$14.13/pin**, cost
 
 - **🔴 #168636653046 ENDED 2026-08-30**, replaced by a bulk lot (below). Was Active with 30 variations A-Z and 30 per-variation picture sets.
 - **🟢 LIVE 2026-08-30:** bulk lot **#168651323986** · [view](https://www.ebay.com/itm/168651323986) · $8.99, 28 cards, category 183455, `scripts/build-hob-bulk-0830.ts`
+- **Corrected same day** (`scripts/fix-hob-bulk-shipping-0830.ts`): the copy said
+  "sleeved straight away" and promised a toploader or Card Saver, both inherited
+  from the singles boilerplate. Michael: *"this ships in a team bag no toploaders
+  or card savers for this bulk"* and *"not sleeved"*. Now reads **loose,
+  unsleeved cards, shipped together in a team bag**.
+
+  **The part he did not raise, and the one that cost money: it was on the eBay
+  Standard Envelope policy.** 28 loose cards are ~0.34in thick against eSE's
+  **0.25in cap**. The buyer pays $1.29, the envelope gets rejected or surcharged
+  for thickness, and Michael eats ~$5 of Ground Advantage on an $8.99 sale.
+  Switched to **Ground Advantage Calculated (269110723012)** so the buyer pays
+  the real rate. Package set 7x5x1 at 4 oz.
+
+  **eSE is a per-listing decision, not a default.** It fits singles and thin
+  multi-card orders; it does not fit a bulk lot. Check thickness (~0.012in per
+  card) before leaving a listing on that policy.
+
+  ⚠️ **Trading API requires `<ShippingPackage>`; the Inventory API rejects the
+  equivalent.** Omitting it here fails with *"Please provide a valid Shipping
+  Package type"*, while sending `packageWeightAndSize.packageType` through the
+  Inventory API fails with *"Invalid &lt;ShippingPackage&gt;"*. Same concept,
+  inverted rules, one per API.
 
 **Why it flipped to bulk after three weeks.** The you-pick worked exactly as
 intended and then stopped having anything to do: it sold **Belladonna Took at
