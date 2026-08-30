@@ -45,13 +45,35 @@ Full upright back for orientation: ![full back](reference/refractor-back-full.jp
    and a rotated card is how "left" and "right" get swapped.
 2. Find `@TOPPS` in the top right, next to the team logo.
 3. Look **directly under `@TOPPS`**:
-   - word `REFRACTOR` present -> **Refractor**
-   - nothing there -> not a Refractor; go to step 4
-4. Now look at the **front**. Checkerboard foil pattern -> **X-Fractor**.
-   ![X-Fractor checkerboard](reference/xfractor-front-checkerboard.jpg)
-   The X-Fractor back is **unmarked**, identical to a base back. The back can
-   never identify an X-Fractor. Only the front can.
-5. No `REFRACTOR` on the back **and** no checkerboard on the front -> **base**.
+   - word `REFRACTOR` present -> **plain base Refractor**, and you are done
+   - nothing there -> go to step 4. **This does NOT mean base.**
+4. Now look at the **front** and name the design. The word `REFRACTOR` appears
+   **only on the undesigned base Refractor**. Every *named* parallel carries a
+   visible pattern instead and never carries the word:
+
+   | what the front shows | parallel |
+   |---|---|
+   | checkerboard foil | **X-Fractor** |
+   | sweeping rainbow waves | **RayWave** |
+   | baseball-seam pattern in the border | **Baseball Seams Refractor** |
+   | red / white / blue banding | **Red White & Blue Refractor** |
+   | repeating Topps logos in the foil | **Logofractor** |
+   | prismatic facets | **Prism** |
+   | flat, no pattern, no refraction | **base** |
+
+5. Only call **base** when the front shows no design AND no refraction at all.
+
+**This is the step that goes wrong.** On 2026-08-30 an entire 21-card drop was
+read as "base or X-Fractor" because no back said REFRACTOR — while the fronts
+plainly showed RayWave, baseball seams and RWB. Michael: *"it only says
+refractor if it's just the base refractor but without like a design like raywave
+or prism, so you can actually tell for certain its a refractor where the others
+are obvious."* Absence of the word narrows nothing on its own; the design does
+the work.
+
+A designed parallel is **obvious** once you look for the pattern rather than for
+the word. If a front refracts at all, it is not base — go find which design it
+is before writing anything down.
 
 You need **both faces** for every card. A parallel call from one face is a guess.
 
