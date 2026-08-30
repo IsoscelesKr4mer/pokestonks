@@ -1709,7 +1709,28 @@ Item revenue **$178.16**, fees **$36.91**, **net $141.25**, **$14.13/pin**, cost
 
 ### MTG The Hobbit "you pick" singles (listed 2026-08-24)
 
-- **🟢 LIVE 2026-08-24:** eBay **#168636653046** · [view](https://www.ebay.com/itm/168636653046) · verified Active, `HideFromSearch: false`, **30 variations A-Z, 30 per-variation picture sets**, eBay Standard Envelope
+- **🔴 #168636653046 ENDED 2026-08-30**, replaced by a bulk lot (below). Was Active with 30 variations A-Z and 30 per-variation picture sets.
+- **🟢 LIVE 2026-08-30:** bulk lot **#168651323986** · [view](https://www.ebay.com/itm/168651323986) · $8.99, 28 cards, category 183455, `scripts/build-hob-bulk-0830.ts`
+
+**Why it flipped to bulk after three weeks.** The you-pick worked exactly as
+intended and then stopped having anything to do: it sold **Belladonna Took at
+$4.49 against a $4.42 Scryfall market**, the one card in the rip worth its own
+listing, plus a Bear Token. The 28 left are worth **$5.63 in total**, $0.20
+average, best card The Lonely Mountain at $0.91 — and were all sitting at the
+$1.49 floor, **7.4x market**.
+
+That $1.49 is fee arithmetic, not a price. It is where eBay's 13.25% + $0.40
+stops eating the sale, and no deck-builder pays 7x for a common. The tail was
+never going to clear at any patience level.
+
+**Rip total: $14.00 in, about $12 back.** A small loss. The pile really did sum
+to $9.40 as Michael argued, and correcting my "$4-5 of garbage" call was right —
+but **$0.20 cards cannot pass through a $0.40 per-order floor individually**.
+The single $4 card was the entire prize, and the you-pick's job was finding it.
+
+The bulk listing itemises all 28 by name and collector number, per the lesson
+from the Naruto bulk lot. The new listing is confirmed live BEFORE the you-pick
+is ended, so the cards are never unlisted in between.
 - **🔴 #168636640650 ENDED same day** — the first build, ordered by collector number. Replaced by the alphabetical rebuild below.
 - **Title:** `MTG The Hobbit You Pick Your Card Singles Magic the Gathering LOTR Foil Rare` (76)
 - **Category 183454** (Toys & Hobbies > Collectible Card Games > **CCG Individual Cards**) — the singles sibling of the 183456 he already uses for sealed packs
