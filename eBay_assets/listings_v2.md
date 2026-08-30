@@ -1728,6 +1728,21 @@ Item revenue **$178.16**, fees **$36.91**, **net $141.25**, **$14.13/pin**, cost
   multi-card orders; it does not fit a bulk lot. Check thickness (~0.012in per
   card) before leaving a listing on that policy.
 
+  **DECIDED 2026-08-30, do not re-raise.** An audit found four you-picks
+  (`168622320644` Chrome, `168622312679` Finest, `168622311437` Bowman,
+  `168645368919` Naruto) that can exceed the cap on a large combined order.
+  Michael's call: *"leave the pyc's if they buy 4+ ill just upgrade them to
+  ground advantage."* The listings stay on eSE and he covers the upgrade by
+  hand. He collects $1.29 flat on those (additional shipping cost is $0.00), so
+  a big order costs him roughly $4. Accepted deliberately, because charging per
+  extra card would kill the "add them all to your cart" pitch that makes a
+  you-pick work at all.
+
+  Thresholds, since the copy promises a toploader per card and a toploader is
+  ~0.0625in: **~4 cards sleeved-and-toploadered, ~8 in Card Savers, ~21 loose.**
+  Flag any order of 4+ off a you-pick so he ships Ground Advantage rather than
+  buying an eSE label that gets rejected.
+
   ⚠️ **Trading API requires `<ShippingPackage>`; the Inventory API rejects the
   equivalent.** Omitting it here fails with *"Please provide a valid Shipping
   Package type"*, while sending `packageWeightAndSize.packageType` through the
