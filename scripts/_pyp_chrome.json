@@ -11,49 +11,128 @@
  },
  "variations": [
   {
-   "label": "6 - Sal Stewart - Base",
+   "label": "6 - Sal Stewart - Base RC",
    "primary": {
-    "id": "89",
+    "id": "314",
     "player": "Sal Stewart",
     "set_name": "2026 Topps Chrome",
     "card_number": "6",
     "parallel": "base",
-    "price": 999,
-    "itemId": "168574114394",
-    "sku": "BBC-89",
+    "price": 899,
+    "itemId": "168622320644",
+    "sku": null,
     "photos": [
-     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0485.jpg",
-     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0486.jpg"
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1366.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1367.jpg"
     ],
-    "notes": ""
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas. RC. Lifted to 90% of comp median on 2026-08-10; the 35th-percentile pricer had it at 7.99."
    },
    "extras": [],
    "qty": 1,
-   "price": 999
+   "price": 899
   },
   {
-   "label": "7 - Samuel Basallo - Base",
+   "label": "6 - Sal Stewart - X-Fractor RC",
+   "primary": {
+    "id": "434",
+    "player": "Sal Stewart",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "6",
+    "parallel": "X-Fractor",
+    "price": 549,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1761.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1762.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas. RC."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 549
+  },
+  {
+   "label": "7 - Samuel Basallo - Base RC",
    "primary": {
     "id": "142",
     "player": "Samuel Basallo",
     "set_name": "2026 Topps Chrome",
     "card_number": "7",
     "parallel": "base",
-    "price": 299,
-    "itemId": "168574114394",
+    "price": 399,
+    "itemId": "168622320644",
     "sku": "BBC-142",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0628.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0629.jpg"
     ],
-    "notes": "Team: Baltimore Orioles"
+    "notes": "Team: Baltimore Orioles RC. Confirmed from the card front in the 2026-08-09 audit. Lifted to 90% of comp median on 2026-08-10; the 35th-percentile pricer had it at 2.99."
+   },
+   "extras": [
+    {
+     "id": "306",
+     "player": "Samuel Basallo",
+     "set_name": "2026 Topps Chrome",
+     "card_number": "7",
+     "parallel": "base",
+     "price": 299,
+     "itemId": "168622320644",
+     "sku": null,
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1350.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1351.jpg"
+     ],
+     "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas. RC. Lifted to 90% of comp median on 2026-08-10; the 35th-percentile pricer had it at 2.49."
+    }
+   ],
+   "qty": 2,
+   "price": 399
+  },
+  {
+   "label": "8 - Ezequiel Tovar - X-Fractor",
+   "primary": {
+    "id": "302",
+    "player": "Ezequiel Tovar",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "8",
+    "parallel": "X-Fractor",
+    "price": 149,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1342.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1343.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas."
    },
    "extras": [],
    "qty": 1,
-   "price": 299
+   "price": 149
   },
   {
-   "label": "13 - Kyle Karros - Base",
+   "label": "11 - Noelvi Marte - Ref",
+   "primary": {
+    "id": "276",
+    "player": "Noelvi Marte",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "11",
+    "parallel": "Refractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1290.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1291.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas. CORRECTED: back reads REFRACTOR in the bottom band beside the team logo. Recorded as base because I was reading the TOP band, which says CHROME on every card."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "13 - Kyle Karros - Base RC",
    "primary": {
     "id": "91",
     "player": "Kyle Karros",
@@ -61,80 +140,338 @@
     "card_number": "13",
     "parallel": "base",
     "price": 299,
-    "itemId": "168574114394",
+    "itemId": "168622320644",
     "sku": "BBC-91",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0489.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0490.jpg"
     ],
-    "notes": ""
+    "notes": " RC. Confirmed from the card front in the 2026-08-09 audit."
    },
    "extras": [],
    "qty": 1,
    "price": 299
   },
   {
-   "label": "14 - Jack Flaherty - Base",
+   "label": "13 - Kyle Karros - X-Fractor RC",
+   "primary": {
+    "id": "327",
+    "player": "Kyle Karros",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "13",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1485.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1486.jpg"
+    ],
+    "notes": "From the 2026-08-13 rip of one Topps Chrome baseball mega."
+   },
+   "extras": [
+    {
+     "id": "420",
+     "player": "Kyle Karros",
+     "set_name": "2026 Topps Chrome",
+     "card_number": "13",
+     "parallel": "X-Fractor",
+     "price": 199,
+     "itemId": "168622320644",
+     "sku": null,
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1733.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1734.jpg"
+     ],
+     "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas. RC."
+    }
+   ],
+   "qty": 2,
+   "price": 199
+  },
+  {
+   "label": "14 - Jack Flaherty - Baseball Seams Ref",
    "primary": {
     "id": "78",
     "player": "Jack Flaherty",
     "set_name": "2026 Topps Chrome",
     "card_number": "14",
-    "parallel": "Baseball Seams Refractor",
+    "parallel": "Baseball Seams Refractor (red)",
     "price": 299,
-    "itemId": "168561673137",
+    "itemId": "168622320644",
     "sku": "BBC-78",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0461.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0462.jpg"
     ],
-    "notes": ""
+    "notes": " CORRECTED 2026-08-09 audit: front shows the red baseball-seam border, so this is a Baseball Seams Refractor, not base. Was priced as base."
    },
    "extras": [],
    "qty": 1,
    "price": 299
   },
   {
-   "label": "16 - Kevin McGonigle - Base RC",
+   "label": "18 - Dillon Dingler - X-Fractor",
    "primary": {
-    "id": "217",
-    "player": "Kevin McGonigle",
+    "id": "300",
+    "player": "Dillon Dingler",
     "set_name": "2026 Topps Chrome",
-    "card_number": "16",
-    "parallel": "Base",
-    "price": 699,
-    "itemId": "168584893844",
-    "sku": "BBC-217",
+    "card_number": "18",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
     "photos": [
-     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0999.jpg",
-     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1001.jpg"
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1338.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1339.jpg"
     ],
-    "notes": "Tigers. RC. From the 2026 Topps Chrome hobby box ripped 2026-08-02."
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas."
    },
    "extras": [],
    "qty": 1,
-   "price": 699
+   "price": 199
   },
   {
-   "label": "23 - Cole Young - Base",
+   "label": "19 - Heriberto Hernandez - X-Fractor RC",
+   "primary": {
+    "id": "389",
+    "player": "Heriberto Hernandez",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "19",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1671.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1672.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas. RC."
+   },
+   "extras": [
+    {
+     "id": "436",
+     "player": "Heriberto Hernandez",
+     "set_name": "2026 Topps Chrome",
+     "card_number": "19",
+     "parallel": "X-Fractor",
+     "price": 199,
+     "itemId": "168622320644",
+     "sku": null,
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1765.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1766.jpg"
+     ],
+     "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas. RC."
+    }
+   ],
+   "qty": 2,
+   "price": 199
+  },
+  {
+   "label": "22 - Mason Barnett - X-Fractor RC",
+   "primary": {
+    "id": "392",
+    "player": "Mason Barnett",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "22",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1677.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1678.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas. RC."
+   },
+   "extras": [
+    {
+     "id": "438",
+     "player": "Mason Barnett",
+     "set_name": "2026 Topps Chrome",
+     "card_number": "22",
+     "parallel": "X-Fractor",
+     "price": 199,
+     "itemId": "168622320644",
+     "sku": null,
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1769.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1770.jpg"
+     ],
+     "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas. RC."
+    }
+   ],
+   "qty": 2,
+   "price": 199
+  },
+  {
+   "label": "23 - Cole Young - Base RC",
    "primary": {
     "id": "137",
     "player": "Cole Young",
     "set_name": "2026 Topps Chrome",
     "card_number": "23",
     "parallel": "base",
-    "price": 399,
-    "itemId": "168574114394",
+    "price": 449,
+    "itemId": "168622320644",
     "sku": "BBC-137",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0616.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0617.jpg"
     ],
-    "notes": "Team: Seattle Mariners"
+    "notes": "Team: Seattle Mariners RC. Confirmed from the card front on 2026-08-09. Lifted to 90% of comp median on 2026-08-10; the 35th-percentile pricer had it at 3.99."
+   },
+   "extras": [
+    {
+     "id": "309",
+     "player": "Cole Young",
+     "set_name": "2026 Topps Chrome",
+     "card_number": "23",
+     "parallel": "base",
+     "price": 299,
+     "itemId": "168622320644",
+     "sku": null,
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1356.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1357.jpg"
+     ],
+     "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas. RC."
+    }
+   ],
+   "qty": 2,
+   "price": 449
+  },
+  {
+   "label": "23 - Cole Young - Ref",
+   "primary": {
+    "id": "338",
+    "player": "Cole Young",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "23",
+    "parallel": "Refractor",
+    "price": 299,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1451.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1452.jpg"
+    ],
+    "notes": "From the 2026-08-13 rip of one Topps Chrome baseball mega. PARALLEL CONFIRMED Refractor: back reads REFRACTOR under @TOPPS beside the team logo."
    },
    "extras": [],
    "qty": 1,
-   "price": 399
+   "price": 299
+  },
+  {
+   "label": "24 - Josh Bell - X-Fractor",
+   "primary": {
+    "id": "393",
+    "player": "Josh Bell",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "24",
+    "parallel": "X-Fractor",
+    "price": 149,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1679.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1680.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas."
+   },
+   "extras": [
+    {
+     "id": "395",
+     "player": "Josh Bell",
+     "set_name": "2026 Topps Chrome",
+     "card_number": "24",
+     "parallel": "X-Fractor",
+     "price": 149,
+     "itemId": "168622320644",
+     "sku": null,
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1683.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1684.jpg"
+     ],
+     "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas."
+    },
+    {
+     "id": "443",
+     "player": "Josh Bell",
+     "set_name": "2026 Topps Chrome",
+     "card_number": "24",
+     "parallel": "X-Fractor",
+     "price": 149,
+     "itemId": "168622320644",
+     "sku": null,
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1779.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1780.jpg"
+     ],
+     "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas."
+    }
+   ],
+   "qty": 3,
+   "price": 149
+  },
+  {
+   "label": "29 - Nico Hoerner - X-Fractor",
+   "primary": {
+    "id": "328",
+    "player": "Nico Hoerner",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "29",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1473.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1474.jpg"
+    ],
+    "notes": "From the 2026-08-13 rip of one Topps Chrome baseball mega."
+   },
+   "extras": [
+    {
+     "id": "419",
+     "player": "Nico Hoerner",
+     "set_name": "2026 Topps Chrome",
+     "card_number": "29",
+     "parallel": "X-Fractor",
+     "price": 199,
+     "itemId": "168622320644",
+     "sku": null,
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1731.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1732.jpg"
+     ],
+     "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas."
+    }
+   ],
+   "qty": 2,
+   "price": 199
+  },
+  {
+   "label": "34 - Seiya Suzuki - X-Fractor",
+   "primary": {
+    "id": "409",
+    "player": "Seiya Suzuki",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "34",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1711.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1712.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
   },
   {
    "label": "36 - Yusei Kikuchi - X-Fractor",
@@ -145,7 +482,7 @@
     "card_number": "36",
     "parallel": "X-Fractor",
     "price": 199,
-    "itemId": null,
+    "itemId": "168622320644",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1223.jpg",
@@ -153,8 +490,24 @@
     ],
     "notes": "From the 2026-08-08 Topps Finest / Topps Chrome mega box rip."
    },
-   "extras": [],
-   "qty": 1,
+   "extras": [
+    {
+     "id": "397",
+     "player": "Yusei Kikuchi",
+     "set_name": "2026 Topps Chrome",
+     "card_number": "36",
+     "parallel": "X-Fractor",
+     "price": 199,
+     "itemId": "168622320644",
+     "sku": null,
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1687.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1688.jpg"
+     ],
+     "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas."
+    }
+   ],
+   "qty": 2,
    "price": 199
   },
   {
@@ -166,7 +519,7 @@
     "card_number": "39",
     "parallel": "base",
     "price": 249,
-    "itemId": null,
+    "itemId": "168622320644",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1205.jpg",
@@ -179,25 +532,83 @@
    "price": 249
   },
   {
-   "label": "46 - C.J. Kayfus - Base",
+   "label": "39 - Carter Jensen - X-Fractor RC",
+   "primary": {
+    "id": "405",
+    "player": "Carter Jensen",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "39",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1703.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1704.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas. RC."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "42 - Chris Bassitt - X-Fractor",
+   "primary": {
+    "id": "410",
+    "player": "Chris Bassitt",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "42",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1713.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1714.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "46 - C.J. Kayfus - Base RC",
    "primary": {
     "id": "147",
     "player": "C.J. Kayfus",
     "set_name": "2026 Topps Chrome",
     "card_number": "46",
     "parallel": "base",
-    "price": 199,
-    "itemId": "168574114394",
+    "price": 249,
+    "itemId": "168622320644",
     "sku": "BBC-147",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0638.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0639.jpg"
     ],
-    "notes": "Team: Cleveland Guardians"
+    "notes": "Team: Cleveland Guardians RC. Confirmed from the card front on 2026-08-09. Lifted to 90% of comp median on 2026-08-10; the 35th-percentile pricer had it at 1.99."
    },
-   "extras": [],
-   "qty": 1,
-   "price": 199
+   "extras": [
+    {
+     "id": "305",
+     "player": "C.J. Kayfus",
+     "set_name": "2026 Topps Chrome",
+     "card_number": "46",
+     "parallel": "base",
+     "price": 199,
+     "itemId": "168622320644",
+     "sku": null,
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1348.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1349.jpg"
+     ],
+     "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas. RC."
+    }
+   ],
+   "qty": 2,
+   "price": 249
   },
   {
    "label": "52 - Jack Dreyer - Base",
@@ -207,18 +618,60 @@
     "set_name": "2026 Topps Chrome",
     "card_number": "52",
     "parallel": "base",
-    "price": 249,
-    "itemId": "168574114394",
+    "price": 299,
+    "itemId": "168622320644",
     "sku": "BBC-149",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0642.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0643.jpg"
     ],
-    "notes": "Team: Los Angeles Dodgers"
+    "notes": "Team: Los Angeles Dodgers Topps All-Star Rookie Cup on the front. Lifted to 90% of comp median on 2026-08-10; the 35th-percentile pricer had it at 2.49."
    },
    "extras": [],
    "qty": 1,
-   "price": 249
+   "price": 299
+  },
+  {
+   "label": "53 - Victor Scott II - X-Fractor",
+   "primary": {
+    "id": "303",
+    "player": "Victor Scott II",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "53",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1344.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1345.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "56 - Harry Ford - X-Fractor RC",
+   "primary": {
+    "id": "428",
+    "player": "Harry Ford",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "56",
+    "parallel": "X-Fractor",
+    "price": 149,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1749.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1750.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas. RC."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 149
   },
   {
    "label": "58 - Kyle Tucker - X-Fractor",
@@ -229,13 +682,50 @@
     "card_number": "58",
     "parallel": "X-Fractor",
     "price": 199,
-    "itemId": null,
+    "itemId": "168622320644",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1231.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1232.jpg"
     ],
     "notes": "From the 2026-08-08 Topps Finest / Topps Chrome mega box rip. First Dodgers card."
+   },
+   "extras": [
+    {
+     "id": "399",
+     "player": "Kyle Tucker",
+     "set_name": "2026 Topps Chrome",
+     "card_number": "58",
+     "parallel": "X-Fractor",
+     "price": 249,
+     "itemId": "168622320644",
+     "sku": null,
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1691.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1692.jpg"
+     ],
+     "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas."
+    }
+   ],
+   "qty": 2,
+   "price": 249
+  },
+  {
+   "label": "60 - Sal Frelick - X-Fractor",
+   "primary": {
+    "id": "290",
+    "player": "Sal Frelick",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "60",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1318.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1319.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas."
    },
    "extras": [],
    "qty": 1,
@@ -250,13 +740,50 @@
     "card_number": "61",
     "parallel": "X-Fractor",
     "price": 149,
-    "itemId": null,
+    "itemId": "168622320644",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1236.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1237.jpg"
     ],
     "notes": "From the 2026-08-08 Topps Finest / Topps Chrome mega box rip."
+   },
+   "extras": [
+    {
+     "id": "403",
+     "player": "Jazz Chisholm Jr.",
+     "set_name": "2026 Topps Chrome",
+     "card_number": "61",
+     "parallel": "X-Fractor",
+     "price": 199,
+     "itemId": "168622320644",
+     "sku": null,
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1699.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1700.jpg"
+     ],
+     "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas."
+    }
+   ],
+   "qty": 2,
+   "price": 199
+  },
+  {
+   "label": "62 - Luis Castillo - X-Fractor",
+   "primary": {
+    "id": "442",
+    "player": "Luis Castillo",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "62",
+    "parallel": "X-Fractor",
+    "price": 149,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1777.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1778.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas."
    },
    "extras": [],
    "qty": 1,
@@ -271,7 +798,7 @@
     "card_number": "63",
     "parallel": "base",
     "price": 249,
-    "itemId": null,
+    "itemId": "168622320644",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1207.jpg",
@@ -292,7 +819,7 @@
     "card_number": "64",
     "parallel": "base",
     "price": 199,
-    "itemId": null,
+    "itemId": "168622320644",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1211.jpg",
@@ -305,21 +832,42 @@
    "price": 199
   },
   {
-   "label": "66 - Vladimir Guerrero Jr. - Base",
+   "label": "64 - Shinnosuke Ogasawara - X-Fractor RC",
+   "primary": {
+    "id": "412",
+    "player": "Shinnosuke Ogasawara",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "64",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1717.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1718.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas. RC."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "66 - Vladimir Guerrero Jr. - Baseball Seams Ref",
    "primary": {
     "id": "144",
     "player": "Vladimir Guerrero Jr.",
     "set_name": "2026 Topps Chrome",
     "card_number": "66",
-    "parallel": "Baseball Seams Refractor",
+    "parallel": "Baseball Seams Refractor (red)",
     "price": 249,
-    "itemId": "168562538636",
+    "itemId": "168622320644",
     "sku": "BBC-144",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0632.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0633.jpg"
     ],
-    "notes": "Color match (Baseball Seams red pattern matches red uniform)"
+    "notes": "Color match (Baseball Seams red pattern matches red uniform) CORRECTED 2026-08-09: labelled \"base\", actually a RED Baseball Seams Refractor. Pulled off sale at $2.49 pending a proper comp; a colour seams parallel is worth well above base."
    },
    "extras": [],
    "qty": 1,
@@ -334,7 +882,7 @@
     "card_number": "69",
     "parallel": "Prism Refractor",
     "price": 299,
-    "itemId": "168584893856",
+    "itemId": "168622320644",
     "sku": "BBC-209",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0983.jpg",
@@ -355,13 +903,34 @@
     "card_number": "70",
     "parallel": "base",
     "price": 149,
-    "itemId": null,
+    "itemId": "168622320644",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1203.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1204.jpg"
     ],
     "notes": "From the 2026-08-08 Topps Finest / Topps Chrome mega box rip. RC."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 149
+  },
+  {
+   "label": "70 - Jhostynxon Garcia - X-Fractor RC",
+   "primary": {
+    "id": "414",
+    "player": "Jhostynxon Garcia",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "70",
+    "parallel": "X-Fractor",
+    "price": 149,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1721.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1722.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas. RC."
    },
    "extras": [],
    "qty": 1,
@@ -375,21 +944,21 @@
     "set_name": "2026 Topps Chrome",
     "card_number": "72",
     "parallel": "Refractor",
-    "price": 199,
-    "itemId": null,
+    "price": 299,
+    "itemId": "168622320644",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1238.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1239.jpg"
     ],
-    "notes": "From the 2026-08-08 Topps Finest / Topps Chrome mega box rip. Back prints REFRACTOR."
+    "notes": "From the 2026-08-08 Topps Finest / Topps Chrome mega box rip. Back prints REFRACTOR. Lifted to 90% of comp median on 2026-08-10; the 35th-percentile pricer had it at 1.99."
    },
    "extras": [],
    "qty": 1,
-   "price": 199
+   "price": 299
   },
   {
-   "label": "73 - Justin Crawford - Base",
+   "label": "73 - Justin Crawford - Base RC",
    "primary": {
     "id": "155",
     "player": "Justin Crawford",
@@ -397,17 +966,38 @@
     "card_number": "73",
     "parallel": "base",
     "price": 349,
-    "itemId": "168574114394",
+    "itemId": "168622320644",
     "sku": "BBC-155",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0654.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0655.jpg"
     ],
-    "notes": "Team: Philadelphia Phillies"
+    "notes": "Team: Philadelphia Phillies RC. Confirmed from the card front in the 2026-08-09 audit."
    },
    "extras": [],
    "qty": 1,
    "price": 349
+  },
+  {
+   "label": "73 - Justin Crawford - X-Fractor RC",
+   "primary": {
+    "id": "295",
+    "player": "Justin Crawford",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "73",
+    "parallel": "X-Fractor",
+    "price": 299,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1328.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1329.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas. RC."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 299
   },
   {
    "label": "76 - George Valera - Prism Ref RC",
@@ -418,7 +1008,7 @@
     "card_number": "76",
     "parallel": "Prism Refractor",
     "price": 249,
-    "itemId": "168584893855",
+    "itemId": "168622320644",
     "sku": "BBC-211",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0987.jpg",
@@ -431,6 +1021,27 @@
    "price": 249
   },
   {
+   "label": "77 - Zach Neto - X-Fractor",
+   "primary": {
+    "id": "429",
+    "player": "Zach Neto",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "77",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1751.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1752.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
    "label": "78 - Kazuma Okamoto - Base RC",
    "primary": {
     "id": "246",
@@ -438,18 +1049,18 @@
     "set_name": "2026 Topps Chrome",
     "card_number": "78",
     "parallel": "base",
-    "price": 449,
-    "itemId": null,
+    "price": 549,
+    "itemId": "168622320644",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1209.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1210.jpg"
     ],
-    "notes": "From the 2026-08-08 Topps Finest / Topps Chrome mega box rip. RC. Six-time NPB All-Star, first MLB card."
+    "notes": "From the 2026-08-08 Topps Finest / Topps Chrome mega box rip. RC. Six-time NPB All-Star, first MLB card. Lifted to 90% of comp median on 2026-08-10; the 35th-percentile pricer had it at 4.49."
    },
    "extras": [],
    "qty": 1,
-   "price": 449
+   "price": 549
   },
   {
    "label": "81 - Javier Baez - Ref",
@@ -460,13 +1071,34 @@
     "card_number": "81",
     "parallel": "Refractor",
     "price": 199,
-    "itemId": null,
+    "itemId": "168622320644",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1242.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1243.jpg"
     ],
     "notes": "From the 2026-08-08 Topps Finest / Topps Chrome mega box rip. Back prints REFRACTOR."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "86 - Trey Yesavage - Base RC",
+   "primary": {
+    "id": "308",
+    "player": "Trey Yesavage",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "86",
+    "parallel": "base",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1354.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1355.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas. RC."
    },
    "extras": [],
    "qty": 1,
@@ -481,7 +1113,7 @@
     "card_number": "86",
     "parallel": "X-Fractor",
     "price": 199,
-    "itemId": null,
+    "itemId": "168622320644",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1225.jpg",
@@ -494,6 +1126,106 @@
    "price": 199
   },
   {
+   "label": "88 - Marcelo Mayer - X-Fractor",
+   "primary": {
+    "id": "441",
+    "player": "Marcelo Mayer",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "88",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1775.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1776.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "89 - Tanner Bibee - Ref",
+   "primary": {
+    "id": "351",
+    "player": "Tanner Bibee",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "89",
+    "parallel": "Refractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1584.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1585.jpg"
+    ],
+    "notes": "From the 2026-08-15 rip of six Topps Chrome baseball megas. REFRACTOR printed under @TOPPS on the back."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "91 - Cole Ragans - X-Fractor",
+   "primary": {
+    "id": "329",
+    "player": "Cole Ragans",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "91",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1487.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1488.jpg"
+    ],
+    "notes": "From the 2026-08-13 rip of one Topps Chrome baseball mega."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "92 - Gabriel Moreno - X-Fractor",
+   "primary": {
+    "id": "330",
+    "player": "Gabriel Moreno",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "92",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1475.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1476.jpg"
+    ],
+    "notes": "From the 2026-08-13 rip of one Topps Chrome baseball mega."
+   },
+   "extras": [
+    {
+     "id": "422",
+     "player": "Gabriel Moreno",
+     "set_name": "2026 Topps Chrome",
+     "card_number": "92",
+     "parallel": "X-Fractor",
+     "price": 149,
+     "itemId": "168622320644",
+     "sku": null,
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1737.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1738.jpg"
+     ],
+     "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas."
+    }
+   ],
+   "qty": 2,
+   "price": 199
+  },
+  {
    "label": "93 - Bubba Chandler - Base RC",
    "primary": {
     "id": "249",
@@ -502,7 +1234,7 @@
     "card_number": "93",
     "parallel": "base",
     "price": 249,
-    "itemId": null,
+    "itemId": "168622320644",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1215.jpg",
@@ -515,6 +1247,27 @@
    "price": 249
   },
   {
+   "label": "94 - Nolan Schanuel - X-Fractor",
+   "primary": {
+    "id": "401",
+    "player": "Nolan Schanuel",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "94",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1695.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1696.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
    "label": "100 - Aaron Judge - Base",
    "primary": {
     "id": "61",
@@ -523,7 +1276,7 @@
     "card_number": "100",
     "parallel": "base",
     "price": 299,
-    "itemId": "168574114394",
+    "itemId": "168622320644",
     "sku": "BBC-61",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0443.jpg",
@@ -531,9 +1284,209 @@
     ],
     "notes": "base Refractor"
    },
+   "extras": [
+    {
+     "id": "349",
+     "player": "Aaron Judge",
+     "set_name": "2026 Topps Chrome",
+     "card_number": "100",
+     "parallel": "base",
+     "price": 299,
+     "itemId": "168622320644",
+     "sku": null,
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1525.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1526.jpg"
+     ],
+     "notes": "From the 2026-08-15 rip of six Topps Chrome baseball megas. Back band reads only \"X @TOPPS\", no REFRACTOR, and no checkerboard on the front, so base."
+    }
+   ],
+   "qty": 2,
+   "price": 299
+  },
+  {
+   "label": "100 - Aaron Judge - X-Fractor",
+   "primary": {
+    "id": "433",
+    "player": "Aaron Judge",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "100",
+    "parallel": "X-Fractor",
+    "price": 449,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1759.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1760.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 449
+  },
+  {
+   "label": "101 - Brandon Nimmo - X-Fractor",
+   "primary": {
+    "id": "298",
+    "player": "Brandon Nimmo",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "101",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1334.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1335.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "104 - Taylor Walls - X-Fractor",
+   "primary": {
+    "id": "418",
+    "player": "Taylor Walls",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "104",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1729.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1730.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "106 - Ernie Clement - X-Fractor",
+   "primary": {
+    "id": "432",
+    "player": "Ernie Clement",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "106",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1757.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1758.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "108 - Cam Smith - X-Fractor",
+   "primary": {
+    "id": "299",
+    "player": "Cam Smith",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "108",
+    "parallel": "X-Fractor",
+    "price": 149,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1336.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1337.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 149
+  },
+  {
+   "label": "115 - Owen Caissie - X-Fractor RC",
+   "primary": {
+    "id": "388",
+    "player": "Owen Caissie",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "115",
+    "parallel": "X-Fractor",
+    "price": 149,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1669.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1670.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas. RC."
+   },
+   "extras": [
+    {
+     "id": "435",
+     "player": "Owen Caissie",
+     "set_name": "2026 Topps Chrome",
+     "card_number": "115",
+     "parallel": "X-Fractor",
+     "price": 149,
+     "itemId": "168622320644",
+     "sku": null,
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1763.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1764.jpg"
+     ],
+     "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas. RC."
+    }
+   ],
+   "qty": 2,
+   "price": 149
+  },
+  {
+   "label": "123 - Kyle Schwarber - Ref",
+   "primary": {
+    "id": "273",
+    "player": "Kyle Schwarber",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "123",
+    "parallel": "Refractor",
+    "price": 299,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1284.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1285.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas. CORRECTED: back reads REFRACTOR in the bottom band beside the team logo. Recorded as base because I was reading the TOP band, which says CHROME on every card."
+   },
    "extras": [],
    "qty": 1,
    "price": 299
+  },
+  {
+   "label": "126 - Drew Gilbert - Base RC",
+   "primary": {
+    "id": "313",
+    "player": "Drew Gilbert",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "126",
+    "parallel": "base",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1364.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1365.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas. RC."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
   },
   {
    "label": "126 - Drew Gilbert - X-Fractor RC",
@@ -544,7 +1497,7 @@
     "card_number": "126",
     "parallel": "X-Fractor",
     "price": 199,
-    "itemId": null,
+    "itemId": "168622320644",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1219.jpg",
@@ -552,8 +1505,24 @@
     ],
     "notes": "From the 2026-08-08 Topps Finest / Topps Chrome mega box rip. RC. Mega box exclusive parallel."
    },
-   "extras": [],
-   "qty": 1,
+   "extras": [
+    {
+     "id": "396",
+     "player": "Drew Gilbert",
+     "set_name": "2026 Topps Chrome",
+     "card_number": "126",
+     "parallel": "X-Fractor",
+     "price": 199,
+     "itemId": "168622320644",
+     "sku": null,
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1685.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1686.jpg"
+     ],
+     "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas. RC."
+    }
+   ],
+   "qty": 2,
    "price": 199
   },
   {
@@ -564,39 +1533,139 @@
     "set_name": "2026 Topps Chrome",
     "card_number": "132",
     "parallel": "Red White & Blue Refractor",
-    "price": 299,
-    "itemId": "168562538575",
+    "price": 399,
+    "itemId": "168622320644",
     "sku": "BBC-146",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0636.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0637.jpg"
     ],
-    "notes": "Team: Washington Nationals"
+    "notes": "Team: Washington Nationals Lifted to 90% of comp median on 2026-08-10; the 35th-percentile pricer had it at 2.99."
    },
    "extras": [],
    "qty": 1,
-   "price": 299
+   "price": 399
   },
   {
-   "label": "137 - Jackson Merrill - Base",
+   "label": "134 - Chase Burns - Base RC",
    "primary": {
-    "id": "139",
-    "player": "Jackson Merrill",
+    "id": "312",
+    "player": "Chase Burns",
     "set_name": "2026 Topps Chrome",
-    "card_number": "137",
+    "card_number": "134",
     "parallel": "base",
-    "price": 299,
-    "itemId": "168562541818",
-    "sku": "BBC-139",
+    "price": 399,
+    "itemId": "168622320644",
+    "sku": null,
     "photos": [
-     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0622.jpg",
-     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0623.jpg"
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1362.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1363.jpg"
     ],
-    "notes": "Team: San Diego Padres"
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas. RC."
    },
    "extras": [],
    "qty": 1,
-   "price": 299
+   "price": 399
+  },
+  {
+   "label": "134 - Chase Burns - X-Fractor RC",
+   "primary": {
+    "id": "402",
+    "player": "Chase Burns",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "134",
+    "parallel": "X-Fractor",
+    "price": 449,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1697.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1698.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas. RC."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 449
+  },
+  {
+   "label": "138 - Kodai Senga - X-Fractor",
+   "primary": {
+    "id": "285",
+    "player": "Kodai Senga",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "138",
+    "parallel": "X-Fractor",
+    "price": 149,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1308.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1309.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 149
+  },
+  {
+   "label": "140 - Willy Adames - X-Fractor",
+   "primary": {
+    "id": "288",
+    "player": "Willy Adames",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "140",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1314.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1315.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "141 - Hurston Waldrep - X-Fractor",
+   "primary": {
+    "id": "331",
+    "player": "Hurston Waldrep",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "141",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1489.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1490.jpg"
+    ],
+    "notes": "From the 2026-08-13 rip of one Topps Chrome baseball mega."
+   },
+   "extras": [
+    {
+     "id": "416",
+     "player": "Hurston Waldrep",
+     "set_name": "2026 Topps Chrome",
+     "card_number": "141",
+     "parallel": "X-Fractor",
+     "price": 199,
+     "itemId": "168622320644",
+     "sku": null,
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1725.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1726.jpg"
+     ],
+     "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas."
+    }
+   ],
+   "qty": 2,
+   "price": 199
   },
   {
    "label": "142 - Carson Whisenhunt - Base RC",
@@ -607,7 +1676,7 @@
     "card_number": "142",
     "parallel": "base",
     "price": 199,
-    "itemId": null,
+    "itemId": "168622320644",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1217.jpg",
@@ -620,7 +1689,28 @@
    "price": 199
   },
   {
-   "label": "143 - Zach Maxwell - Base",
+   "label": "142 - Carson Whisenhunt - X-Fractor RC",
+   "primary": {
+    "id": "411",
+    "player": "Carson Whisenhunt",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "142",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1715.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1716.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas. RC."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "143 - Zach Maxwell - Base RC",
    "primary": {
     "id": "90",
     "player": "Zach Maxwell",
@@ -628,17 +1718,54 @@
     "card_number": "143",
     "parallel": "base",
     "price": 249,
-    "itemId": "168574114394",
+    "itemId": "168622320644",
     "sku": "BBC-90",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0487.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0488.jpg"
     ],
-    "notes": ""
+    "notes": " RC. Confirmed from the card front in the 2026-08-09 audit."
    },
    "extras": [],
    "qty": 1,
    "price": 249
+  },
+  {
+   "label": "143 - Zach Maxwell - X-Fractor RC",
+   "primary": {
+    "id": "332",
+    "player": "Zach Maxwell",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "143",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1477.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1478.jpg"
+    ],
+    "notes": "From the 2026-08-13 rip of one Topps Chrome baseball mega."
+   },
+   "extras": [
+    {
+     "id": "423",
+     "player": "Zach Maxwell",
+     "set_name": "2026 Topps Chrome",
+     "card_number": "143",
+     "parallel": "X-Fractor",
+     "price": 199,
+     "itemId": "168622320644",
+     "sku": null,
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1739.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1740.jpg"
+     ],
+     "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas. RC."
+    }
+   ],
+   "qty": 2,
+   "price": 199
   },
   {
    "label": "146 - Randy Arozarena - Prism Ref",
@@ -649,7 +1776,7 @@
     "card_number": "146",
     "parallel": "Prism Refractor",
     "price": 299,
-    "itemId": "168584893857",
+    "itemId": "168622320644",
     "sku": "BBC-212",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0989.jpg",
@@ -670,7 +1797,7 @@
     "card_number": "148",
     "parallel": "RayWave Refractor",
     "price": 199,
-    "itemId": "168561672963",
+    "itemId": "168622320644",
     "sku": "BBC-76",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0457.jpg",
@@ -683,7 +1810,7 @@
    "price": 199
   },
   {
-   "label": "149 - Julio Rodriguez - Base",
+   "label": "149 - Julio Rodriguez - base",
    "primary": {
     "id": "64",
     "player": "Julio Rodriguez",
@@ -691,7 +1818,7 @@
     "card_number": "149",
     "parallel": "base (dark border)",
     "price": 299,
-    "itemId": "168574114394",
+    "itemId": "168622320644",
     "sku": "BBC-64",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_63_julio-rodriguez_1.jpg",
@@ -704,46 +1831,340 @@
    "price": 299
   },
   {
-   "label": "150 - Paul Skenes - X-Fractor",
+   "label": "151 - Royce Lewis - X-Fractor",
    "primary": {
-    "id": "255",
-    "player": "Paul Skenes",
+    "id": "406",
+    "player": "Royce Lewis",
     "set_name": "2026 Topps Chrome",
-    "card_number": "150",
+    "card_number": "151",
     "parallel": "X-Fractor",
-    "price": 399,
-    "itemId": null,
+    "price": 199,
+    "itemId": "168622320644",
     "sku": null,
     "photos": [
-     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1227.jpg",
-     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1228.jpg"
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1705.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1706.jpg"
     ],
-    "notes": "From the 2026-08-08 Topps Finest / Topps Chrome mega box rip."
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "153 - Gunnar Henderson - Ref",
+   "primary": {
+    "id": "275",
+    "player": "Gunnar Henderson",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "153",
+    "parallel": "Refractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1288.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1289.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas. CORRECTED: back reads REFRACTOR in the bottom band beside the team logo. Recorded as base because I was reading the TOP band, which says CHROME on every card."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "155 - Xander Bogaerts - X-Fractor",
+   "primary": {
+    "id": "286",
+    "player": "Xander Bogaerts",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "155",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1310.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1311.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "159 - Brady House - X-Fractor",
+   "primary": {
+    "id": "333",
+    "player": "Brady House",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "159",
+    "parallel": "X-Fractor",
+    "price": 249,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1491.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1492.jpg"
+    ],
+    "notes": "From the 2026-08-13 rip of one Topps Chrome baseball mega."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 249
+  },
+  {
+   "label": "162 - Vinnie Pasquantino - Baseball Seams Ref",
+   "primary": {
+    "id": "65",
+    "player": "Vinnie Pasquantino",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "162",
+    "parallel": "Baseball Seams Refractor (red)",
+    "price": 399,
+    "itemId": "168622320644",
+    "sku": "BBC-65",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0445.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0446.jpg"
+    ],
+    "notes": "Red baseball-pattern Refractor (tentative) CORRECTED 2026-08-09 audit: front shows the red baseball-seam border, so this is a Baseball Seams Refractor, not base. Was priced as base. Lifted to 90% of comp median on 2026-08-10; the 35th-percentile pricer had it at 2.99."
    },
    "extras": [],
    "qty": 1,
    "price": 399
   },
   {
-   "label": "162 - Vinnie Pasquantino - Base",
+   "label": "164 - Jeff McNeil - X-Fractor",
    "primary": {
-    "id": "65",
-    "player": "Vinnie Pasquantino",
+    "id": "293",
+    "player": "Jeff McNeil",
     "set_name": "2026 Topps Chrome",
-    "card_number": "162",
-    "parallel": "Baseball Seams Refractor",
-    "price": 299,
-    "itemId": "168561651114",
-    "sku": "BBC-65",
+    "card_number": "164",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
     "photos": [
-     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0445.jpg",
-     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0446.jpg"
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1324.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1325.jpg"
     ],
-    "notes": "Red baseball-pattern Refractor (tentative)"
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas."
    },
    "extras": [],
    "qty": 1,
-   "price": 299
+   "price": 199
+  },
+  {
+   "label": "165 - Wilyer Abreu - Ref",
+   "primary": {
+    "id": "350",
+    "player": "Wilyer Abreu",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "165",
+    "parallel": "Refractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1582.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1583.jpg"
+    ],
+    "notes": "From the 2026-08-15 rip of six Topps Chrome baseball megas. REFRACTOR printed under @TOPPS on the back."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "165 - Wilyer Abreu - X-Fractor",
+   "primary": {
+    "id": "431",
+    "player": "Wilyer Abreu",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "165",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1755.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1756.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "168 - Luis Arraez - Aqua X-Fractor /199",
+   "primary": {
+    "id": "354",
+    "player": "Luis Arraez",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "168",
+    "parallel": "Aqua X-Fractor /199",
+    "price": 499,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1531.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1532.jpg"
+    ],
+    "notes": "From the 2026-08-15 rip of six Topps Chrome baseball megas. Serial 013/199. Same aqua checkerboard as the Bryant, whose /199 read clean."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 499
+  },
+  {
+   "label": "170 - Steven Kwan - Ref",
+   "primary": {
+    "id": "277",
+    "player": "Steven Kwan",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "170",
+    "parallel": "Refractor",
+    "price": 249,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1292.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1293.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas. CORRECTED: back reads REFRACTOR in the bottom band beside the team logo. Recorded as base because I was reading the TOP band, which says CHROME on every card."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 249
+  },
+  {
+   "label": "174 - Jonathan Aranda - X-Fractor",
+   "primary": {
+    "id": "334",
+    "player": "Jonathan Aranda",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "174",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1481.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1482.jpg"
+    ],
+    "notes": "From the 2026-08-13 rip of one Topps Chrome baseball mega."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "178 - Mike Yastrzemski - X-Fractor",
+   "primary": {
+    "id": "407",
+    "player": "Mike Yastrzemski",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "178",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1707.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1708.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "180 - Riley Greene - X-Fractor",
+   "primary": {
+    "id": "291",
+    "player": "Riley Greene",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "180",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1320.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1321.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "181 - T.J. Rumfield - X-Fractor RC",
+   "primary": {
+    "id": "430",
+    "player": "T.J. Rumfield",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "181",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1753.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1754.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas. RC."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "182 - Nolan Arenado - X-Fractor",
+   "primary": {
+    "id": "294",
+    "player": "Nolan Arenado",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "182",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1326.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1327.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "184 - Parker Messick - Base RC",
+   "primary": {
+    "id": "304",
+    "player": "Parker Messick",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "184",
+    "parallel": "base",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1346.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1347.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas. RC."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
   },
   {
    "label": "184 - Parker Messick - X-Fractor RC",
@@ -753,39 +2174,139 @@
     "set_name": "2026 Topps Chrome",
     "card_number": "184",
     "parallel": "X-Fractor",
-    "price": 199,
-    "itemId": null,
+    "price": 299,
+    "itemId": "168622320644",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1233.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1234.jpg"
     ],
-    "notes": "From the 2026-08-08 Topps Finest / Topps Chrome mega box rip. RC."
+    "notes": "From the 2026-08-08 Topps Finest / Topps Chrome mega box rip. RC. Lifted to 90% of comp median on 2026-08-10; the 35th-percentile pricer had it at 1.99."
    },
-   "extras": [],
-   "qty": 1,
-   "price": 199
+   "extras": [
+    {
+     "id": "398",
+     "player": "Parker Messick",
+     "set_name": "2026 Topps Chrome",
+     "card_number": "184",
+     "parallel": "X-Fractor",
+     "price": 199,
+     "itemId": "168622320644",
+     "sku": null,
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1689.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1690.jpg"
+     ],
+     "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas. RC."
+    }
+   ],
+   "qty": 2,
+   "price": 299
   },
   {
-   "label": "189 - Brady House - Base",
+   "label": "189 - Brady House - Base RC",
    "primary": {
     "id": "87",
     "player": "Brady House",
     "set_name": "2026 Topps Chrome",
     "card_number": "189",
     "parallel": "base",
-    "price": 299,
-    "itemId": "168574114394",
+    "price": 399,
+    "itemId": "168622320644",
     "sku": "BBC-87",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0481.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0482.jpg"
     ],
-    "notes": ""
+    "notes": " RC. Confirmed from the card front in the 2026-08-09 audit. Lifted to 90% of comp median on 2026-08-10; the 35th-percentile pricer had it at 2.99."
    },
    "extras": [],
    "qty": 1,
-   "price": 299
+   "price": 399
+  },
+  {
+   "label": "189 - Brady House - X-Fractor RC",
+   "primary": {
+    "id": "415",
+    "player": "Brady House",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "189",
+    "parallel": "X-Fractor",
+    "price": 249,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1723.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1724.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas. RC."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 249
+  },
+  {
+   "label": "194 - Devin Williams - X-Fractor",
+   "primary": {
+    "id": "426",
+    "player": "Devin Williams",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "194",
+    "parallel": "X-Fractor",
+    "price": 149,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1745.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1746.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 149
+  },
+  {
+   "label": "195 - Carson Williams - Base",
+   "primary": {
+    "id": "339",
+    "player": "Carson Williams",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "195",
+    "parallel": "base",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1469.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1470.jpg"
+    ],
+    "notes": "From the 2026-08-13 rip of one Topps Chrome baseball mega. PARALLEL CONFIRMED base: nothing printed under @TOPPS beside the team logo, and no checkerboard on the front."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "202 - Troy Melton - Base RC",
+   "primary": {
+    "id": "307",
+    "player": "Troy Melton",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "202",
+    "parallel": "base",
+    "price": 449,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1352.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1353.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas. RC."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 449
   },
   {
    "label": "205 - Robert Suarez - Prism Ref",
@@ -796,7 +2317,7 @@
     "card_number": "205",
     "parallel": "Prism Refractor",
     "price": 199,
-    "itemId": "168584893850",
+    "itemId": "168622320644",
     "sku": "BBC-210",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0985.jpg",
@@ -809,6 +2330,85 @@
    "price": 199
   },
   {
+   "label": "207 - Hunter Goodman - X-Fractor",
+   "primary": {
+    "id": "427",
+    "player": "Hunter Goodman",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "207",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1747.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1748.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "208 - Troy Melton - Ref",
+   "primary": {
+    "id": "340",
+    "player": "Troy Melton",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "208",
+    "parallel": "Refractor",
+    "price": 299,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1455.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1456.jpg"
+    ],
+    "notes": "From the 2026-08-13 rip of one Topps Chrome baseball mega. PARALLEL CONFIRMED Refractor: back reads REFRACTOR under @TOPPS beside the team logo."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 299
+  },
+  {
+   "label": "209 - Caleb Durbin - X-Fractor",
+   "primary": {
+    "id": "390",
+    "player": "Caleb Durbin",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "209",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1673.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1674.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas."
+   },
+   "extras": [
+    {
+     "id": "440",
+     "player": "Caleb Durbin",
+     "set_name": "2026 Topps Chrome",
+     "card_number": "209",
+     "parallel": "X-Fractor",
+     "price": 199,
+     "itemId": "168622320644",
+     "sku": null,
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1773.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1774.jpg"
+     ],
+     "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas."
+    }
+   ],
+   "qty": 2,
+   "price": 199
+  },
+  {
    "label": "213 - Wyatt Langford - Red White & Blue Ref",
    "primary": {
     "id": "80",
@@ -816,21 +2416,42 @@
     "set_name": "2026 Topps Chrome",
     "card_number": "213",
     "parallel": "Red White & Blue Refractor",
-    "price": 349,
-    "itemId": "168561674785",
+    "price": 449,
+    "itemId": "168622320644",
     "sku": "BBC-80",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0465.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0466.jpg"
     ],
-    "notes": ""
+    "notes": " Lifted to 90% of comp median on 2026-08-10; the 35th-percentile pricer had it at 3.49."
    },
    "extras": [],
    "qty": 1,
-   "price": 349
+   "price": 449
   },
   {
-   "label": "218 - Dylan Beavers - Base",
+   "label": "213 - Wyatt Langford - X-Fractor",
+   "primary": {
+    "id": "289",
+    "player": "Wyatt Langford",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "213",
+    "parallel": "X-Fractor",
+    "price": 249,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1316.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1317.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas. Lifted to 90% of comp median on 2026-08-10; the 35th-percentile pricer had it at 1.99."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 249
+  },
+  {
+   "label": "218 - Dylan Beavers - Base RC",
    "primary": {
     "id": "88",
     "player": "Dylan Beavers",
@@ -838,13 +2459,13 @@
     "card_number": "218",
     "parallel": "base",
     "price": 199,
-    "itemId": "168574114394",
+    "itemId": "168622320644",
     "sku": "BBC-88",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0483.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0484.jpg"
     ],
-    "notes": ""
+    "notes": " RC. Confirmed from the card front in the 2026-08-09 audit."
    },
    "extras": [],
    "qty": 1,
@@ -859,7 +2480,7 @@
     "card_number": "220",
     "parallel": "base",
     "price": 199,
-    "itemId": null,
+    "itemId": "168622320644",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1213.jpg",
@@ -880,17 +2501,38 @@
     "card_number": "222",
     "parallel": "base",
     "price": 299,
-    "itemId": "168574114394",
+    "itemId": "168622320644",
     "sku": "BBC-135",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0612.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0613.jpg"
     ],
-    "notes": "Team: Miami Marlins"
+    "notes": "Team: Miami Marlins Topps All-Star Rookie Cup on the front."
    },
    "extras": [],
    "qty": 1,
    "price": 299
+  },
+  {
+   "label": "223 - Lawrence Butler - X-Fractor",
+   "primary": {
+    "id": "296",
+    "player": "Lawrence Butler",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "223",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1330.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1331.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
   },
   {
    "label": "228 - Geraldo Perdomo - Red White & Blue Ref",
@@ -901,7 +2543,7 @@
     "card_number": "228",
     "parallel": "Red White & Blue Refractor",
     "price": 349,
-    "itemId": "168561672835",
+    "itemId": "168622320644",
     "sku": "BBC-81",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0467.jpg",
@@ -914,6 +2556,27 @@
    "price": 349
   },
   {
+   "label": "229 - Otto Kemp - Base RC",
+   "primary": {
+    "id": "310",
+    "player": "Otto Kemp",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "229",
+    "parallel": "base",
+    "price": 149,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1358.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1359.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas. RC."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 149
+  },
+  {
    "label": "229 - Otto Kemp - X-Fractor RC",
    "primary": {
     "id": "256",
@@ -922,7 +2585,7 @@
     "card_number": "229",
     "parallel": "X-Fractor",
     "price": 149,
-    "itemId": null,
+    "itemId": "168622320644",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1229.jpg",
@@ -930,12 +2593,28 @@
     ],
     "notes": "From the 2026-08-08 Topps Finest / Topps Chrome mega box rip. RC."
    },
-   "extras": [],
-   "qty": 1,
+   "extras": [
+    {
+     "id": "400",
+     "player": "Otto Kemp",
+     "set_name": "2026 Topps Chrome",
+     "card_number": "229",
+     "parallel": "X-Fractor",
+     "price": 149,
+     "itemId": "168622320644",
+     "sku": null,
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1693.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1694.jpg"
+     ],
+     "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas. RC."
+    }
+   ],
+   "qty": 2,
    "price": 149
   },
   {
-   "label": "232 - Christian Moore - Base",
+   "label": "232 - Christian Moore - Base RC",
    "primary": {
     "id": "143",
     "player": "Christian Moore",
@@ -943,20 +2622,41 @@
     "card_number": "232",
     "parallel": "base",
     "price": 249,
-    "itemId": "168574114394",
+    "itemId": "168622320644",
     "sku": "BBC-143",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0630.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0631.jpg"
     ],
-    "notes": "Team: Los Angeles Angels"
+    "notes": "Team: Los Angeles Angels RC. Confirmed from the card front in the 2026-08-09 audit."
    },
    "extras": [],
    "qty": 1,
    "price": 249
   },
   {
-   "label": "236 - Nolan McLean - Base",
+   "label": "232 - Christian Moore - X-Fractor RC",
+   "primary": {
+    "id": "417",
+    "player": "Christian Moore",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "232",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1727.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1728.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas. RC."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "236 - Nolan McLean - Base RC",
    "primary": {
     "id": "92",
     "player": "Nolan McLean",
@@ -964,17 +2664,133 @@
     "card_number": "236",
     "parallel": "base",
     "price": 499,
-    "itemId": "168574114394",
+    "itemId": "168622320644",
     "sku": "BBC-92",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0491.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0492.jpg"
     ],
-    "notes": ""
+    "notes": " RC. Confirmed from the card front in the 2026-08-09 audit."
    },
    "extras": [],
    "qty": 1,
    "price": 499
+  },
+  {
+   "label": "237 - Denzer Guzman - Base",
+   "primary": {
+    "id": "341",
+    "player": "Denzer Guzman",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "237",
+    "parallel": "base",
+    "price": 150,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1471.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1472.jpg"
+    ],
+    "notes": "From the 2026-08-13 rip of one Topps Chrome baseball mega. PARALLEL CONFIRMED base: nothing printed under @TOPPS beside the team logo, and no checkerboard on the front."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 150
+  },
+  {
+   "label": "242 - Tatsuya Imai - X-Fractor RC",
+   "primary": {
+    "id": "335",
+    "player": "Tatsuya Imai",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "242",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1479.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1480.jpg"
+    ],
+    "notes": "From the 2026-08-13 rip of one Topps Chrome baseball mega."
+   },
+   "extras": [
+    {
+     "id": "421",
+     "player": "Tatsuya Imai",
+     "set_name": "2026 Topps Chrome",
+     "card_number": "242",
+     "parallel": "X-Fractor",
+     "price": 199,
+     "itemId": "168622320644",
+     "sku": null,
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1735.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1736.jpg"
+     ],
+     "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas. RC."
+    }
+   ],
+   "qty": 2,
+   "price": 199
+  },
+  {
+   "label": "246 - Denzel Clarke - X-Fractor",
+   "primary": {
+    "id": "425",
+    "player": "Denzel Clarke",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "246",
+    "parallel": "X-Fractor",
+    "price": 149,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1743.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1744.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 149
+  },
+  {
+   "label": "247 - Warming Bernabel - X-Fractor RC",
+   "primary": {
+    "id": "394",
+    "player": "Warming Bernabel",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "247",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1681.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1682.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas. RC."
+   },
+   "extras": [
+    {
+     "id": "439",
+     "player": "Warming Bernabel",
+     "set_name": "2026 Topps Chrome",
+     "card_number": "247",
+     "parallel": "X-Fractor",
+     "price": 199,
+     "itemId": "168622320644",
+     "sku": null,
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1771.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1772.jpg"
+     ],
+     "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas. RC."
+    }
+   ],
+   "qty": 2,
+   "price": 199
   },
   {
    "label": "250 - Nick Kurtz - Base",
@@ -985,20 +2801,99 @@
     "card_number": "250",
     "parallel": "base",
     "price": 499,
-    "itemId": "168574114394",
+    "itemId": "168622320644",
     "sku": "BBC-148",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0640.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0641.jpg"
     ],
-    "notes": "Team: Athletics"
+    "notes": "Team: Athletics Topps All-Star Rookie Cup on the front."
    },
-   "extras": [],
-   "qty": 1,
+   "extras": [
+    {
+     "id": "272",
+     "player": "Nick Kurtz",
+     "set_name": "2026 Topps Chrome",
+     "card_number": "250",
+     "parallel": "base",
+     "price": 399,
+     "itemId": "168622320644",
+     "sku": null,
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1282.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1283.jpg"
+     ],
+     "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas. All-Star Rookie Cup. Lifted to 90% of comp median on 2026-08-10; the 35th-percentile pricer had it at 2.99."
+    }
+   ],
+   "qty": 2,
    "price": 499
   },
   {
-   "label": "255 - Cody Freeman - Base",
+   "label": "251 - Isaac Collins - Base",
+   "primary": {
+    "id": "271",
+    "player": "Isaac Collins",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "251",
+    "parallel": "base",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1280.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1281.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas. All-Star Rookie Cup."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "251 - Isaac Collins - X-Fractor",
+   "primary": {
+    "id": "292",
+    "player": "Isaac Collins",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "251",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1322.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1323.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas. All-Star Rookie Cup. Second Isaac Collins #251, this one the X-Fractor."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "252 - Christian Walker - X-Fractor",
+   "primary": {
+    "id": "297",
+    "player": "Christian Walker",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "252",
+    "parallel": "X-Fractor",
+    "price": 149,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1332.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1333.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 149
+  },
+  {
+   "label": "255 - Cody Freeman - Base RC",
    "primary": {
     "id": "94",
     "player": "Cody Freeman",
@@ -1006,13 +2901,34 @@
     "card_number": "255",
     "parallel": "base",
     "price": 199,
-    "itemId": "168574114394",
+    "itemId": "168622320644",
     "sku": "BBC-94",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0495.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0497.jpg"
     ],
-    "notes": ""
+    "notes": " RC. Confirmed from the card front in the 2026-08-09 audit."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "257 - Denzer Guzman - X-Fractor RC",
+   "primary": {
+    "id": "301",
+    "player": "Denzer Guzman",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "257",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1340.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1341.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas. RC."
    },
    "extras": [],
    "qty": 1,
@@ -1027,7 +2943,7 @@
     "card_number": "258",
     "parallel": "RayWave Refractor",
     "price": 449,
-    "itemId": "168562538565",
+    "itemId": "168622320644",
     "sku": "BBC-154",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0652.jpg",
@@ -1040,25 +2956,140 @@
    "price": 449
   },
   {
-   "label": "259 - Colson Montgomery - Base",
+   "label": "259 - Colson Montgomery - Base RC",
    "primary": {
     "id": "93",
     "player": "Colson Montgomery",
     "set_name": "2026 Topps Chrome",
     "card_number": "259",
     "parallel": "base",
-    "price": 399,
-    "itemId": "168574114394",
+    "price": 499,
+    "itemId": "168622320644",
     "sku": "BBC-93",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0493.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0494.jpg"
     ],
-    "notes": ""
+    "notes": " RC. Confirmed from the card front in the 2026-08-09 audit. Lifted to 90% of comp median on 2026-08-10; the 35th-percentile pricer had it at 3.99."
    },
    "extras": [],
    "qty": 1,
-   "price": 399
+   "price": 499
+  },
+  {
+   "label": "261 - Jakob Marsee - X-Fractor RC",
+   "primary": {
+    "id": "387",
+    "player": "Jakob Marsee",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "261",
+    "parallel": "X-Fractor",
+    "price": 149,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1667.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1668.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas. RC."
+   },
+   "extras": [
+    {
+     "id": "391",
+     "player": "Jakob Marsee",
+     "set_name": "2026 Topps Chrome",
+     "card_number": "261",
+     "parallel": "X-Fractor",
+     "price": 149,
+     "itemId": "168622320644",
+     "sku": null,
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1675.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1676.jpg"
+     ],
+     "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas. RC."
+    },
+    {
+     "id": "437",
+     "player": "Jakob Marsee",
+     "set_name": "2026 Topps Chrome",
+     "card_number": "261",
+     "parallel": "X-Fractor",
+     "price": 149,
+     "itemId": "168622320644",
+     "sku": null,
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1767.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1768.jpg"
+     ],
+     "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas. RC."
+    }
+   ],
+   "qty": 3,
+   "price": 149
+  },
+  {
+   "label": "262 - Cam Schlittler - Base RC",
+   "primary": {
+    "id": "311",
+    "player": "Cam Schlittler",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "262",
+    "parallel": "base",
+    "price": 799,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1360.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1361.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas. RC."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 799
+  },
+  {
+   "label": "264 - Moises Ballesteros - X-Fractor",
+   "primary": {
+    "id": "413",
+    "player": "Moises Ballesteros",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "264",
+    "parallel": "X-Fractor",
+    "price": 149,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1719.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1720.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 149
+  },
+  {
+   "label": "265 - Jesus Luzardo - Base",
+   "primary": {
+    "id": "274",
+    "player": "Jesus Luzardo",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "265",
+    "parallel": "base",
+    "price": 149,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1286.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1287.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 149
   },
   {
    "label": "271 - Matt Shaw - Ref",
@@ -1069,7 +3100,7 @@
     "card_number": "271",
     "parallel": "Refractor",
     "price": 199,
-    "itemId": null,
+    "itemId": "168622320644",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1240.jpg",
@@ -1090,7 +3121,7 @@
     "card_number": "277",
     "parallel": "X-Fractor",
     "price": 149,
-    "itemId": null,
+    "itemId": "168622320644",
     "sku": null,
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1221.jpg",
@@ -1098,9 +3129,25 @@
     ],
     "notes": "From the 2026-08-08 Topps Finest / Topps Chrome mega box rip. Horizontal card."
    },
-   "extras": [],
-   "qty": 1,
-   "price": 149
+   "extras": [
+    {
+     "id": "404",
+     "player": "Chase Dollander",
+     "set_name": "2026 Topps Chrome",
+     "card_number": "277",
+     "parallel": "X-Fractor",
+     "price": 199,
+     "itemId": "168622320644",
+     "sku": null,
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1701.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1702.jpg"
+     ],
+     "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas."
+    }
+   ],
+   "qty": 2,
+   "price": 199
   },
   {
    "label": "281 - Marcus Semien - Red White & Blue Ref",
@@ -1111,7 +3158,7 @@
     "card_number": "281",
     "parallel": "Red White & Blue Refractor",
     "price": 299,
-    "itemId": "168562541903",
+    "itemId": "168622320644",
     "sku": "BBC-156",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0656.jpg",
@@ -1131,18 +3178,60 @@
     "set_name": "2026 Topps Chrome",
     "card_number": "284",
     "parallel": "Refractor",
-    "price": 649,
-    "itemId": "168562538564",
+    "price": 949,
+    "itemId": "168622320644",
     "sku": "BBC-150",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0644.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0645.jpg"
     ],
-    "notes": "Team: Cleveland Guardians"
+    "notes": "Team: Cleveland Guardians Lifted to 90% of comp median on 2026-08-10; the 35th-percentile pricer had it at 6.49."
    },
    "extras": [],
    "qty": 1,
-   "price": 649
+   "price": 949
+  },
+  {
+   "label": "288 - Kris Bryant - Aqua X-Fractor /199",
+   "primary": {
+    "id": "353",
+    "player": "Kris Bryant",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "288",
+    "parallel": "Aqua X-Fractor /199",
+    "price": 399,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1529.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1530.jpg"
+    ],
+    "notes": "From the 2026-08-15 rip of six Topps Chrome baseball megas. Serial 026/199, read clean off the front."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 399
+  },
+  {
+   "label": "289 - Spencer Torkelson - X-Fractor",
+   "primary": {
+    "id": "408",
+    "player": "Spencer Torkelson",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "289",
+    "parallel": "X-Fractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1709.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1710.jpg"
+    ],
+    "notes": "From the 2026-08-19 rip of Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
   },
   {
    "label": "290 - Zack Wheeler - RayWave Ref",
@@ -1153,7 +3242,7 @@
     "card_number": "290",
     "parallel": "RayWave Refractor",
     "price": 249,
-    "itemId": "168561673676",
+    "itemId": "168622320644",
     "sku": "BBC-66",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0455.jpg",
@@ -1166,37 +3255,58 @@
    "price": 249
   },
   {
-   "label": "292 - Lars Nootbaar - Base",
+   "label": "292 - Lars Nootbaar - Baseball Seams Ref",
    "primary": {
     "id": "77",
     "player": "Lars Nootbaar",
     "set_name": "2026 Topps Chrome",
     "card_number": "292",
-    "parallel": "Baseball Seams Refractor",
+    "parallel": "Baseball Seams Refractor (red)",
     "price": 399,
-    "itemId": "168561672950",
+    "itemId": "168622320644",
     "sku": "BBC-77",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0459.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0460.jpg"
     ],
-    "notes": ""
+    "notes": " CORRECTED 2026-08-09 audit: front shows the red baseball-seam border, so this is a Baseball Seams Refractor, not base. Was priced as base."
    },
    "extras": [],
    "qty": 1,
    "price": 399
   },
   {
+   "label": "292 - Lars Nootbaar - Ref",
+   "primary": {
+    "id": "342",
+    "player": "Lars Nootbaar",
+    "set_name": "2026 Topps Chrome",
+    "card_number": "292",
+    "parallel": "Refractor",
+    "price": 199,
+    "itemId": "168622320644",
+    "sku": null,
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1453.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1454.jpg"
+    ],
+    "notes": "From the 2026-08-13 rip of one Topps Chrome baseball mega. PARALLEL CONFIRMED Refractor: back reads REFRACTOR under @TOPPS beside the team logo."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
    "label": "91CB-3 - Bryce Harper - Insert",
    "primary": {
     "id": "75",
     "player": "Bryce Harper",
-    "set_name": "2026 Topps Chrome (1991 Topps insert)",
+    "set_name": "2026 Topps Chrome (1991 Topps Baseball insert)",
     "card_number": "91CB-3",
     "parallel": "insert",
-    "price": 199,
-    "itemId": "168561673138",
-    "sku": "BBC-75",
+    "price": 149,
+    "itemId": "168617438091",
+    "sku": "PYP-91CB-75",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0453.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0454.jpg"
@@ -1205,19 +3315,19 @@
    },
    "extras": [],
    "qty": 1,
-   "price": 199
+   "price": 149
   },
   {
    "label": "91CB-6 - Mike Trout - 1991 Topps Baseball insert",
    "primary": {
     "id": "215",
     "player": "Mike Trout",
-    "set_name": "2026 Topps Chrome",
+    "set_name": "2026 Topps Chrome (1991 Topps Baseball insert)",
     "card_number": "91CB-6",
     "parallel": "1991 Topps Baseball insert",
     "price": 199,
-    "itemId": "168584893861",
-    "sku": "BBC-215",
+    "itemId": "168617438091",
+    "sku": "PYP-91CB-360",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0995.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0996.jpg"
@@ -1229,25 +3339,67 @@
    "price": 199
   },
   {
-   "label": "91CB-7 - Elly De La Cruz - 1991 Topps Baseball ins",
+   "label": "91CB-6 - Mike Trout - Insert",
    "primary": {
-    "id": "216",
-    "player": "Elly De La Cruz",
-    "set_name": "2026 Topps Chrome",
-    "card_number": "91CB-7",
-    "parallel": "1991 Topps Baseball insert",
-    "price": 399,
-    "itemId": "168584893846",
-    "sku": "BBC-216",
+    "id": "360",
+    "player": "Mike Trout",
+    "set_name": "2026 Topps Chrome (1991 Topps Baseball insert)",
+    "card_number": "91CB-6",
+    "parallel": "insert",
+    "price": 199,
+    "itemId": "168617438091",
+    "sku": "PYP-91CB-360",
     "photos": [
-     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0997.jpg",
-     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0998.jpg"
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1565.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1566.jpg"
     ],
-    "notes": "Reds. From the 2026 Topps Chrome hobby box ripped 2026-08-02."
+    "notes": "From the 2026-08-15 rip of six Topps Chrome baseball megas."
    },
    "extras": [],
    "qty": 1,
-   "price": 399
+   "price": 199
+  },
+  {
+   "label": "91CB-8 - Mookie Betts - Insert",
+   "primary": {
+    "id": "324",
+    "player": "Mookie Betts",
+    "set_name": "2026 Topps Chrome (1991 Topps Baseball insert)",
+    "card_number": "91CB-8",
+    "parallel": "insert",
+    "price": 199,
+    "itemId": "168617438091",
+    "sku": "PYP-91CB-324",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1457.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1458.jpg"
+    ],
+    "notes": "From the 2026-08-13 rip of one Topps Chrome baseball mega. Code 91CB-8 read off the back. 1991 Topps 75 Years insert, same set as the 2026-08-09 drop; I first wrote it up as 1989 and Michael corrected it."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "91CB-11 - Juan Soto - Insert",
+   "primary": {
+    "id": "359",
+    "player": "Juan Soto",
+    "set_name": "2026 Topps Chrome (1991 Topps Baseball insert)",
+    "card_number": "91CB-11",
+    "parallel": "insert",
+    "price": 199,
+    "itemId": "168617438091",
+    "sku": "PYP-91CB-359",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1563.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1564.jpg"
+    ],
+    "notes": "From the 2026-08-15 rip of six Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
   },
   {
    "label": "91CB-12 - Fernando Tatis Jr. - insert",
@@ -1258,8 +3410,8 @@
     "card_number": "91CB-12",
     "parallel": "insert (Refractor)",
     "price": 199,
-    "itemId": "168562538628",
-    "sku": "BBC-140",
+    "itemId": "168617438091",
+    "sku": "PYP-91CB-140",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0624.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0625.jpg"
@@ -1271,21 +3423,137 @@
    "price": 199
   },
   {
+   "label": "91CB-17 - Samuel Basallo - Insert RC",
+   "primary": {
+    "id": "270",
+    "player": "Samuel Basallo",
+    "set_name": "2026 Topps Chrome (1991 Topps Baseball insert)",
+    "card_number": "91CB-17",
+    "parallel": "insert",
+    "price": 149,
+    "itemId": "168617438091",
+    "sku": "PYP-91CB-270",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1278.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1279.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas. RC."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 149
+  },
+  {
    "label": "91CB-18 - Bubba Chandler - Insert RC",
    "primary": {
     "id": "242",
     "player": "Bubba Chandler",
-    "set_name": "2026 Topps Chrome (1991 Topps 75 Years insert)",
+    "set_name": "2026 Topps Chrome (1991 Topps Baseball insert)",
     "card_number": "91CB-18",
     "parallel": "insert",
-    "price": 249,
-    "itemId": null,
-    "sku": null,
+    "price": 149,
+    "itemId": "168617438091",
+    "sku": "PYP-91CB-356",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1201.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1202.jpg"
     ],
     "notes": "From the 2026-08-08 Topps Finest / Topps Chrome mega box rip. RC."
+   },
+   "extras": [
+    {
+     "id": "356",
+     "player": "Bubba Chandler",
+     "set_name": "2026 Topps Chrome (1991 Topps Baseball insert)",
+     "card_number": "91CB-18",
+     "parallel": "insert",
+     "price": 149,
+     "itemId": "168617438091",
+     "sku": "PYP-91CB-356",
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1539.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1540.jpg"
+     ],
+     "notes": "From the 2026-08-15 rip of six Topps Chrome baseball megas. SECOND COPY, vault already has #242."
+    }
+   ],
+   "qty": 2,
+   "price": 149
+  },
+  {
+   "label": "91CB-19 - Roman Anthony - Insert",
+   "primary": {
+    "id": "325",
+    "player": "Roman Anthony",
+    "set_name": "2026 Topps Chrome (1991 Topps Baseball insert)",
+    "card_number": "91CB-19",
+    "parallel": "insert",
+    "price": 299,
+    "itemId": "168617438091",
+    "sku": "PYP-91CB-325",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1459.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1460.jpg"
+    ],
+    "notes": "From the 2026-08-13 rip of one Topps Chrome baseball mega. Code 91CB-19 read off the back. 1991 Topps 75 Years insert, same set as the 2026-08-09 drop; I first wrote it up as 1989 and Michael corrected it."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 299
+  },
+  {
+   "label": "91CB-21 - Sal Stewart - Insert RC",
+   "primary": {
+    "id": "269",
+    "player": "Sal Stewart",
+    "set_name": "2026 Topps Chrome (1991 Topps Baseball insert)",
+    "card_number": "91CB-21",
+    "parallel": "insert",
+    "price": 249,
+    "itemId": "168617438091",
+    "sku": "PYP-91CB-269",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1276.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1277.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas. RC."
+   },
+   "extras": [
+    {
+     "id": "361",
+     "player": "Sal Stewart",
+     "set_name": "2026 Topps Chrome (1991 Topps Baseball insert)",
+     "card_number": "91CB-21",
+     "parallel": "insert",
+     "price": 249,
+     "itemId": "168617438091",
+     "sku": "PYP-91CB-269",
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1567.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1568.jpg"
+     ],
+     "notes": "From the 2026-08-15 rip of six Topps Chrome baseball megas. SECOND COPY, vault already has #269."
+    }
+   ],
+   "qty": 2,
+   "price": 249
+  },
+  {
+   "label": "91CB-24 - Kazuma Okamoto - Insert",
+   "primary": {
+    "id": "358",
+    "player": "Kazuma Okamoto",
+    "set_name": "2026 Topps Chrome (1991 Topps Baseball insert)",
+    "card_number": "91CB-24",
+    "parallel": "insert",
+    "price": 249,
+    "itemId": "168617438091",
+    "sku": "PYP-91CB-358",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1561.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1562.jpg"
+    ],
+    "notes": "From the 2026-08-15 rip of six Topps Chrome baseball megas."
    },
    "extras": [],
    "qty": 1,
@@ -1296,12 +3564,12 @@
    "primary": {
     "id": "69",
     "player": "Chase Burns",
-    "set_name": "2026 Topps Chrome (75 Years of Baseball insert)",
+    "set_name": "2026 Topps Chrome (1991 Topps Baseball insert)",
     "card_number": "91CB-25",
     "parallel": "insert (1991 Topps design)",
-    "price": 299,
-    "itemId": "168561672952",
-    "sku": "BBC-69",
+    "price": 199,
+    "itemId": "168617438091",
+    "sku": "PYP-91CB-69",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_chase_burns_chrome_front_v2.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0596.jpg"
@@ -1310,7 +3578,28 @@
    },
    "extras": [],
    "qty": 1,
-   "price": 299
+   "price": 199
+  },
+  {
+   "label": "91CB-26 - Christian Moore - Insert",
+   "primary": {
+    "id": "357",
+    "player": "Christian Moore",
+    "set_name": "2026 Topps Chrome (1991 Topps Baseball insert)",
+    "card_number": "91CB-26",
+    "parallel": "insert",
+    "price": 149,
+    "itemId": "168617438091",
+    "sku": "PYP-91CB-357",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1541.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1542.jpg"
+    ],
+    "notes": "From the 2026-08-15 rip of six Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 149
   },
   {
    "label": "91CB-27 - Owen Caissie - insert",
@@ -1320,9 +3609,9 @@
     "set_name": "2026 Topps Chrome (1991 Topps Baseball insert)",
     "card_number": "91CB-27",
     "parallel": "insert (Refractor)",
-    "price": 299,
-    "itemId": "168562539524",
-    "sku": "BBC-157",
+    "price": 199,
+    "itemId": "168617438091",
+    "sku": "PYP-91CB-157",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0658.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0659.jpg"
@@ -1331,19 +3620,19 @@
    },
    "extras": [],
    "qty": 1,
-   "price": 299
+   "price": 199
   },
   {
    "label": "BTP-1 - Mike Trout - insert",
    "primary": {
     "id": "63",
     "player": "Mike Trout",
-    "set_name": "2026 Topps Chrome (Big Ticket Player insert)",
+    "set_name": "2026 Topps Chrome (Big Ticket Players insert)",
     "card_number": "BTP-1",
     "parallel": "insert (refractor)",
-    "price": 299,
-    "itemId": "168561672954",
-    "sku": "BBC-63",
+    "price": 199,
+    "itemId": "168617438107",
+    "sku": "PYP-BTP-63",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_62_mike-trout_1.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_62_mike-trout_2.jpg",
@@ -1351,9 +3640,22 @@
     ],
     "notes": "insert (refractor)"
    },
-   "extras": [],
-   "qty": 1,
-   "price": 299
+   "extras": [
+    {
+     "id": "381",
+     "player": "Mike Trout",
+     "set_name": "2026 Topps Chrome (Big Ticket Players insert)",
+     "card_number": "BTP-1",
+     "parallel": "insert (refractor)",
+     "price": 199,
+     "itemId": "168617438107",
+     "sku": "PYP-BTP-63",
+     "photos": [],
+     "notes": "Counted in the team bag 2026-08-16 but never photographed; Michael shoots one copy of the cheap inserts because they sell on a quantity dropdown. Second copy of #63. NO PHOTO YET, and the card_number is assumed to match #63 - confirm both when it is shot."
+    }
+   ],
+   "qty": 2,
+   "price": 199
   },
   {
    "label": "RVA-1 - David Ortiz - insert",
@@ -1363,18 +3665,144 @@
     "set_name": "2026 Topps Chrome (Chrome Rivals insert)",
     "card_number": "RVA-1",
     "parallel": "insert (Refractor)",
-    "price": 299,
-    "itemId": "168562538588",
-    "sku": "BBC-136",
+    "price": 199,
+    "itemId": "168617438132",
+    "sku": "PYP-RV-136",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0614.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0615.jpg"
     ],
-    "notes": "Team: Boston Red Sox"
+    "notes": "Team: Boston Red Sox Lifted to 90% of comp median on 2026-08-10; the 35th-percentile pricer had it at 2.99."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "WC-1 - Aaron Judge - Insert",
+   "primary": {
+    "id": "362",
+    "player": "Aaron Judge",
+    "set_name": "2026 Topps Chrome (Wrecking Crew insert)",
+    "card_number": "WC-1",
+    "parallel": "insert",
+    "price": 199,
+    "itemId": "168617438056",
+    "sku": "PYP-WC-362",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1570.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1571.jpg"
+    ],
+    "notes": "From the 2026-08-15 rip of six Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "FS-2 - Colson Montgomery - Insert",
+   "primary": {
+    "id": "379",
+    "player": "Colson Montgomery",
+    "set_name": "2026 Topps Chrome (Future Stars insert)",
+    "card_number": "FS-2",
+    "parallel": "insert",
+    "price": 199,
+    "itemId": "168617438146",
+    "sku": "PYP-FS-379",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1580.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1581.jpg"
+    ],
+    "notes": "From the 2026-08-15 rip of six Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "RVA-2 - Mike Piazza - Insert",
+   "primary": {
+    "id": "282",
+    "player": "Mike Piazza",
+    "set_name": "2026 Topps Chrome (Chrome Rivals insert)",
+    "card_number": "RVA-2",
+    "parallel": "insert",
+    "price": 199,
+    "itemId": "168617438132",
+    "sku": "PYP-RV-282",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1302.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1303.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas. AWAY variant."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "WC-2 - Shohei Ohtani - Insert",
+   "primary": {
+    "id": "363",
+    "player": "Shohei Ohtani",
+    "set_name": "2026 Topps Chrome (Wrecking Crew insert)",
+    "card_number": "WC-2",
+    "parallel": "insert",
+    "price": 599,
+    "itemId": "168617438056",
+    "sku": "PYP-WC-363",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1574.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1575.jpg"
+    ],
+    "notes": "From the 2026-08-15 rip of six Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 599
+  },
+  {
+   "label": "FS-3 - JJ Wetherholt - Insert RC",
+   "primary": {
+    "id": "279",
+    "player": "JJ Wetherholt",
+    "set_name": "2026 Topps Chrome (Future Stars insert)",
+    "card_number": "FS-3",
+    "parallel": "insert",
+    "price": 299,
+    "itemId": "168617438146",
+    "sku": "PYP-FS-279",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1296.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1297.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas. RC."
    },
    "extras": [],
    "qty": 1,
    "price": 299
+  },
+  {
+   "label": "P-3 - Nick Kurtz - Insert",
+   "primary": {
+    "id": "317",
+    "player": "Nick Kurtz",
+    "set_name": "2026 Topps Chrome (Perspectives insert)",
+    "card_number": "P-3",
+    "parallel": "insert",
+    "price": 349,
+    "itemId": "168617438227",
+    "sku": "PYP-P-371",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1372.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1373.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas. Perspectives, identified by Michael."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 349
   },
   {
    "label": "PTP-3 - Jackie Robinson / Mookie Betts - Insert",
@@ -1384,9 +3812,9 @@
     "set_name": "2026 Topps Chrome (Past to Present insert)",
     "card_number": "PTP-3",
     "parallel": "insert",
-    "price": 599,
-    "itemId": "168561671929",
-    "sku": "BBC-82",
+    "price": 199,
+    "itemId": "168617438176",
+    "sku": "PYP-PTP-82",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0469.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0470.jpg"
@@ -1395,48 +3823,95 @@
    },
    "extras": [],
    "qty": 1,
-   "price": 599
+   "price": 199
   },
   {
-   "label": "PTP-5 - Barry Larkin / Elly De La Cruz - Insert",
+   "label": "WC-3 - Kyle Schwarber - Insert",
    "primary": {
-    "id": "84",
-    "player": "Barry Larkin / Elly De La Cruz",
-    "set_name": "2026 Topps Chrome (Past to Present insert)",
-    "card_number": "PTP-5",
+    "id": "283",
+    "player": "Kyle Schwarber",
+    "set_name": "2026 Topps Chrome (Wrecking Crew insert)",
+    "card_number": "WC-3",
     "parallel": "insert",
-    "price": 399,
-    "itemId": "168561672832",
-    "sku": "BBC-84",
+    "price": 199,
+    "itemId": "168617438056",
+    "sku": "PYP-WC-283",
     "photos": [
-     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0473.jpg",
-     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0474.jpg"
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1304.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1305.jpg"
     ],
-    "notes": ""
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas."
+   },
+   "extras": [
+    {
+     "id": "380",
+     "player": "Kyle Schwarber",
+     "set_name": "2026 Topps Chrome (Wrecking Crew insert)",
+     "card_number": "WC-3",
+     "parallel": "insert",
+     "price": 199,
+     "itemId": "168617438056",
+     "sku": "PYP-WC-283",
+     "photos": [],
+     "notes": "Counted in the team bag 2026-08-16 but never photographed; Michael shoots one copy of the cheap inserts because they sell on a quantity dropdown. Second copy of #283. NO PHOTO YET, and the card_number is assumed to match #283 - confirm both when it is shot."
+    }
+   ],
+   "qty": 2,
+   "price": 199
+  },
+  {
+   "label": "WC-5 - Cal Raleigh - Insert",
+   "primary": {
+    "id": "364",
+    "player": "Cal Raleigh",
+    "set_name": "2026 Topps Chrome (Wrecking Crew insert)",
+    "card_number": "WC-5",
+    "parallel": "insert",
+    "price": 199,
+    "itemId": "168617438056",
+    "sku": "PYP-WC-364",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1576.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1577.jpg"
+    ],
+    "notes": "From the 2026-08-15 rip of six Topps Chrome baseball megas."
    },
    "extras": [],
    "qty": 1,
-   "price": 399
+   "price": 199
   },
   {
    "label": "BTP-6 - Corbin Carroll - insert",
    "primary": {
     "id": "153",
     "player": "Corbin Carroll",
-    "set_name": "2026 Topps Chrome (Big Ticket Player insert)",
+    "set_name": "2026 Topps Chrome (Big Ticket Players insert)",
     "card_number": "BTP-6",
     "parallel": "insert (Refractor)",
     "price": 199,
-    "itemId": "168562538619",
-    "sku": "BBC-153",
+    "itemId": "168617438107",
+    "sku": "PYP-BTP-153",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0650.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0651.jpg"
     ],
-    "notes": "Team: Arizona Diamondbacks"
+    "notes": "Team: Arizona Diamondbacks Lifted to 90% of comp median on 2026-08-10; the 35th-percentile pricer had it at 1.99."
    },
-   "extras": [],
-   "qty": 1,
+   "extras": [
+    {
+     "id": "382",
+     "player": "Corbin Carroll",
+     "set_name": "2026 Topps Chrome (Big Ticket Players insert)",
+     "card_number": "BTP-6",
+     "parallel": "insert (Refractor)",
+     "price": 199,
+     "itemId": "168617438107",
+     "sku": "PYP-BTP-153",
+     "photos": [],
+     "notes": "Counted in the team bag 2026-08-16 but never photographed; Michael shoots one copy of the cheap inserts because they sell on a quantity dropdown. Second copy of #153. NO PHOTO YET, and the card_number is assumed to match #153 - confirm both when it is shot."
+    }
+   ],
+   "qty": 2,
    "price": 199
   },
   {
@@ -1447,30 +3922,30 @@
     "set_name": "2026 Topps Chrome (Future Stars insert)",
     "card_number": "FS-6",
     "parallel": "insert (Refractor)",
-    "price": 599,
-    "itemId": "168562538576",
-    "sku": "BBC-145",
+    "price": 449,
+    "itemId": "168617438146",
+    "sku": "PYP-FS-145",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0634.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0635.jpg"
     ],
-    "notes": "Team: Detroit Tigers"
+    "notes": "Team: Detroit Tigers Lifted to 90% of comp median on 2026-08-10; the 35th-percentile pricer had it at 5.99."
    },
    "extras": [],
    "qty": 1,
-   "price": 599
+   "price": 449
   },
   {
    "label": "FS-7 - Jac Caglianone - Future Stars insert RC",
    "primary": {
     "id": "214",
     "player": "Jac Caglianone",
-    "set_name": "2026 Topps Chrome",
+    "set_name": "2026 Topps Chrome (Future Stars insert)",
     "card_number": "FS-7",
     "parallel": "Future Stars insert",
-    "price": 299,
-    "itemId": "168584893851",
-    "sku": "BBC-214",
+    "price": 249,
+    "itemId": "168617438146",
+    "sku": "PYP-FS-214",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0993.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0994.jpg"
@@ -1479,7 +3954,7 @@
    },
    "extras": [],
    "qty": 1,
-   "price": 299
+   "price": 249
   },
   {
    "label": "RVA-7 - Yadier Molina - Insert",
@@ -1490,8 +3965,8 @@
     "card_number": "RVA-7",
     "parallel": "insert",
     "price": 199,
-    "itemId": null,
-    "sku": null,
+    "itemId": "168617438132",
+    "sku": "PYP-RV-263",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1244.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1245.jpg"
@@ -1510,9 +3985,9 @@
     "set_name": "2026 Topps Chrome (Wrecking Crew insert)",
     "card_number": "WC-7",
     "parallel": "insert",
-    "price": 299,
-    "itemId": "168561672964",
-    "sku": "BBC-86",
+    "price": 249,
+    "itemId": "168617438056",
+    "sku": "PYP-WC-86",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0479.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0480.jpg"
@@ -1521,7 +3996,7 @@
    },
    "extras": [],
    "qty": 1,
-   "price": 299
+   "price": 249
   },
   {
    "label": "FS-8 - Roman Anthony - Insert RC",
@@ -1531,9 +4006,9 @@
     "set_name": "2026 Topps Chrome (Future Stars insert)",
     "card_number": "FS-8",
     "parallel": "insert",
-    "price": 499,
-    "itemId": "168561671906",
-    "sku": "BBC-68",
+    "price": 249,
+    "itemId": "168617438146",
+    "sku": "PYP-FS-266",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_roman_anthony_front_v2.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0595.jpg"
@@ -1548,59 +4023,38 @@
      "card_number": "FS-8",
      "parallel": "insert",
      "price": 249,
-     "itemId": null,
-     "sku": null,
+     "itemId": "168617438146",
+     "sku": "PYP-FS-266",
      "photos": [
       "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1250.jpg",
       "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1251.jpg"
      ],
-     "notes": "From the 2026-08-08 Topps Finest / Topps Chrome mega box rip. RC. SECOND COPY, confirmed newly pulled, not a re-shoot of BBC-68."
+     "notes": "From the 2026-08-08 Topps Finest / Topps Chrome mega box rip. RC. SECOND COPY, confirmed newly pulled, not a re-shoot of BBC-68. Lifted to 90% of comp median on 2026-08-10; the 35th-percentile pricer had it at 2.49."
     }
    ],
    "qty": 2,
-   "price": 499
-  },
-  {
-   "label": "P-8 - Paul Skenes - insert",
-   "primary": {
-    "id": "151",
-    "player": "Paul Skenes",
-    "set_name": "2026 Topps Chrome (Perspectives insert)",
-    "card_number": "P-8",
-    "parallel": "insert (Refractor)",
-    "price": 999,
-    "itemId": "168562538587",
-    "sku": "BBC-151",
-    "photos": [
-     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0646.jpg",
-     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0647.jpg"
-    ],
-    "notes": "Team: Pittsburgh Pirates"
-   },
-   "extras": [],
-   "qty": 1,
-   "price": 999
+   "price": 249
   },
   {
    "label": "BTP-9 - Jose Ramirez - Insert",
    "primary": {
     "id": "74",
     "player": "Jose Ramirez",
-    "set_name": "2026 Topps Chrome (Big Ticket insert)",
+    "set_name": "2026 Topps Chrome (Big Ticket Players insert)",
     "card_number": "BTP-9",
     "parallel": "insert",
-    "price": 299,
-    "itemId": "168561672951",
-    "sku": "BBC-74",
+    "price": 199,
+    "itemId": "168617438107",
+    "sku": "PYP-BTP-74",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0451.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0452.jpg"
     ],
-    "notes": ""
+    "notes": " Lifted to 90% of comp median on 2026-08-10; the 35th-percentile pricer had it at 2.99."
    },
    "extras": [],
    "qty": 1,
-   "price": 299
+   "price": 199
   },
   {
    "label": "FS-10 - Carson Benge - Insert",
@@ -1610,35 +4064,116 @@
     "set_name": "2026 Topps Chrome (Future Stars insert)",
     "card_number": "FS-10",
     "parallel": "insert",
-    "price": 299,
-    "itemId": "168561672959",
-    "sku": "BBC-79",
+    "price": 199,
+    "itemId": "168617438146",
+    "sku": "PYP-FS-79",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0463.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0464.jpg"
     ],
     "notes": ""
    },
-   "extras": [],
-   "qty": 1,
-   "price": 299
+   "extras": [
+    {
+     "id": "385",
+     "player": "Carson Benge",
+     "set_name": "2026 Topps Chrome (Future Stars insert)",
+     "card_number": "FS-10",
+     "parallel": "insert",
+     "price": 199,
+     "itemId": "168617438146",
+     "sku": "PYP-FS-79",
+     "photos": [],
+     "notes": "Counted in the team bag 2026-08-16 but never photographed; Michael shoots one copy of the cheap inserts because they sell on a quantity dropdown. Second copy of #79. NO PHOTO YET, and the card_number is assumed to match #79 - confirm both when it is shot."
+    }
+   ],
+   "qty": 2,
+   "price": 199
   },
   {
    "label": "BTP-11 - Juan Soto - insert",
    "primary": {
     "id": "138",
     "player": "Juan Soto",
-    "set_name": "2026 Topps Chrome (Big Ticket Player insert)",
+    "set_name": "2026 Topps Chrome (Big Ticket Players insert)",
     "card_number": "BTP-11",
     "parallel": "insert (Refractor)",
     "price": 199,
-    "itemId": "168562538633",
-    "sku": "BBC-138",
+    "itemId": "168617438107",
+    "sku": "PYP-BTP-138",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0620.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0621.jpg"
     ],
-    "notes": "Team: New York Mets"
+    "notes": "Team: New York Mets Lifted to 90% of comp median on 2026-08-10; the 35th-percentile pricer had it at 1.99."
+   },
+   "extras": [
+    {
+     "id": "383",
+     "player": "Juan Soto",
+     "set_name": "2026 Topps Chrome (Big Ticket Players insert)",
+     "card_number": "BTP-11",
+     "parallel": "insert (Refractor)",
+     "price": 199,
+     "itemId": "168617438107",
+     "sku": "PYP-BTP-138",
+     "photos": [],
+     "notes": "Counted in the team bag 2026-08-16 but never photographed; Michael shoots one copy of the cheap inserts because they sell on a quantity dropdown. Second copy of #138. NO PHOTO YET, and the card_number is assumed to match #138 - confirm both when it is shot."
+    }
+   ],
+   "qty": 2,
+   "price": 199
+  },
+  {
+   "label": "BTP-12 - Jackson Chourio - Insert",
+   "primary": {
+    "id": "284",
+    "player": "Jackson Chourio",
+    "set_name": "2026 Topps Chrome (Big Ticket Players insert)",
+    "card_number": "BTP-12",
+    "parallel": "insert",
+    "price": 199,
+    "itemId": "168617438107",
+    "sku": "PYP-BTP-284",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1306.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1307.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas. Lifted to 90% of comp median on 2026-08-10; the 35th-percentile pricer had it at 1.99."
+   },
+   "extras": [
+    {
+     "id": "384",
+     "player": "Jackson Chourio",
+     "set_name": "2026 Topps Chrome (Big Ticket Players insert)",
+     "card_number": "BTP-12",
+     "parallel": "insert",
+     "price": 199,
+     "itemId": "168617438107",
+     "sku": "PYP-BTP-284",
+     "photos": [],
+     "notes": "Counted in the team bag 2026-08-16 but never photographed; Michael shoots one copy of the cheap inserts because they sell on a quantity dropdown. Second copy of #284. NO PHOTO YET, and the card_number is assumed to match #284 - confirm both when it is shot."
+    }
+   ],
+   "qty": 2,
+   "price": 199
+  },
+  {
+   "label": "PTP-12 - Luis Gonzalez / Corbin Carroll - Insert",
+   "primary": {
+    "id": "323",
+    "player": "Luis Gonzalez / Corbin Carroll",
+    "set_name": "2026 Topps Chrome (Past to Present insert)",
+    "card_number": "PTP-12",
+    "parallel": "insert",
+    "price": 199,
+    "itemId": "168617438176",
+    "sku": "PYP-PTP-323",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1465.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1466.jpg"
+    ],
+    "notes": "From the 2026-08-13 rip of one Topps Chrome baseball mega. Dual-player Diamondbacks card."
    },
    "extras": [],
    "qty": 1,
@@ -1653,8 +4188,8 @@
     "card_number": "WC-12",
     "parallel": "insert",
     "price": 199,
-    "itemId": "168561674802",
-    "sku": "BBC-62",
+    "itemId": "168617438056",
+    "sku": "PYP-WC-62",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0475.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0476.jpg"
@@ -1669,8 +4204,8 @@
      "card_number": "WC-12",
      "parallel": "insert",
      "price": 199,
-     "itemId": null,
-     "sku": null,
+     "itemId": "168617438056",
+     "sku": "PYP-WC-62",
      "photos": [
       "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1246.jpg",
       "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1247.jpg"
@@ -1682,16 +4217,100 @@
    "price": 199
   },
   {
+   "label": "RVA-13 - Manny Ramirez - Insert",
+   "primary": {
+    "id": "280",
+    "player": "Manny Ramirez",
+    "set_name": "2026 Topps Chrome (Chrome Rivals insert)",
+    "card_number": "RVA-13",
+    "parallel": "insert",
+    "price": 199,
+    "itemId": "168617438132",
+    "sku": "PYP-RV-280",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1298.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1299.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas. AWAY variant."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "WC-13 - Freddie Freeman - Insert",
+   "primary": {
+    "id": "278",
+    "player": "Freddie Freeman",
+    "set_name": "2026 Topps Chrome (Wrecking Crew insert)",
+    "card_number": "WC-13",
+    "parallel": "insert",
+    "price": 199,
+    "itemId": "168617438056",
+    "sku": "PYP-WC-278",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1294.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1295.jpg"
+    ],
+    "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "BTP-15 - James Wood - Insert",
+   "primary": {
+    "id": "375",
+    "player": "James Wood",
+    "set_name": "2026 Topps Chrome (Big Ticket Players insert)",
+    "card_number": "BTP-15",
+    "parallel": "insert",
+    "price": 199,
+    "itemId": "168617438107",
+    "sku": "PYP-BTP-375",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1555.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1556.jpg"
+    ],
+    "notes": "From the 2026-08-15 rip of six Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "PTP-15 - Edgar Martinez / Cal Raleigh - Insert",
+   "primary": {
+    "id": "367",
+    "player": "Edgar Martinez / Cal Raleigh",
+    "set_name": "2026 Topps Chrome (Past to Present insert)",
+    "card_number": "PTP-15",
+    "parallel": "insert",
+    "price": 199,
+    "itemId": "168617438176",
+    "sku": "PYP-PTP-367",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1553.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1554.jpg"
+    ],
+    "notes": "From the 2026-08-15 rip of six Topps Chrome baseball megas. Mariners dual."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
    "label": "WC-15 - Ketel Marte - Wrecking Crew insert",
    "primary": {
     "id": "207",
     "player": "Ketel Marte",
-    "set_name": "2026 Topps Chrome",
+    "set_name": "2026 Topps Chrome (Wrecking Crew insert)",
     "card_number": "WC-15",
     "parallel": "Wrecking Crew insert",
     "price": 199,
-    "itemId": "168584893853",
-    "sku": "BBC-207",
+    "itemId": "168617438056",
+    "sku": "PYP-WC-207",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0979.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0980.jpg"
@@ -1707,12 +4326,12 @@
    "primary": {
     "id": "265",
     "player": "Bobby Witt Jr.",
-    "set_name": "2026 Topps Chrome (Big Ticket Player insert)",
+    "set_name": "2026 Topps Chrome (Big Ticket Players insert)",
     "card_number": "BTP-16",
     "parallel": "insert",
     "price": 199,
-    "itemId": null,
-    "sku": null,
+    "itemId": "168617438107",
+    "sku": "PYP-BTP-265",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1248.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1249.jpg"
@@ -1728,12 +4347,12 @@
    "primary": {
     "id": "208",
     "player": "Reggie Jackson",
-    "set_name": "2026 Topps Chrome",
+    "set_name": "2026 Topps Chrome (Chrome Rivals insert)",
     "card_number": "RVH-16",
     "parallel": "Chrome Rivals Home insert",
     "price": 349,
-    "itemId": "168584893848",
-    "sku": "BBC-208",
+    "itemId": "168617438132",
+    "sku": "PYP-RV-208",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0981.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0982.jpg"
@@ -1753,8 +4372,8 @@
     "card_number": "WC-17",
     "parallel": "insert (Refractor)",
     "price": 199,
-    "itemId": "168562538623",
-    "sku": "BBC-158",
+    "itemId": "168617438056",
+    "sku": "PYP-WC-158",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0660.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0661.jpg"
@@ -1770,12 +4389,12 @@
    "primary": {
     "id": "206",
     "player": "Mike Trout",
-    "set_name": "2026 Topps Chrome",
+    "set_name": "2026 Topps Chrome (Wrecking Crew insert)",
     "card_number": "WC-18",
     "parallel": "Wrecking Crew insert",
     "price": 199,
-    "itemId": "168584893859",
-    "sku": "BBC-206",
+    "itemId": "168617438056",
+    "sku": "PYP-WC-206",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0977.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0978.jpg"
@@ -1787,16 +4406,58 @@
    "price": 199
   },
   {
+   "label": "PTP-19 - Adrian Beltre / Corey Seager - Insert",
+   "primary": {
+    "id": "368",
+    "player": "Adrian Beltre / Corey Seager",
+    "set_name": "2026 Topps Chrome (Past to Present insert)",
+    "card_number": "PTP-19",
+    "parallel": "insert",
+    "price": 199,
+    "itemId": "168617438176",
+    "sku": "PYP-PTP-368",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1549.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1550.jpg"
+    ],
+    "notes": "From the 2026-08-15 rip of six Topps Chrome baseball megas. Rangers dual."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "WC-19 - Spencer Torkelson - Insert",
+   "primary": {
+    "id": "365",
+    "player": "Spencer Torkelson",
+    "set_name": "2026 Topps Chrome (Wrecking Crew insert)",
+    "card_number": "WC-19",
+    "parallel": "insert",
+    "price": 199,
+    "itemId": "168617438056",
+    "sku": "PYP-WC-365",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1578.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1579.jpg"
+    ],
+    "notes": "From the 2026-08-15 rip of six Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
    "label": "BTP-20 - Fernando Tatis Jr. - Big Ticket Players i",
    "primary": {
     "id": "213",
     "player": "Fernando Tatis Jr.",
-    "set_name": "2026 Topps Chrome",
+    "set_name": "2026 Topps Chrome (Big Ticket Players insert)",
     "card_number": "BTP-20",
     "parallel": "Big Ticket Players insert",
     "price": 199,
-    "itemId": "168584893854",
-    "sku": "BBC-213",
+    "itemId": "168617438107",
+    "sku": "PYP-BTP-213",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0991.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0992.jpg"
@@ -1815,9 +4476,9 @@
     "set_name": "2026 Topps Chrome (Wrecking Crew insert)",
     "card_number": "WC-20",
     "parallel": "insert",
-    "price": 299,
-    "itemId": "168561672969",
-    "sku": "BBC-85",
+    "price": 199,
+    "itemId": "168617438056",
+    "sku": "PYP-WC-85",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0477.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0478.jpg"
@@ -1826,28 +4487,65 @@
    },
    "extras": [],
    "qty": 1,
-   "price": 299
+   "price": 199
   },
   {
-   "label": "BTP-23 - Roman Anthony - Insert",
+   "label": "WC-22 - Elly De La Cruz - Insert",
+   "primary": {
+    "id": "366",
+    "player": "Elly De La Cruz",
+    "set_name": "2026 Topps Chrome (Wrecking Crew insert)",
+    "card_number": "WC-22",
+    "parallel": "insert",
+    "price": 199,
+    "itemId": "168617438056",
+    "sku": "PYP-WC-366",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1572.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1573.jpg"
+    ],
+    "notes": "From the 2026-08-15 rip of six Topps Chrome baseball megas."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "BTP-23 - Roman Anthony - Insert RC",
    "primary": {
     "id": "73",
     "player": "Roman Anthony",
-    "set_name": "2026 Topps Chrome (Big Ticket insert)",
+    "set_name": "2026 Topps Chrome (Big Ticket Players insert)",
     "card_number": "BTP-23",
     "parallel": "insert",
-    "price": 399,
-    "itemId": "168561672842",
-    "sku": "BBC-73",
+    "price": 249,
+    "itemId": "168617438107",
+    "sku": "PYP-BTP-281",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0449.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0450.jpg"
     ],
-    "notes": ""
+    "notes": " Lifted to 90% of comp median on 2026-08-10; the 35th-percentile pricer had it at 3.99."
    },
-   "extras": [],
-   "qty": 1,
-   "price": 399
+   "extras": [
+    {
+     "id": "281",
+     "player": "Roman Anthony",
+     "set_name": "2026 Topps Chrome (Big Ticket Players insert)",
+     "card_number": "BTP-23",
+     "parallel": "insert",
+     "price": 249,
+     "itemId": "168617438107",
+     "sku": "PYP-BTP-281",
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1300.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1301.jpg"
+     ],
+     "notes": "From the 2026-08-09 rip of two Topps Chrome baseball megas. RC."
+    }
+   ],
+   "qty": 2,
+   "price": 249
   },
   {
    "label": "PTP-23 - Ozzie Smith / Masyn Winn - Insert",
@@ -1857,60 +4555,181 @@
     "set_name": "2026 Topps Chrome (Past to Present insert)",
     "card_number": "PTP-23",
     "parallel": "insert",
-    "price": 399,
-    "itemId": "168561673677",
-    "sku": "BBC-83",
+    "price": 249,
+    "itemId": "168617438176",
+    "sku": "PYP-PTP-369",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0471.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0472.jpg"
     ],
-    "notes": ""
+    "notes": " Lifted to 90% of comp median on 2026-08-10; the 35th-percentile pricer had it at 3.99."
+   },
+   "extras": [
+    {
+     "id": "369",
+     "player": "Ozzie Smith / Masyn Winn",
+     "set_name": "2026 Topps Chrome (Past to Present insert)",
+     "card_number": "PTP-23",
+     "parallel": "insert",
+     "price": 249,
+     "itemId": "168617438176",
+     "sku": "PYP-PTP-369",
+     "photos": [
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1551.jpg",
+      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1552.jpg"
+     ],
+     "notes": "From the 2026-08-15 rip of six Topps Chrome baseball megas. Cardinals dual. SECOND COPY, vault already has #83."
+    }
+   ],
+   "qty": 2,
+   "price": 249
+  },
+  {
+   "label": "BTP-24 - Chase Burns - Insert",
+   "primary": {
+    "id": "376",
+    "player": "Chase Burns",
+    "set_name": "2026 Topps Chrome (Big Ticket Players insert)",
+    "card_number": "BTP-24",
+    "parallel": "insert",
+    "price": 199,
+    "itemId": "168617438107",
+    "sku": "PYP-BTP-376",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1559.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1560.jpg"
+    ],
+    "notes": "From the 2026-08-15 rip of six Topps Chrome baseball megas."
    },
    "extras": [],
    "qty": 1,
-   "price": 399
+   "price": 199
   },
   {
-   "label": "PTP-24 - Matt Chapman / Will Clark - insert",
+   "label": "PTP-24 - Will Clark / Matt Chapman - insert",
    "primary": {
     "id": "159",
-    "player": "Matt Chapman / Will Clark",
+    "player": "Will Clark / Matt Chapman",
     "set_name": "2026 Topps Chrome (Past to Present insert)",
     "card_number": "PTP-24",
     "parallel": "insert (Refractor)",
-    "price": 499,
-    "itemId": "168562538592",
-    "sku": "BBC-159",
+    "price": 249,
+    "itemId": "168617438176",
+    "sku": "PYP-PTP-370",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0662.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0663.jpg"
     ],
-    "notes": "Team: San Francisco Giants"
+    "notes": "Team: San Francisco Giants PRICE HELD: hand-set to 8.99. Past to Present refractor insert, comp median $10.99. Do not let price-cards.ts overwrite; its 35th-percentile ask sits far under the median when comps are wide. no auto-price CORRECTED 2026-08-16: player Matt Chapman / Will Clark -> Will Clark / Matt Chapman. Past to Present prints the past player first; PTP-24 lists Will Clark on top and Matt Chapman below. Matching the other copy (#370) so the pair groups as one card."
    },
    "extras": [],
    "qty": 1,
-   "price": 499
+   "price": 249
   },
   {
-   "label": "WC-24 - Samuel Basallo - insert",
+   "label": "PTP-24 - Will Clark / Matt Chapman - Insert",
+   "primary": {
+    "id": "370",
+    "player": "Will Clark / Matt Chapman",
+    "set_name": "2026 Topps Chrome (Past to Present insert)",
+    "card_number": "PTP-24",
+    "parallel": "insert",
+    "price": 249,
+    "itemId": "168617438176",
+    "sku": "PYP-PTP-370",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1547.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1548.jpg"
+    ],
+    "notes": "From the 2026-08-15 rip of six Topps Chrome baseball megas. Giants dual. SECOND COPY, vault already has #159."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 249
+  },
+  {
+   "label": "RVA-24 - Christian Yelich - Insert",
+   "primary": {
+    "id": "377",
+    "player": "Christian Yelich",
+    "set_name": "2026 Topps Chrome (Chrome Rivals insert)",
+    "card_number": "RVA-24",
+    "parallel": "insert",
+    "price": 199,
+    "itemId": "168617438132",
+    "sku": "PYP-RV-377",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1545.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1546.jpg"
+    ],
+    "notes": "From the 2026-08-15 rip of six Topps Chrome baseball megas. AWAY variant per the corner tab."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
+  },
+  {
+   "label": "WC-24 - Samuel Basallo - insert RC",
    "primary": {
     "id": "141",
     "player": "Samuel Basallo",
     "set_name": "2026 Topps Chrome (Wrecking Crew insert)",
     "card_number": "WC-24",
     "parallel": "insert (Refractor)",
-    "price": 349,
-    "itemId": "168562538580",
-    "sku": "BBC-141",
+    "price": 249,
+    "itemId": "168617438056",
+    "sku": "PYP-WC-141",
     "photos": [
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0626.jpg",
      "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_0627.jpg"
     ],
-    "notes": "Team: Baltimore Orioles"
+    "notes": "Team: Baltimore Orioles RC. Confirmed from the shield on the card front."
    },
    "extras": [],
    "qty": 1,
-   "price": 349
+   "price": 249
+  },
+  {
+   "label": "RVA-25 - Fernando Tatis Jr. - Insert",
+   "primary": {
+    "id": "378",
+    "player": "Fernando Tatis Jr.",
+    "set_name": "2026 Topps Chrome (Chrome Rivals insert)",
+    "card_number": "RVA-25",
+    "parallel": "insert",
+    "price": 249,
+    "itemId": "168617438132",
+    "sku": "PYP-RV-378",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1543.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1544.jpg"
+    ],
+    "notes": "From the 2026-08-15 rip of six Topps Chrome baseball megas. AWAY variant per the corner tab."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 249
+  },
+  {
+   "label": "WC-25 - Roman Anthony - Insert",
+   "primary": {
+    "id": "321",
+    "player": "Roman Anthony",
+    "set_name": "2026 Topps Chrome (Wrecking Crew insert)",
+    "card_number": "WC-25",
+    "parallel": "insert",
+    "price": 199,
+    "itemId": "168617438056",
+    "sku": "PYP-WC-321",
+    "photos": [
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1463.jpg",
+     "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/bbcard_drop_1464.jpg"
+    ],
+    "notes": "From the 2026-08-13 rip of one Topps Chrome baseball mega. Wrecking Crew is 2 per hobby box, print run roughly 85-90k per card, so a good-looking insert rather than a rare one. Value is the Roman Anthony rookie name. CORRECTED 2026-08-16: card_number WC-15 -> WC-25. Back of IMG_1464 reads WC-25. Ingested from the 08-13 rip as WC-15, which collided with Ketel Marte, who really is WC-15 (verified on IMG_0980). Michael spotted Marte missing from the Wrecking Crew list because of this."
+   },
+   "extras": [],
+   "qty": 1,
+   "price": 199
   }
  ]
 }
