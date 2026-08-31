@@ -271,3 +271,41 @@ Never put the card number in the eBay Browse query. It throttles results to near
 zero because most titles do not carry it. Query wide on year + set + player, and
 filter on the number afterwards. "No comps" is nearly always a bad search, not a
 thin market.
+
+### Requiring the parallel is only half the filter
+
+A query wide enough to find the card is also wide enough to find its autograph
+and its /25. **Every comp needs a not-list as well as a must-list**, or the
+median lands on a card Michael does not own.
+
+On 2026-08-31 the plain Parker Messick Logofractor was priced at **$45.00**.
+Michael sent a screenshot: $1.99, $3.50, $7.95. Of the 53 "comps", every one
+above $10 was an on-card auto (`#RA-PM`) or a serial-numbered colour. The base
+pass had an exclusion list and the parallel pass did not, so only the parallels
+were wrong, and they were wrong by 9x.
+
+For a **plain** Refractor or Logofractor, exclude:
+
+- autos: `\bautos?\b|autograph|signed|on.?card|\bRA-|\bIS-`
+- serials: `\/\s?\d{1,4}\b|\b\d{1,3}\s?\/\s?\d{1,4}\b`
+- colour parallels, inserts, and any other design
+
+For a **numbered** parallel, invert it: *require* the colour and the run size.
+
+Both passes must also require `2026` and `Chrome` in the title. Without it,
+Bowman Chrome and other years set the median.
+
+Three traps, all hit while writing this filter:
+
+| trap | what happens |
+|---|---|
+| excluding a bare colour word | "Blue Jays", "Red Sox", "White Sox" are **teams**. Only exclude a colour bound to `fractor`/`refractor`. |
+| then excluding the RWB cards themselves | Red White & Blue **is** a colour parallel. It must be exempt from the colour rule, or Schneemann drops to zero comps. |
+| `\b` before the slash in a serial | A serial is written `/50` *and* `054/150`. Requiring a word boundary before the slash matches neither, and lost every Valera Gold /50 comp. |
+
+### A median needs a market behind it
+
+Report the **ask count** next to every median and flag anything under 4 live
+asks. One seller with no competition is an opinion, not a price. The Valera
+Gold /50 shows $99.00 off a single ask; quoting that as a value would be worse
+than saying nothing.
