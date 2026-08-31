@@ -27,7 +27,7 @@ back	number	player	team	parallel
 2503	255	Cody Freeman	Texas Rangers	base
 2505	147	Colby Thomas	Athletics	base
 2507	269	Jonah Tong	New York Mets	base
-2510	236	Nolan McLean	New York Mets	UNKNOWN - front IMG_2509 missing from the drop
+2510	236	Nolan McLean	New York Mets	base
 2512	85	Grant Taylor	Chicago White Sox	base
 2514	259	Colson Montgomery	Chicago White Sox	base
 2516	64	Shinnosuke Ogasawara	Washington Nationals	base
@@ -87,28 +87,28 @@ back	number	player	team	parallel
 2624	285	Hunter Brown	Houston Astros	Logofractor
 2626	115	Owen Caissie	Miami Marlins	Logofractor
 2628	50	Tarik Skubal	Detroit Tigers	Logofractor
-2630	?	FRONT misread as back - partner back is elsewhere		Logofractor (Wrecking Crew insert)
+2630	WC-11	Byron Buxton	Minnesota Twins	Logofractor (Wrecking Crew insert)
 2632	294	Luis Morales	Athletics	Logofractor
 2634	247	Warming Bernabel	Washington Nationals	Logofractor
-2636	P-?	Jared Caglianone	Kansas City Royals	Logofractor (Perspectives insert)
+2636	P-1	Jac Caglianone	Kansas City Royals	Logofractor (Perspectives insert)
 2638	122	Ryan Ritter	Colorado Rockies	Pink Logofractor /250
-2640	WC-?	Byron Buxton	Minnesota Twins	Wrecking Crew Green /99
+2640	WC-11	Byron Buxton	Minnesota Twins	Wrecking Crew Green /99
 2642	190	Henry Davis	Pittsburgh Pirates	Logofractor
 2644	235	Jo Adell	Los Angeles Angels	Logofractor
 2646	209	Caleb Durbin	Boston Red Sox	Logofractor
-2648	WC-?	Jackson Chourio	Milwaukee Brewers	Logofractor (Wrecking Crew insert)
+2648	WC-12	Jackson Chourio	Milwaukee Brewers	Logofractor (Wrecking Crew insert)
 2650	250	Nick Kurtz	Athletics	Logofractor
 2652	48	Kyle Stowers	Miami Marlins	Logofractor
 2654	87	Carson Benge	New York Mets	Logofractor
 2656	139	Coby Mayo	Baltimore Orioles	Logofractor
 2658	261	Jakob Marsee	Miami Marlins	Logofractor
-2661	FS-?	Roman Anthony	Boston Red Sox	Logofractor (Future Stars insert)
+2661	FS-8	Roman Anthony	Boston Red Sox	Logofractor (Future Stars insert)
 2663	77	Zach Neto	Los Angeles Angels	Pink Logofractor /250
 2665	299	Francisco Lindor	New York Mets	Blue Logofractor /150
 2667	65	Trevor Story	Boston Red Sox	Logofractor
 2669	184	Parker Messick	Cleveland Guardians	Logofractor
 2671	BTP-2	Jacob Misiorowski	Milwaukee Brewers	Logofractor (Big Ticket Players insert)
-2673	FS-?	Munetaka Murakami	Chicago White Sox	Logofractor (Future Stars insert)
+2673	FS-1	Munetaka Murakami	Chicago White Sox	Logofractor (Future Stars insert)
 2675	86	Trey Yesavage	Toronto Blue Jays	Logofractor
 2677	296	Chris Sale	Atlanta Braves	Logofractor
 2679	212	Sean Murphy	Atlanta Braves	Logofractor
