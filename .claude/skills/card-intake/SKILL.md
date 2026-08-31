@@ -92,6 +92,25 @@ design elements and check whether the Topps logo repeats there; do not conclude
 
 You need **both faces** for every card. A parallel call from one face is a guess.
 
+### WHERE the marker actually is
+
+Not in the top strip beside the card number. **It sits BELOW the team-logo
+patch**, roughly `x 0.56-0.84, y 0.18-0.34` of a landscape phone photo of the
+back, under the `@TOPPS` line:
+
+```
+274                                       [team logo patch]
+CHROME   MUNETAKA MURAKAMI
+         CHICAGO WHITE SOX - 1B            X (o) @TOPPS
+         HT / WT / BATS / THROWS           REFRACTOR      <-- here
+```
+
+Five separate crops looked for it in the top band and found nothing, which
+reads exactly like "no marker present" and would have filed 22 Refractors as
+base. Reading ONE back at full resolution settled in a single look what the
+crops could not. **When a marker seems absent, verify the crop is actually
+looking at the right place before believing it.**
+
 ### If you cannot read it, zoom
 
 The marker is small print. Do not squint at a full-frame photo. Crop the card's
