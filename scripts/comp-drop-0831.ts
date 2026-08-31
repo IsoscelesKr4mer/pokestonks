@@ -36,7 +36,21 @@ const CARDS: Card[] = [
 ];
 
 const GRADED = /psa|bgs|sgc|cgc|\bgem\b|graded|slab/i;
-const NOISE = /\blot\b|break|random|reprint|custom|digital|proxy|\bcase\b/i;
+const NOISE = /\blot\b|break|random|reprint|custom|digital|proxy|\bcase\b|complete set/i;
+
+// CORRECTED 2026-08-31, the same bug Michael caught in the 113-card run:
+// requiring the parallel word while excluding nothing let autographs and
+// serial-numbered colour parallels set the medians. A plain insert is not
+// comped by its own /25 auto. Colour is excluded only when bound to
+// fractor/refractor, so the Blue Jays and the Red Sox survive the filter.
+const AUTO = /\bautos?\b|autograph|signed|on.?card|\bRA-|\bIS-/i;
+const SERIAL = /\/\s?\d{1,4}\b|\b\d{1,3}\s?\/\s?\d{1,4}\b/;
+const COLOUR = /\b(gold|blue|pink|green|orange|purple|red|black|aqua|sepia|bronze|silver|teal|yellow|magenta|white)\s*-?\s*(logo)?(x-?)?fractor|\b(gold|blue|pink|green|orange|purple|red|black|aqua)\s+refractor/i;
+const EXCLUDE = new RegExp([AUTO, SERIAL, COLOUR].map((r) => r.source).join('|'), 'i');
+// Red White & Blue IS a colour parallel, so the colour rule has to stand down
+// for those two cards or it excludes the very listings being looked for. It
+// dropped Schneemann to zero comps and Marte to one before this exemption.
+const NO_COLOUR_RULE = new RegExp([AUTO, SERIAL].map((r) => r.source).join('|'), 'i');
 
 function find(o: any, k: string): string | undefined {
   if (o && typeof o === 'object') for (const kk of Object.keys(o)) {
@@ -68,7 +82,9 @@ async function main() {
     const hits = raw
       .filter((x) => x.p > 0.5 && x.p < 5000)
       .filter((x) => new RegExp(c.player.split(' ').pop()!, 'i').test(x.t))
+      .filter((x) => /2026/.test(x.t) && /chrome/i.test(x.t))
       .filter((x) => c.must.test(x.t))
+      .filter((x) => !(/red white|rwb/i.test(c.must.source) ? NO_COLOUR_RULE : EXCLUDE).test(x.t))
       .filter((x) => !(c.not && c.not.test(x.t)))
       .filter((x) => !GRADED.test(x.t) && !NOISE.test(x.t))
       .sort((a, b) => a.p - b.p);
@@ -78,7 +94,7 @@ async function main() {
     }
     const med = hits[Math.floor(hits.length / 2)].p;
     total += med;
-    out.push(`  ${c.id.padEnd(20)} ${c.player.padEnd(18)}  $${med.toFixed(2).padStart(7)}   (${hits.length} comps, $${hits[0].p.toFixed(2)}-$${hits[hits.length - 1].p.toFixed(2)})`);
+    out.push(`  ${c.id.padEnd(20)} ${c.player.padEnd(18)}  $${med.toFixed(2).padStart(7)}   (${hits.length} asks, $${hits[0].p.toFixed(2)}-$${hits[hits.length - 1].p.toFixed(2)})${hits.length < 4 ? '  THIN' : ''}`);
     await new Promise((r) => setTimeout(r, 120));
   }
   console.log('2026 Topps Chrome drop, raw active-ask medians:\n');
