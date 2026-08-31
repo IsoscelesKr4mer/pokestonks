@@ -1,0 +1,353 @@
+[
+ {
+  "num": "236",
+  "player": "Nolan McLean",
+  "n": 2,
+  "med": 5,
+  "n_comps": 20,
+  "lo": 1,
+  "hi": 75
+ },
+ {
+  "num": "63",
+  "player": "Kyle Teel",
+  "n": 3,
+  "med": 2.5,
+  "n_comps": 29,
+  "lo": 1,
+  "hi": 29.99
+ },
+ {
+  "num": "74",
+  "player": "Konnor Griffin",
+  "n": 2,
+  "med": 3.3,
+  "n_comps": 53,
+  "lo": 1.99,
+  "hi": 25
+ },
+ {
+  "num": "39",
+  "player": "Carter Jensen",
+  "n": 3,
+  "med": 1.89,
+  "n_comps": 27,
+  "lo": 0.99,
+  "hi": 65
+ },
+ {
+  "num": "64",
+  "player": "Shinnosuke Ogasawara",
+  "n": 3,
+  "med": 1.74,
+  "n_comps": 36,
+  "lo": 0.99,
+  "hi": 3
+ },
+ {
+  "num": "259",
+  "player": "Colson Montgomery",
+  "n": 2,
+  "med": 2.49,
+  "n_comps": 33,
+  "lo": 0.99,
+  "hi": 60
+ },
+ {
+  "num": "16",
+  "player": "Kevin McGonigle",
+  "n": 1,
+  "med": 4.5,
+  "n_comps": 49,
+  "lo": 1.99,
+  "hi": 215
+ },
+ {
+  "num": "254",
+  "player": "Bryce Eldridge",
+  "n": 2,
+  "med": 2.25,
+  "n_comps": 32,
+  "lo": 0.99,
+  "hi": 149.99
+ },
+ {
+  "num": "274",
+  "player": "Munetaka Murakami",
+  "n": 1,
+  "med": 3.99,
+  "n_comps": 54,
+  "lo": 1.75,
+  "hi": 300
+ },
+ {
+  "num": "184",
+  "player": "Parker Messick",
+  "n": 2,
+  "med": 1.99,
+  "n_comps": 30,
+  "lo": 0.99,
+  "hi": 19.79
+ },
+ {
+  "num": "115",
+  "player": "Owen Caissie",
+  "n": 2,
+  "med": 1.99,
+  "n_comps": 30,
+  "lo": 0.99,
+  "hi": 48
+ },
+ {
+  "num": "195",
+  "player": "Carson Williams",
+  "n": 2,
+  "med": 1.95,
+  "n_comps": 15,
+  "lo": 0.99,
+  "hi": 10
+ },
+ {
+  "num": "86",
+  "player": "Trey Yesavage",
+  "n": 2,
+  "med": 1.79,
+  "n_comps": 33,
+  "lo": 0.99,
+  "hi": 125
+ },
+ {
+  "num": "70",
+  "player": "Jhostynxon Garcia",
+  "n": 2,
+  "med": 1.69,
+  "n_comps": 35,
+  "lo": 0.99,
+  "hi": 24.99
+ },
+ {
+  "num": "142",
+  "player": "Carson Whisenhunt",
+  "n": 2,
+  "med": 1.5,
+  "n_comps": 29,
+  "lo": 0.99,
+  "hi": 15
+ },
+ {
+  "num": "247",
+  "player": "Warming Bernabel",
+  "n": 2,
+  "med": 1.5,
+  "n_comps": 29,
+  "lo": 0.99,
+  "hi": 20
+ },
+ {
+  "num": "6",
+  "player": "Sal Stewart",
+  "n": 1,
+  "med": 2.49,
+  "n_comps": 33,
+  "lo": 1,
+  "hi": 125
+ },
+ {
+  "num": "225",
+  "player": "Roman Anthony",
+  "n": 1,
+  "med": 2.25,
+  "n_comps": 39,
+  "lo": 0.99,
+  "hi": 350
+ },
+ {
+  "num": "269",
+  "player": "Jonah Tong",
+  "n": 1,
+  "med": 2,
+  "n_comps": 30,
+  "lo": 0.99,
+  "hi": 35.96
+ },
+ {
+  "num": "284",
+  "player": "Chase DeLauter",
+  "n": 1,
+  "med": 1.99,
+  "n_comps": 19,
+  "lo": 0.99,
+  "hi": 85
+ },
+ {
+  "num": "261",
+  "player": "Jakob Marsee",
+  "n": 1,
+  "med": 1.99,
+  "n_comps": 39,
+  "lo": 0.99,
+  "hi": 19.99
+ },
+ {
+  "num": "189",
+  "player": "Brady House",
+  "n": 1,
+  "med": 1.79,
+  "n_comps": 12,
+  "lo": 0.99,
+  "hi": 8
+ },
+ {
+  "num": "73",
+  "player": "Justin Crawford",
+  "n": 1,
+  "med": 1.79,
+  "n_comps": 29,
+  "lo": 0.99,
+  "hi": 6
+ },
+ {
+  "num": "192",
+  "player": "Nathan Church",
+  "n": 1,
+  "med": 1.79,
+  "n_comps": 35,
+  "lo": 0.99,
+  "hi": 45
+ },
+ {
+  "num": "185",
+  "player": "Rafael Flores",
+  "n": 1,
+  "med": 1.75,
+  "n_comps": 29,
+  "lo": 0.99,
+  "hi": 5
+ },
+ {
+  "num": "85",
+  "player": "Grant Taylor",
+  "n": 1,
+  "med": 1.75,
+  "n_comps": 23,
+  "lo": 0.99,
+  "hi": 35
+ },
+ {
+  "num": "257",
+  "player": "Denzer Guzman",
+  "n": 1,
+  "med": 1.69,
+  "n_comps": 23,
+  "lo": 0.99,
+  "hi": 25
+ },
+ {
+  "num": "22",
+  "player": "Mason Barnett",
+  "n": 1,
+  "med": 1.59,
+  "n_comps": 21,
+  "lo": 0.99,
+  "hi": 17.99
+ },
+ {
+  "num": "232",
+  "player": "Christian Moore",
+  "n": 1,
+  "med": 1.56,
+  "n_comps": 28,
+  "lo": 0.99,
+  "hi": 30
+ },
+ {
+  "num": "255",
+  "player": "Cody Freeman",
+  "n": 1,
+  "med": 1.5,
+  "n_comps": 34,
+  "lo": 0.99,
+  "hi": 2.99
+ },
+ {
+  "num": "147",
+  "player": "Colby Thomas",
+  "n": 1,
+  "med": 1.5,
+  "n_comps": 29,
+  "lo": 0.99,
+  "hi": 19.99
+ },
+ {
+  "num": "102",
+  "player": "Alex Freeland",
+  "n": 1,
+  "med": 1.5,
+  "n_comps": 30,
+  "lo": 0.99,
+  "hi": 3.19
+ },
+ {
+  "num": "19",
+  "player": "Heriberto Hernandez",
+  "n": 1,
+  "med": 1.5,
+  "n_comps": 23,
+  "lo": 0.99,
+  "hi": 3
+ },
+ {
+  "num": "294",
+  "player": "Luis Morales",
+  "n": 1,
+  "med": 1.49,
+  "n_comps": 37,
+  "lo": 0.99,
+  "hi": 19.99
+ },
+ {
+  "num": "13",
+  "player": "Kyle Karros",
+  "n": 1,
+  "med": 1.49,
+  "n_comps": 21,
+  "lo": 0.99,
+  "hi": 4
+ },
+ {
+  "num": "245",
+  "player": "Jacob Melton",
+  "n": 1,
+  "med": 1.49,
+  "n_comps": 21,
+  "lo": 0.99,
+  "hi": 4.98
+ },
+ {
+  "num": "218",
+  "player": "Dylan Beavers",
+  "n": 1,
+  "med": 1.49,
+  "n_comps": 19,
+  "lo": 0.99,
+  "hi": 2
+ },
+ {
+  "num": "229",
+  "player": "Otto Kemp",
+  "n": 1,
+  "med": 1.49,
+  "n_comps": 33,
+  "lo": 0.99,
+  "hi": 13
+ },
+ {
+  "num": "167",
+  "player": "Will Banfield",
+  "n": 1,
+  "med": 1.45,
+  "n_comps": 38,
+  "lo": 0.99,
+  "hi": 8.95
+ }
+]

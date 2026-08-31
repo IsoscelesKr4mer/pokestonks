@@ -1,0 +1,923 @@
+[
+ {
+  "num": "184",
+  "player": "Parker Messick",
+  "par": "Logofractor",
+  "n": 1,
+  "med": 45,
+  "n_comps": 52,
+  "lo": 1.99,
+  "hi": 499.99
+ },
+ {
+  "num": "BTP-2",
+  "player": "Jacob Misiorowski",
+  "par": "Logofractor (Big Ticket Players insert)",
+  "n": 1,
+  "med": 35,
+  "n_comps": 131,
+  "lo": 5.95,
+  "hi": 3999.99
+ },
+ {
+  "num": "FS-1",
+  "player": "Munetaka Murakami",
+  "par": "Logofractor (Future Stars insert)",
+  "n": 1,
+  "med": 25.99,
+  "n_comps": 165,
+  "lo": 6,
+  "hi": 3999.99
+ },
+ {
+  "num": "274",
+  "player": "Munetaka Murakami",
+  "par": "Refractor",
+  "n": 1,
+  "med": 19.99,
+  "n_comps": 192,
+  "lo": 2.99,
+  "hi": 1899.99
+ },
+ {
+  "num": "50",
+  "player": "Tarik Skubal",
+  "par": "Logofractor",
+  "n": 1,
+  "med": 19.99,
+  "n_comps": 34,
+  "lo": 1.99,
+  "hi": 199.95
+ },
+ {
+  "num": "P-1",
+  "player": "Jac Caglianone",
+  "par": "Logofractor (Perspectives insert)",
+  "n": 1,
+  "med": 19.99,
+  "n_comps": 179,
+  "lo": 3.99,
+  "hi": 2499
+ },
+ {
+  "num": "FS-8",
+  "player": "Roman Anthony",
+  "par": "Logofractor (Future Stars insert)",
+  "n": 1,
+  "med": 19.95,
+  "n_comps": 187,
+  "lo": 2.99,
+  "hi": 3200
+ },
+ {
+  "num": "87",
+  "player": "Carson Benge",
+  "par": "Logofractor",
+  "n": 1,
+  "med": 19,
+  "n_comps": 56,
+  "lo": 2.49,
+  "hi": 500
+ },
+ {
+  "num": "86",
+  "player": "Trey Yesavage",
+  "par": "Logofractor",
+  "n": 1,
+  "med": 18,
+  "n_comps": 63,
+  "lo": 1.6,
+  "hi": 549.99
+ },
+ {
+  "num": "46",
+  "player": "C.J. Kayfus",
+  "par": "Logofractor Blue /150 (054/150)",
+  "n": 1,
+  "med": 12.99,
+  "n_comps": 31,
+  "lo": 1.25,
+  "hi": 84.95
+ },
+ {
+  "num": "122",
+  "player": "Ryan Ritter",
+  "par": "Pink Logofractor /250",
+  "n": 1,
+  "med": 11,
+  "n_comps": 54,
+  "lo": 1.5,
+  "hi": 550
+ },
+ {
+  "num": "115",
+  "player": "Owen Caissie",
+  "par": "Logofractor",
+  "n": 1,
+  "med": 10,
+  "n_comps": 69,
+  "lo": 0.99,
+  "hi": 1099
+ },
+ {
+  "num": "WC-12",
+  "player": "Jackson Chourio",
+  "par": "Logofractor (Wrecking Crew insert)",
+  "n": 1,
+  "med": 10,
+  "n_comps": 78,
+  "lo": 1,
+  "hi": 1199.99
+ },
+ {
+  "num": "250",
+  "player": "Nick Kurtz",
+  "par": "Logofractor",
+  "n": 1,
+  "med": 10,
+  "n_comps": 138,
+  "lo": 1.99,
+  "hi": 500
+ },
+ {
+  "num": "76",
+  "player": "George Valera",
+  "par": "Logofractor Gold /50",
+  "n": 1,
+  "med": 9.76,
+  "n_comps": 37,
+  "lo": 1.5,
+  "hi": 299.99
+ },
+ {
+  "num": "294",
+  "player": "Luis Morales",
+  "par": "Logofractor",
+  "n": 1,
+  "med": 9,
+  "n_comps": 44,
+  "lo": 1.1,
+  "hi": 110
+ },
+ {
+  "num": "299",
+  "player": "Francisco Lindor",
+  "par": "Blue Logofractor /150",
+  "n": 1,
+  "med": 7.99,
+  "n_comps": 58,
+  "lo": 1,
+  "hi": 179.99
+ },
+ {
+  "num": "WC-11",
+  "player": "Byron Buxton",
+  "par": "Wrecking Crew Green /99",
+  "n": 1,
+  "med": 6.99,
+  "n_comps": 11,
+  "lo": 3.99,
+  "hi": 19.99
+ },
+ {
+  "num": "77",
+  "player": "Zach Neto",
+  "par": "Pink Logofractor /250",
+  "n": 1,
+  "med": 6.99,
+  "n_comps": 18,
+  "lo": 1.25,
+  "hi": 75
+ },
+ {
+  "num": "177",
+  "player": "Payton Tolle",
+  "par": "Refractor",
+  "n": 1,
+  "med": 6.45,
+  "n_comps": 173,
+  "lo": 1.5,
+  "hi": 750
+ },
+ {
+  "num": "261",
+  "player": "Jakob Marsee",
+  "par": "Logofractor",
+  "n": 1,
+  "med": 5.99,
+  "n_comps": 56,
+  "lo": 0.99,
+  "hi": 200
+ },
+ {
+  "num": "235",
+  "player": "Jo Adell",
+  "par": "Logofractor",
+  "n": 1,
+  "med": 5.5,
+  "n_comps": 21,
+  "lo": 2,
+  "hi": 90
+ },
+ {
+  "num": "WC-11",
+  "player": "Byron Buxton",
+  "par": "Logofractor (Wrecking Crew insert)",
+  "n": 1,
+  "med": 5,
+  "n_comps": 42,
+  "lo": 0.99,
+  "hi": 39.99
+ },
+ {
+  "num": "247",
+  "player": "Warming Bernabel",
+  "par": "Logofractor",
+  "n": 1,
+  "med": 5,
+  "n_comps": 33,
+  "lo": 0.99,
+  "hi": 79.99
+ },
+ {
+  "num": "209",
+  "player": "Caleb Durbin",
+  "par": "Logofractor",
+  "n": 1,
+  "med": 5,
+  "n_comps": 11,
+  "lo": 1.67,
+  "hi": 10
+ },
+ {
+  "num": "154",
+  "player": "Manny Machado",
+  "par": "Logofractor",
+  "n": 1,
+  "med": 5,
+  "n_comps": 39,
+  "lo": 1.8,
+  "hi": 199.99
+ },
+ {
+  "num": "36",
+  "player": "Yusei Kikuchi",
+  "par": "Logofractor",
+  "n": 1,
+  "med": 5,
+  "n_comps": 26,
+  "lo": 1,
+  "hi": 799
+ },
+ {
+  "num": "236",
+  "player": "Nolan McLean",
+  "par": "Refractor",
+  "n": 1,
+  "med": 4.99,
+  "n_comps": 191,
+  "lo": 0.99,
+  "hi": 399.99
+ },
+ {
+  "num": "48",
+  "player": "Kyle Stowers",
+  "par": "Logofractor",
+  "n": 1,
+  "med": 4.99,
+  "n_comps": 20,
+  "lo": 1.49,
+  "hi": 20
+ },
+ {
+  "num": "65",
+  "player": "Trevor Story",
+  "par": "Logofractor",
+  "n": 1,
+  "med": 4.99,
+  "n_comps": 22,
+  "lo": 1.8,
+  "hi": 75
+ },
+ {
+  "num": "212",
+  "player": "Sean Murphy",
+  "par": "Logofractor",
+  "n": 1,
+  "med": 4.99,
+  "n_comps": 18,
+  "lo": 0.99,
+  "hi": 29.99
+ },
+ {
+  "num": "139",
+  "player": "Coby Mayo",
+  "par": "Logofractor",
+  "n": 1,
+  "med": 4.75,
+  "n_comps": 15,
+  "lo": 1.99,
+  "hi": 74.99
+ },
+ {
+  "num": "296",
+  "player": "Chris Sale",
+  "par": "Logofractor",
+  "n": 1,
+  "med": 4.11,
+  "n_comps": 24,
+  "lo": 1.4,
+  "hi": 100
+ },
+ {
+  "num": "84",
+  "player": "Maikel Garcia",
+  "par": "Logofractor",
+  "n": 1,
+  "med": 3.99,
+  "n_comps": 14,
+  "lo": 0.99,
+  "hi": 35
+ },
+ {
+  "num": "285",
+  "player": "Hunter Brown",
+  "par": "Logofractor",
+  "n": 1,
+  "med": 3.51,
+  "n_comps": 9,
+  "lo": 1.49,
+  "hi": 19.99
+ },
+ {
+  "num": "142",
+  "player": "Carson Whisenhunt",
+  "par": "Refractor",
+  "n": 1,
+  "med": 3.25,
+  "n_comps": 179,
+  "lo": 0.99,
+  "hi": 80
+ },
+ {
+  "num": "190",
+  "player": "Henry Davis",
+  "par": "Logofractor",
+  "n": 1,
+  "med": 3,
+  "n_comps": 15,
+  "lo": 1.8,
+  "hi": 24.99
+ },
+ {
+  "num": "126",
+  "player": "Drew Gilbert",
+  "par": "Refractor",
+  "n": 1,
+  "med": 2.99,
+  "n_comps": 188,
+  "lo": 0.99,
+  "hi": 239
+ },
+ {
+  "num": "61",
+  "player": "Jazz Chisholm Jr.",
+  "par": "Refractor",
+  "n": 1,
+  "med": 2.99,
+  "n_comps": 189,
+  "lo": 0.99,
+  "hi": 150
+ },
+ {
+  "num": "70",
+  "player": "Jhostynxon Garcia",
+  "par": "Refractor",
+  "n": 1,
+  "med": 2.99,
+  "n_comps": 181,
+  "lo": 0.99,
+  "hi": 199.99
+ },
+ {
+  "num": "19",
+  "player": "Heriberto Hernandez",
+  "par": "Logofractor",
+  "n": 1,
+  "med": 2.99,
+  "n_comps": 14,
+  "lo": 1,
+  "hi": 14.99
+ },
+ {
+  "num": "201",
+  "player": "Josh Naylor",
+  "par": "Refractor",
+  "n": 1,
+  "med": 2.83,
+  "n_comps": 190,
+  "lo": 0.99,
+  "hi": 130
+ },
+ {
+  "num": "166",
+  "player": "Lourdes Gurriel Jr.",
+  "par": "Logofractor",
+  "n": 1,
+  "med": 2.5,
+  "n_comps": 14,
+  "lo": 0.99,
+  "hi": 75
+ },
+ {
+  "num": "76",
+  "player": "George Valera",
+  "par": "Refractor",
+  "n": 1,
+  "med": 2.47,
+  "n_comps": 194,
+  "lo": 0.99,
+  "hi": 250
+ },
+ {
+  "num": "146",
+  "player": "Randy Arozarena",
+  "par": "Refractor",
+  "n": 1,
+  "med": 2.39,
+  "n_comps": 191,
+  "lo": 0.99,
+  "hi": 525
+ },
+ {
+  "num": "242",
+  "player": "Tatsuya Imai",
+  "par": "Refractor",
+  "n": 1,
+  "med": 2.3,
+  "n_comps": 194,
+  "lo": 0.99,
+  "hi": 299
+ },
+ {
+  "num": "58",
+  "player": "Kyle Tucker",
+  "par": "Refractor",
+  "n": 1,
+  "med": 2.29,
+  "n_comps": 185,
+  "lo": 0.99,
+  "hi": 60
+ },
+ {
+  "num": "176",
+  "player": "Logan Gilbert",
+  "par": "Refractor",
+  "n": 1,
+  "med": 2.28,
+  "n_comps": 187,
+  "lo": 0.99,
+  "hi": 75
+ },
+ {
+  "num": "188",
+  "player": "Jung Hoo Lee",
+  "par": "Refractor",
+  "n": 1,
+  "med": 2.25,
+  "n_comps": 189,
+  "lo": 0.99,
+  "hi": 199.99
+ },
+ {
+  "num": "174",
+  "player": "Jonathan Aranda",
+  "par": "Refractor",
+  "n": 1,
+  "med": 2.25,
+  "n_comps": 182,
+  "lo": 0.99,
+  "hi": 150
+ },
+ {
+  "num": "277",
+  "player": "Chase Dollander",
+  "par": "Refractor",
+  "n": 1,
+  "med": 2.25,
+  "n_comps": 196,
+  "lo": 0.99,
+  "hi": 50
+ },
+ {
+  "num": "272",
+  "player": "Daniel Schneemann",
+  "par": "Refractor",
+  "n": 1,
+  "med": 2.05,
+  "n_comps": 185,
+  "lo": 0.99,
+  "hi": 104.25
+ },
+ {
+  "num": "212",
+  "player": "Sean Murphy",
+  "par": "Refractor",
+  "n": 1,
+  "med": 2,
+  "n_comps": 189,
+  "lo": 0.99,
+  "hi": 74.99
+ },
+ {
+  "num": "197",
+  "player": "Patrick Bailey",
+  "par": "Refractor",
+  "n": 1,
+  "med": 2,
+  "n_comps": 184,
+  "lo": 0.99,
+  "hi": 45
+ },
+ {
+  "num": "229",
+  "player": "Otto Kemp",
+  "par": "Refractor",
+  "n": 1,
+  "med": 1.99,
+  "n_comps": 191,
+  "lo": 0.99,
+  "hi": 175
+ },
+ {
+  "num": "92",
+  "player": "Gabriel Moreno",
+  "par": "Refractor",
+  "n": 1,
+  "med": 1.99,
+  "n_comps": 195,
+  "lo": 0.99,
+  "hi": 349.99
+ },
+ {
+  "num": "42",
+  "player": "Chris Bassitt",
+  "par": "Refractor",
+  "n": 1,
+  "med": 1.99,
+  "n_comps": 185,
+  "lo": 0.99,
+  "hi": 49.99
+ },
+ {
+  "num": "16",
+  "player": "Kevin McGonigle",
+  "par": "base",
+  "n": 1,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "274",
+  "player": "Munetaka Murakami",
+  "par": "base",
+  "n": 1,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "142",
+  "player": "Carson Whisenhunt",
+  "par": "base",
+  "n": 2,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "86",
+  "player": "Trey Yesavage",
+  "par": "base",
+  "n": 2,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "63",
+  "player": "Kyle Teel",
+  "par": "base",
+  "n": 3,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "184",
+  "player": "Parker Messick",
+  "par": "base",
+  "n": 2,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "254",
+  "player": "Bryce Eldridge",
+  "par": "base",
+  "n": 2,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "70",
+  "player": "Jhostynxon Garcia",
+  "par": "base",
+  "n": 2,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "39",
+  "player": "Carter Jensen",
+  "par": "base",
+  "n": 3,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "247",
+  "player": "Warming Bernabel",
+  "par": "base",
+  "n": 2,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "294",
+  "player": "Luis Morales",
+  "par": "base",
+  "n": 1,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "115",
+  "player": "Owen Caissie",
+  "par": "base",
+  "n": 2,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "195",
+  "player": "Carson Williams",
+  "par": "base",
+  "n": 2,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "189",
+  "player": "Brady House",
+  "par": "base",
+  "n": 1,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "185",
+  "player": "Rafael Flores",
+  "par": "base",
+  "n": 1,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "13",
+  "player": "Kyle Karros",
+  "par": "base",
+  "n": 1,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "232",
+  "player": "Christian Moore",
+  "par": "base",
+  "n": 1,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "259",
+  "player": "Colson Montgomery",
+  "par": "base",
+  "n": 2,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "6",
+  "player": "Sal Stewart",
+  "par": "base",
+  "n": 1,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "236",
+  "player": "Nolan McLean",
+  "par": "base",
+  "n": 2,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "255",
+  "player": "Cody Freeman",
+  "par": "base",
+  "n": 1,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "147",
+  "player": "Colby Thomas",
+  "par": "base",
+  "n": 1,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "269",
+  "player": "Jonah Tong",
+  "par": "base",
+  "n": 1,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "85",
+  "player": "Grant Taylor",
+  "par": "base",
+  "n": 1,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "64",
+  "player": "Shinnosuke Ogasawara",
+  "par": "base",
+  "n": 3,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "74",
+  "player": "Konnor Griffin",
+  "par": "base",
+  "n": 2,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "245",
+  "player": "Jacob Melton",
+  "par": "base",
+  "n": 1,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "225",
+  "player": "Roman Anthony",
+  "par": "base",
+  "n": 1,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "218",
+  "player": "Dylan Beavers",
+  "par": "base",
+  "n": 1,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "73",
+  "player": "Justin Crawford",
+  "par": "base",
+  "n": 1,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "257",
+  "player": "Denzer Guzman",
+  "par": "base",
+  "n": 1,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "284",
+  "player": "Chase DeLauter",
+  "par": "base",
+  "n": 1,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "102",
+  "player": "Alex Freeland",
+  "par": "base",
+  "n": 1,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "261",
+  "player": "Jakob Marsee",
+  "par": "base",
+  "n": 1,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "22",
+  "player": "Mason Barnett",
+  "par": "base",
+  "n": 1,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "167",
+  "player": "Will Banfield",
+  "par": "base",
+  "n": 1,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "192",
+  "player": "Nathan Church",
+  "par": "base",
+  "n": 1,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "229",
+  "player": "Otto Kemp",
+  "par": "base",
+  "n": 1,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ },
+ {
+  "num": "19",
+  "player": "Heriberto Hernandez",
+  "par": "base",
+  "n": 1,
+  "med": null,
+  "n_comps": 0,
+  "note": "base, priced as a band"
+ }
+]
