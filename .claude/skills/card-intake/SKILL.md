@@ -75,6 +75,21 @@ A designed parallel is **obvious** once you look for the pattern rather than for
 the word. If a front refracts at all, it is not base — go find which design it
 is before writing anything down.
 
+**Do not blame the photos.** Michael's shots are consistent and the designs read
+fine in them. When a parallel could not be called on 2026-08-30 the cause was
+this rule, not the photography, and saying otherwise sent him to re-shoot a card
+that was already perfectly legible. If a card cannot be called, the default
+assumption is that the reader is looking for the wrong thing.
+
+**The one genuinely hard case is a Logofractor INSERT.** On a base card the
+repeating Topps logos sit against a plain field and jump out. On an insert --
+Future Stars, Wrecking Crew, Big Ticket Players -- the design is already busy,
+and the logo pattern hides inside it. Michael: *"the refractors are all easily
+identifiable other than a couple logofractors that are inserts like future
+stars."* For an insert, look specifically at the flat background areas between
+design elements and check whether the Topps logo repeats there; do not conclude
+"no logos" from a glance at a patterned card.
+
 You need **both faces** for every card. A parallel call from one face is a guess.
 
 ### If you cannot read it, zoom
