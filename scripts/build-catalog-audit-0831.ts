@@ -46,7 +46,7 @@ const ORDER = ['Base', 'Refractor', 'X-Fractor', 'Mojo Refractor', 'Specialty Re
 async function main() {
   const rows: any = await sql`
     SELECT id, player, set_name, year, card_number, parallel, status, for_sale,
-           asking_price_cents ask, sold_price_cents sold, ebay_item_id, notes,
+           asking_price_cents ask, sold_price_cents sold, ebay_item_id, notes, comp_note,
            photo_urls
     FROM baseball_cards
     ORDER BY player, set_name, card_number`;
@@ -70,6 +70,13 @@ async function main() {
   });
 
   const isListed = (r: any) => r.status === 'listed';
+  // "Not listed" is two different things and conflating them made the first
+  // version of this page read a deliberate decision as a backlog: 41 of the 52
+  // unlisted are PC keepers, and their notes say so.
+  const isPC = (r: any) => !isListed(r) && /\bkeeper\b|\bPC\b/i.test(r.notes || '');
+  // A price taken from one active ask is one seller's opinion, not a market.
+  // Nine cards carried these, worth $4,318 on paper and about $560 in reality.
+  const oneAsk = (r: any) => /^[1-3] active comp/.test(r.comp_note || '');
   const nUnlisted = live.filter((r: any) => !isListed(r)).length;
   const nListed = live.filter(isListed).length;
   const askTotal = live.filter(isListed).reduce((a: number, r: any) => a + Number(r.ask || 0), 0);
@@ -79,26 +86,29 @@ async function main() {
   // The headline of this audit is not the total, it is where the unlisted
   // value sits. Computed, never hardcoded, so it stays true on a rebuild.
   const unlisted = live.filter((r: any) => !isListed(r));
-  const unlistedAsk = unlisted.reduce((a: number, r: any) => a + Number(r.ask || 0), 0);
+  const pcKeepers = live.filter(isPC);
+  const nPC = pcKeepers.length;
+  const forSaleGap = unlisted.filter((r: any) => !isPC(r));
   const unpriced = unlisted.filter((r: any) => r.ask == null).length;
-  const byPlayer = new Map<string, number>();
-  for (const r of unlisted) byPlayer.set(r.player, (byPlayer.get(r.player) || 0) + Number(r.ask || 0));
-  const topPlayers = [...byPlayer.entries()].sort((a, b) => b[1] - a[1]).slice(0, 3);
-  const sapphire = unlisted.filter((r: any) => /sapphire/i.test(r.set_name || '')).length;
+  const thinPriced = live.filter((r: any) => r.ask != null && oneAsk(r));
+  const thinAsk = thinPriced.reduce((a: number, r: any) => a + Number(r.ask || 0), 0);
   const noNum = live.filter((r: any) => !r.card_number).length;
 
   const tile = (r: any) => {
     const url = (r.photo_urls as any[] | null)?.[0];
     const listed = isListed(r);
-    const price = listed && r.ask ? `$${(Number(r.ask) / 100).toFixed(2)}` : '';
-    return `<figure class="c${listed ? '' : ' un'}" data-s="${listed ? 'l' : 'u'}">` +
+    const pc = isPC(r);
+    const thin = oneAsk(r);
+    const price = r.ask ? `$${(Number(r.ask) / 100).toFixed(2)}` : '';
+    const kind = listed ? 'l' : pc ? 'p' : 'u';
+    return `<figure class="c${listed ? '' : pc ? ' pc' : ' un'}" data-s="${kind}">` +
       (url ? `<img src="${esc(url)}" alt="${esc(r.player)}" loading="lazy" decoding="async">`
            : `<div class="noimg">no photo</div>`) +
       `<figcaption><b>${esc(r.card_number ?? '?')}</b> ${esc(r.player)}` +
       `<span class="st">${esc((r.set_name || '').replace(/^(20\d\d) /, ''))}</span>` +
       `<span class="pl">${esc(r.parallel || '-')}</span>` +
-      `<span class="row"><span class="tag ${listed ? 'on' : 'off'}">${listed ? 'listed' : (r.status || 'not listed')}</span>` +
-      (price ? `<span class="px">${price}</span>` : '') + `</span>` +
+      `<span class="row"><span class="tag ${listed ? 'on' : pc ? 'pc' : 'off'}">${listed ? 'listed' : pc ? 'PC keeper' : (r.status || 'not listed')}</span>` +
+      (price ? `<span class="px${thin ? ' thin' : ''}" ${thin ? 'title="priced off fewer than 4 active asks"' : ''}>${price}${thin ? '<i>?</i>' : ''}</span>` : '') + `</span>` +
       `</figcaption></figure>`;
   };
 
@@ -107,9 +117,11 @@ async function main() {
     // Unlisted first: that is the part of the catalogue that needs a decision.
     const sorted = [...g].sort((a, b) => (isListed(a) ? 1 : 0) - (isListed(b) ? 1 : 0) ||
       String(a.player).localeCompare(String(b.player)));
-    const u = g.filter((r) => !isListed(r)).length;
+    const u = g.filter((r) => !isListed(r) && !isPC(r)).length;
+    const p = g.filter(isPC).length;
+    const bits = [u ? `${u} not listed` : '', p ? `${p} PC` : ''].filter(Boolean).join(' &middot; ');
     return `<section data-g="${esc(n)}"><h2>${esc(n)}<span class="n">${g.length}</span>` +
-      (u ? `<span class="lab warn">${u} not listed</span>` : `<span class="lab">all listed</span>`) +
+      (bits ? `<span class="lab${u ? ' warn' : ''}">${bits}</span>` : `<span class="lab">all listed</span>`) +
       `</h2><div class="grid">${sorted.map(tile).join('')}</div></section>`;
   }).join('\n');
 
@@ -153,6 +165,10 @@ async function main() {
   .tally b{color:var(--ink)}
   .tally .hot{background:var(--warnwash);border-color:var(--warn)}
   .tally .hot b{color:var(--warn)}
+  .c.pc{border-color:var(--rule);opacity:.92}
+  .tag.pc{color:var(--soft);border-color:var(--soft)}
+  .px.thin{color:var(--warn)}
+  .px.thin i{font-style:normal;font-weight:700;margin-left:.15rem}
   .note{background:var(--warnwash);border-left:3px solid var(--warn);padding:.95rem 1.15rem;
     border-radius:0 5px 5px 0;margin:0 0 1.5rem;font-size:.9rem}
   .note p{margin:0 0 .5rem}.note p:last-child{margin:0}
@@ -219,20 +235,22 @@ async function main() {
   <div class="tally">
     <span><b>${live.length}</b> cards held</span>
     <span><b>${nListed}</b> listed</span>
-    <span class="hot"><b>${nUnlisted}</b> NOT listed</span>
+    <span class="hot"><b>${forSaleGap.length}</b> not listed</span>
+    <span><b>${nPC}</b> PC keepers</span>
     <span>asks <b>$${(askTotal / 100).toFixed(2)}</b></span>
     <span><b>${sold.length}</b> sold &middot; $${(soldTotal / 100).toFixed(2)}</span>
     ${noPhoto ? `<span class="hot"><b>${noPhoto}</b> no photo</span>` : ''}
   </div>
 </header>
 <div class="note">
-  <p><strong>The unlisted pile is where the money is.</strong> ${nUnlisted} cards are not listed, and they carry <strong>$${(unlistedAsk / 100).toFixed(2)}</strong> in asking prices &mdash; more than every listed card combined. ${sapphire} of the ${nUnlisted} are Bowman Sapphire.</p>
-  <p>It concentrates hard: ${topPlayers.map(([p, v]) => `<strong>${esc(p)}</strong> $${(v / 100).toFixed(2)}`).join(' &middot; ')}.</p>
-  <p>${unpriced} of the unlisted have no price at all${noNum ? `, and ${noNum} cards in the catalogue have no card number` : ''}. Those are the two data gaps worth closing before anything gets listed.</p>
+  <p><strong>Read the prices with care.</strong> ${thinPriced.length} cards carry a price taken from fewer than four active asks, $${(thinAsk / 100).toFixed(2)} between them. One was a Kade Anderson booked at $1,500 off a single seller&rsquo;s ask; it really trades near $75. Each is marked <strong>?</strong> and none should be trusted without a fresh look.</p>
+  <p><strong>Not listed is two different things.</strong> ${nPC} of the ${nUnlisted} unlisted cards are <strong>PC keepers</strong>, held on purpose rather than waiting on a listing. Only <strong>${forSaleGap.length}</strong> are a genuine gap.</p>
+  <p>${unpriced} unlisted cards have no price at all${noNum ? `, and ${noNum} cards in the catalogue have no card number` : ''}. Those are the data gaps worth closing.</p>
 </div>
 <div class="bar">
   <button data-f="all" aria-pressed="true">All ${live.length}</button>
-  <button data-f="u" aria-pressed="false">Not listed ${nUnlisted}</button>
+  <button data-f="u" aria-pressed="false">Not listed ${forSaleGap.length}</button>
+  <button data-f="p" aria-pressed="false">PC ${nPC}</button>
   <button data-f="l" aria-pressed="false">Listed ${nListed}</button>
   <span class="hint">${names.length} groups</span>
 </div>
