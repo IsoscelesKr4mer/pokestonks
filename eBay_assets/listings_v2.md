@@ -2055,7 +2055,7 @@ He asked *"i can sell both my boxes on tradepost for $150 total then i pay for s
 
 ---
 
-### eBay — Pick Your DVD, 49 titles, item 168654454117 (2026-09-01)
+### eBay — Pick Your DVD, 49 titles, item 168654454117 — ENDED SAME NIGHT (2026-09-01)
 
 **PUBLISHED.** He answered the unreadable spine (**Californication Season 1**, $5.99 against an $8.00 comp) and said "publish when ready".
 
@@ -2155,3 +2155,9 @@ Also note `GetCategoryFeatures` now returns **410 Gone**. Category capability qu
 3. **Ground Advantage Calculated**, because he has no Media Mail policy and creating one was not asked for. Media Mail is roughly a dollar cheaper per single disc and is worth setting up if these move.
 
 **Outstanding:** a flat-lay of the covers. All 49 dropdown choices currently share the one box photo, so a buyer cannot see what they are picking.
+
+**🔴 ENDED at his request, ~10 minutes after going live.** `EndFixedPriceItem` Success, `GetItem` confirms **Ended**, **0 sold**, so there is nothing to unwind and no buyer affected. He said only "End the listing" and gave no reason; asked once what was wrong with it and left it there rather than guessing.
+
+The comps (`data/dvd_comps_0901.json`) and the payload builder (`scripts/build-dvd-pyp-0901.ts`) both survive, so a relist is a one-command job under different pricing, photos, or a different split.
+
+**If it gets rebuilt, the open questions from the draft are still open:** disc condition was never confirmed (it went up as Good on my own judgement), the Toy Story 3 duplicate was never resolved, and there is still only the one box photo behind all 49 dropdown choices.
