@@ -49,6 +49,7 @@ const TITLES: Title[] = [
   { name: 'King Arthur', q: 'King Arthur DVD Clive Owen' },
   { name: 'Crosby, Stills & Nash: Long Time Comin\'', q: 'Crosby Stills Nash Long Time Comin DVD' },
   { name: "It's a Wonderful Life (Platinum Anniversary Edition)", q: 'Its a Wonderful Life DVD platinum anniversary' },
+  { name: 'Californication: Season 1', q: 'Californication season 1 DVD' },
   { name: "Mickey's Once Upon a Christmas / Twice Upon a Christmas", q: 'Mickeys Once Upon a Christmas Twice Upon a Christmas DVD' },
   { name: 'The Santa Clause: Holiday Collection', q: 'The Santa Clause holiday collection DVD', box: true },
   { name: 'Toy Story 3', q: 'Toy Story 3 Disney Pixar DVD' },

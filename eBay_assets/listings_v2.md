@@ -2055,9 +2055,9 @@ He asked *"i can sell both my boxes on tradepost for $150 total then i pay for s
 
 ---
 
-### eBay DRAFT — Pick Your DVD, 48 titles (2026-09-01)
+### eBay — Pick Your DVD, 49 titles, item 168654454117 (2026-09-01)
 
-**NOT PUBLISHED. Needs his go-ahead, two answers and photos.**
+**PUBLISHED.** He answered the unreadable spine (**Californication Season 1**, $5.99 against an $8.00 comp) and said "publish when ready".
 
 He sent one box photo and asked for a pick-your-DVD listing with comps and a dropdown per title.
 
@@ -2142,3 +2142,16 @@ He sent one box photo and asked for a pick-your-DVD listing with comps and a dro
 > Smoke-free home. Buy with confidence, check my feedback. Thanks for looking.
 
 **Photos still needed:** the box shot works as the lead, but a multi-variation listing wants a per-variation image or buyers cannot tell what they are choosing. Cheapest path is one flat-lay of all covers plus the existing stack shot, and accept no per-variation thumbnails.
+
+**LIVE: item 168654454117, verified Active via GetItem.** 49 variations, $3.99-$13.99, sum $278.51, listing fee $0.35, one photo, condition Good, Ground Advantage Calculated.
+
+**🔴 eBay does not properly support this listing shape, and it is worth knowing why.** Category 617 reports `variationsSupported: true`, but its aspect metadata makes **`Movie/TV Title` REQUIRED and NOT variation-enabled** — the only six aspects that can vary are Season, Language, Subtitle Language, Region Code, MPN and Run Time. So a pick-your-title DVD listing cannot vary by the field that names the movie. The Trading API accepts a free-text variation specific where the Inventory API would not, so this varies by a custom **`Movie`** aspect with the required title set to "See dropdown for title". `VerifyAddFixedPriceItem` returned Success before anything was created; that call is the only thing that could settle it, since the metadata says no and the API says yes.
+
+Also note `GetCategoryFeatures` now returns **410 Gone**. Category capability questions go through the Sell Metadata API (`get_listing_structure_policies`, `get_item_condition_policies`, `get_item_aspects_for_category`).
+
+**Three judgement calls made without an answer from him, all reversible and all reported:**
+1. **Condition Good (5000)**, not Very Good. The photo shows spines only, so no claim about the discs is supportable. Under-promising cannot create a not-as-described case; over-promising can.
+2. **Toy Story 3 listed once at qty 1.** He never confirmed whether the second spine is a second copy. Listing one when he owns two costs nothing and is a one-line fix; listing two when he owns one is a cancellation.
+3. **Ground Advantage Calculated**, because he has no Media Mail policy and creating one was not asked for. Media Mail is roughly a dollar cheaper per single disc and is worth setting up if these move.
+
+**Outstanding:** a flat-lay of the covers. All 49 dropdown choices currently share the one box photo, so a buyer cannot see what they are picking.

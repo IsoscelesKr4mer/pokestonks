@@ -1,0 +1,758 @@
+{
+ "Title": "DVD Movies You Pick Your Title - Disney Comedy Sports TV - Combined Shipping",
+ "Description": "<p><strong>Pick your title from the dropdown above.</strong> Each disc is sold individually and priced on its own.</p><p>All titles are pre-owned DVDs in their original cases. Discs show normal shelf wear from storage.</p><p><strong>Buying more than one?</strong> Add them to your cart and they ship together in one package.</p><p>Ships within 1 business day.</p><p>Smoke-free home. Buy with confidence, check my feedback. Thanks for looking.</p>",
+ "PrimaryCategory": {
+  "CategoryID": "617"
+ },
+ "ConditionID": 5000,
+ "Country": "US",
+ "Currency": "USD",
+ "Location": "Edmonds, Washington",
+ "PostalCode": "98026",
+ "DispatchTimeMax": 1,
+ "ListingDuration": "GTC",
+ "ListingType": "FixedPriceItem",
+ "SellerProfiles": {
+  "SellerShippingProfile": {
+   "ShippingProfileID": "269110723012"
+  },
+  "SellerReturnProfile": {
+   "ReturnProfileID": "269110705012"
+  },
+  "SellerPaymentProfile": {
+   "PaymentProfileID": "269110704012"
+  }
+ },
+ "ItemSpecifics": {
+  "NameValueList": [
+   {
+    "Name": "Format",
+    "Value": "DVD"
+   },
+   {
+    "Name": "Movie/TV Title",
+    "Value": "See dropdown for title"
+   },
+   {
+    "Name": "Region Code",
+    "Value": "DVD: 1 (US, Canada...)"
+   },
+   {
+    "Name": "Type",
+    "Value": "Movie"
+   }
+  ]
+ },
+ "PictureDetails": {
+  "PictureURL": [
+   "https://domjsqtvxnuxyuwngpog.supabase.co/storage/v1/object/public/ebay-listings/dvd_box_lot_0901.jpg"
+  ]
+ },
+ "ShippingPackageDetails": {
+  "ShippingPackage": "PackageThickEnvelope",
+  "PackageLength": 8,
+  "PackageWidth": 6,
+  "PackageDepth": 2,
+  "WeightMajor": 0,
+  "WeightMinor": 6
+ },
+ "Variations": {
+  "VariationSpecificsSet": {
+   "NameValueList": [
+    {
+     "Name": "Movie",
+     "Value": [
+      "Mickey's Once Upon a Christmas / Twice Upon a Chri",
+      "The Santa Clause: Holiday Collection",
+      "Robin Hood (Disney 40th Anniversary Edition)",
+      "The Emperor's New Groove (Disney)",
+      "Hercules (Disney, Special Edition)",
+      "Tarzan (Disney, Special Edition)",
+      "Disney's The Rescuers",
+      "It's a Wonderful Life (Platinum Anniversary Editio",
+      "Jackass: Complete Movie and TV Collection",
+      "Toy Story (DVD Edition)",
+      "Crosby, Stills & Nash: Long Time Comin'",
+      "SNL: The Best of Chris Farley",
+      "Oliver & Company (20th Anniversary Edition)",
+      "Californication: Season 1",
+      "Lady and the Tramp (Disney)",
+      "The Natural",
+      "It's Always Sunny in Philadelphia: Complete 4th Se",
+      "Little Big League",
+      "It's Always Sunny in Philadelphia: Season 3",
+      "The Office: Season Three",
+      "Rambo (2008)",
+      "Eight Men Out",
+      "The Scout",
+      "It's Pimpin' Pimpin'",
+      "Lucky Number Slevin",
+      "Tommy Boy",
+      "The Sandlot",
+      "Kick-Ass",
+      "Free Willy (10th Anniversary Special Edition)",
+      "Sleeping Beauty (Diamond Edition)",
+      "King Arthur",
+      "Toy Story 3",
+      "Family Business",
+      "Stand By Me",
+      "Friday Night Lights",
+      "61* (Billy Crystal, HBO)",
+      "Bedtime Stories (Disney)",
+      "Despicable Me",
+      "Maleficent (Disney)",
+      "Superbad (Unrated Extended Edition)",
+      "Ghostbusters",
+      "Rush Hour 2",
+      "Teenage Mutant Ninja Turtles II: The Secret of the",
+      "Wedding Crashers (Uncorked)",
+      "National Lampoon's Van Wilder (Unrated)",
+      "Austin Powers in Goldmember",
+      "The Family Stone",
+      "Harold & Kumar Escape from Guantanamo Bay",
+      "Anchorman (Unrated, Uncut & Uncalled For)"
+     ]
+    }
+   ]
+  },
+  "Variation": [
+   {
+    "SKU": "DVD-MICKEYSONCEUPONACHRISTMASTWICE",
+    "StartPrice": "13.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Mickey's Once Upon a Christmas / Twice Upon a Chri"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-THESANTACLAUSEHOLIDAYCOLLECTIO",
+    "StartPrice": "11.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "The Santa Clause: Holiday Collection"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-ROBINHOODDISNEY40THANNIVERSARY",
+    "StartPrice": "9.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Robin Hood (Disney 40th Anniversary Edition)"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-THEEMPERORSNEWGROOVEDISNEY",
+    "StartPrice": "8.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "The Emperor's New Groove (Disney)"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-HERCULESDISNEYSPECIALEDITION",
+    "StartPrice": "7.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Hercules (Disney, Special Edition)"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-TARZANDISNEYSPECIALEDITION",
+    "StartPrice": "6.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Tarzan (Disney, Special Edition)"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-DISNEYSTHERESCUERS",
+    "StartPrice": "6.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Disney's The Rescuers"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-ITSAWONDERFULLIFEPLATINUMANNIV",
+    "StartPrice": "6.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "It's a Wonderful Life (Platinum Anniversary Editio"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-JACKASSCOMPLETEMOVIEANDTVCOLLE",
+    "StartPrice": "6.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Jackass: Complete Movie and TV Collection"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-TOYSTORYDVDEDITION",
+    "StartPrice": "6.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Toy Story (DVD Edition)"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-CROSBYSTILLSNASHLONGTIMECOMIN",
+    "StartPrice": "5.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Crosby, Stills & Nash: Long Time Comin'"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-SNLTHEBESTOFCHRISFARLEY",
+    "StartPrice": "5.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "SNL: The Best of Chris Farley"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-OLIVERCOMPANY20THANNIVERSARYED",
+    "StartPrice": "5.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Oliver & Company (20th Anniversary Edition)"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-CALIFORNICATIONSEASON1",
+    "StartPrice": "5.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Californication: Season 1"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-LADYANDTHETRAMPDISNEY",
+    "StartPrice": "5.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Lady and the Tramp (Disney)"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-THENATURAL",
+    "StartPrice": "5.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "The Natural"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-ITSALWAYSSUNNYINPHILADELPHIACO",
+    "StartPrice": "5.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "It's Always Sunny in Philadelphia: Complete 4th Se"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-LITTLEBIGLEAGUE",
+    "StartPrice": "5.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Little Big League"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-ITSALWAYSSUNNYINPHILADELPHIASE",
+    "StartPrice": "4.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "It's Always Sunny in Philadelphia: Season 3"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-THEOFFICESEASONTHREE",
+    "StartPrice": "4.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "The Office: Season Three"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-RAMBO2008",
+    "StartPrice": "4.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Rambo (2008)"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-EIGHTMENOUT",
+    "StartPrice": "4.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Eight Men Out"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-THESCOUT",
+    "StartPrice": "4.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "The Scout"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-ITSPIMPINPIMPIN",
+    "StartPrice": "4.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "It's Pimpin' Pimpin'"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-LUCKYNUMBERSLEVIN",
+    "StartPrice": "4.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Lucky Number Slevin"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-TOMMYBOY",
+    "StartPrice": "4.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Tommy Boy"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-THESANDLOT",
+    "StartPrice": "4.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "The Sandlot"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-KICKASS",
+    "StartPrice": "4.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Kick-Ass"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-FREEWILLY10THANNIVERSARYSPECIA",
+    "StartPrice": "4.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Free Willy (10th Anniversary Special Edition)"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-SLEEPINGBEAUTYDIAMONDEDITION",
+    "StartPrice": "4.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Sleeping Beauty (Diamond Edition)"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-KINGARTHUR",
+    "StartPrice": "4.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "King Arthur"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-TOYSTORY3",
+    "StartPrice": "4.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Toy Story 3"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-FAMILYBUSINESS",
+    "StartPrice": "4.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Family Business"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-STANDBYME",
+    "StartPrice": "4.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Stand By Me"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-FRIDAYNIGHTLIGHTS",
+    "StartPrice": "4.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Friday Night Lights"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-61BILLYCRYSTALHBO",
+    "StartPrice": "4.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "61* (Billy Crystal, HBO)"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-BEDTIMESTORIESDISNEY",
+    "StartPrice": "4.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Bedtime Stories (Disney)"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-DESPICABLEME",
+    "StartPrice": "3.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Despicable Me"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-MALEFICENTDISNEY",
+    "StartPrice": "3.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Maleficent (Disney)"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-SUPERBADUNRATEDEXTENDEDEDITION",
+    "StartPrice": "3.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Superbad (Unrated Extended Edition)"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-GHOSTBUSTERS",
+    "StartPrice": "3.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Ghostbusters"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-RUSHHOUR2",
+    "StartPrice": "3.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Rush Hour 2"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-TEENAGEMUTANTNINJATURTLESIITHE",
+    "StartPrice": "3.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Teenage Mutant Ninja Turtles II: The Secret of the"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-WEDDINGCRASHERSUNCORKED",
+    "StartPrice": "3.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Wedding Crashers (Uncorked)"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-NATIONALLAMPOONSVANWILDERUNRAT",
+    "StartPrice": "3.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "National Lampoon's Van Wilder (Unrated)"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-AUSTINPOWERSINGOLDMEMBER",
+    "StartPrice": "3.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Austin Powers in Goldmember"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-THEFAMILYSTONE",
+    "StartPrice": "3.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "The Family Stone"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-HAROLDKUMARESCAPEFROMGUANTANAM",
+    "StartPrice": "3.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Harold & Kumar Escape from Guantanamo Bay"
+      }
+     ]
+    }
+   },
+   {
+    "SKU": "DVD-ANCHORMANUNRATEDUNCUTUNCALLEDF",
+    "StartPrice": "3.99",
+    "Quantity": 1,
+    "VariationSpecifics": {
+     "NameValueList": [
+      {
+       "Name": "Movie",
+       "Value": "Anchorman (Unrated, Uncut & Uncalled For)"
+      }
+     ]
+    }
+   }
+  ]
+ }
+}

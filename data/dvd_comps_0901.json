@@ -43,7 +43,7 @@
   "n": 169,
   "lo": 0.99,
   "hi": 79.99,
-  "sample": "Hercules The Legendary Journeys - Season One (DVD, 2003, 8 Discs)  LIKE NEW"
+  "sample": "Hercules Legendary Journeys Season 1 DVD 8 Disc Set Kevin Sorbo Complete"
  },
  {
   "name": "Tarzan (Disney, Special Edition)",
@@ -76,17 +76,17 @@
   "name": "Jackass: Complete Movie and TV Collection",
   "q": "Jackass complete movie and TV collection DVD",
   "box": true,
-  "med": 9.77,
+  "med": 9.95,
   "n": 126,
   "lo": 1.87,
   "hi": 60,
-  "sample": "Jackass 4 Movies DVD Brand New Sealed"
+  "sample": "Jackass: 4-Movie Collection  (4-DVD set, 2022)   Johnny Knoxville    w/Slipcover"
  },
  {
   "name": "Toy Story (DVD Edition)",
   "q": "Toy Story Disney Pixar DVD",
   "med": 9.45,
-  "n": 135,
+  "n": 133,
   "lo": 1.99,
   "hi": 69.99,
   "sample": "Disney Pixar Toy Story 3  DVD  Brand New "
@@ -113,10 +113,28 @@
   "name": "Oliver & Company (20th Anniversary Edition)",
   "q": "Oliver and Company Disney DVD",
   "med": 8,
-  "n": 151,
+  "n": 150,
   "lo": 1.88,
   "hi": 25,
   "sample": "Oliver and Company (DVD 2009, 20th Anniversary Special Edition)"
+ },
+ {
+  "name": "Californication: Season 1",
+  "q": "Californication season 1 DVD",
+  "med": 8,
+  "n": 175,
+  "lo": 2,
+  "hi": 75.47,
+  "sample": "Californication: The First / 1st Season (DVD, 2007) Showtime "
+ },
+ {
+  "name": "Lady and the Tramp (Disney)",
+  "q": "Lady and the Tramp Disney DVD",
+  "med": 8,
+  "n": 140,
+  "lo": 0.99,
+  "hi": 47.99,
+  "sample": "Walt Disney Lady and the Tramp 50th Anniversary Platinum 2-Disc DVD G 2006"
  },
  {
   "name": "The Natural",
@@ -137,15 +155,6 @@
   "sample": "It's Always Sunny In Philadelphia The Complete 4th Season DVD 2008 Fox NTSC"
  },
  {
-  "name": "Lady and the Tramp (Disney)",
-  "q": "Lady and the Tramp Disney DVD",
-  "med": 7.99,
-  "n": 141,
-  "lo": 0.99,
-  "hi": 47.99,
-  "sample": "Disney Lady and the Tramp 50th Anniversary Platinum Edition 2-Disc DVD Region 1"
- },
- {
   "name": "Little Big League",
   "q": "Little Big League DVD",
   "med": 7.97,
@@ -158,7 +167,7 @@
   "name": "It's Always Sunny in Philadelphia: Season 3",
   "q": "Its Always Sunny in Philadelphia season 3 DVD",
   "med": 7.75,
-  "n": 124,
+  "n": 122,
   "lo": 1,
   "hi": 37.69,
   "sample": "It's Always Sunny in Philadelphia: Season 01 & 02 (DVD, 2005) Danny DeVito"
@@ -176,10 +185,10 @@
   "name": "Rambo (2008)",
   "q": "Rambo DVD Stallone Lionsgate",
   "med": 7.49,
-  "n": 181,
+  "n": 179,
   "lo": 0.99,
   "hi": 24.99,
-  "sample": "RAMBO III [New DVD, Ultimate Edition] Sylvester Stallone, Richard Crenna ACTION"
+  "sample": "Rambo III (DVD, 2004, Ultimate Edition) Sylvestor Stallone WORLD SHIP AVAIL"
  },
  {
   "name": "Eight Men Out",
@@ -188,7 +197,7 @@
   "n": 185,
   "lo": 1.95,
   "hi": 23.48,
-  "sample": "EIGHT MEN OUT - DVD - VERY GOOD CONDITION!!"
+  "sample": "Eight Men Out (DVD 2001 WS) PG Drama Baseball Scandal John Cusack Charlie Sheen"
  },
  {
   "name": "The Scout",
@@ -224,31 +233,31 @@
   "n": 190,
   "lo": 1,
   "hi": 55,
-  "sample": "Paramount Pictures Tommy Boy Holy Schnike Edition DVD Chris Farley David Spade"
+  "sample": "Tommy Boy DVD Holy Schnike Edition 2 Discs NEW SEALED Chris Farley David Spade"
  },
  {
   "name": "The Sandlot",
   "q": "The Sandlot DVD",
   "med": 6.99,
-  "n": 168,
+  "n": 169,
   "lo": 1,
   "hi": 22.01,
-  "sample": "The Sandlot (Follow Along DVD) - DVD"
+  "sample": "The Sandlot DVD 1993 Widescreen Full Screen Dual Side James Earl Jones"
  },
  {
   "name": "Kick-Ass",
   "q": "Kick-Ass DVD",
   "med": 6.99,
-  "n": 140,
+  "n": 138,
   "lo": 1.86,
   "hi": 21.94,
-  "sample": "Kick-Ass (DVD, 2010) Buy Two Get One Free! C"
+  "sample": "Kick-Ass (DVD, Widescreen 2010) Chloe Grace Moretz"
  },
  {
   "name": "Free Willy (10th Anniversary Special Edition)",
   "q": "Free Willy DVD anniversary",
   "med": 6.99,
-  "n": 190,
+  "n": 191,
   "lo": 1.95,
   "hi": 35,
   "sample": "Free Willy (DVD Snapcase, 2003, 10th Anniversary Special Edition) - Good"
@@ -269,13 +278,13 @@
   "n": 187,
   "lo": 1,
   "hi": 39,
-  "sample": "King Arthur - The Director's Cut (Widescreen Edition), Good DVD, Clive Owen, Ioa"
+  "sample": "King Arthur Director's Cut DVD Clive Owen Keira Knightley ￼"
  },
  {
   "name": "Toy Story 3",
   "q": "Toy Story 3 Disney Pixar DVD",
   "med": 6.99,
-  "n": 115,
+  "n": 114,
   "lo": 1.99,
   "hi": 45,
   "sample": "Disney Pixar Toy Story 3 DVD G Bonus Content NTSC Approx. 103 Min"
@@ -293,7 +302,7 @@
   "name": "Stand By Me",
   "q": "Stand By Me DVD",
   "med": 6.99,
-  "n": 171,
+  "n": 170,
   "lo": 1.26,
   "hi": 29.99,
   "sample": "Columbia Pictures Stand By Me Special Edition DVD Rob Reiner Stephen King New"
@@ -319,11 +328,11 @@
  {
   "name": "Bedtime Stories (Disney)",
   "q": "Bedtime Stories Adam Sandler DVD",
-  "med": 6.61,
-  "n": 170,
+  "med": 6.5,
+  "n": 171,
   "lo": 1,
   "hi": 49.99,
-  "sample": "Walt Disney Bedtime Stories • Adam Sandler Deluxe Edition DVD 2009 • Family ••"
+  "sample": "Walt Disney Bedtime Stories (DVD, 2009, Single Disc), Adam Sandler"
  },
  {
   "name": "Despicable Me",
@@ -338,7 +347,7 @@
   "name": "Maleficent (Disney)",
   "q": "Maleficent DVD Disney",
   "med": 6,
-  "n": 110,
+  "n": 111,
   "lo": 0.99,
   "hi": 32,
   "sample": "Disney Maleficent DVD FREE SHIP"
@@ -350,13 +359,13 @@
   "n": 192,
   "lo": 0.99,
   "hi": 45,
-  "sample": "Columbia Pictures Superbad Unrated Extended Edition DVD (2007) R Comedy"
+  "sample": "Sony Pictures Superbad DVD Unrated Extended Edition 2-Disc Subs Hill Cera"
  },
  {
   "name": "Ghostbusters",
   "q": "Ghostbusters DVD 1984",
   "med": 6,
-  "n": 181,
+  "n": 182,
   "lo": 0.99,
   "hi": 21.98,
   "sample": "Ghostbusters (DVD, 1984)"
@@ -389,6 +398,15 @@
   "sample": "Wedding Crashers Movie DVD Uncorked Edition 2005 Comedy Owen Wilson Vince Vaughn"
  },
  {
+  "name": "National Lampoon's Van Wilder (Unrated)",
+  "q": "Van Wilder DVD unrated",
+  "med": 5.93,
+  "n": 76,
+  "lo": 1.49,
+  "hi": 15.48,
+  "sample": "National Lampoon's Van Wilder The Rise of Taj (DVD 2006) Unrated Kal Penn ••"
+ },
+ {
   "name": "Austin Powers in Goldmember",
   "q": "Austin Powers Goldmember DVD",
   "med": 5.89,
@@ -400,20 +418,11 @@
  {
   "name": "The Family Stone",
   "q": "The Family Stone DVD",
-  "med": 5.88,
+  "med": 5.85,
   "n": 171,
   "lo": 0.99,
   "hi": 15.3,
-  "sample": "The Family Stone (Full Screen Edition)"
- },
- {
-  "name": "National Lampoon's Van Wilder (Unrated)",
-  "q": "Van Wilder DVD unrated",
-  "med": 5.8,
-  "n": 76,
-  "lo": 1.49,
-  "hi": 15.48,
-  "sample": "National Lampoon's Van Wilder (Unrated Special Edition)"
+  "sample": "The Family Stone WideScreen Edition DVD - New Sealed"
  },
  {
   "name": "Harold & Kumar Escape from Guantanamo Bay",
