@@ -1,4 +1,10 @@
 /**
+ * QUANTITY ON A REVISE IS AVAILABLE, NOT TOTAL. GetItem returns the total
+ * ever listed; ReviseFixedPriceItem reads what you send as available and
+ * sets total = sent + QuantitySold. Echoing GetItem straight back adds the
+ * sold count every time, which turned one sold Cal Raleigh into four
+ * buyable ones over four revises. Always subtract QuantitySold.
+ *
  * Add the 2026-08-31 drop to the live you-pick groups.
  *
  *   npx tsx scripts/add-drop-to-pyp-0901.ts            # dry run
@@ -95,7 +101,7 @@ function parseLive(xml: string): Live[] {
     return {
       sku: m[1].match(/<SKU>([^<]*)</)?.[1] ?? '',
       price: m[1].match(/<StartPrice[^>]*>([^<]*)</)?.[1] ?? '0',
-      qty: Number(m[1].match(/<Quantity>([^<]*)</)?.[1] ?? 0),
+      qty: Number(m[1].match(/<Quantity>([^<]*)</)?.[1] ?? 0) - Number(m[1].match(/<QuantitySold>([^<]*)</)?.[1] ?? 0),
       label,
       pics: pics.get(label) ?? [],
     };

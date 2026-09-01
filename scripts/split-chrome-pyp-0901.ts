@@ -1,4 +1,10 @@
 /**
+ * QUANTITY ON A REVISE IS AVAILABLE, NOT TOTAL. GetItem returns the total
+ * ever listed; ReviseFixedPriceItem reads what you send as available and
+ * sets total = sent + QuantitySold. Echoing GetItem straight back adds the
+ * sold count every time, which turned one sold Cal Raleigh into four
+ * buyable ones over four revises. Always subtract QuantitySold.
+ *
  * Split the main Chrome you-pick group, which is at 230 of eBay's 250-variation
  * cap and would break on the next rip.
  *
@@ -104,7 +110,7 @@ async function main() {
     const label = unesc(m[1].match(/<Name>Card<\/Name><Value>([^<]*)</)?.[1] ?? '');
     return {
       sku: m[1].match(/<SKU>([^<]*)</)?.[1] ?? '', price: m[1].match(/<StartPrice[^>]*>([^<]*)</)?.[1] ?? '0',
-      qty: Number(m[1].match(/<Quantity>([^<]*)</)?.[1] ?? 0),
+      qty: Number(m[1].match(/<Quantity>([^<]*)</)?.[1] ?? 0) - Number(m[1].match(/<QuantitySold>([^<]*)</)?.[1] ?? 0),
       sold: Number(m[1].match(/<QuantitySold>([^<]*)</)?.[1] ?? 0),
       label, pics: pics.get(label) ?? [],
     };
