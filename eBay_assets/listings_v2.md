@@ -2052,3 +2052,93 @@ He asked *"i can sell both my boxes on tradepost for $150 total then i pay for s
 **🔴 SCRIPT BUG CAUGHT IN USE: the booking loop iterated LOTS, not UNITS.** pu549 is one lot of qty 2, so it booked a single sale and left the second box showing as held. The Prismatic version had worked only because that sale was four separate lots of one. Caught it on the output line (`NBA mega boxes now held: 1`), booked the missing unit into the same `sale_group_id`, and fixed the script to expand each lot to its remaining units. **Always check the trailing held count after booking a multi-unit sale.**
 
 **Shipping is an estimate and is flagged as such.** The TradePost "CHA CHING" screen shows the sale price but not the label. $8.00 booked into `fees_cents` (based on the $8.12 PE label for a heavier box) so realized profit is not overstated by ~$8; **replace with the real figure when the payout screen posts.**
+
+---
+
+### eBay DRAFT — Pick Your DVD, 48 titles (2026-09-01)
+
+**NOT PUBLISHED. Needs his go-ahead, two answers and photos.**
+
+He sent one box photo and asked for a pick-your-DVD listing with comps and a dropdown per title.
+
+**Title (76 chars):** `DVD Movies You Pick Your Title - Disney Comedy Sports TV - Combined Shipping`
+
+**Format:** one multi-variation listing, variation attribute `Movie`, one variation per title, each with its own price and qty 1. Category **617 DVDs & Blu-ray Discs**.
+
+**Pricing: 70% of the median active ask, .99-ended, $3.99 floor.** These cost him nothing and common DVDs are a race to the bottom with enormous print runs, so this follows [[feedback_velocity_over_margin_on_free_items]] rather than the sum-of-parts rule that governs sealed bundles. Sum of asks **$272.52** against **$390.05** if priced at the medians.
+
+**The per-order fee is the whole game here.** eBay takes 13.25% plus **$0.40 per ORDER, not per disc**. A single $4.99 disc nets $3.93; five discs in one order net $4.85 each. Combined shipping is not a courtesy on this listing, it is the margin.
+
+| title | comp median | live asks | ask |
+|---|---|---|---|
+| Mickey's Once Upon a Christmas / Twice Upon a Christmas | $20.00 | 8 | **$13.99** |
+| The Santa Clause: Holiday Collection | $17.50 | 47 | **$11.99** |
+| Robin Hood (Disney 40th Anniversary Edition) | $14.99 | 39 | **$9.99** |
+| The Emperor's New Groove (Disney) | $12.98 | 119 | **$8.99** |
+| Hercules (Disney, Special Edition) | $11.95 | 169 | **$7.99** |
+| Tarzan (Disney, Special Edition) | $10.00 | 154 | **$6.99** |
+| It's a Wonderful Life (Platinum Anniversary Edition) | $9.99 | 58 | **$6.99** |
+| Disney's The Rescuers | $9.99 | 17 | **$6.99** |
+| Jackass: Complete Movie and TV Collection | $9.77 | 126 | **$6.99** |
+| Toy Story (DVD Edition) | $9.45 | 135 | **$6.99** |
+| Crosby, Stills & Nash: Long Time Comin' | $9.26 | 20 | **$5.99** |
+| SNL: The Best of Chris Farley | $8.49 | 25 | **$5.99** |
+| Oliver & Company (20th Anniversary Edition) | $8.00 | 151 | **$5.99** |
+| The Natural | $7.99 | 179 | **$5.99** |
+| Lady and the Tramp (Disney) | $7.99 | 141 | **$5.99** |
+| It's Always Sunny in Philadelphia: Complete 4th Season | $7.99 | 6 | **$5.99** |
+| Little Big League | $7.97 | 159 | **$5.99** |
+| It's Always Sunny in Philadelphia: Season 3 | $7.75 | 124 | **$4.99** |
+| The Office: Season Three | $7.50 | 193 | **$4.99** |
+| Eight Men Out | $7.49 | 185 | **$4.99** |
+| Rambo (2008) | $7.49 | 181 | **$4.99** |
+| The Scout | $7.35 | 120 | **$4.99** |
+| It's Pimpin' Pimpin' | $7.00 | 67 | **$4.99** |
+| Tommy Boy | $6.99 | 190 | **$4.99** |
+| Free Willy (10th Anniversary Special Edition) | $6.99 | 190 | **$4.99** |
+| King Arthur | $6.99 | 187 | **$4.99** |
+| Stand By Me | $6.99 | 171 | **$4.99** |
+| The Sandlot | $6.99 | 168 | **$4.99** |
+| Lucky Number Slevin | $6.99 | 157 | **$4.99** |
+| Kick-Ass | $6.99 | 140 | **$4.99** |
+| Family Business | $6.99 | 129 | **$4.99** |
+| Toy Story 3 | $6.99 | 115 | **$4.99** |
+| Sleeping Beauty (Diamond Edition) | $6.99 | 46 | **$4.99** |
+| Friday Night Lights | $6.98 | 191 | **$4.99** |
+| 61* (Billy Crystal, HBO) | $6.95 | 181 | **$4.99** |
+| Bedtime Stories (Disney) | $6.61 | 170 | **$4.99** |
+| Despicable Me | $6.07 | 154 | **$3.99** |
+| Superbad (Unrated Extended Edition) | $6.00 | 192 | **$3.99** |
+| Ghostbusters | $6.00 | 181 | **$3.99** |
+| Rush Hour 2 | $6.00 | 175 | **$3.99** |
+| Maleficent (Disney) | $6.00 | 110 | **$3.99** |
+| Wedding Crashers (Uncorked) | $5.99 | 190 | **$3.99** |
+| Teenage Mutant Ninja Turtles II: The Secret of the Ooze | $5.99 | 159 | **$3.99** |
+| Austin Powers in Goldmember | $5.89 | 162 | **$3.99** |
+| The Family Stone | $5.88 | 171 | **$3.99** |
+| National Lampoon's Van Wilder (Unrated) | $5.80 | 76 | **$3.99** |
+| Harold & Kumar Escape from Guantanamo Bay | $5.62 | 186 | **$3.99** |
+| Anchorman (Unrated, Uncut & Uncalled For) | $5.48 | 188 | **$3.99** |
+
+**Shipping:** Media Mail, buyer pays, calculated. A single DVD is about 4 oz; the two box sets are heavier and need their own weights. Never free shipping ([[feedback_never_offer_free_shipping]]).
+
+**🔴 TWO THINGS I COULD NOT SETTLE FROM THE PHOTO — both need him:**
+
+1. **One spine is unreadable.** Right stack, sixth down, between Crosby Stills & Nash and It's a Wonderful Life. Light blue case, reads `... THE FIRST SEASON`. The show name is washed out and survived a 7x contrast-boosted crop unread. Not guessed ([[feedback_no_fabricated_product_specifics]]).
+2. **Toy Story 3 may be a second copy.** One lies in the right stack, one stands on edge between the stacks, and both show catalogue number 105135. Either two copies or one case counted twice.
+
+**🔴 CONDITION IS NOT WRITTEN YET.** The photo shows spines only. Nothing about disc condition, scratches or whether inserts are present can be claimed from it, so the description carries no condition line until he confirms. Discs unverified as playable.
+
+**Description (condition line pending):**
+
+> Pick your title from the dropdown. Each disc is sold individually and priced on its own.
+>
+> All titles are pre-owned DVDs in their original cases.
+>
+> Buying more than one? Add them to your cart and shipping combines into a single package.
+>
+> Ships within 1 business day.
+>
+> Smoke-free home. Buy with confidence, check my feedback. Thanks for looking.
+
+**Photos still needed:** the box shot works as the lead, but a multi-variation listing wants a per-variation image or buyers cannot tell what they are choosing. Cheapest path is one flat-lay of all covers plus the existing stack shot, and accept no per-variation thumbnails.
