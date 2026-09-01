@@ -1,3 +1,5 @@
+export {}; // makes this a module; without it the top-level const H is
+           // global and collides with the other one-off query scripts
 /** Price OP15-046 Sabo SR off TCGCSV (category 68 = One Piece Card Game). */
 const H={headers:{'User-Agent':'pokestonks/1.0 (personal collection)','Accept':'application/json'}};
 (async()=>{

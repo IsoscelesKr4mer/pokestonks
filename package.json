@@ -15,7 +15,8 @@
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "db:migrate-rls": "tsx scripts/migrate-rls.ts"
+    "db:migrate-rls": "tsx scripts/migrate-rls.ts",
+    "typecheck:scripts": "tsc -p tsconfig.scripts.json --noEmit"
   },
   "dependencies": {
     "@base-ui/react": "^1.4.1",

@@ -1,3 +1,5 @@
+export {}; // makes this a module; without it the top-level const H is
+           // global and collides with the other one-off query scripts
 /** OP14-107 Shakuyaku and OP14-108 Silvers Rayleigh via TCGCSV (category 68).
  *  tcgcsv rejects the default fetch agent with an HTML page, so send a UA. */
 const H={headers:{'User-Agent':'pokestonks/1.0 (personal collection)','Accept':'application/json'}};

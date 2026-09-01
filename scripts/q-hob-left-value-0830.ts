@@ -1,3 +1,5 @@
+export {}; // makes this a module; without it the top-level const H is
+           // global and collides with the other one-off query scripts
 /** Live Scryfall value of what is still unsold on the Hobbit you-pick. */
 const LEFT: [string, number, boolean][] = [
   ['Attercop',116,false],['Confusticate and Bebother',35,false],['Crude Bent Blade',63,true],

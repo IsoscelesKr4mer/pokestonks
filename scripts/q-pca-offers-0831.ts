@@ -22,24 +22,8 @@ function f(o:any,k:string):any{if(o&&typeof o==='object')for(const kk of Object.
     const title=(gi.match(/<Title>([^<]*)</)?.[1]??'').slice(0,52);
     if(n||w>=5) console.log(`  ${id}  offers ${String(n).padStart(2)}  watchers ${String(w).padStart(3)}  ${title}`);
   }
-  const t='';
-  console.log('Ack:',t.match(/<Ack>([^<]*)</)?.[1]);
-  for(const m of t.matchAll(/<LongMessage>([^<]*)</g)) console.log('  ',m[1].slice(0,160));
-  const offers=[...t.matchAll(/<BestOffer>([\s\S]*?)<\/BestOffer>/g)].map(m=>m[1]);
-  console.log(`\n${offers.length} offer(s) on ${ITEM}`);
-  const vals:number[]=[];
-  for(const o of offers){
-    const p=Number(o.match(/<Price[^>]*>([\d.]+)</)?.[1]??0);
-    const q=o.match(/<Quantity>(\d+)</)?.[1]??'1';
-    const st=o.match(/<BestOfferStatus>([^<]*)</)?.[1]??'?';
-    const when=(o.match(/<ExpirationTime>([^<]*)</)?.[1]??'').slice(0,16);
-    if(p) vals.push(p);
-    console.log(`  $${p.toFixed(2).padStart(7)}  qty ${q}  ${st.padEnd(10)} expires ${when}`);
-  }
-  if(vals.length){
-    vals.sort((a,b)=>a-b);
-    console.log(`\n  low $${vals[0].toFixed(2)}  median $${vals[Math.floor(vals.length/2)].toFixed(2)}  high $${vals[vals.length-1].toFixed(2)}`);
-    const net=(a:number)=>a*0.8675-0.40;
-    console.log(`  best offer nets $${net(vals[vals.length-1]).toFixed(2)} against $20.00 of buyback credit`);
-  }
+  // The per-offer breakdown that used to live here referenced a single ITEM
+  // constant from an earlier version of this script. It was left behind when
+  // the script became a sweep, and the dangling reference failed the Next
+  // build, because tsconfig type-checks scripts/ along with the app.
 })().catch(e=>{console.error(String(e).slice(0,400));process.exit(1);});
