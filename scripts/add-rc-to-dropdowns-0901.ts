@@ -18,7 +18,13 @@
  * explicitly. That is the card-intake rule: the checklist is the authority, not
  * a guess from the player's name or a hunch about who debuted this year.
  *
- * A RENAMED VARIATION IS A DELETED VARIATION AS FAR AS eBay IS CONCERNED, and a
+ * A VARIATION CANNOT BE RENAMED IN PLACE. Sending the new label alone fails
+ * twice over: "Variation Specifics provided does not match with the variation
+ * specifics of the variations on the item" and "Duplicate custom variation
+ * label", because eBay sees the old value still on the item alongside the new
+ * one. The rename has to be sent as a DELETE of the old variation plus an ADD
+ * of a new one, which also needs a fresh SKU since SKUs are unique per listing.
+ * A renamed variation is therefore a deleted variation, and a
  * variation that has sold cannot be deleted. Sold variations are therefore left
  * alone even when the checklist says RC, and the run reports which ones. Test
  * on one small group with --only before doing the rest.
@@ -122,16 +128,25 @@ async function main() {
     for (const b of blocked) console.log(`    cannot rename (sold or too long): ${b}`);
     if (!changed || !APPLY) continue;
 
+    // renamed rows get a fresh SKU; the old one is deleted in the same request
+    const renamed = next.filter((v, i) => v.label !== vars[i].label)
+      .map((v, _i) => ({ ...v, sku: `${v.sku}R`, oldSku: vars[next.indexOf(v)].sku, oldLabel: vars[next.indexOf(v)].label }));
     const body =
       `<?xml version="1.0" encoding="utf-8"?><ReviseFixedPriceItemRequest xmlns="urn:ebay:apis:eBLBaseComponents">` +
       `<ErrorLanguage>en_US</ErrorLanguage><WarningLevel>High</WarningLevel><Item><ItemID>${item}</ItemID><Variations>` +
       `<VariationSpecificsSet><NameValueList><Name>Card</Name>` +
       next.map((v) => `<Value>${esc(v.label)}</Value>`).join('') +
       `</NameValueList></VariationSpecificsSet>` +
-      next.map((v) =>
-        `<Variation><SKU>${esc(v.sku)}</SKU><StartPrice>${v.price}</StartPrice><Quantity>${v.qty}</Quantity>` +
+      next.map((v, i) => {
+        const isNew = v.label !== vars[i].label;
+        return `<Variation><SKU>${esc(isNew ? v.sku + 'R' : v.sku)}</SKU><StartPrice>${v.price}</StartPrice><Quantity>${v.qty}</Quantity>` +
         `<VariationSpecifics><NameValueList><Name>Card</Name><Value>${esc(v.label)}</Value></NameValueList></VariationSpecifics>` +
-        `</Variation>`).join('') +
+        `</Variation>`;
+      }).join('') +
+      vars.filter((v, i) => next[i].label !== v.label).map((v) =>
+        `<Variation><SKU>${esc(v.sku)}</SKU><StartPrice>${v.price}</StartPrice><Quantity>0</Quantity>` +
+        `<VariationSpecifics><NameValueList><Name>Card</Name><Value>${esc(v.label)}</Value></NameValueList></VariationSpecifics>` +
+        `<Delete>true</Delete></Variation>`).join('') +
       `<Pictures><VariationSpecificName>Card</VariationSpecificName>` +
       next.filter((v) => v.pics.length).map((v) =>
         `<VariationSpecificPictureSet><VariationSpecificValue>${esc(v.label)}</VariationSpecificValue>` +
