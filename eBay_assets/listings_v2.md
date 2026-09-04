@@ -2166,7 +2166,7 @@ The comps (`data/dvd_comps_0901.json`) and the payload builder (`scripts/build-d
 
 ### Destined Rivals Checklane Blister Lot of 7 (listed 2026-09-03)
 
-- **🟢 LIVE 2026-09-03:** eBay #168662398311 · offer 255408015011 · SKU `DR-BLISTER-LOT7` · mapped **4x ci17246 (Eevee) + 3x ci17247 (Zarude) per unit** · category 183456 · location edmonds-wa
+- **🔵 SOLD 2026-09-03, two minutes after publish:** eBay #168662398311 · offer 255408015011 · SKU `DR-BLISTER-LOT7` · mapped **4x ci17246 (Eevee) + 3x ci17247 (Zarude) per unit** · category 183456 · location edmonds-wa
 - **Ask:** $84.00 + Ground Advantage calculated, buyer pays · **Qty:** 1 · **Cost:** $50.19 ($7.17 x 7) · **net ~$71.54 → +$21.35, 43% ROI** · **break-even ask $59.39**
 - **Title:** `Pokemon TCG Destined Rivals Checklane Blister Lot of 7 Eevee Zarude Sealed` (74 chars)
 - **Photos:** `DestinedRivals_Blister_lot7_01_spread.JPEG` (leads, the shot Michael sent of all 7), `DestinedRivals_Blister_twofer_02_back.JPEG` (back panel detail)
@@ -2204,3 +2204,12 @@ Buy with confidence, check my feedback. Thanks for looking.
 **⚠️ Open risk: he told the buyer he accepted a $24 offer.** No order exists for it as of publish (checked the 25 most recent, newest 2026-09-03 14:06Z), so nothing is double-committed. If that acceptance does turn into an order later, it would be a second claim on 2 of these same blisters and needs cancelling.
 
 - Verified live with Trading `GetItem`: **Active, $84.00, qty 1, HideFromSearch false, ShippingType Calculated, UPC present.**
+
+**🔵 SOLD, and NOT to the buyer it was built for.** Published 03:53:20Z, order **24-15111-17625** landed **03:55:59Z**, two minutes later, to **brookh-82**. zappescollection negotiated the $84 and never got the link in time. Michael holds **zero** Destined Rivals blisters now, so there is nothing to offer that buyer, and he was mid-conversation with him.
+
+**Booked** as sale group `8d63b5d6-8560-4815-83fe-4c7422435d17`, 7 rows FIFO across pu554/pu557 (Eevee) and pu553/pu558 (Zarude). Revenue $84.00 item subtotal, fees **$13.57 measured** from `totalDueSeller` $78.03 rather than modelled, cost $50.19, **realised +$20.24 (40%)** before the label. Label not bought yet but should be near a wash: declared weight was a measured 15 oz against $7.60 collected.
+
+**A dedup row went into `ebay_synced_orders` this time.** Earlier manual bookings skipped that ledger, which is why `audit-unbooked-orders` reports a backlog of orders that are in fact booked, and it leaves the app's own sync free to book them twice.
+
+**Two minutes to sell at $12/blister says the price was under the market, not at it.** That is not a complaint about honouring his number, it is a data point: the next blister lot should start higher and come down, because this one never got tested.
+
