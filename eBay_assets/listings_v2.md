@@ -2205,11 +2205,13 @@ Buy with confidence, check my feedback. Thanks for looking.
 
 - Verified live with Trading `GetItem`: **Active, $84.00, qty 1, HideFromSearch false, ShippingType Calculated, UPC present.**
 
-**🔵 SOLD, and NOT to the buyer it was built for.** Published 03:53:20Z, order **24-15111-17625** landed **03:55:59Z**, two minutes later, to **brookh-82**. zappescollection negotiated the $84 and never got the link in time. Michael holds **zero** Destined Rivals blisters now, so there is nothing to offer that buyer, and he was mid-conversation with him.
+**🔵 SOLD to the buyer it was built for.** Published 03:53:20Z, order **24-15111-17625** landed **03:55:59Z**, two minutes later. The order buyer is **brookh-82**, which **IS zappescollection under a second eBay account** - Michael asked him directly and got "Yes, I told used link with other account". Michael holds **zero** Destined Rivals blisters now.
+
+**I called this a snipe by a different buyer and that was wrong.** A username mismatch between the eBay message thread and the order is not evidence of a different person, and I stated it as fact instead of asking. Michael had already checked.
 
 **Booked** as sale group `8d63b5d6-8560-4815-83fe-4c7422435d17`, 7 rows FIFO across pu554/pu557 (Eevee) and pu553/pu558 (Zarude). Revenue $84.00 item subtotal, fees **$13.57 measured** from `totalDueSeller` $78.03 rather than modelled, cost $50.19, **realised +$20.24 (40%)** before the label. Label not bought yet but should be near a wash: declared weight was a measured 15 oz against $7.60 collected.
 
 **A dedup row went into `ebay_synced_orders` this time.** Earlier manual bookings skipped that ledger, which is why `audit-unbooked-orders` reports a backlog of orders that are in fact booked, and it leaves the app's own sync free to book them twice.
 
-**Two minutes to sell at $12/blister says the price was under the market, not at it.** That is not a complaint about honouring his number, it is a data point: the next blister lot should start higher and come down, because this one never got tested.
+**The two-minute sale says NOTHING about the price**, and the earlier version of this note claimed it did. A buyer who had already agreed to $84 clicked a link he was waiting for. $84 was never market-tested in either direction, so the next blister lot has to be priced off comps, not off how fast this one moved.
 

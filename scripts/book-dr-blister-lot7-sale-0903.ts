@@ -3,10 +3,12 @@
  *
  *   npx tsx scripts/book-dr-blister-lot7-sale-0903.ts [--apply]
  *
- * Sold TWO MINUTES after going live (published 03:53:20Z, order 03:55:59Z) and
- * NOT to the buyer it was built for: order buyer is brookh-82, while the $84
- * was negotiated with zappescollection. Michael needs to know he no longer has
- * these to sell, this is the whole position.
+ * Sold TWO MINUTES after going live (published 03:53:20Z, order 03:55:59Z) to
+ * the buyer it was built for. CORRECTED 2026-09-03: the order buyer is
+ * brookh-82 and I first recorded that as a different person sniping the lot
+ * ahead of zappescollection. It is zappescollection's second eBay account, as
+ * Michael confirmed with him directly. See fix-blister-sale-buyer-note-0903.ts.
+ * The fast sale is therefore pre-arrangement, not a price signal.
  *
  * Revenue is the ITEM subtotal, $84.00 for the lot, $12.00 a blister. Never
  * item + shipping, see [[feedback_ebay_shipping_wash]].
