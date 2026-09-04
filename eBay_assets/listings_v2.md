@@ -877,7 +877,7 @@ These live on eBay only. No catalog_item_id, no sync mapping, no auto P&L. Track
 
 ### Destined Rivals single-pack blister twofer, Eevee + Zarude (listed 2026-08-12)
 
-- **🟢 LIVE:** eBay #168609434868 · offer 234367477011 · SKU DR-BLISTER-TWOFER · mapped **1x ci17246 (Eevee) + 1x ci17247 (Zarude)** · category 183456 · **$29.99 x qty 1**
+- **🔴 ENDED 2026-09-03**, rolled into the 7-blister lot at the bottom of this file. eBay #168609434868 · offer 234367477011 · SKU DR-BLISTER-TWOFER · mapped **1x ci17246 (Eevee) + 1x ci17247 (Zarude)** · category 183456 · **$29.99 x qty 1**
 - **Cost $7.17/blister, $14.34 the pair** · net ~$24.69 · **+$10.35, 72% ROI** · break-even ask $18.06
 - **Title:** `Pokemon Destined Rivals Blister Lot of 2 Eevee Zarude Promo Coin Sealed` (71 chars)
 - **Price is Michael's number.** Sum of parts at vault market is **$31.20** (Eevee $17.81 + Zarude $13.39), so $29.99 is $1.21 under, inside clean-number noise rather than a real discount.
@@ -2161,3 +2161,46 @@ Also note `GetCategoryFeatures` now returns **410 Gone**. Category capability qu
 The comps (`data/dvd_comps_0901.json`) and the payload builder (`scripts/build-dvd-pyp-0901.ts`) both survive, so a relist is a one-command job under different pricing, photos, or a different split.
 
 **If it gets rebuilt, the open questions from the draft are still open:** disc condition was never confirmed (it went up as Good on my own judgement), the Toy Story 3 duplicate was never resolved, and there is still only the one box photo behind all 49 dropdown choices.
+
+---
+
+### Destined Rivals Checklane Blister Lot of 7 (listed 2026-09-03)
+
+- **🟢 LIVE 2026-09-03:** eBay #168662398311 · offer 255408015011 · SKU `DR-BLISTER-LOT7` · mapped **4x ci17246 (Eevee) + 3x ci17247 (Zarude) per unit** · category 183456 · location edmonds-wa
+- **Ask:** $84.00 + Ground Advantage calculated, buyer pays · **Qty:** 1 · **Cost:** $50.19 ($7.17 x 7) · **net ~$71.54 → +$21.35, 43% ROI** · **break-even ask $59.39**
+- **Title:** `Pokemon TCG Destined Rivals Checklane Blister Lot of 7 Eevee Zarude Sealed` (74 chars)
+- **Photos:** `DestinedRivals_Blister_lot7_01_spread.JPEG` (leads, the shot Michael sent of all 7), `DestinedRivals_Blister_twofer_02_back.JPEG` (back panel detail)
+- **UPC 820650853319.** Both promo variants share the barcode, it is an assorted SKU where only the promo differs.
+
+**Body:**
+```
+SEALED and IN HAND. Ships within 1 business day.
+
+Seven sealed Pokemon TCG Scarlet & Violet Destined Rivals single-pack checklane blisters: 4 with the Eevee promo and 3 with the Zarude promo.
+
+Each blister contains:
+• 1 Scarlet & Violet Destined Rivals booster pack
+• 1 promo card (Eevee or Zarude)
+• 1 Pokemon coin
+• 1 code card for Pokemon TCG Live
+
+That is 7 booster packs, 7 foil promos and 7 coins across the lot.
+
+All seven blisters brand new and factory sealed on the card, never opened. Smoke-free home.
+
+Buy with confidence, check my feedback. Thanks for looking.
+```
+
+**This is a negotiated listing, not a priced one.** eBay buyer **zappescollection** opened at **$24 for a twofer** ($12/blister), Michael countered with all 7 for $84 at the same per-blister number, and the buyer agreed before anything was built. The listing exists so he can send a link.
+
+**$84 is defensible against SOLD data even though it is well under the vault.** Vault sum-of-parts is **$119.62** (4 x $19.63 Eevee + 3 x $13.70 Zarude), but checklane blisters do not transact at TCGCSV market: his own sold search shows twofers at **$24.99 and $30.00** ($12.50-$15/blister) and a 4-pack at **$49.95** ($12.49/blister). **$84/7 = $12.00**, the bottom of that band. Quoting the $119.62 as money left on the table would be quoting a price these never realise.
+
+**The old twofer listing was ended FIRST** (#168609434868, qty 3 at $27.99, 0 sold, 1 watcher) so the same 7 blisters were never live in two places. Its mapping row was deleted too, so a sync cannot fire against a dead listing.
+
+**Inventory was queried, not assumed:** 4x ci17246 Eevee (pu554 x1, pu557 x3) + 3x ci17247 Zarude (pu553 x1, pu558 x2), all held, none sold. Exactly the 7 in the photo, which also matches his own count of "3 sets of 2 and 1 extra eevee".
+
+**Weight is measured, and the 15 oz declaration is deliberate.** Michael weighed all 7 at **10.6 oz**; plus the 8x8x4 shipper with paper at 4.2 oz that is 14.8 oz, declared **15 oz**. Ground Advantage prices 12-15.99 oz below a full pound, so padding past 16 oz would have cost the **buyer** several dollars for nothing. `packageType` omitted on purpose, it has broken publishes before.
+
+**⚠️ Open risk: he told the buyer he accepted a $24 offer.** No order exists for it as of publish (checked the 25 most recent, newest 2026-09-03 14:06Z), so nothing is double-committed. If that acceptance does turn into an order later, it would be a second claim on 2 of these same blisters and needs cancelling.
+
+- Verified live with Trading `GetItem`: **Active, $84.00, qty 1, HideFromSearch false, ShippingType Calculated, UPC present.**
