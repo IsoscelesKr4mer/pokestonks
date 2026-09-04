@@ -6,8 +6,8 @@ multiple, or nothing. Times can change; Michael updates them and I revise here.
 
 | Machine | Location | Drop times (minutes past the hour) | Last updated |
 |---|---|---|---|
-| Edmonds Safeway | Edmonds, WA (his main machine, "Safeway") | **:25 and :55 (±1 min), CONFIRMED TWICE with no purchase** | 2026-08-24 |
-| Shoreline Fred Meyer | Shoreline, WA | **:26 and :56, UNVERIFIED** (was :15:30/:45:30) | 2026-08-21 |
+| Edmonds Safeway | Edmonds, WA (his main machine, "Safeway") | **:01-:02 and :31-:32, AS REPORTED 2026-09-03** (was :25/:55, confirmed twice) | 2026-09-03 |
+| Shoreline Fred Meyer | Shoreline, WA | **:08 and :38, AS REPORTED 2026-09-03** (was :26/:56, itself unverified) | 2026-09-03 |
 | Shoreline Safeway | Shoreline, WA (further down Aurora, past Fred Meyer) | **:07 and :37** | 2026-08-13 |
 | Winco | Edmonds area, near the Safeway machine | :15 and :45 | 2026-07-12 |
 
@@ -33,6 +33,21 @@ His own log agrees. Every bundle that has ever appeared in `drop_log.csv`, bough
 **🔴 READ THE DROP LOG FOR AVAILABILITY, NOT THE PURCHASE TABLE.** I made this mistake twice in one message: I said Pitch Black was absent (it has 7 log appearances, all `seen`) and that Perfect Order had rotated out (24 sightings, latest 8/21). **A gap in purchases means he stopped buying it, not that the machine stopped stocking it.** White Flare (last seen 2026-07-20) and Black Bolt (last seen 2026-07-12) are genuinely gone — the drop log agrees there.
 
 **Practical rule: price a sighting against the roster, not against the catalog.** On 2026-08-26 I mis-heard a Mega Evolution booster PACK as a bundle, priced it as one, and told him he had passed up ~$22. Mega Evolution bundles are **not stocked in these machines at all**, and the pack was worth about $1.50 net over the $5.00 vending price. Leaving it was correct.
+
+### 🔄 BOTH MACHINES MOVED, reported 2026-09-03. Edmonds **:01-:02 / :31-:32**, Shoreline Fred Meyer **:08 / :38**.
+
+Michael reported new marks for both machines in the same message, alongside a Destined Rivals bundle he bought the same day (time of day not recalled, machine not stated).
+
+| machine | old marks | new marks | shift |
+|---|---|---|---|
+| Edmonds Safeway | :25 / :55 | **:01-:02 / :31-:32** | +6 to +7 min |
+| Shoreline Fred Meyer | :26 / :56 | **:08 / :38** | +12 min |
+
+**Both keep the 30-minute cadence**, which is what a restock/maintenance reset looks like: the machine restarts its clock, the interval never changes. That is the third Edmonds move on record (:40 -> :10 -> :25/:55 -> :01/:31) and the second at Fred Meyer.
+
+**Provenance: reported, not measured here.** The old Edmonds pair was the only entry in this file with two uncontaminated dead-then-appeared reads, and those are now retired, so the file is back to unverified marks on every machine. The `:01-:02` and `:31-:32` are written as ranges because that is how he gave them, likely a drop watched landing across the minute boundary rather than a stated tolerance.
+
+**To confirm either machine:** stand there with nothing sitting on the screen, tap at mark-minus-2, and note the exact minute something appears. A buy near the mark cannot do it, since a purchase can pull the next drop forward.
 
 ### ✅✅ EDMONDS :55 CONFIRMED A SECOND TIME, 2026-08-24 morning. Two clean reads now.
 
