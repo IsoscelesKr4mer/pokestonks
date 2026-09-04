@@ -787,7 +787,7 @@ These live on eBay only. No catalog_item_id, no sync mapping, no auto P&L. Track
 
 ### Shrouded Fable Booster Bundle twofer (listed 2026-08-05)
 
-- **🟢 LIVE 2026-08-05:** eBay #168592071604 · offer 225349662011 · SKU SF-BUNDLE-TWOFER · mapped **2x ci5283 per unit** · category 261044 · location edmonds-wa
+- **🔴 ENDED 2026-09-03**, the bundles went to TradePost on 09-03 and these listings should never have still been up. eBay #168592071604 · offer 225349662011 · SKU SF-BUNDLE-TWOFER · mapped **2x ci5283 per unit** · category 261044 · location edmonds-wa
 - **Ask:** $119.99 · **Qty:** 3 units (2 bundles each, covers all 6 held) · **Cost:** $70.74/unit · **Net:** ~$103.37 after 13.6% + $0.30 → **+$32.63/unit, +$97.89 if all three clear** · break-even $82.22
 - **Title:** Pokemon Shrouded Fable Booster Bundle Lot of 2 Sealed 12 Booster Packs (70 chars)
 - **Photos:** `ShroudedFable_BoosterBundle_twofer_reshoot_01_front.JPEG` (leads), `_02_back.JPEG`. Marble reshoot, swapped in ~75 min after go-live, replacing the car-seat originals.
@@ -863,7 +863,7 @@ These live on eBay only. No catalog_item_id, no sync mapping, no auto P&L. Track
 
 **Michael's call, and the better version of what I proposed.** I recommended splitting all six SF bundles into singles. He countered: *"why dont we start w/ 2 singles of SF and 2 quantity of the twofer to test the theory and not nuke the listing that already has a watcher on it."* Right on both counts, it preserves the twofer's history and watcher and still tests the format hypothesis.
 
-- **🟢 SF SINGLE, NEW:** eBay #168606265372 · SKU SF-BUNDLE-SINGLE · mapped **1x ci5283 per unit** · **$57.99 x qty 2** · cost $35.37 · **+$14.43/bundle**
+- **🔴 ENDED 2026-09-03** (see the TradePost note at the bottom of this file). eBay #168606265372 · SKU SF-BUNDLE-SINGLE · mapped **1x ci5283 per unit** · **$57.99 x qty 2** · cost $35.37 · **+$14.43/bundle**
 - **🟡 SF TWOFER, shrunk:** #168592071604 · **qty 3 → 2** · $109.99 unchanged · 2x2 + 2x1 = **6 of 6 held, no overcommit**
 - **Price cut from my own $62.99 draft to $57.99.** $62.99 was the active MEDIAN, the same trap that killed the Bowman listing that morning. Scan (n=87 delivered): low $49.99, **Q1 $57.50**, median $62.99, Q3 $75.32. The twofer at $54.99/bundle was already under Q1, so **SF was never overpriced, the format was the suspect.**
 - **⚠️ REAL FIND: the SF twofer had NO UPC and never had.** Live listing and inventory record both empty, running since 08-05 with one watcher. That is the same defect that made the NBA Chrome boxes invisible on release day, so **the format may not have been the main problem at all.** Backfilled to **820650413513**.
@@ -2215,3 +2215,17 @@ Buy with confidence, check my feedback. Thanks for looking.
 
 **The two-minute sale says NOTHING about the price**, and the earlier version of this note claimed it did. A buyer who had already agreed to $84 clicked a link he was waiting for. $84 was never market-tested in either direction, so the next blister lot has to be priced off comps, not off how fast this one moved.
 
+
+---
+
+### Shrouded Fable bundles went to TradePost, and eBay kept selling them anyway (2026-09-03)
+
+**All 6 sold to TradePost on 2026-09-03 at 14:27**, order `586B118E`: $43.90 a bundle, $263.40 total, less the $10.41 UPS label he paid (1Z1493G20318816578) = **$252.99 payout**. Cost $212.22 (pu531, 6 @ $35.37, Target 2026-08-05), so **+$40.77 realised, $6.80 a bundle, 19% on cost**. Booked as group `090d0f63-bdc6-4190-ac5b-0ab840a4c751`.
+
+**The label is in `fees_cents` here, and that is not a contradiction of [[feedback_ebay_shipping_wash]].** On eBay the buyer pays shipping and it washes against the label, so revenue is the item subtotal and the label stays out. On a buylist he ships to them and eats the cost, so it has to come out of the proceeds or the payout will not reconcile.
+
+**$43.90 is 79.7% of the $55.11 TCGCSV market**, which is exactly the ~78-79% band already recorded for TradePost. The payout was normal for the channel.
+
+**🔴 THE REAL PROBLEM: both eBay listings stayed live for the rest of the day after the bundles were gone.** #168592071604 (lot of 2 at $109.99) and #168606265372 (single at $54.99), 4 + 2 = all 6 bundles committed, `HideFromSearch: false`, both discoverable. I even reported them as healthy and offered to reprice them, about an hour before he mentioned the TradePost sale. A buyer could have paid at any point for product that was already in a UPS truck, and the only exit would have been a seller-cancelled order and a defect on a 2012 account. Ended both the moment he said it, `EndFixedPriceItem` Success, **0 sold on each, so nobody was affected**.
+
+**Root cause is structural, not a slip.** Every non-eBay exit has this hole: TradePost, card shows, local Venmo sales and giveaways all remove inventory without touching a listing, and nothing was checking eBay against the vault in the other direction. `scripts/audit-listing-overcommit.ts` now does that check: it walks every active listing, multiplies listing qty by mapped units, and compares against held (purchases minus sales minus rips minus decompositions). **Run it after any off-eBay sale.** As of tonight it reports 0 overcommitted items and 0 sealed listings missing a mapping.
