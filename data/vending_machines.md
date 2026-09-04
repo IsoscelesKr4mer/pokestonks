@@ -49,6 +49,8 @@ Michael reported new marks for both machines in the same message, alongside a De
 
 **To confirm either machine:** stand there with nothing sitting on the screen, tap at mark-minus-2, and note the exact minute something appears. A buy near the mark cannot do it, since a purchase can pull the next drop forward.
 
+**First datapoint on the new Edmonds marks, same evening: 18:01, two Surging Sparks packs bought.** Dead on :01, so the new schedule is at least producing. It is **not** clean evidence, by this file's own standard: he bought, and a purchase-adjacent tap cannot separate a drop landing at :01 from stock that was already sitting. The :31-:32 half has no datapoint at all yet.
+
 ### ✅✅ EDMONDS :55 CONFIRMED A SECOND TIME, 2026-08-24 morning. Two clean reads now.
 
 Michael asked for the time at **09:54**, tapped the **09:55** mark, and a **Mega Evolution booster pack** came out. **He left it.**
