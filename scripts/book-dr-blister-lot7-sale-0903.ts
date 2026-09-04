@@ -55,8 +55,9 @@ const NOTE = 'eBay order 24-15111-17625, 7-blister Destined Rivals checklane lot
   'blister), item subtotal $84.00, order total $91.60 incl $7.60 shipping plus $7.77 eBay-collected tax. ' +
   'Fees $13.57 measured from totalDueSeller $78.03, which is 13.25% of the $99.37 full total plus $0.40. ' +
   'SHIPPING LABEL NOT YET BOUGHT and not included; declared weight was a measured 15 oz against $7.60 ' +
-  'collected, so it should be near a wash. Sold to brookh-82 two minutes after publish, NOT to ' +
-  'zappescollection, who negotiated the $84 and never got the link in time.';
+  'collected, so it should be near a wash. Sold two minutes after publish to brookh-82, which IS ' +
+  'zappescollection under a second eBay account (he confirmed it when asked). The link went to the buyer ' +
+  'who negotiated the $84, so the fast sale is pre-arrangement, not a signal about market price.';
 
 (async () => {
   const dupe: any = await sql`SELECT id FROM ebay_synced_orders WHERE ebay_order_id=${ORDER}`;
