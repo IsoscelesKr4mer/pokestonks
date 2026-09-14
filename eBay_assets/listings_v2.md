@@ -2229,3 +2229,34 @@ Buy with confidence, check my feedback. Thanks for looking.
 **🔴 THE REAL PROBLEM: both eBay listings stayed live for the rest of the day after the bundles were gone.** #168592071604 (lot of 2 at $109.99) and #168606265372 (single at $54.99), 4 + 2 = all 6 bundles committed, `HideFromSearch: false`, both discoverable. I even reported them as healthy and offered to reprice them, about an hour before he mentioned the TradePost sale. A buyer could have paid at any point for product that was already in a UPS truck, and the only exit would have been a seller-cancelled order and a defect on a 2012 account. Ended both the moment he said it, `EndFixedPriceItem` Success, **0 sold on each, so nobody was affected**.
 
 **Root cause is structural, not a slip.** Every non-eBay exit has this hole: TradePost, card shows, local Venmo sales and giveaways all remove inventory without touching a listing, and nothing was checking eBay against the vault in the other direction. `scripts/audit-listing-overcommit.ts` now does that check: it walks every active listing, multiplies listing qty by mapped units, and compares against held (purchases minus sales minus rips minus decompositions). **Run it after any off-eBay sale.** As of tonight it reports 0 overcommitted items and 0 sealed listings missing a mapping.
+
+
+---
+
+### 2026 Bowman Chrome Baseball Mega Box — 7 of 10, in hand before the 09-23 release (2026-09-14)
+
+**Item [168689132854](https://www.ebay.com/itm/168689132854), qty 7, $99.99.** SKU `BOWCH26-MEGA`, catalog 135610, offer 266013983011.
+
+Title (78): `2026 Bowman Chrome Baseball Mega Box SEALED IN HAND Ships Now 6 Packs 36 Cards`
+
+**The whole listing is built on one fact: this product does not release until 09-23 and Fred Meyer shelved it early.** Nearly every competing listing on the board is a presale. That is why IN HAND and Ships Now are in the title rather than the description, per [[feedback_premium_must_be_in_title_and_thumbnail]]. The edge expires on release day, so this went up the same afternoon he bought them.
+
+**Why 7 and not 6.** Cost is $55.34 a box (Fred Meyer Lynnwood, receipt IMG_4211, 10.699% tax). He asked how many he had to sell to rip 4 free. At the $97 median that needs 9 sold, which leaves 1 to rip; selling 6 and ripping 4 only works at about $111 a box, above the 75th percentile of $106.99. At $99.99 the 7 bring back roughly $580 against the $553.40 he paid for all ten, so **the 3 he keeps are free with about $27 spare**. 3 free rips is the honest ceiling at market.
+
+| | |
+|---|---|
+| board on 09-14 | low $25 (junk), 25th $88.95, **median $97.00**, 75th $106.99, high $210 |
+| ask | $99.99, just above median |
+| keeps after fees | ~$80.57 a box at the 15.3% effective rate |
+| cost | $55.34 |
+| per box | **+$25.23** |
+
+**Photos are his own**, IMG_4221 front and IMG_4222 back, EPS-hosted. **UPC 887521163625** read off the barcode on the back and cross-checked against the Fred Meyer receipt SKU 88752116362, per [[feedback_listing_preflight_upc]].
+
+Shape copied from the NBA mega listing that already works: category 261332 Sealed Trading Card Boxes, condition NEW, `edmonds-wa`, the three business policies, 8x8x4 at 12 oz, **no `packageType`** ([[reference_ebay_package_type_gotcha]]).
+
+- Preflight clean.
+- Verified live with Trading `GetItem`: **Active, $99.99, qty 7, UPC present.** The Inventory API is not trusted on its own publishes ([[reference_ebay_publish_verify_trading_api]]).
+- Mapped in `ebay_listing_mappings` at **qty 1 per listing unit**, which is the trap from [[reference_ebay_sync_mapping_qty]]: the title says Mega Box, not a multi-box lot, so one unit is one box.
+
+**Open: 3 boxes stay back to rip.** They are not listed and must not be. Held reads 10 until these sell.
