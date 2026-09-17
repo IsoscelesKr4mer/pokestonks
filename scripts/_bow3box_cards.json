@@ -671,8 +671,8 @@
   "first_bowman": false,
   "parallel": "base",
   "serial": null,
-  "card_number": null,
-  "number_source": null
+  "card_number": "68",
+  "number_source": "read off the back at 3x, 2026-09-17"
  },
  {
   "i": 48,
@@ -699,8 +699,8 @@
   "first_bowman": false,
   "parallel": "base",
   "serial": null,
-  "card_number": null,
-  "number_source": null
+  "card_number": "2",
+  "number_source": "read off the back at 3x, 2026-09-17"
  },
  {
   "i": 50,
@@ -747,8 +747,8 @@
   "rc_shield": null,
   "parallel": "base",
   "serial": null,
-  "card_number": null,
-  "number_source": null
+  "card_number": "41",
+  "number_source": "read off the back at 3x, 2026-09-17"
  },
  {
   "i": 53,
@@ -779,8 +779,8 @@
   "rc_shield": "navy",
   "parallel": "base",
   "serial": null,
-  "card_number": null,
-  "number_source": null
+  "card_number": "47",
+  "number_source": "read off the back at 3x, 2026-09-17"
  },
  {
   "i": 55,
@@ -838,7 +838,8 @@
   "box": 2,
   "serial": null,
   "first_bowman": false,
-  "card_number": null
+  "card_number": "20",
+  "number_source": "read off the back at 3x, 2026-09-17"
  },
  {
   "i": 59,
@@ -1077,7 +1078,8 @@
   "parallel": "base",
   "serial": null,
   "first_bowman": false,
-  "card_number": null
+  "card_number": "20",
+  "number_source": "read off the back at 3x, 2026-09-17"
  },
  {
   "i": 76,
@@ -1237,8 +1239,8 @@
   "rc": false,
   "parallel": "base",
   "serial": null,
-  "card_number": null,
-  "number_source": null
+  "card_number": "13",
+  "number_source": "read off the back at 3x, 2026-09-17"
  },
  {
   "i": 87,
@@ -1282,8 +1284,8 @@
   "rc": false,
   "parallel": "base",
   "serial": null,
-  "card_number": null,
-  "number_source": null
+  "card_number": "50",
+  "number_source": "read off the back at 3x, 2026-09-17"
  },
  {
   "i": 90,
@@ -1297,8 +1299,8 @@
   "rc": false,
   "parallel": "base",
   "serial": null,
-  "card_number": null,
-  "number_source": null
+  "card_number": "2",
+  "number_source": "read off the back at 3x, 2026-09-17"
  },
  {
   "i": 91,
@@ -1327,8 +1329,8 @@
   "rc": false,
   "parallel": "base",
   "serial": null,
-  "card_number": null,
-  "number_source": null
+  "card_number": "41",
+  "number_source": "read off the back at 3x, 2026-09-17"
  },
  {
   "i": 93,
