@@ -3,40 +3,42 @@ Card montages for the three-mega 2026 Bowman Chrome rip, one image per box.
 
   python scripts/build_bow3box_montage.py
 
-The data cards carry the numbers. These carry the cards, which Michael asked for
-after the first pass: "You didnt include the actual cards lie on the thread
-though - people want to see the hits!"
+The data cards carry the numbers. These carry the cards.
 
-v2, to his three notes on v1:
+v3, to Michael's note on v2: "The graphics look super imbalanced now. Make them
+look better. IDK about the 3 cards on top none of them are certified baners and
+idk if they all warrant a spot on top".
 
-  "Crops are too aggresive on the cards"
-      crop_card now pads the detected box and then locks it to the real 2.5x3.5
-      card aspect by WIDENING only, never by growing downward, so a tight side
-      can't shave a border off and the acrylic stand still can't creep in. v1
-      used the 08-13 montage's crop unchanged, which was tuned for a layout
-      where the cards sat much smaller.
+Two changes.
 
-  "I actually dont lke the fan lets just line them up on the bottom"
-      the fanned base stack is gone. Base is the last strip, laid out in the
-      same grid as every other strip.
+THE TOP IS EARNED, NOT A FIXED THREE. v1 and v2 always promoted three cards,
+which worked for box 3 (a $80 Red RC) and looked silly for box 1, where the
+third-best card was a $6.50 Mojo sitting at the same size as the chase. Only a
+serial-numbered parallel or the Red RC gets the top now, so box 1 and box 2 lead
+with one card and box 3 with two. A promoted card is shown large beside a text
+block with its odds and what it is worth, which is worth more than three
+mid cards in a row.
 
-  "lets seperate the 1st bowmans from rookie cards from inserts from base"
-      five labelled strips: THE HITS, 1ST BOWMAN, ROOKIE CARDS, INSERTS, BASE.
-      A card lands in exactly one, so the counts on the labels add to 36 and
-      nothing is shown twice. Precedence is insert, then 1st Bowman, then
-      rookie, then base: the insert bucket is its own thing per his list, and
-      the 1ST BOWMAN logo outranks the RC badge because that is the one buyers
-      search on.
+BALANCED ROWS. v2 filled each row to the column cap and centred whatever was
+left, so a strip of 10 came out as 8 and 2. Rows are now near-equal by
+construction (10 goes 5 and 5, 9 goes 5 and 4, never 8 and 2) and the card size
+is derived from the widest row so the strip still reaches the margins. Card size
+therefore varies a little between strips, which is the trade for never seeing a
+lonely two-card row again.
 
-THE HITS is picked by hand, not by price. The three numbered Mojos have no comp
-at all six days before street date, so sorting on value would bury the best
-cards in the box. Anything numbered or a Red RC is promoted; the rest of the
-slots go to the dearest cards.
+Buckets, in order, one card per bucket:
+  MOJOS & LAZERS   any parallel. A Mojo is not a base card, which v2 got wrong.
+  1ST BOWMAN       base card with the 1ST BOWMAN logo
+  ROOKIE CARDS     base card with the RC badge
+  INSERTS          Spring Breakout, It Came To The League
+  BASE             everything else
 
 Cards are shot portrait on an acrylic stand against a dark backdrop. The card is
 the bright mass in the frame, so: threshold on brightness plus saturation, blank
 the bottom of the frame where the stand and the lit desk are, then bound by the
-dominant column and row profile. A plain getbbox pulls in the desk.
+dominant column and row profile. A plain getbbox pulls in the desk. The box is
+padded and then locked to the real 2.5x3.5 card shape by WIDENING only, since
+growing it downward would pull the stand back in.
 """
 from PIL import Image, ImageDraw, ImageFont
 import numpy as np
@@ -49,9 +51,11 @@ OUT = 'eBay_assets/bowchrome_3mega_box%d_2026-09-17.png'
 
 W = 1600
 MARGIN = 62
+AVAIL = W - 2 * MARGIN
 BG = (11, 18, 32)          # matches the data cards' #0b1220
 INK = (232, 238, 248)
 MUTED = (125, 147, 180)
+DIM = (105, 126, 158)
 RULE = (38, 52, 74)
 GREEN = (61, 220, 151)
 ORANGE = (255, 154, 60)
@@ -59,16 +63,21 @@ RED = (255, 77, 94)
 TEAL = (79, 214, 201)
 
 ASPECT = 2.5 / 3.5
-
-HERO_COLS, HERO_W, HERO_GAP = 3, 400, 38
-MAX_COLS, GAP = 8, 16
-AVAIL = W - 2 * MARGIN
-CARD_W = (AVAIL - (MAX_COLS - 1) * GAP) // MAX_COLS
-CARD_H = int(CARD_W / ASPECT)
+MAX_COLS, GAP, MAX_CARD_W = 8, 16, 216
 
 BOOK = {1: ('$111.29', '2.01x'), 2: ('$154.69', '2.80x'), 3: ('$202.96', '3.67x')}
 STRIPS = [('parallel', 'Mojos & Lazers'), ('firstbow', '1st Bowman'),
           ('rookie', 'Rookie Cards'), ('insert', 'Inserts'), ('base', 'Base')]
+
+# Pack odds off the Topps mega odds sheet, and where the comps landed. The three
+# numbered Mojos are mega-exclusive and megas do not street until Sept 23, so
+# two of them have no live market at all; say that rather than invent a number.
+CHASE = {
+    'Jaider Suarez':  ('1 in 115 packs', 'no comp yet', False),
+    'Konnor Griffin': ('1 in 92 packs', 'about $36', True),
+    'Paul Skenes':    ('1 in 153 packs', 'no comp yet', False),
+    'Sal Stewart':    ('1 in 4 packs', '$80', True),
+}
 
 
 def font(sz, bold=True):
@@ -91,24 +100,21 @@ def crop_card(num):
     if not cols.max() or not rows.max():
         return im
     cs = np.where(cols > cols.max() * 0.30)[0]
-    rows_i = np.where(rows > rows.max() * 0.30)[0]
-    iw, ih = im.size
-    x0, x1 = float(cs.min()), float(cs.max())
-    y0, y1 = float(rows_i.min()), float(rows_i.max())
-    # generous pad everywhere except the bottom, which is where the stand is
-    x0 -= 0.030 * iw
-    x1 += 0.030 * iw
-    y0 -= 0.030 * ih
-    y1 += 0.008 * ih
-    # lock to the card aspect by widening only, so the bottom never grows into
-    # the stand and no border gets shaved off a narrow side
-    h = y1 - y0
-    if (x1 - x0) / h < ASPECT:
-        nw = h * ASPECT
-        cx = (x0 + x1) / 2
-        x0, x1 = cx - nw / 2, cx + nw / 2
-    return im.crop((int(max(0, x0)), int(max(0, y0)),
-                    int(min(iw, x1)), int(min(ih, y1))))
+    rs = np.where(rows > rows.max() * 0.30)[0]
+    # Take the WIDTH and the TOP edge from the profiles and derive the height
+    # from the card's real 2.5x3.5 shape. The bottom edge cannot be measured:
+    # the acrylic stand is bright, overlaps the bottom of the card and reads as
+    # part of the same mass, which is why the row profile has to be blanked at
+    # 0.88 in the first place. Measuring it anyway gave 58 of 108 crops an
+    # aspect between 0.74 and 0.83 instead of 0.714, so cards came out squat by
+    # differing amounts and no two grid cells matched. Deriving it puts every
+    # crop on 0.714 to three decimals.
+    x0, x1, y0 = float(cs.min()), float(cs.max()), float(rs.min())
+    cw = x1 - x0
+    px = 0.04 * cw
+    py = px / ASPECT
+    return im.crop((int(round(x0 - px)), int(round(y0 - py)),
+                    int(round(x1 + px)), int(round(y0 + cw / ASPECT + py))))
 
 
 def fit(im, bw, bh):
@@ -126,18 +132,18 @@ def place(canvas, im, x, y, frame=None, width=4):
             [x - 7, y - 7, x + im.size[0] + 6, y + im.size[1] + 6], outline=frame, width=width)
 
 
+def is_parallel(c):
+    return (c['parallel'] or '').lower() not in ('base', 'base insert', '')
+
+
 def bucket(c):
     """One bucket per card, and a parallel is never anything else.
 
-    v2 sorted on the card's identity first, so a Mojo or a Lazer with no 1st
+    v2 sorted on the card's identity first, so a Mojo or Lazer with no 1st
     Bowman logo and no RC badge fell through to BASE. Michael: "why did you
-    throw in mojo and lazer refractors w/ the base". A Mojo is not a base card,
-    so parallels now take their own strip ahead of everything, which also stops
-    the inconsistency where a 1st Bowman Mojo showed under 1ST BOWMAN while a
-    veteran Mojo showed under BASE.
+    throw in mojo and lazer refractors w/ the base".
     """
-    p = (c['parallel'] or '').lower()
-    if p not in ('base', 'base insert', ''):
+    if is_parallel(c):
         return 'parallel'
     if 'insert' in c['kind']:
         return 'insert'
@@ -148,17 +154,9 @@ def bucket(c):
     return 'base'
 
 
-def tag(c):
-    """One short line under a hit. The picture says the rest."""
-    bits = []
-    p = c['parallel']
-    bits.append(p.replace(' Refractor', '') if p and p.lower() != 'base' else 'base')
-    # an unconfirmed digit ('?53/150' on the Skenes) has no business on a
-    # graphic other people will read, so drop the serial rather than show a '?'
-    if c['serial'] and '?' not in c['serial']:
-        bits.append(c['serial'])
-    bits.append('1st Bowman' if c['fb'] else 'RC' if c['rc'] else '#%s' % c['n'])
-    return '  \u00b7  '.join(b for b in bits if b and b != '#None')
+def earns_top(c):
+    """Only a serial or the Red RC. Everything else goes in a strip."""
+    return bool(c['serial']) or 'red rc' in (c['parallel'] or '').lower()
 
 
 def frame_for(c):
@@ -172,47 +170,47 @@ def frame_for(c):
     return None
 
 
-def strip_grid(n):
-    """Rows and columns for one strip.
+def rows_for(n):
+    """Near-equal row sizes, so a strip never ends on a lonely card or two.
 
-    Full rows run the whole content width and a short last row is centred under
-    them. Two other rules were tried and both looked worse: a fixed column
-    count with the remainder left-aligned put a third of the image in dead
-    space, and spreading the cards evenly across the minimum number of rows
-    (10 as 5 and 5) shrank every strip away from the margins. Card size is
-    constant across strips on purpose; sizing per strip made the 8 rookies
-    smaller than the 10 1st Bowmans, and the rookies are the dearer cards.
+    v2 filled each row to the 8-column cap and centred the remainder, which
+    turned a strip of 10 into a row of 8 and a row of 2. 10 now goes 5 and 5,
+    9 goes 5 and 4, 13 goes 7 and 6.
     """
     if not n:
-        return 0, 0
-    return -(-n // MAX_COLS), MAX_COLS
+        return []
+    r = -(-n // MAX_COLS)
+    base, extra = divmod(n, r)
+    return [base + 1] * extra + [base] * (r - extra)
 
 
 def build(box, sel):
     all_cards = sel['show'] + sel['fan']
-    ranked = sorted(all_cards, key=lambda c: -(c['v'] or 0))
-    special = [c for c in ranked
-               if c['serial'] or 'red rc' in (c['parallel'] or '').lower()]
-    hits = (special + [c for c in ranked if c not in special])[:HERO_COLS]
+    top = sorted([c for c in all_cards if earns_top(c)],
+                 key=lambda c: -(c['v'] or 0))
     groups = {k: [] for k, _ in STRIPS}
     for c in all_cards:
-        if c in hits:
-            continue
-        groups[bucket(c)].append(c)
-    # strips are homogeneous now, so order them on value and let the cards with
-    # no comp (the numbered mega parallels) lead rather than sink to the end
+        if c not in top:
+            groups[bucket(c)].append(c)
     for k in groups:
-        groups[k].sort(key=lambda c: (0 if c['serial'] else 1, -(c['v'] or 0)))
+        groups[k].sort(key=lambda c: -(c['v'] or 0))
 
-    hero_ims = [fit(crop_card(c['front']), HERO_W, 10000) for c in hits]
-    hero_h = max(i.size[1] for i in hero_ims)
+    # --- top block: the chase cards on the left with their odds, and what the
+    # rest of the box held on the right, because one chase card and a text
+    # block left the right half of the image empty
+    ncol = len(top)
+    col_w = (AVAIL - 44 * (ncol - 1)) // (ncol + (1 if ncol == 1 else 0))
+    top_card_w = min(400, int(col_w * (0.44 if ncol > 1 else 0.52)))
+    top_ims = [fit(crop_card(c['front']), top_card_w, 10000) for c in top]
+    top_h = max(i.size[1] for i in top_ims)
 
-    LBL, TAGH, SGAP = 42, 60, 30
-    H = MARGIN + 96 + LBL + hero_h + TAGH
+    LBL, SGAP = 42, 32
+    H = MARGIN + 96 + LBL + top_h
     for k, _ in STRIPS:
-        rws, _ = strip_grid(len(groups[k]))
-        if rws:
-            H += SGAP + LBL + rws * CARD_H + (rws - 1) * GAP
+        rs = rows_for(len(groups[k]))
+        if rs:
+            cw = min(MAX_CARD_W, (AVAIL - (max(rs) - 1) * GAP) // max(rs))
+            H += SGAP + LBL + len(rs) * int(cw / ASPECT) + (len(rs) - 1) * GAP
     H += MARGIN
 
     c = Image.new('RGB', (W, H), BG)
@@ -234,19 +232,54 @@ def build(box, sel):
         d.text((MARGIN + wid + 14, yy + 3), str(count), font=font(21), fill=MUTED)
         d.line([MARGIN, yy + 34, W - MARGIN, yy + 34], fill=RULE, width=2)
 
-    # the hits
     y += 96
-    label('The hits', len(hits), y)
+    label('The chase card' + ('s' if ncol > 1 else ''), ncol, y)
     y += LBL
-    x = MARGIN
-    for im, card in zip(hero_ims, hits):
-        place(c, im, x, y + (hero_h - im.size[1]) // 2, frame_for(card), 5)
-        d.text((x, y + hero_h + 20), card['player'].upper(), font=font(26), fill=INK)
-        d.text((x, y + hero_h + 51), tag(card), font=font(19, False), fill=MUTED)
-        x += HERO_W + HERO_GAP
-    y += hero_h + TAGH
+    for k, (im, card) in enumerate(zip(top_ims, top)):
+        x = MARGIN + k * (col_w + 44)
+        place(c, im, x, y + (top_h - im.size[1]) // 2, frame_for(card), 5)
+        tx = x + im.size[0] + 30
+        ty = y + (top_h - 182) // 2
+        d.text((tx, ty), card['player'].upper(), font=font(34), fill=INK)
+        d.text((tx, ty + 44), card['parallel'], font=font(23), fill=INK)
+        sub = card['serial'] if card['serial'] and '?' not in card['serial'] else \
+            ('1st Bowman' if card['fb'] else 'RC' if card['rc'] else '#%s' % card['n'])
+        d.text((tx, ty + 76), sub, font=font(21, False), fill=MUTED)
+        odds, worth, priced = CHASE.get(card['player'], ('', '', False))
+        if odds:
+            d.text((tx, ty + 116), odds, font=font(21, False), fill=DIM)
+            d.text((tx, ty + 148), worth, font=font(27),
+                   fill=ORANGE if priced else DIM)
 
-    # the four buckets
+    # right-hand summary, only when a single chase card leaves the space free
+    if ncol == 1:
+        pars = [c for c in all_cards if is_parallel(c)]
+        mojo = sum(1 for c in pars if 'mojo' in c['parallel'].lower()
+                   and not c['serial'])
+        lazer = sum(1 for c in pars if 'lazer' in c['parallel'].lower())
+        numbered = sum(1 for c in pars if c['serial'])
+        best = max((c for c in all_cards if c['v'] and c not in top),
+                   key=lambda c: c['v'])
+        rx = W - MARGIN
+        ry = y + (top_h - 220) // 2
+        d.text((rx, ry), 'THE REST OF THE BOX', font=font(19), fill=DIM, anchor='ra')
+        lines = [
+            '%d Mojo  ·  %d Lazer  ·  %d numbered' % (mojo, lazer, numbered),
+            '%d 1st Bowman  ·  %d rookies  ·  %d inserts'
+            % (sum(1 for c in all_cards if c['fb']),
+               sum(1 for c in all_cards if c['rc']),
+               sum(1 for c in all_cards if 'insert' in c['kind'])),
+        ]
+        for i, ln in enumerate(lines):
+            d.text((rx, ry + 36 + i * 34), ln, font=font(24), fill=INK, anchor='ra')
+        d.text((rx, ry + 126), 'BEST PRICED CARD', font=font(19), fill=DIM, anchor='ra')
+        d.text((rx, ry + 158), '%s  %s' % (best['player'], best['parallel']
+                                           if is_parallel(best) else 'base'),
+               font=font(24), fill=INK, anchor='ra')
+        d.text((rx, ry + 192), '$%.2f' % best['v'], font=font(27), fill=ORANGE, anchor='ra')
+    y += top_h
+
+    # --- the five strips
     for key, name in STRIPS:
         g = groups[key]
         if not g:
@@ -254,23 +287,25 @@ def build(box, sel):
         y += SGAP
         label(name, len(g), y)
         y += LBL
-        rws, cols = strip_grid(len(g))
-        for k, card in enumerate(g):
-            r, col = k // cols, k % cols
-            in_row = min(cols, len(g) - r * cols)
-            row_w = in_row * CARD_W + (in_row - 1) * GAP
-            x0 = MARGIN + (AVAIL - row_w) // 2
-            im = fit(crop_card(card['front']), CARD_W, CARD_H)
-            px = x0 + col * (CARD_W + GAP) + (CARD_W - im.size[0]) // 2
-            py = y + r * (CARD_H + GAP) + (CARD_H - im.size[1]) // 2
-            place(c, im, px, py, frame_for(card), 3)
-        y += rws * CARD_H + (rws - 1) * GAP
+        rs = rows_for(len(g))
+        cw = min(MAX_CARD_W, (AVAIL - (max(rs) - 1) * GAP) // max(rs))
+        ch = int(cw / ASPECT)
+        i = 0
+        for r, in_row in enumerate(rs):
+            x0 = MARGIN + (AVAIL - (in_row * cw + (in_row - 1) * GAP)) // 2
+            for col in range(in_row):
+                im = crop_card(g[i]['front']).resize((cw, ch), Image.LANCZOS)
+                place(c, im, x0 + col * (cw + GAP), y + r * (ch + GAP),
+                      frame_for(g[i]), 3)
+                i += 1
+        y += len(rs) * ch + (len(rs) - 1) * GAP
 
     out = OUT % box
     c.save(out)
-    print('saved %s  %dx%d  hits %d  %s'
-          % (out, c.size[0], c.size[1], len(hits),
-             '  '.join('%s %d' % (n, len(groups[k])) for k, n in STRIPS)))
+    print('saved %s  %dx%d  chase %d  %s'
+          % (out, c.size[0], c.size[1], ncol,
+             '  '.join('%s %d%s' % (n, len(groups[k]), rows_for(len(groups[k])))
+                       for k, n in STRIPS)))
 
 
 def main():
