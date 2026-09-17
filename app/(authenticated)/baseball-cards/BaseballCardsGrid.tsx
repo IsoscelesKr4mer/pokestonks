@@ -228,7 +228,17 @@ function CardTile({ card }: { card: BaseballCardRow }) {
           className="relative aspect-[3/4] w-full overflow-hidden rounded-xl border border-divider bg-chamber cursor-zoom-in"
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={photo} alt={card.player} className="h-full w-full object-cover" />
+          <img
+            src={photo}
+            alt={card.player}
+            // Every tile eagerly fetched a full-size phone photo, so one visit to
+            // this page pulled all ~550 of them at roughly 1 MB each. That is what
+            // burned the Supabase egress quota on 2026-09-09 and 402'd the bucket.
+            // Lazy loading limits it to the tiles actually scrolled into view.
+            loading="lazy"
+            decoding="async"
+            className="h-full w-full object-cover"
+          />
         </button>
       ) : (
         <div className="relative aspect-[3/4] w-full overflow-hidden rounded-xl border border-divider bg-chamber">
