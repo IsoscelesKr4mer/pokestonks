@@ -1,0 +1,214 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    width:1600px; height:900px; overflow:hidden;
+    font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;
+    background:#0b1220; color:#e8eef8;
+    background-image:
+      radial-gradient(1100px 600px at 88% -10%, rgba(56,132,255,.20), transparent 60%),
+      radial-gradient(800px 500px at -5% 110%, rgba(255,138,42,.13), transparent 60%);
+  }
+  .wrap { padding:34px 44px; height:900px; display:flex; flex-direction:column; }
+
+  header { display:flex; justify-content:space-between; align-items:flex-start; }
+  .kicker { font-size:15px; letter-spacing:.22em; text-transform:uppercase; color:#7d93b4; font-weight:600; }
+  h1 { font-size:44px; line-height:1.04; font-weight:800; margin-top:2px; letter-spacing:-.5px; }
+  h1 span { color:#5aa2ff; }
+  .boxmeta { text-align:right; font-size:15.5px; color:#8fa4c2; line-height:1.6; padding-top:4px; }
+  .boxmeta b { color:#e8eef8; font-weight:700; }
+
+  .hero { display:flex; gap:13px; margin:17px 0 15px; }
+  .stat { flex:1; background:rgba(255,255,255,.045); border:1px solid rgba(255,255,255,.10);
+          border-radius:14px; padding:14px 19px; }
+  .stat .lab { font-size:13px; letter-spacing:.11em; text-transform:uppercase; color:#8fa4c2; font-weight:600; }
+  .stat .val { font-size:40px; font-weight:800; margin-top:4px; letter-spacing:-1px; font-variant-numeric:tabular-nums; }
+  .stat .sub { font-size:13px; color:#7d93b4; margin-top:2px; }
+  .green { color:#3ddc97; } .blue { color:#5aa2ff; } .orange { color:#ff9a3c; }
+
+  .body { display:flex; gap:24px; flex:1; min-height:0; }
+  .col-l { flex:1.30; display:flex; flex-direction:column; min-height:0; }
+  .col-r { flex:1; display:flex; flex-direction:column; gap:11px; }
+
+  .htitle { font-size:13.5px; letter-spacing:.15em; text-transform:uppercase; color:#8fa4c2;
+            font-weight:700; margin-bottom:8px; }
+  table { width:100%; border-collapse:collapse; }
+  td { padding:6px 0; font-size:18.5px; border-bottom:1px solid rgba(255,255,255,.065); }
+  tr:last-child td { border-bottom:none; }
+  .pl { font-weight:700; }
+  .pr { color:#93a8c6; font-size:15.5px; }
+  .amt { text-align:right; font-weight:800; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .nocomp { color:#8fa4c2; font-weight:700; font-size:15px; }
+  /* entity colours: each dot sits beside a named, priced row, so identity is
+     never carried by colour alone */
+  .dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:10px; vertical-align:1px; }
+
+  .panel { background:rgba(255,255,255,.045); border:1px solid rgba(255,255,255,.10);
+           border-radius:14px; padding:13px 17px; }
+  .panel.hot { background:linear-gradient(135deg, rgba(255,154,60,.17), rgba(255,154,60,.05));
+               border-color:rgba(255,154,60,.42); }
+  .panel h3 { font-size:12.5px; letter-spacing:.14em; text-transform:uppercase; color:#8fa4c2; font-weight:700; }
+  .panel.hot h3 { color:#ffb469; }
+  .big { font-size:28px; font-weight:800; margin-top:4px; line-height:1.14; }
+  .panel p { font-size:14.5px; color:#9db1cd; margin-top:5px; line-height:1.46; }
+
+  /* ordinal ramp: boxes 1-3 are ordered, so one hue in three steps, not three
+     categorical hues. Validated light-end contrast 2.88:1 on this surface. */
+  .boxrow { display:flex; align-items:center; gap:10px; margin-top:9px; font-size:15px; }
+  .boxrow .nm { width:46px; color:#b9c9e0; }
+  .boxtrack { flex:1; height:12px; border-radius:6px; background:rgba(255,255,255,.08); overflow:hidden; }
+  .boxtrack i { display:block; height:100%; border-radius:6px; }
+  .boxrow b { width:74px; text-align:right; font-variant-numeric:tabular-nums; }
+
+  .srow { display:flex; justify-content:space-between; font-size:14.5px; margin-top:7px; color:#b9c9e0; }
+  .srow b { color:#e8eef8; font-variant-numeric:tabular-nums; }
+
+  .bar { height:11px; border-radius:5px; background:rgba(255,255,255,.10); margin-top:7px; overflow:hidden; }
+  .bar i { display:block; height:100%; border-radius:5px; }
+  .note { font-size:14px; color:#9db1cd; margin-top:8px; line-height:1.45; }
+  .note b { color:#e8eef8; font-weight:700; }
+
+  .rest { display:flex; flex-wrap:wrap; gap:7px 9px; }
+  .rest span { background:rgba(255,255,255,.045); border:1px solid rgba(255,255,255,.09);
+               border-radius:8px; padding:5px 10px; font-size:14px; color:#b9c9e0; }
+  .rest b { color:#e8eef8; font-variant-numeric:tabular-nums; }
+  .rest i { font-style:normal; color:#8fa4c2; }
+
+  footer { margin-top:9px; display:flex; justify-content:space-between; align-items:center;
+           font-size:14px; color:#6f86a6; border-top:1px solid rgba(255,255,255,.09); padding-top:11px; }
+  footer b { color:#9db1cd; font-weight:600; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div>
+      <div class="kicker">Three mega boxes, one sitting</div>
+      <h1>2026 Bowman Chrome Mega <span>&times;3 Rip Analysis</span></h1>
+    </div>
+    <div class="boxmeta">
+      Ripped <b>Sept 17 2026</b>, six days before street date<br>
+      <b>18</b> packs &middot; <b>108</b> cards &middot; <b>36</b> 1st Bowman &middot; <b>0</b> autos
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="stat">
+      <div class="lab">Cost, three boxes</div>
+      <div class="val">$166.02</div>
+      <div class="sub">$55.34 each at Fred Meyer, MSRP plus tax</div>
+    </div>
+    <div class="stat">
+      <div class="lab">Book value, 108 cards</div>
+      <div class="val green">$468.94</div>
+      <div class="sub">97 of 108 priced; 11 have no comp at all</div>
+    </div>
+    <div class="stat">
+      <div class="lab">Gross multiple</div>
+      <div class="val blue">2.82x</div>
+      <div class="sub">2.39x after eBay fees if it all sells</div>
+    </div>
+  </div>
+
+  <div class="body">
+    <div class="col-l">
+      <div class="htitle">The chase cards &middot; one numbered Mojo in every box</div>
+      <table>
+        <tr>
+          <td class="pl"><span class="dot" style="background:#ff4d5e"></span>Sal Stewart
+            <span class="pr">Chrome Rookie Red RC Variation &middot; Reds</span></td>
+          <td class="amt orange">$80</td>
+        </tr>
+        <tr>
+          <td class="pl"><span class="dot" style="background:#b07cff"></span>Konnor Griffin
+            <span class="pr">Purple Mojo /250 &middot; 167/250 &middot; #1 RC &middot; 1:92</span></td>
+          <td class="amt">~$36</td>
+        </tr>
+        <tr>
+          <td class="pl"><span class="dot" style="background:#5aa2ff"></span>Paul Skenes
+            <span class="pr">Blue Mojo /150 &middot; 1:153 &middot; zero listings on earth</span></td>
+          <td class="amt nocomp">no comp</td>
+        </tr>
+        <tr>
+          <td class="pl"><span class="dot" style="background:#ff8ad0"></span>Jaider Suarez
+            <span class="pr">Pink Mojo /199 &middot; 180/199 &middot; 1st Bowman &middot; 1:115</span></td>
+          <td class="amt nocomp">no comp</td>
+        </tr>
+        <tr>
+          <td class="pl"><span class="dot" style="background:#4fd6c9"></span>JJ Wetherholt
+            <span class="pr">Mojo Refractor &middot; Cardinals RC</span></td>
+          <td class="amt">$15</td>
+        </tr>
+        <tr>
+          <td class="pl"><span class="dot" style="background:#4fd6c9"></span>Owen Ayers
+            <span class="pr">Mojo Refractor &middot; 1st Bowman &middot; pulled twice</span></td>
+          <td class="amt">$13</td>
+        </tr>
+      </table>
+
+      <div class="htitle" style="margin-top:14px">Best of the other 102</div>
+      <div class="rest">
+        <span><b>$11.95</b> Jaider Suarez <i>Mojo</i></span>
+        <span><b>$9.99</b> De Los Santos <i>Lazer</i></span>
+        <span><b>$9.45</b> McGonigle <i>IT-4 insert</i></span>
+        <span><b>$6.50</b> Carson Benge <i>Mojo</i></span>
+        <span><b>$6</b> Juan Rijo <i>Mojo</i></span>
+        <span><b>$5.99</b> Murakami <i>base</i></span>
+        <span><b>$5.99</b> Caglianone <i>IT-3 insert</i></span>
+        <span><b>$4.99</b> Aaron Judge <i>Mojo</i></span>
+      </div>
+
+      <div class="htitle" style="margin-top:16px">Where the value sits</div>
+      <div class="srow" style="margin-top:0"><span>37 parallels and hits</span><b>$254.53</b></div>
+      <div class="bar"><i style="width:54.3%;background:#ff9a3c"></i></div>
+      <div class="srow"><span>71 base cards and inserts</span><b>$214.41</b></div>
+      <div class="bar"><i style="width:45.7%;background:#5aa2ff"></i></div>
+      <p class="note">Nothing like the hobby box, where 10 cards held 74%. With no autos the
+        value spreads out: the best card is only <b>17%</b> of the rip and the 71 commons
+        still average <b>$3.02</b>. And <b>24 players repeated</b> across the three boxes,
+        JoJo Parker three times as base, Mojo and Lazer.</p>
+    </div>
+
+    <div class="col-r">
+      <div class="panel hot">
+        <h3>The improbable part</h3>
+        <div class="big">Three numbered Mojos,<br>one in each box</div>
+        <p>Purple 1:92, Pink 1:115, Blue 1:153. Across 18 packs the expected haul
+           was <b>0.47</b> of them. Getting three is roughly <b>1 in 93</b>.</p>
+      </div>
+
+      <div class="panel">
+        <h3>Book value by box</h3>
+        <div class="boxrow"><span class="nm">Box 1</span>
+          <span class="boxtrack"><i style="width:54.8%;background:#256abf"></i></span><b>$111.29</b></div>
+        <div class="boxrow"><span class="nm">Box 2</span>
+          <span class="boxtrack"><i style="width:76.2%;background:#4a8ae8"></i></span><b>$154.69</b></div>
+        <div class="boxrow"><span class="nm">Box 3</span>
+          <span class="boxtrack"><i style="width:100%;background:#9ec5f4"></i></span><b>$202.96</b></div>
+        <p>Every box beat its $55.34 cost. Box 3 did it twice over, on the back of
+           one card.</p>
+      </div>
+
+      <div class="panel">
+        <h3>Odds vs reality, 18 packs</h3>
+        <div class="srow"><span>Blue Mojo /150 &middot; 1:153</span><b>expected 0.12 &rarr; got 1</b></div>
+        <div class="srow"><span>Pink Mojo /199 &middot; 1:115</span><b>expected 0.16 &rarr; got 1</b></div>
+        <div class="srow"><span>Purple Mojo /250 &middot; 1:92</span><b>expected 0.20 &rarr; got 1</b></div>
+        <div class="srow"><span>Lazer Refractor &middot; 1:3</span><b>expected 6 &rarr; got 4</b></div>
+        <div class="srow"><span>Red RC Variation &middot; 1:4</span><b>expected 4.5 &rarr; got 1</b></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div>108 cards: <b>65</b> base &middot; <b>27</b> Mojo &middot; <b>6</b> Lazer &middot; <b>6</b> insert &middot; <b>3</b> numbered Mojo &middot; <b>1</b> Red RC</div>
+    <div>Asking prices, not sales. <b>Megas do not street until Sept 23</b>, so the best cards have no market yet</div>
+  </footer>
+
+</div>
+</body>
+</html>

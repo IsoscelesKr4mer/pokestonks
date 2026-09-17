@@ -1,0 +1,243 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    width:1600px; height:900px; overflow:hidden;
+    font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;
+    background:#0b1220; color:#e8eef8;
+    background-image:
+      radial-gradient(1100px 600px at 88% -10%, rgba(56,132,255,.20), transparent 60%),
+      radial-gradient(800px 500px at -5% 110%, rgba(255,138,42,.13), transparent 60%);
+    /* ordinal blue ramp, validated with --ordinal against the #141c2b card
+       surface: monotone L, every adjacent dL >= .06, dark end 3.16:1, hue
+       spread 3deg. A five-way categorical mix bar was tried first and failed
+       all-pairs CVD badly (purple vs blue deutan dE 1.1), so the counts are
+       plain text now and colour only carries this ranked split. */
+    --tier1:#cde2fb; --tier2:#5aa2ff; --tier3:#256abf;
+  }
+  .wrap { padding:32px 42px 26px; height:900px; display:flex; flex-direction:column; }
+
+  header { display:flex; justify-content:space-between; align-items:flex-start; }
+  .kicker { font-size:14.5px; letter-spacing:.22em; text-transform:uppercase; color:#7d93b4; font-weight:600; }
+  h1 { font-size:43px; line-height:1.04; font-weight:800; margin-top:2px; letter-spacing:-.5px; }
+  h1 span { color:#5aa2ff; }
+  .boxmeta { text-align:right; font-size:15px; color:#8fa4c2; line-height:1.6; padding-top:4px; }
+  .boxmeta b { color:#e8eef8; font-weight:700; }
+
+  .cols { display:flex; gap:15px; flex:1; min-height:0; margin-top:18px; }
+  .box { flex:1; display:flex; flex-direction:column;
+         background:rgba(255,255,255,.045); border:1px solid rgba(255,255,255,.10);
+         border-radius:16px; padding:17px 20px 15px; min-height:0; }
+  .box.b1 { border-top:3px solid #256abf; }
+  .box.b2 { border-top:3px solid #4a8ae8; }
+  .box.b3 { border-top:3px solid #9ec5f4; }
+
+  .bhead { display:flex; justify-content:space-between; align-items:baseline; }
+  .bname { font-size:14.5px; letter-spacing:.16em; text-transform:uppercase; color:#8fa4c2; font-weight:700; }
+  .bmult { font-size:15px; font-weight:800; color:#3ddc97; font-variant-numeric:tabular-nums; }
+  .bval { font-size:37px; font-weight:800; margin-top:4px; letter-spacing:-1px; font-variant-numeric:tabular-nums; }
+  .bsub { font-size:12.5px; color:#7d93b4; margin-top:1px; }
+
+  .chase { margin-top:13px; border-radius:12px; padding:12px 14px;
+           background:linear-gradient(135deg, rgba(255,154,60,.15), rgba(255,154,60,.04));
+           border:1px solid rgba(255,154,60,.36); }
+  .chase h4 { font-size:11px; letter-spacing:.15em; text-transform:uppercase; color:#ffb469; font-weight:700; }
+  .chase .nm { font-size:21px; font-weight:800; margin-top:3px; line-height:1.15; }
+  .chase .meta { font-size:13.5px; color:#c2b09a; margin-top:2px; line-height:1.4; }
+  .chase .px { font-size:14.5px; font-weight:800; color:#ff9a3c; margin-top:5px; }
+  .chase .px.none { color:#cc9a6e; }
+
+  .sect { font-size:11px; letter-spacing:.15em; text-transform:uppercase; color:#8fa4c2;
+          font-weight:700; margin:14px 0 5px; }
+  table { width:100%; border-collapse:collapse; }
+  td { padding:4px 0; font-size:15px; border-bottom:1px solid rgba(255,255,255,.06); }
+  tr:last-child td { border-bottom:none; }
+  .pl { font-weight:700; }
+  .pr { color:#93a8c6; font-size:13px; font-weight:400; }
+  .amt { text-align:right; font-weight:800; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .amt.na { color:#7d93b4; font-size:12.5px; font-weight:600; }
+
+  /* Value concentration: one box's book value split into ranked tiers.
+     Part-to-whole with a 2px surface gap between segments and every segment
+     directly labelled, so identity is never colour-alone. */
+  .conc { margin-top:auto; padding-top:14px; }
+  .ctrack { display:flex; gap:2px; height:13px; }
+  .ctrack i:first-child { border-radius:4px 0 0 4px; }
+  .ctrack i:last-child  { border-radius:0 4px 4px 0; }
+  .ckey { margin-top:9px; display:flex; flex-direction:column; gap:3.5px; }
+  .ckey div { display:flex; align-items:center; font-size:13px; color:#a7bad5; }
+  .ckey i { width:9px; height:9px; border-radius:2px; margin-right:7px; flex:none; }
+  .ckey .lb { flex:1; }
+  .ckey .vv { font-weight:800; color:#e8eef8; font-variant-numeric:tabular-nums; }
+  .ckey .pp { width:44px; text-align:right; color:#7d93b4; font-variant-numeric:tabular-nums; }
+
+  .contents { margin-top:12px; padding-top:10px; border-top:1px solid rgba(255,255,255,.08);
+              font-size:12.5px; color:#8fa4c2; line-height:1.55; }
+  .contents b { color:#cfdcee; font-weight:700; font-variant-numeric:tabular-nums; }
+
+  footer { margin-top:12px; display:flex; justify-content:space-between; align-items:center;
+           font-size:14px; color:#6f86a6; border-top:1px solid rgba(255,255,255,.09); padding-top:10px; }
+  footer b { color:#9db1cd; font-weight:600; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div>
+      <div class="kicker">Same product, same day, same shelf</div>
+      <h1>Box by Box <span>&middot; three 2026 Bowman Chrome megas</span></h1>
+    </div>
+    <div class="boxmeta">
+      <b>36</b> cards &middot; <b>6</b> packs &middot; <b>$55.34</b> per box<br>
+      Every box hit <b>9</b> Mojos, <b>2</b> Lazers, <b>2</b> inserts, <b>1</b> numbered Mojo
+    </div>
+  </header>
+
+  <div class="cols">
+
+    <!-- BOX 1 -->
+    <div class="box b1">
+      <div class="bhead"><span class="bname">Box 1</span><span class="bmult">2.01x cost</span></div>
+      <div class="bval">$111.29</div>
+      <div class="bsub">33 of 36 priced &middot; 12 1st Bowman &middot; 10 rookies</div>
+
+      <div class="chase">
+        <h4>Top pull</h4>
+        <div class="nm">Jaider Suarez</div>
+        <div class="meta">Pink Mojo Refractor 180/199<br>1st Bowman &middot; 1 in 115 packs</div>
+        <div class="px none">no comp &middot; zero listings anywhere</div>
+      </div>
+
+      <div class="sect">Best priced cards</div>
+      <table>
+        <tr><td class="pl">De Los Santos <span class="pr">Lazer, 1st Bowman</span></td><td class="amt">$9.99</td></tr>
+        <tr><td class="pl">Carson Benge <span class="pr">Mojo, RC</span></td><td class="amt">$6.50</td></tr>
+        <tr><td class="pl">Juan Rijo <span class="pr">Mojo, 1st Bowman</span></td><td class="amt">$6.00</td></tr>
+        <tr><td class="pl">Murakami <span class="pr">base #76, RC</span></td><td class="amt">$5.99</td></tr>
+        <tr><td class="pl">Dawvris Brito <span class="pr">Mojo, 1st Bowman</span></td><td class="amt">$5.99</td></tr>
+        <tr><td class="pl">Jac Caglianone <span class="pr">IT-3 insert, RC</span></td><td class="amt">$5.99</td></tr>
+        <tr><td class="pl">Ricky Moneys <span class="pr">Mojo, 1st Bowman</span></td><td class="amt">$5.49</td></tr>
+        <tr><td class="pl">Christian Zazueta <span class="pr">base, 1st Bowman</span></td><td class="amt">$4.99</td></tr>
+      </table>
+
+      <div class="conc">
+        <div class="sect" style="margin:0 0 6px">Where the $111 sits</div>
+        <div class="ctrack">
+          <i style="flex:9.0;background:var(--tier1)"></i>
+          <i style="flex:22.0;background:var(--tier2)"></i>
+          <i style="flex:69.0;background:var(--tier3)"></i>
+        </div>
+        <div class="ckey">
+          <div><i style="background:var(--tier1)"></i><span class="lb">Best card</span><span class="vv">$9.99</span><span class="pp">9%</span></div>
+          <div><i style="background:var(--tier2)"></i><span class="lb">Next four</span><span class="vv">$24.48</span><span class="pp">22%</span></div>
+          <div><i style="background:var(--tier3)"></i><span class="lb">Other 28</span><span class="vv">$76.82</span><span class="pp">69%</span></div>
+        </div>
+      </div>
+
+      <div class="contents">
+        <b>22</b> base &middot; <b>9</b> Mojo &middot; <b>2</b> Lazer &middot; <b>2</b> insert &middot; <b>1</b> Pink Mojo /199
+      </div>
+    </div>
+
+    <!-- BOX 2 -->
+    <div class="box b2">
+      <div class="bhead"><span class="bname">Box 2</span><span class="bmult">2.80x cost</span></div>
+      <div class="bval">$154.69</div>
+      <div class="bsub">32 of 36 priced &middot; 14 1st Bowman &middot; 9 rookies</div>
+
+      <div class="chase">
+        <h4>Top pull</h4>
+        <div class="nm">Konnor Griffin</div>
+        <div class="meta">Purple Mojo Refractor 167/250<br>Base set #1 &middot; RC &middot; 1 in 92 packs</div>
+        <div class="px">~$36 &middot; estimate off 2 asks</div>
+      </div>
+
+      <div class="sect">Best priced cards</div>
+      <table>
+        <tr><td class="pl">Owen Ayers <span class="pr">Mojo, 1st Bowman</span></td><td class="amt">$12.99</td></tr>
+        <tr><td class="pl">Jaider Suarez <span class="pr">Mojo, 1st Bowman</span></td><td class="amt">$11.95</td></tr>
+        <tr><td class="pl">Wandy Asigen <span class="pr">base, 1st Bowman</span></td><td class="amt">$5.99</td></tr>
+        <tr><td class="pl">Louis Andujar <span class="pr">base, 1st Bowman</span></td><td class="amt">$5.00</td></tr>
+        <tr><td class="pl">Isaias Castillo <span class="pr">base, 1st Bowman</span></td><td class="amt">$4.99</td></tr>
+        <tr><td class="pl">Angel Nunez <span class="pr">base, 1st Bowman</span></td><td class="amt">$4.99</td></tr>
+        <tr><td class="pl">Joniel Hernandez <span class="pr">base, 1st Bowman</span></td><td class="amt">$4.99</td></tr>
+        <tr><td class="pl">Fabricio Blanco <span class="pr">base, 1st Bowman</span></td><td class="amt">$4.95</td></tr>
+      </table>
+
+      <div class="conc">
+        <div class="sect" style="margin:0 0 6px">Where the $155 sits</div>
+        <div class="ctrack">
+          <i style="flex:23.3;background:var(--tier1)"></i>
+          <i style="flex:23.2;background:var(--tier2)"></i>
+          <i style="flex:53.5;background:var(--tier3)"></i>
+        </div>
+        <div class="ckey">
+          <div><i style="background:var(--tier1)"></i><span class="lb">Best card</span><span class="vv">$36.00</span><span class="pp">23%</span></div>
+          <div><i style="background:var(--tier2)"></i><span class="lb">Next four</span><span class="vv">$35.93</span><span class="pp">23%</span></div>
+          <div><i style="background:var(--tier3)"></i><span class="lb">Other 27</span><span class="vv">$82.76</span><span class="pp">54%</span></div>
+        </div>
+      </div>
+
+      <div class="contents">
+        <b>22</b> base &middot; <b>9</b> Mojo &middot; <b>2</b> Lazer &middot; <b>2</b> insert &middot; <b>1</b> Purple Mojo /250
+      </div>
+    </div>
+
+    <!-- BOX 3 -->
+    <div class="box b3">
+      <div class="bhead"><span class="bname">Box 3</span><span class="bmult">3.67x cost</span></div>
+      <div class="bval">$202.96</div>
+      <div class="bsub">32 of 36 priced &middot; 10 1st Bowman &middot; 10 rookies</div>
+
+      <div class="chase">
+        <h4>Top pull &middot; card of the rip</h4>
+        <div class="nm">Sal Stewart</div>
+        <div class="meta">Chrome Rookie Red RC Variation, Reds<br>1 in 4 packs &middot; NL ROY favourite</div>
+        <div class="px">$80 &middot; 25 live asks, $50 to $100</div>
+      </div>
+
+      <div class="sect">Best priced cards</div>
+      <table>
+        <tr><td class="pl">Paul Skenes <span class="pr">Blue Mojo /150, 1 in 153</span></td><td class="amt na">no comp</td></tr>
+        <tr><td class="pl">JJ Wetherholt <span class="pr">Mojo, RC</span></td><td class="amt">$14.99</td></tr>
+        <tr><td class="pl">Owen Ayers <span class="pr">Mojo, 1st Bowman</span></td><td class="amt">$12.99</td></tr>
+        <tr><td class="pl">McGonigle <span class="pr">IT-4 insert, RC</span></td><td class="amt">$9.45</td></tr>
+        <tr><td class="pl">Wandy Asigen <span class="pr">base, 1st Bowman</span></td><td class="amt">$5.99</td></tr>
+        <tr><td class="pl">JJ Wetherholt <span class="pr">base #52, RC</span></td><td class="amt">$4.99</td></tr>
+        <tr><td class="pl">Dos Santos <span class="pr">base, 1st Bowman</span></td><td class="amt">$4.99</td></tr>
+        <tr><td class="pl">Angel Nunez <span class="pr">base, 1st Bowman</span></td><td class="amt">$4.99</td></tr>
+      </table>
+
+      <div class="conc">
+        <div class="sect" style="margin:0 0 6px">Where the $203 sits</div>
+        <div class="ctrack">
+          <i style="flex:39.4;background:var(--tier1)"></i>
+          <i style="flex:21.4;background:var(--tier2)"></i>
+          <i style="flex:39.2;background:var(--tier3)"></i>
+        </div>
+        <div class="ckey">
+          <div><i style="background:var(--tier1)"></i><span class="lb">Best card</span><span class="vv">$80.00</span><span class="pp">39%</span></div>
+          <div><i style="background:var(--tier2)"></i><span class="lb">Next four</span><span class="vv">$43.42</span><span class="pp">21%</span></div>
+          <div><i style="background:var(--tier3)"></i><span class="lb">Other 27</span><span class="vv">$79.54</span><span class="pp">39%</span></div>
+        </div>
+      </div>
+
+      <div class="contents">
+        <b>21</b> base &middot; <b>9</b> Mojo &middot; <b>2</b> Lazer &middot; <b>2</b> insert &middot; <b>1</b> Red RC &middot; <b>1</b> Blue Mojo /150
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <div>The tail never moves: <b>$76.82</b>, <b>$82.76</b>, <b>$79.54</b> of ordinary cards per box. <b>The entire $92 spread is one card.</b></div>
+    <div>Asking prices, not sales. <b>11 of 108 have no comp</b> six days before street date</div>
+  </footer>
+
+</div>
+</body>
+</html>
