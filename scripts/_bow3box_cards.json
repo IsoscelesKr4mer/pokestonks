@@ -1352,12 +1352,13 @@
   "team": "Cincinnati Reds",
   "kind": "base_set",
   "rc": true,
-  "parallel": "Refractor",
-  "note": "Clear spectral sweep across border and background, no mosaic. Distinct from both the flat base and the Mojo. Refractor is /499 on the 2026 ladder but no serial is visible on the front, so confirm whether numbered.",
+  "parallel": "Chrome Rookie Red RC Variation",
+  "note": "MISCALLED BY ME as a plain Refractor. Michael: \"Its the red variation sal Stewart and hes a shoe in to win RoY.\" The MLB shield inside the RC badge is RED, verified at 4x against a navy control. This is exactly the trap the card-intake skill documents: a Red RC refracts, so it reads as a Refractor, and carries no serial, so it reads as base. Checked all 29 rookie badges in the three boxes on one contact sheet afterwards; this is the ONLY red one.",
   "box": 3,
   "serial": null,
   "first_bowman": false,
-  "card_number": "48"
+  "card_number": "48",
+  "rc_shield": "RED"
  },
  {
   "i": 95,
