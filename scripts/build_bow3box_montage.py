@@ -67,8 +67,8 @@ CARD_W = (AVAIL - (MAX_COLS - 1) * GAP) // MAX_COLS
 CARD_H = int(CARD_W / ASPECT)
 
 BOOK = {1: ('$111.29', '2.01x'), 2: ('$154.69', '2.80x'), 3: ('$202.96', '3.67x')}
-STRIPS = [('firstbow', '1st Bowman'), ('rookie', 'Rookie Cards'),
-          ('insert', 'Inserts'), ('base', 'Base')]
+STRIPS = [('parallel', 'Mojos & Lazers'), ('firstbow', '1st Bowman'),
+          ('rookie', 'Rookie Cards'), ('insert', 'Inserts'), ('base', 'Base')]
 
 
 def font(sz, bold=True):
@@ -127,6 +127,18 @@ def place(canvas, im, x, y, frame=None, width=4):
 
 
 def bucket(c):
+    """One bucket per card, and a parallel is never anything else.
+
+    v2 sorted on the card's identity first, so a Mojo or a Lazer with no 1st
+    Bowman logo and no RC badge fell through to BASE. Michael: "why did you
+    throw in mojo and lazer refractors w/ the base". A Mojo is not a base card,
+    so parallels now take their own strip ahead of everything, which also stops
+    the inconsistency where a 1st Bowman Mojo showed under 1ST BOWMAN while a
+    veteran Mojo showed under BASE.
+    """
+    p = (c['parallel'] or '').lower()
+    if p not in ('base', 'base insert', ''):
+        return 'parallel'
     if 'insert' in c['kind']:
         return 'insert'
     if c['fb']:
@@ -187,9 +199,10 @@ def build(box, sel):
         if c in hits:
             continue
         groups[bucket(c)].append(c)
-    # within a strip, put the parallels first so the interesting cards lead
+    # strips are homogeneous now, so order them on value and let the cards with
+    # no comp (the numbered mega parallels) lead rather than sink to the end
     for k in groups:
-        groups[k].sort(key=lambda c: (c['parallel'] or '').lower() == 'base')
+        groups[k].sort(key=lambda c: (0 if c['serial'] else 1, -(c['v'] or 0)))
 
     hero_ims = [fit(crop_card(c['front']), HERO_W, 10000) for c in hits]
     hero_h = max(i.size[1] for i in hero_ims)
