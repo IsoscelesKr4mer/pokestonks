@@ -1,0 +1,422 @@
+[
+ {
+  "player": "Munetaka Murakami",
+  "set_name": "2026 Bowman Chrome",
+  "card_number": "76",
+  "parallel": "Chrome Rookie Red RC Variation",
+  "cents": 5000
+ },
+ {
+  "player": "Parker Messick",
+  "set_name": "2026 Bowman Chrome",
+  "card_number": "3",
+  "parallel": "Chrome Rookie Red RC Variation",
+  "cents": 5500
+ },
+ {
+  "player": "Aiva Arquette",
+  "set_name": "2026 Bowman Chrome Prospects",
+  "card_number": "BCP-174",
+  "parallel": "Orange Shimmer Refractor /25 (22/25)",
+  "cents": 14500
+ },
+ {
+  "player": "Josh Naylor",
+  "set_name": "2026 Bowman Chrome (WBC Flag Variation)",
+  "card_number": "WBC-12",
+  "parallel": "True Orange Refractor /25 (07/25)",
+  "cents": 11000
+ },
+ {
+  "player": "Angel Salio",
+  "set_name": "2026 Bowman Chrome Prospects",
+  "card_number": "BCP-210",
+  "parallel": "Refractor /499 (460/499)",
+  "cents": 1800
+ },
+ {
+  "player": "Bryan Woo",
+  "set_name": "2026 Bowman Chrome",
+  "card_number": "49",
+  "parallel": "True Blue Refractor /150 (094/150)",
+  "cents": 1300
+ },
+ {
+  "player": "Caleb Bonemer",
+  "set_name": "2026 Bowman Chrome Prospects",
+  "card_number": "BCP-218",
+  "parallel": "Purple Wave Refractor /250 (066/250)",
+  "cents": 1300
+ },
+ {
+  "player": "Shohei Ohtani",
+  "set_name": "2026 Bowman Chrome",
+  "card_number": "100",
+  "parallel": "base",
+  "cents": 799
+ },
+ {
+  "player": "Wilder Dalis",
+  "set_name": "2026 Bowman Chrome (Prospect Autographs)",
+  "card_number": "CPA-WD",
+  "parallel": "True Purple Refractor /250 (241/250), Autograph",
+  "cents": 12500
+ },
+ {
+  "player": "Ricky Moneys",
+  "set_name": "2026 Bowman Chrome (Prospect Autographs)",
+  "card_number": "CPA-RM",
+  "parallel": "base, Autograph",
+  "cents": 12500
+ },
+ {
+  "player": "Ethan Holliday",
+  "set_name": "2026 Bowman Chrome (Stars of the Future insert)",
+  "card_number": "SF-16",
+  "parallel": "base",
+  "cents": 499
+ },
+ {
+  "player": "Jac Caglianone",
+  "set_name": "2026 Bowman Chrome (Big Break insert)",
+  "card_number": "BB-11",
+  "parallel": "base",
+  "cents": 1000
+ },
+ {
+  "player": "Munetaka Murakami",
+  "set_name": "2026 Bowman Chrome (Travel Tags insert)",
+  "card_number": "TT-15",
+  "parallel": "base",
+  "cents": 1799
+ },
+ {
+  "player": "Carson Benge",
+  "set_name": "2026 Bowman Chrome (It Came to the League insert)",
+  "card_number": "IT-7",
+  "parallel": "base",
+  "cents": 999
+ },
+ {
+  "player": "Sal Stewart",
+  "set_name": "2026 Bowman Chrome (Big Break insert)",
+  "card_number": "BB-18",
+  "parallel": "base",
+  "cents": 1500
+ },
+ {
+  "player": "Zach Root",
+  "set_name": "2026 Bowman Chrome (MLB Spring Breakout insert)",
+  "card_number": "SB-11",
+  "parallel": "base",
+  "cents": 300
+ },
+ {
+  "player": "Carter Jensen",
+  "set_name": "2026 Bowman Chrome (Stars of the Future insert)",
+  "card_number": "SF-5",
+  "parallel": "base",
+  "cents": 499
+ },
+ {
+  "player": "Colson Montgomery",
+  "set_name": "2026 Bowman Chrome (It Came to the League insert)",
+  "card_number": "IT-11",
+  "parallel": "base",
+  "cents": 499
+ },
+ {
+  "player": "Jose Castro",
+  "set_name": "2026 Bowman Chrome Prospects",
+  "card_number": "BCP-230",
+  "parallel": "base",
+  "cents": 199
+ },
+ {
+  "player": "Avery Owusu-Asiedu",
+  "set_name": "2026 Bowman Chrome Prospects",
+  "card_number": "BCP-202",
+  "parallel": "base",
+  "cents": 199
+ },
+ {
+  "player": "Gustavo Baptista",
+  "set_name": "2026 Bowman Chrome Prospects",
+  "card_number": "BCP-184",
+  "parallel": "base",
+  "cents": 499
+ },
+ {
+  "player": "Juan Rujano",
+  "set_name": "2026 Bowman Chrome Prospects",
+  "card_number": "BCP-177",
+  "parallel": "base",
+  "cents": 1000
+ },
+ {
+  "player": "Brandon Clarke",
+  "set_name": "2026 Bowman Chrome Prospects",
+  "card_number": "BCP-171",
+  "parallel": "base",
+  "cents": 399
+ },
+ {
+  "player": "Yadier Munoz",
+  "set_name": "2026 Bowman Chrome Prospects",
+  "card_number": "BCP-219",
+  "parallel": "base",
+  "cents": 199
+ },
+ {
+  "player": "Ricky Duran",
+  "set_name": "2026 Bowman Chrome Prospects",
+  "card_number": "BCP-185",
+  "parallel": "base",
+  "cents": 450
+ },
+ {
+  "player": "Francisco Renteria",
+  "set_name": "2026 Bowman Chrome Prospects",
+  "card_number": "BCP-163",
+  "parallel": "base",
+  "cents": 1299
+ },
+ {
+  "player": "Johenssy Colome",
+  "set_name": "2026 Bowman Chrome Prospects",
+  "card_number": "BCP-160",
+  "parallel": "X-Fractor",
+  "cents": 1700
+ },
+ {
+  "player": "Austin Overn",
+  "set_name": "2026 Bowman Chrome Prospects",
+  "card_number": "BCP-237",
+  "parallel": "base",
+  "cents": 600
+ },
+ {
+  "player": "Garielvin Silverio",
+  "set_name": "2026 Bowman Chrome Prospects",
+  "card_number": "BCP-246",
+  "parallel": "base",
+  "cents": 399
+ },
+ {
+  "player": "Ricky Moneys",
+  "set_name": "2026 Bowman Chrome Prospects",
+  "card_number": "BCP-192",
+  "parallel": "base",
+  "cents": 699
+ },
+ {
+  "player": "Jeyson Horton",
+  "set_name": "2026 Bowman Chrome Prospects",
+  "card_number": "BCP-228",
+  "parallel": "base",
+  "cents": 499
+ },
+ {
+  "player": "Joseph Sullivan",
+  "set_name": "2026 Bowman Chrome Prospects",
+  "card_number": "BCP-168",
+  "parallel": "base",
+  "cents": 399
+ },
+ {
+  "player": "Bryce Eldridge",
+  "set_name": "2026 Bowman Chrome",
+  "card_number": "78",
+  "parallel": "base",
+  "cents": 297
+ },
+ {
+  "player": "Noah Schultz",
+  "set_name": "2026 Bowman Chrome",
+  "card_number": "11",
+  "parallel": "base",
+  "cents": 199
+ },
+ {
+  "player": "Jesus Made",
+  "set_name": "2026 Bowman Chrome Prospects",
+  "card_number": "BCP-244",
+  "parallel": "base",
+  "cents": 399
+ },
+ {
+  "player": "Willy Adames",
+  "set_name": "2026 Bowman Chrome",
+  "card_number": "69",
+  "parallel": "base",
+  "cents": 250
+ },
+ {
+  "player": "Connelly Early",
+  "set_name": "2026 Bowman Chrome",
+  "card_number": "33",
+  "parallel": "base",
+  "cents": 199
+ },
+ {
+  "player": "Tatsuya Imai",
+  "set_name": "2026 Bowman Chrome",
+  "card_number": "28",
+  "parallel": "base",
+  "cents": 299
+ },
+ {
+  "player": "TJ Rumfield",
+  "set_name": "2026 Bowman Chrome",
+  "card_number": "77",
+  "parallel": "base",
+  "cents": 199
+ },
+ {
+  "player": "Sal Stewart",
+  "set_name": "2026 Bowman Chrome",
+  "card_number": "48",
+  "parallel": "base",
+  "cents": 899
+ },
+ {
+  "player": "Roman Anthony",
+  "set_name": "2026 Bowman Chrome",
+  "card_number": "43",
+  "parallel": "base",
+  "cents": 350
+ },
+ {
+  "player": "Kevin McGonigle",
+  "set_name": "2026 Bowman Chrome",
+  "card_number": "6",
+  "parallel": "base",
+  "cents": 599
+ },
+ {
+  "player": "Munetaka Murakami",
+  "set_name": "2026 Bowman Chrome",
+  "card_number": "76",
+  "parallel": "base",
+  "cents": 700
+ },
+ {
+  "player": "Christian Moore",
+  "set_name": "2026 Bowman Chrome",
+  "card_number": "44",
+  "parallel": "base",
+  "cents": 199
+ },
+ {
+  "player": "Jeferson Quero",
+  "set_name": "2026 Bowman Chrome",
+  "card_number": "42",
+  "parallel": "base",
+  "cents": 500
+ },
+ {
+  "player": "Juneiker Caceres",
+  "set_name": "2026 Bowman Chrome Prospects",
+  "card_number": "BCP-211",
+  "parallel": "base",
+  "cents": 199
+ },
+ {
+  "player": "Chris Sale",
+  "set_name": "2026 Bowman Chrome",
+  "card_number": "62",
+  "parallel": "base",
+  "cents": 199
+ },
+ {
+  "player": "Corey Seager",
+  "set_name": "2026 Bowman Chrome",
+  "card_number": "82",
+  "parallel": "base",
+  "cents": 200
+ },
+ {
+  "player": "Cody Bellinger",
+  "set_name": "2026 Bowman Chrome",
+  "card_number": "9",
+  "parallel": "base",
+  "cents": 250
+ },
+ {
+  "player": "MacKenzie Gore",
+  "set_name": "2026 Bowman Chrome",
+  "card_number": "36",
+  "parallel": "base",
+  "cents": 500
+ },
+ {
+  "player": "Dax Kilby",
+  "set_name": "2026 Bowman Chrome Prospects",
+  "card_number": "BCP-224",
+  "parallel": "base",
+  "cents": null
+ },
+ {
+  "player": "Mason Miller",
+  "set_name": "2026 Bowman Chrome",
+  "card_number": "53",
+  "parallel": "base",
+  "cents": 500
+ },
+ {
+  "player": "Francisco Lindor",
+  "set_name": "2026 Bowman Chrome",
+  "card_number": "17",
+  "parallel": "base",
+  "cents": 500
+ },
+ {
+  "player": "Gavin Fien",
+  "set_name": "2026 Bowman Chrome Prospects",
+  "card_number": "BCP-215",
+  "parallel": "base",
+  "cents": null
+ },
+ {
+  "player": "Aaron Judge",
+  "set_name": "2026 Bowman Chrome",
+  "card_number": "66",
+  "parallel": "base",
+  "cents": 375
+ },
+ {
+  "player": "Nick Kurtz",
+  "set_name": "2026 Bowman Chrome",
+  "card_number": "18",
+  "parallel": "base",
+  "cents": 299
+ },
+ {
+  "player": "Jazz Chisholm Jr.",
+  "set_name": "2026 Bowman Chrome",
+  "card_number": "51",
+  "parallel": "base",
+  "cents": 500
+ },
+ {
+  "player": "Julio Rodriguez",
+  "set_name": "2026 Bowman Chrome",
+  "card_number": "35",
+  "parallel": "base",
+  "cents": 150
+ },
+ {
+  "player": "Junior Caminero",
+  "set_name": "2026 Bowman Chrome",
+  "card_number": "98",
+  "parallel": "base",
+  "cents": 250
+ },
+ {
+  "player": "Cooper Pratt",
+  "set_name": "2026 Bowman Chrome Prospects",
+  "card_number": "BCP-248",
+  "parallel": "base",
+  "cents": 199
+ }
+]

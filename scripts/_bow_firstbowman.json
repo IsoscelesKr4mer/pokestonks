@@ -1,0 +1,10 @@
+{
+  "_comment": "Read off the 1ST BOWMAN logo on each card FRONT, top right, 2026-09-11. The BCP- prefix does NOT imply 1st Bowman: a player who already had a Bowman card gets a prospect card with no logo. Michael caught this on Jesus Made.",
+  "BCP-210": true,  "CPA-WD": true,  "CPA-RM": true,  "BCP-230": true,
+  "BCP-202": true,  "BCP-184": true, "BCP-177": true, "BCP-171": true,
+  "BCP-219": true,  "BCP-185": true, "BCP-163": true, "BCP-160": true,
+  "BCP-237": true,  "BCP-246": true, "BCP-192": true, "BCP-228": true,
+  "BCP-168": true,
+  "BCP-174": false, "BCP-218": false, "BCP-244": false, "BCP-211": false,
+  "BCP-224": false, "BCP-215": false, "BCP-248": false
+}

@@ -1,0 +1,455 @@
+[
+ {
+  "i": 1,
+  "num": "76",
+  "player": "Munetaka Murakami",
+  "team": "Chicago White Sox",
+  "section": "BASE"
+ },
+ {
+  "i": 2,
+  "num": "3",
+  "player": "Parker Messick",
+  "team": "Cleveland Guardians",
+  "section": "BASE"
+ },
+ {
+  "i": 3,
+  "num": "BCP-174",
+  "player": "Aiva Arquette",
+  "team": "Miami Marlins",
+  "section": "BOWMAN CHROME PROSPECTS",
+  "checklist": "Aiva Arquette Miami Marlins\u00ae"
+ },
+ {
+  "i": 4,
+  "num": "WBC-12",
+  "player": "Josh Naylor",
+  "team": "Canada",
+  "section": "WBC FLAG VARIATION REFRACTOR",
+  "checklist": "Josh Naylor Canada"
+ },
+ {
+  "i": 5,
+  "num": "BCP-210",
+  "player": "Angel Salio",
+  "team": "Cincinnati Reds",
+  "section": "BOWMAN CHROME PROSPECTS",
+  "checklist": "Angel Salio Cincinnati Reds\u00ae"
+ },
+ {
+  "i": 6,
+  "num": "49",
+  "player": "Bryan Woo",
+  "team": "Seattle Mariners",
+  "section": "BASE"
+ },
+ {
+  "i": 7,
+  "num": "BCP-218",
+  "player": "Caleb Bonemer",
+  "team": "Chicago White Sox",
+  "section": "BOWMAN CHROME PROSPECTS",
+  "checklist": "Caleb Bonemer Chicago White Sox\u00ae"
+ },
+ {
+  "i": 8,
+  "num": "100",
+  "player": "Shohei Ohtani",
+  "team": "Los Angeles Dodgers",
+  "section": "BASE"
+ },
+ {
+  "i": 9,
+  "num": "CPA-WD",
+  "player": "Wilder Dalis",
+  "team": "Colorado Rockies",
+  "section": "BOWMAN CHROME PROSPECT AUTOGRAPHS",
+  "checklist": "Wilder Dalis Colorado Rockies\u2122"
+ },
+ {
+  "i": 10,
+  "num": "CPA-RM",
+  "player": "Ricky Moneys",
+  "team": "Milwaukee Brewers",
+  "section": "BOWMAN CHROME PROSPECT AUTOGRAPHS",
+  "checklist": "Ricky Moneys Milwaukee Brewers\u2122"
+ },
+ {
+  "i": 11,
+  "num": "SF-16",
+  "player": "Ethan Holliday",
+  "team": "Colorado Rockies",
+  "section": "STARS OF FUTURE",
+  "checklist": "Ethan Holliday Colorado Rockies\u2122"
+ },
+ {
+  "i": 12,
+  "num": "BB-11",
+  "player": "Jac Caglianone",
+  "team": "Kansas City Royals",
+  "section": "BIG BREAK",
+  "checklist": "Jac Caglianone Kansas City Royals\u00ae Rookie"
+ },
+ {
+  "i": 13,
+  "num": "TT-15",
+  "player": "Munetaka Murakami",
+  "team": "Chicago White Sox",
+  "section": "TRAVEL TAGS",
+  "checklist": "Munetaka Murakami Chicago White Sox\u00ae Rookie"
+ },
+ {
+  "i": 14,
+  "num": "IT-7",
+  "player": "Carson Benge",
+  "team": "New York Mets",
+  "section": "IT CAME TO THE LEAGUE",
+  "checklist": "Carson Benge New York Mets\u00ae Rookie"
+ },
+ {
+  "i": 15,
+  "num": "BB-18",
+  "player": "Sal Stewart",
+  "team": "Cincinnati Reds",
+  "section": "BIG BREAK",
+  "checklist": "Sal Stewart Cincinnati Reds\u00ae Rookie"
+ },
+ {
+  "i": 16,
+  "num": "SB-11",
+  "player": "Zach Root",
+  "team": "Los Angeles Dodgers",
+  "section": "2026 MLB SPRING BREAKOUT",
+  "checklist": "Zach Root Los Angeles Dodgers\u00ae"
+ },
+ {
+  "i": 17,
+  "num": "SF-5",
+  "player": "Carter Jensen",
+  "team": "Kansas City Royals",
+  "section": "STARS OF FUTURE",
+  "checklist": "Carter Jensen Kansas City Royals\u00ae Rookie"
+ },
+ {
+  "i": 18,
+  "num": "IT-11",
+  "player": "Colson Montgomery",
+  "team": "Chicago White Sox",
+  "section": "IT CAME TO THE LEAGUE",
+  "checklist": "Colson Montgomery Chicago White Sox\u00ae Rookie"
+ },
+ {
+  "i": 19,
+  "num": "BCP-230",
+  "player": "Jose Castro",
+  "team": "Miami Marlins",
+  "section": "BOWMAN CHROME PROSPECTS",
+  "checklist": "Jose Castro Miami Marlins\u00ae"
+ },
+ {
+  "i": 20,
+  "num": "BCP-202",
+  "player": "Avery Owusu-Asiedu",
+  "team": "Arizona Diamondbacks",
+  "section": "BOWMAN CHROME PROSPECTS",
+  "checklist": "Avery Owusu-Asiedu Arizona Diamondbacks\u00ae"
+ },
+ {
+  "i": 21,
+  "num": "BCP-184",
+  "player": "Gustavo Baptista",
+  "team": "Cleveland Guardians",
+  "section": "BOWMAN CHROME PROSPECTS",
+  "checklist": "Gustavo Baptista Cleveland Guardians\u00ae"
+ },
+ {
+  "i": 22,
+  "num": "BCP-177",
+  "player": "Juan Rujano",
+  "team": "St. Louis Cardinals",
+  "section": "BOWMAN CHROME PROSPECTS",
+  "checklist": "Juan Rujano St. Louis Cardinals\u00ae"
+ },
+ {
+  "i": 23,
+  "num": "BCP-171",
+  "player": "Brandon Clarke",
+  "team": "St. Louis Cardinals",
+  "section": "BOWMAN CHROME PROSPECTS",
+  "checklist": "Brandon Clarke St. Louis Cardinals\u00ae"
+ },
+ {
+  "i": 24,
+  "num": "BCP-219",
+  "player": "Yadier Munoz",
+  "team": "Chicago Cubs",
+  "section": "BOWMAN CHROME PROSPECTS",
+  "checklist": "Yadier Mu\u00f1oz Chicago Cubs\u00ae"
+ },
+ {
+  "i": 25,
+  "num": "BCP-185",
+  "player": "Ricky Duran",
+  "team": "Athletics",
+  "section": "BOWMAN CHROME PROSPECTS",
+  "checklist": "Ricky Duran Athletics\u2122"
+ },
+ {
+  "i": 26,
+  "num": "BCP-163",
+  "player": "Francisco Renteria",
+  "team": "Philadelphia Phillies",
+  "section": "BOWMAN CHROME PROSPECTS",
+  "checklist": "Francisco Renteria Philadelphia Phillies\u00ae"
+ },
+ {
+  "i": 27,
+  "num": "BCP-160",
+  "player": "Johenssy Colome",
+  "team": "Athletics",
+  "section": "BOWMAN CHROME PROSPECTS",
+  "checklist": "Johenssy Colome Athletics\u2122"
+ },
+ {
+  "i": 28,
+  "num": "BCP-237",
+  "player": "Austin Overn",
+  "team": "Tampa Bay Rays",
+  "section": "BOWMAN CHROME PROSPECTS",
+  "checklist": "Austin Overn Tampa Bay Rays\u2122"
+ },
+ {
+  "i": 29,
+  "num": "BCP-246",
+  "player": "Garielvin Silverio",
+  "team": "Boston Red Sox",
+  "section": "BOWMAN CHROME PROSPECTS",
+  "checklist": "Garielvin Silverio Boston Red Sox\u00ae"
+ },
+ {
+  "i": 30,
+  "num": "BCP-192",
+  "player": "Ricky Moneys",
+  "team": "Milwaukee Brewers",
+  "section": "BOWMAN CHROME PROSPECTS",
+  "checklist": "Ricky Moneys Milwaukee Brewers\u2122"
+ },
+ {
+  "i": 31,
+  "num": "BCP-228",
+  "player": "Jeyson Horton",
+  "team": "Los Angeles Angels",
+  "section": "BOWMAN CHROME PROSPECTS",
+  "checklist": "Jeyson Horton Angels\u00ae"
+ },
+ {
+  "i": 32,
+  "num": "BCP-168",
+  "player": "Joseph Sullivan",
+  "team": "Houston Astros",
+  "section": "BOWMAN CHROME PROSPECTS",
+  "checklist": "Joseph Sullivan Houston Astros\u00ae"
+ },
+ {
+  "i": 33,
+  "num": "78",
+  "player": "Bryce Eldridge",
+  "team": "San Francisco Giants",
+  "section": "BASE"
+ },
+ {
+  "i": 34,
+  "num": "11",
+  "player": "Noah Schultz",
+  "team": "Chicago White Sox",
+  "section": "BASE"
+ },
+ {
+  "i": 35,
+  "num": "BCP-244",
+  "player": "Jesus Made",
+  "team": "Milwaukee Brewers",
+  "section": "BOWMAN CHROME PROSPECTS",
+  "checklist": "Jes\u00fas Made Milwaukee Brewers\u2122"
+ },
+ {
+  "i": 36,
+  "num": "69",
+  "player": "Willy Adames",
+  "team": "San Francisco Giants",
+  "section": "BASE"
+ },
+ {
+  "i": 37,
+  "num": "33",
+  "player": "Connelly Early",
+  "team": "Boston Red Sox",
+  "section": "BASE"
+ },
+ {
+  "i": 38,
+  "num": "28",
+  "player": "Tatsuya Imai",
+  "team": "Houston Astros",
+  "section": "BASE"
+ },
+ {
+  "i": 39,
+  "num": "77",
+  "player": "TJ Rumfield",
+  "team": "Colorado Rockies",
+  "section": "BASE"
+ },
+ {
+  "i": 40,
+  "num": "48",
+  "player": "Sal Stewart",
+  "team": "Cincinnati Reds",
+  "section": "BASE"
+ },
+ {
+  "i": 41,
+  "num": "43",
+  "player": "Roman Anthony",
+  "team": "Boston Red Sox",
+  "section": "BASE"
+ },
+ {
+  "i": 42,
+  "num": "6",
+  "player": "Kevin McGonigle",
+  "team": "Detroit Tigers",
+  "section": "BASE"
+ },
+ {
+  "i": 43,
+  "num": "76",
+  "player": "Munetaka Murakami",
+  "team": "Chicago White Sox",
+  "section": "BASE"
+ },
+ {
+  "i": 44,
+  "num": "44",
+  "player": "Christian Moore",
+  "team": "Los Angeles Angels",
+  "section": "BASE"
+ },
+ {
+  "i": 45,
+  "num": "42",
+  "player": "Jeferson Quero",
+  "team": "Milwaukee Brewers",
+  "section": "BASE"
+ },
+ {
+  "i": 46,
+  "num": "BCP-211",
+  "player": "Juneiker Caceres",
+  "team": "Cleveland Guardians",
+  "section": "BOWMAN CHROME PROSPECTS",
+  "checklist": "Juneiker Caceres Cleveland Guardians\u00ae"
+ },
+ {
+  "i": 47,
+  "num": "62",
+  "player": "Chris Sale",
+  "team": "Atlanta Braves",
+  "section": "BASE"
+ },
+ {
+  "i": 48,
+  "num": "82",
+  "player": "Corey Seager",
+  "team": "Texas Rangers",
+  "section": "BASE"
+ },
+ {
+  "i": 49,
+  "num": "9",
+  "player": "Cody Bellinger",
+  "team": "New York Yankees",
+  "section": "BASE"
+ },
+ {
+  "i": 50,
+  "num": "36",
+  "player": "MacKenzie Gore",
+  "team": "Texas Rangers",
+  "section": "BASE"
+ },
+ {
+  "i": 51,
+  "num": "BCP-224",
+  "player": "Dax Kilby",
+  "team": "New York Yankees",
+  "section": "BOWMAN CHROME PROSPECTS",
+  "checklist": "Dax Kilby New York Yankees\u00ae"
+ },
+ {
+  "i": 52,
+  "num": "53",
+  "player": "Mason Miller",
+  "team": "San Diego Padres",
+  "section": "BASE"
+ },
+ {
+  "i": 53,
+  "num": "17",
+  "player": "Francisco Lindor",
+  "team": "New York Mets",
+  "section": "BASE"
+ },
+ {
+  "i": 54,
+  "num": "BCP-215",
+  "player": "Gavin Fien",
+  "team": "Washington Nationals",
+  "section": "BOWMAN CHROME PROSPECTS",
+  "checklist": "Gavin Fien Washington Nationals\u00ae"
+ },
+ {
+  "i": 55,
+  "num": "66",
+  "player": "Aaron Judge",
+  "team": "New York Yankees",
+  "section": "BASE"
+ },
+ {
+  "i": 56,
+  "num": "18",
+  "player": "Nick Kurtz",
+  "team": "Athletics",
+  "section": "BASE"
+ },
+ {
+  "i": 57,
+  "num": "51",
+  "player": "Jazz Chisholm Jr.",
+  "team": "New York Yankees",
+  "section": "BASE"
+ },
+ {
+  "i": 58,
+  "num": "35",
+  "player": "Julio Rodriguez",
+  "team": "Seattle Mariners",
+  "section": "BASE"
+ },
+ {
+  "i": 59,
+  "num": "98",
+  "player": "Junior Caminero",
+  "team": "Tampa Bay Rays",
+  "section": "BASE"
+ },
+ {
+  "i": 60,
+  "num": "BCP-248",
+  "player": "Cooper Pratt",
+  "team": "Milwaukee Brewers",
+  "section": "BOWMAN CHROME PROSPECTS",
+  "checklist": "Cooper Pratt Milwaukee Brewers\u2122"
+ }
+]

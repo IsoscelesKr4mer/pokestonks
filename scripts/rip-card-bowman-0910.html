@@ -1,0 +1,164 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    width:1600px; height:900px; overflow:hidden;
+    font-family:"Segoe UI","Helvetica Neue",Arial,sans-serif;
+    background:#0b1220; color:#e8eef8;
+    background-image:
+      radial-gradient(1100px 600px at 88% -10%, rgba(56,132,255,.20), transparent 60%),
+      radial-gradient(800px 500px at -5% 110%, rgba(255,138,42,.13), transparent 60%);
+  }
+  .wrap { padding:38px 46px; height:900px; display:flex; flex-direction:column; }
+
+  header { display:flex; justify-content:space-between; align-items:flex-start; }
+  .kicker { font-size:17px; letter-spacing:.22em; text-transform:uppercase; color:#7d93b4; font-weight:600; }
+  h1 { font-size:46px; line-height:1.04; font-weight:800; margin-top:2px; letter-spacing:-.5px; }
+  h1 span { color:#5aa2ff; }
+  .boxmeta { text-align:right; font-size:16px; color:#8fa4c2; line-height:1.65; padding-top:6px; }
+  .boxmeta b { color:#e8eef8; font-weight:700; }
+
+  .hero { display:flex; gap:14px; margin:20px 0 18px; }
+  .stat { flex:1; background:rgba(255,255,255,.045); border:1px solid rgba(255,255,255,.10);
+          border-radius:14px; padding:16px 20px; }
+  .stat .lab { font-size:13.5px; letter-spacing:.11em; text-transform:uppercase; color:#8fa4c2; font-weight:600; }
+  .stat .val { font-size:42px; font-weight:800; margin-top:5px; letter-spacing:-1px; }
+  .stat .sub { font-size:13.5px; color:#7d93b4; margin-top:3px; }
+  .green { color:#3ddc97; } .blue { color:#5aa2ff; } .orange { color:#ff9a3c; }
+
+  .body { display:flex; gap:26px; flex:1; min-height:0; }
+  .col-l { flex:1.32; display:flex; flex-direction:column; min-height:0; overflow:hidden; }
+  .col-r { flex:1; display:flex; flex-direction:column; gap:13px; }
+
+  .htitle { font-size:14px; letter-spacing:.15em; text-transform:uppercase; color:#8fa4c2;
+            font-weight:700; margin-bottom:9px; }
+  table { width:100%; border-collapse:collapse; }
+  td { padding:4.5px 0; font-size:19px; border-bottom:1px solid rgba(255,255,255,.065); }
+  tr:last-child td { border-bottom:none; }
+  .pl { font-weight:700; }
+  .pr { color:#93a8c6; font-size:16.5px; }
+  .amt { text-align:right; font-weight:800; font-variant-numeric:tabular-nums; white-space:nowrap; }
+  .dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:10px; vertical-align:1px; }
+
+  .panel { background:rgba(255,255,255,.045); border:1px solid rgba(255,255,255,.10);
+           border-radius:14px; padding:15px 18px; }
+  .panel.hot { background:linear-gradient(135deg, rgba(255,154,60,.17), rgba(255,154,60,.05));
+               border-color:rgba(255,154,60,.42); }
+  .panel h3 { font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:#8fa4c2; font-weight:700; }
+  .panel.hot h3 { color:#ffb469; }
+  .big { font-size:31px; font-weight:800; margin-top:5px; line-height:1.16; }
+  .panel p { font-size:15.5px; color:#9db1cd; margin-top:6px; line-height:1.5; }
+
+  .split { display:flex; gap:10px; }
+  .split > div { flex:1; }
+  .bar { height:9px; border-radius:5px; background:rgba(255,255,255,.10); margin-top:9px; overflow:hidden; }
+  .bar i { display:block; height:100%; border-radius:5px; }
+  .srow { display:flex; justify-content:space-between; font-size:15.5px; margin-top:11px; color:#b9c9e0; }
+  .srow b { color:#e8eef8; font-variant-numeric:tabular-nums; }
+
+.rest { display:flex; flex-wrap:wrap; gap:7px 10px; }
+  .rest span { background:rgba(255,255,255,.045); border:1px solid rgba(255,255,255,.09);
+               border-radius:8px; padding:5px 10px; font-size:14.5px; color:#b9c9e0; }
+  .rest b { color:#e8eef8; font-variant-numeric:tabular-nums; }
+  .rest i { font-style:normal; color:#8fa4c2; }
+
+  footer { margin-top:10px; display:flex; justify-content:space-between; align-items:center;
+           font-size:14.5px; color:#6f86a6; border-top:1px solid rgba(255,255,255,.09); padding-top:13px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div>
+      <h1>2026 Bowman Chrome Hobby <span>Rip Analysis</span></h1>
+    </div>
+    <div class="boxmeta">
+      Release day, ripped <b>Sept 10 2026</b><br>
+      <b>12</b> packs &middot; <b>60</b> cards &middot; <b>2</b> autos
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="stat">
+      <div class="lab">Box cost</div>
+      <div class="val">$299.99</div>
+      <div class="sub">presale, plus tax. $329.99 on release day</div>
+    </div>
+    <div class="stat">
+      <div class="lab">Book value, 60 cards</div>
+      <div class="val green">$910.44</div>
+      <div class="sub">sum of live market on every card</div>
+    </div>
+    <div class="stat">
+      <div class="lab">Gross multiple</div>
+      <div class="val blue">3.03x</div>
+      <div class="sub">2.57x after eBay fees if it all sells</div>
+    </div>
+  </div>
+
+  <div class="body">
+    <div class="col-l">
+      <div class="htitle">The 10 hits &middot; $671 of the $910</div>
+      <table>
+        <tr><td class="pl"><span class="dot" style="background:#ff9a3c"></span>Aiva Arquette <span class="pr">Orange Shimmer /25</span></td><td class="amt orange">$145</td></tr>
+        <tr><td class="pl"><span class="dot" style="background:#b07cff"></span>Wilder Dalis <span class="pr">True Purple /250 AUTO, color match</span></td><td class="amt">$125</td></tr>
+        <tr><td class="pl"><span class="dot" style="background:#d9e3f2"></span>Ricky Moneys <span class="pr">1st Bowman AUTO</span></td><td class="amt">$125</td></tr>
+        <tr><td class="pl"><span class="dot" style="background:#ff9a3c"></span>Josh Naylor <span class="pr">True Orange /25, WBC Canada</span></td><td class="amt orange">$110</td></tr>
+        <tr><td class="pl"><span class="dot" style="background:#ff4d5e"></span>Parker Messick <span class="pr">Red RC Variation</span></td><td class="amt">$55</td></tr>
+        <tr><td class="pl"><span class="dot" style="background:#ff4d5e"></span>Munetaka Murakami <span class="pr">Red RC Variation</span></td><td class="amt">$50</td></tr>
+        <tr><td class="pl"><span class="dot" style="background:#9fb3cd"></span>Angel Salio <span class="pr">Refractor /499, 1st Bowman</span></td><td class="amt">$18</td></tr>
+        <tr><td class="pl"><span class="dot" style="background:#4fd6c9"></span>Johenssy Colome <span class="pr">X-Fractor, 1st Bowman</span></td><td class="amt">$17</td></tr>
+        <tr><td class="pl"><span class="dot" style="background:#b07cff"></span>Caleb Bonemer <span class="pr">Purple Wave /250</span></td><td class="amt">$13</td></tr>
+        <tr><td class="pl"><span class="dot" style="background:#5aa2ff"></span>Bryan Woo <span class="pr">True Blue /150</span></td><td class="amt">$13</td></tr>
+      </table>
+
+      <div class="htitle" style="margin-top:16px">Best of the other 50</div>
+      <div class="rest">
+        <span><b>$17.99</b> Murakami <i>Travel Tags</i></span>
+        <span><b>$15</b> Sal Stewart <i>Big Break</i></span>
+        <span><b>$12.99</b> Renteria <i>1st Bowman</i></span>
+        <span><b>$10</b> Caglianone <i>Big Break</i></span>
+        <span><b>$10</b> Rujano <i>1st Bowman</i></span>
+        <span><b>$8.99</b> Sal Stewart <i>base RC</i></span>
+        <span><b>$7.99</b> Ohtani <i>base</i></span>
+      </div>
+    </div>
+
+    <div class="col-r">
+      <div class="panel hot">
+        <h3>The improbable part</h3>
+        <div class="big">Two Orange /25s</div>
+        <p>Orange is 1:384 packs. This box had 12. Pulling two of them is roughly a 1 in 550 box.</p>
+      </div>
+
+      <div class="panel">
+        <h3>Where the value sits</h3>
+        <div class="srow"><span>10 hits</span><b>$671.00</b></div>
+        <div class="bar"><i style="width:73.7%;background:linear-gradient(90deg,#ff9a3c,#ff6b6b)"></i></div>
+        <div class="srow"><span>50 base, prospects and inserts</span><b>$239.44</b></div>
+        <div class="bar"><i style="width:26.3%;background:linear-gradient(90deg,#5aa2ff,#4fd6c9)"></i></div>
+        <p>74% of the box is in 10 cards. The other 50 average $4.79.</p>
+      </div>
+
+      <div class="panel">
+        <h3>Odds vs reality, 12 packs</h3>
+        <div class="srow"><span>Orange /25 &middot; 1:384</span><b>expected 0.06 &rarr; got 2</b></div>
+        <div class="srow"><span>Blue /150 &middot; 1:64</span><b>expected 0.19 &rarr; got 1</b></div>
+        <div class="srow"><span>Red RC Variation &middot; 1:4</span><b>expected 3 &rarr; got 2</b></div>
+        <div class="srow"><span>X-Fractor &middot; 1:6</span><b>expected 2 &rarr; got 1</b></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div>17 of the 24 prospects are 1st Bowman. Arquette BCP-174 and Jesús Made BCP-244 are not.</div>
+    <div>Values are live asking prices, not sales</div>
+  </footer>
+
+</div>
+</body>
+</html>

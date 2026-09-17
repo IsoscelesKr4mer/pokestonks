@@ -139,7 +139,12 @@ export function matches(title: string, c: CardLike) {
   const hasSSP = t.includes('ssp') || t.includes('super');
   if (cat === 'minidiamond') return t.includes('mini') && t.includes('diamond') && !hasNum && !hasAuto;
   if (cat === 'xfractor') return /x\s*-?\s*fractor/.test(t) && !hasNum && !hasAuto;
-  if (cat === 'base') return !hasNum && !hasAuto && !hasSSP && !NONBASE_WORDS.some(w => t.includes(w));
+  // A base card is never comped against a refractor. NONBASE_WORDS lists the
+  // exotic parallels but never listed "refractor" itself, so an unnumbered Red
+  // or Lazer Refractor passed straight through as a base comp. That put the
+  // 2026 Bowman base Murakami #76 at $49.99 off three Red Refractor asks when
+  // his real base market is a few dollars. hasRef covers raywave and prism too.
+  if (cat === 'base') return !hasRef && !hasNum && !hasAuto && !hasSSP && !NONBASE_WORDS.some(w => t.includes(w));
   if (cat === 'refractor') { const kw = refKeyword(c.parallel); return hasRef && !hasNum && !hasAuto && !hasSSP && (!kw || t.includes(kw.split(' ')[0])); }
   if (cat === 'rwb') return (t.includes('red') && (t.includes('white') || t.includes('blue'))) || t.includes('rwb');
   if (cat === 'numbered') return ser ? t.includes(ser) : (hasNum && !hasAuto);
