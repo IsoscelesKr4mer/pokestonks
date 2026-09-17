@@ -120,10 +120,10 @@
   "serial": null,
   "card_number": "99",
   "number_source": "2026 Bowman Chrome MEGA checklist",
-  "asks": 7,
-  "low": 1.1,
-  "median": 1.79,
-  "p75": 6,
+  "asks": 10,
+  "low": 1.06,
+  "median": 1.99,
+  "p75": 2.15,
   "query": "2026 Bowman Chrome Pete Alonso"
  },
  {
@@ -158,10 +158,10 @@
   "box": 1,
   "serial": null,
   "number_source": "read off the card back",
-  "asks": 9,
+  "asks": 12,
   "low": 0.99,
-  "median": 1.8,
-  "p75": 1.98,
+  "median": 1.89,
+  "p75": 2.99,
   "query": "2026 Bowman Chrome Bryan Woo"
  },
  {
@@ -194,10 +194,10 @@
   "box": 1,
   "serial": null,
   "card_number": "BCP-245",
-  "asks": 6,
+  "asks": 7,
   "low": 1.99,
   "median": 3,
-  "p75": 39.99,
+  "p75": 44.99,
   "query": "2026 Bowman Chrome Eli Willits"
  },
  {
@@ -213,10 +213,10 @@
   "box": 1,
   "serial": null,
   "number_source": "2026 Bowman Chrome MEGA checklist",
-  "asks": 9,
+  "asks": 16,
   "low": 0.99,
-  "median": 1.49,
-  "p75": 1.79,
+  "median": 1.72,
+  "p75": 2,
   "query": "2026 Bowman Chrome Bo Bichette"
  },
  {
@@ -250,10 +250,10 @@
   "box": 1,
   "serial": null,
   "number_source": "read off the card back",
-  "asks": 2,
+  "asks": 10,
   "low": 0.99,
-  "median": 1.5,
-  "p75": 1.5,
+  "median": 1.89,
+  "p75": 1.99,
   "query": "2026 Bowman Chrome Vladimir Guerrero Jr."
  },
  {
@@ -290,10 +290,10 @@
   "serial": null,
   "card_number": "7",
   "number_source": "read off the card back",
-  "asks": 19,
+  "asks": 18,
   "low": 1.2,
   "median": 1.99,
-  "p75": 2.25,
+  "p75": 2.1,
   "query": "2026 Bowman Chrome Didier Fuentes"
  },
  {
@@ -311,10 +311,10 @@
   "parallel": "base",
   "serial": null,
   "number_source": "2026 Bowman Chrome MEGA checklist",
-  "asks": 17,
-  "low": 1.99,
-  "median": 4,
-  "p75": 9.95,
+  "asks": 28,
+  "low": 3,
+  "median": 5.99,
+  "p75": 10,
   "query": "2026 Bowman Chrome Munetaka Murakami"
  },
  {
@@ -332,10 +332,10 @@
   "parallel": "base",
   "serial": null,
   "number_source": "read off the card back",
-  "asks": 14,
-  "low": 1.25,
-  "median": 1.99,
-  "p75": 2,
+  "asks": 30,
+  "low": 0.99,
+  "median": 2,
+  "p75": 6,
   "query": "2026 Bowman Chrome Christian Moore"
  },
  {
@@ -353,10 +353,10 @@
   "serial": null,
   "card_number": "70",
   "number_source": "2026 Bowman Chrome MEGA checklist",
-  "asks": 19,
+  "asks": 39,
   "low": 1.25,
-  "median": 2,
-  "p75": 5,
+  "median": 3,
+  "p75": 8,
   "query": "2026 Bowman Chrome Colson Montgomery"
  },
  {
@@ -374,10 +374,10 @@
   "serial": null,
   "card_number": "31",
   "number_source": "2026 Bowman Chrome MEGA checklist",
-  "asks": 14,
-  "low": 1.25,
-  "median": 1.99,
-  "p75": 2.49,
+  "asks": 34,
+  "low": 0.99,
+  "median": 2.29,
+  "p75": 3.49,
   "query": "2026 Bowman Chrome Alex Freeland"
  },
  {
@@ -395,10 +395,10 @@
   "parallel": "base",
   "serial": null,
   "number_source": "read off the card back",
-  "asks": 0,
-  "low": null,
-  "median": null,
-  "p75": null,
+  "asks": 31,
+  "low": 1.29,
+  "median": 1.99,
+  "p75": 4.75,
   "query": "2026 Bowman Chrome Kyle Karros"
  },
  {
@@ -416,10 +416,10 @@
   "serial": null,
   "card_number": "38",
   "number_source": "2026 Bowman Chrome MEGA checklist",
-  "asks": 15,
+  "asks": 24,
   "low": 0.99,
-  "median": 1.5,
-  "p75": 1.99,
+  "median": 1.99,
+  "p75": 3,
   "query": "2026 Bowman Chrome Bubba Chandler"
  },
  {
@@ -456,10 +456,10 @@
   "serial": null,
   "card_number": "48",
   "number_source": "2026 Bowman Chrome MEGA checklist",
-  "asks": 3,
-  "low": 1.75,
-  "median": 6,
-  "p75": 20,
+  "asks": 141,
+  "low": 1.5,
+  "median": 3.25,
+  "p75": 4.99,
   "query": "2026 Bowman Chrome Sal Stewart mojo refractor"
  },
  {
@@ -477,10 +477,10 @@
   "serial": null,
   "card_number": "96",
   "number_source": "2026 Bowman Chrome MEGA checklist",
-  "asks": 8,
+  "asks": 16,
   "low": 2.99,
-  "median": 5.99,
-  "p75": 10,
+  "median": 6.5,
+  "p75": 9.99,
   "query": "2026 Bowman Chrome Carson Benge mojo refractor"
  },
  {
@@ -515,8 +515,8 @@
   "serial": null,
   "rc": false,
   "card_number": "BCP-197",
-  "asks": 7,
-  "low": 5.99,
+  "asks": 8,
+  "low": 3.99,
   "median": 6,
   "p75": 8.99,
   "query": "2026 Bowman Chrome Juan Rijo mojo refractor"
@@ -573,10 +573,10 @@
   "serial": null,
   "rc": false,
   "number_source": "2026 Bowman Chrome MEGA checklist",
-  "asks": 4,
-  "low": 2.99,
-  "median": 3.95,
-  "p75": 4.99,
+  "asks": 153,
+  "low": 0.99,
+  "median": 1.5,
+  "p75": 2,
   "query": "2026 Bowman Chrome Mike Trout mojo refractor"
  },
  {
@@ -593,10 +593,10 @@
   "rc": false,
   "card_number": "23",
   "number_source": "2026 Bowman Chrome MEGA checklist",
-  "asks": 0,
-  "low": null,
-  "median": null,
-  "p75": null,
+  "asks": 142,
+  "low": 0.99,
+  "median": 1.45,
+  "p75": 1.79,
   "query": "2026 Bowman Chrome Fernando Tatis Jr. mojo refractor"
  },
  {

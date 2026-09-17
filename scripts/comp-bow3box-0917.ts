@@ -32,11 +32,21 @@ const SERIAL = /\/\s?\d{1,4}\b|\b\d{1,3}\s?\/\s?\d{1,4}\b/;
 const GRADED = /\b(psa|bgs|sgc|cgc|cgs|csg|scg|pta|gma|hga)\s?\d|gem\s*(mt|mint)|\bgem\b|graded|slab/i;
 const LOT = /lot of|\blot\b|bundle|you pick|choose|complete set|team set|break|random|repack|reprint|custom|proxy|digital|\bx\d+\b/i;
 const OTHER_YEAR = /20(1\d|2[0-5])\b/;
+// Michael caught this: "you're looking at bowman sterling and non rookie
+// prospects purple mojos". A base-set card must exclude every SUBSET, because
+// the same player holds a prospect card, a Sterling card, an insert and an
+// auto, all of which match on player + colour + parallel. His Konnor Griffin
+// base-set #1 rookie Purple Mojo /250 came back at a $20.00 median off 33 hits
+// that were BCP-92 prospects, Bowman Sterling BST-7, Electric Sluggers ES-17
+// and BMA-KG autos. Not one was his card. Filtered properly it is ~$36 on 2
+// asks. The bare card number was no help either: requiring \b1\b matches any
+// "1" anywhere in a title.
+const SUBSET = /\bBCP[- ]?\d|prospect|\bBST[- ]?\d|sterling|electric slugger|\bES[- ]?\d|\bBMA[- ]?|\bCPA[- ]?|\bBDC[- ]?\d|redemption|\bWBC[- ]?\d|travel tag|big break|stars of|crystalized|final draft|spotlight|packfractor|retrofractor/i;
 const COLOURS = /(fuchsia|purple|pink|blue|aqua|green|yellow|gold|orange|black|red|rose gold|steel|sapphire|lazer|speckle|reptilian|geometric|pulsar|shimmer|wave)/i;
 
 type Card = {
   i: number; box: number; player: string; card_number: string | null;
-  kind: string; parallel: string; first_bowman?: boolean;
+  kind: string; parallel: string; first_bowman?: boolean; rc?: boolean;
 };
 
 function spec(c: Card) {
@@ -45,17 +55,38 @@ function spec(c: Card) {
   // $1.50 off 161 "asks" for exactly that reason.
   const must: RegExp[] = [/2026/, /bowman/i, /chrome/i];
   const not: RegExp[] = [AUTO, GRADED, LOT, OTHER_YEAR];
+  // rc flag is needed by spec(); declared on Card below
   let q = '2026 Bowman Chrome ' + c.player;
 
-  if (/Pink Mojo/i.test(c.parallel)) {
-    must.push(/mojo/i, /pink/i);
-    q += ' pink mojo refractor';
+  // A COLOURED Mojo must REQUIRE its colour and its run size. Getting this
+  // backwards is what kept Konnor Griffin's base-set #1 rookie Purple Mojo /250
+  // pinned at $20: the plain-Mojo branch swallowed it and then excluded every
+  // title containing "purple mojo", i.e. excluded the actual card.
+  const colourMojo = c.parallel.match(/(fuchsia|purple|pink|blue|aqua|green|yellow|gold|orange|black|red|rose gold|steel)\s+mojo/i);
+  const runSize = c.parallel.match(/\/\s?(\d{2,4})/);
+
+  if (colourMojo) {
+    const colour = colourMojo[1].toLowerCase();
+    must.push(/mojo/i, new RegExp(colour, 'i'));
+    if (runSize) must.push(new RegExp('\\/\\s?' + runSize[1] + '\\b'));
+    q += ' ' + colour + ' mojo refractor';
+  } else if (/Red RC Variation/i.test(c.parallel)) {
+    // The Red RC is neither a Refractor nor base. It is identified by the red
+    // MLB shield, sellers title it "Red RC Variation" or "Red Rookie", and it
+    // has no serial. Do not strip the word red here.
+    must.push(/\bred\b/i, /\bRC\b|rookie/i);
+    not.push(SERIAL, /mojo|lazer|sapphire|fuchsia|purple|blue|aqua|green|yellow|gold|orange/i);
+    q = '2026 Bowman Chrome ' + c.player + ' red RC variation';
   } else if (/Mojo/i.test(c.parallel)) {
     must.push(/mojo/i);
-    // a plain Mojo must not be a COLOURED Mojo
+    // a PLAIN Mojo must not be a coloured one
     not.push(/(fuchsia|purple|pink|blue|aqua|green|yellow|gold|orange|black|red|rose gold|steel)\s+mojo/i);
     not.push(SERIAL);
     q += ' mojo refractor';
+  } else if (/^Refractor$/i.test(c.parallel)) {
+    must.push(/refractor/i);
+    not.push(SERIAL, COLOURS, /mojo|x-?fractor|prism/i);
+    q += ' refractor';
   } else if (/Lazer/i.test(c.parallel)) {
     must.push(/lazer|laser/i);
     not.push(SERIAL);
@@ -86,11 +117,27 @@ function spec(c: Card) {
   // word boundary, and every base-set card returned 0 asks.
   let numRe: RegExp | null = null;
   if (c.card_number) {
-    numRe = c.card_number.startsWith('BCP-')
-      ? new RegExp('\\bBCP[- ]?' + c.card_number.slice(4) + '\\b', 'i')
-      : c.card_number.startsWith('SB-') || c.card_number.startsWith('IT-')
-        ? new RegExp('\\b' + c.card_number.replace('-', '[- ]?') + '\\b', 'i')
-        : new RegExp('(#\\s?)?\\b' + c.card_number + '\\b');
+    if (c.card_number.startsWith('BCP-')) {
+      numRe = new RegExp('\\bBCP[- ]?' + c.card_number.slice(4) + '\\b', 'i');
+    } else if (c.card_number.startsWith('SB-') || c.card_number.startsWith('IT-')) {
+      numRe = new RegExp('\\b' + c.card_number.replace('-', '[- ]?') + '\\b', 'i');
+    } else {
+      // BASE SET. Every subset is a different card, so exclude them all rather
+      // than lean on a bare number that may be a single digit.
+      not.push(SUBSET);
+      // A one or two digit number is too weak to require on its own, so only
+      // require it when the title actually carries a #-prefixed number; and for
+      // a rookie, require the RC wording instead.
+      numRe = new RegExp('#\\s?' + c.card_number + '\\b');
+      if (c.rc) {
+        must.push(/\bRC\b|rookie/i);
+        numRe = null;   // RC wording plus the SUBSET exclusion is the better filter
+      } else if (Number(c.card_number) < 10) {
+        numRe = new RegExp('#\\s?' + c.card_number + '\\b');
+      } else {
+        numRe = null;
+      }
+    }
   }
   return { q, must, not, numRe };
 }
