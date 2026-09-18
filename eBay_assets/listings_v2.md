@@ -1085,7 +1085,7 @@ better than a stack photo and needs no new photography.
 
 **Item:** [168696938215](https://www.ebay.com/itm/168696938215) &middot; SKU `P30TH-ETB` &middot; qty 1
 **Title:** `Pokemon TCG 30th Anniversary Celebration Elite Trainer Box ETB Sealed In Hand` (77 chars)
-**Ask:** $159.99, Best Offer on, auto-decline $139.00 &middot; **Cost:** $55.00 (Zulu's Board Games, 2026-09-16)
+**Ask:** $159.99, **Best Offer OFF** (he asked for it removed 2026-09-18; it had been on with a $139.00 auto-decline, no offers received) &middot; **Cost:** $55.00 (Zulu's Board Games, 2026-09-16)
 **Net at ask:** ~$135 &middot; **Profit:** ~$80
 **UPC:** `196214158801`, read off the box. Printed as EAN-13 `0 196214 158801`; leading zero dropped for a US listing, check digit verifies. Box code `10-10447-110` is the retail ETB, `-111` is the Pokemon Center exclusive.
 **Photos:** EPS, front then back, from `eBay_assets/iCloud Photos/30thCelebration_ETB_0{1,2}_*.JPEG`
