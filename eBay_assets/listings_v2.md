@@ -1085,7 +1085,8 @@ better than a stack photo and needs no new photography.
 
 **Item:** [168696938215](https://www.ebay.com/itm/168696938215) &middot; SKU `P30TH-ETB` &middot; qty 1
 **Title:** `Pokemon TCG 30th Anniversary Celebration Elite Trainer Box ETB Sealed In Hand` (77 chars)
-**Ask:** $159.99, **Best Offer OFF** (he asked for it removed 2026-09-18; it had been on with a $139.00 auto-decline, no offers received) &middot; **Cost:** $55.00 (Zulu's Board Games, 2026-09-16)
+**SOLD 2026-09-18 at full ask, 43 minutes after listing.** Order 23-15157-93829, buyer in Saskatoon SK via eBay International Shipping (domestic label to the Glendale Heights IL hub, ship by 09-19). Subtotal $159.99 + $8.17 shipping = $168.16, eBay fee $22.68, **$145.48 to seller**, cost $55.00, **+$90.48**. TradePost would have paid $127 net, so the eBay call was right by $18 and cost 43 minutes of waiting.
+**Ask was:** $159.99, Best Offer removed at his request shortly before the sale (it had been on with a $139.00 auto-decline; no offers came in) &middot; **Cost:** $55.00 (Zulu's Board Games, 2026-09-16)
 **Net at ask:** ~$135 &middot; **Profit:** ~$80
 **UPC:** `196214158801`, read off the box. Printed as EAN-13 `0 196214 158801`; leading zero dropped for a US listing, check digit verifies. Box code `10-10447-110` is the retail ETB, `-111` is the Pokemon Center exclusive.
 **Photos:** EPS, front then back, from `eBay_assets/iCloud Photos/30thCelebration_ETB_0{1,2}_*.JPEG`
@@ -1118,7 +1119,7 @@ wants several at once.
 |---|---|---|---|---|
 | [168697072160](https://www.ebay.com/itm/168697072160) Zapdos 133/128 Illustration Rare | $17.99 | $14.00 | 183454 | TCGplayer $21.38 |
 | [168697072332](https://www.ebay.com/itm/168697072332) Arceus VSTAR 123/172 Classic Collection | $10.99 | $8.50 | 183454 | TCGplayer $8.76 |
-| [168697072540](https://www.ebay.com/itm/168697072540) 6 Pikachu variations + 2 promos, 8 cards | $18.99 | $15.00 | 183455 | TCGplayer $10.04 |
+| [168697072540](https://www.ebay.com/itm/168697072540) 6 Pikachu variations + 2 promos, 8 cards | ~~$18.99~~ **SOLD $17.00** | $15.00 | 183455 | TCGplayer $10.04 |
 
 Best Offer on all three. Total ask $47.97 against $33.18 of box cost.
 
@@ -1146,8 +1147,16 @@ the median rather than at the median:
   verify refused it.
 
 **Not mapped in `ebay_listing_mappings`.** Pokemon singles have no catalog row,
-the same as the Naruto singles, so a sale will not auto-book and has to be
-entered by hand.
+the same as the Naruto singles, so a sale will not auto-book.
+
+**The lot sold at $17.00 on 2026-09-18** (Best Offer accepted, order
+26-15152-32324, $15.27 to seller, eBay Standard Envelope, ship by 09-22) and
+**could not be booked at all**. Those cards came out of the Tech Sticker rips,
+whose basis was written off with the boxes, and `sales.purchase_id` is NOT NULL,
+so a sale row would have required inventing a purchase and a cost that does not
+exist. The $15.27 is real money that will never appear in vault P&L. A dedup row
+in `ebay_synced_orders` marks the order `skipped` so the sync cannot invent one
+when Supabase comes back.
 
 **Deliberately not listed:** the two Pokemon Center 30th ETBs. They comp at a
 $300 median off 145 asks against $66.41 cost, and Michael is keeping them long
