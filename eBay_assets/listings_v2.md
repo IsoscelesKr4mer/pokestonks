@@ -1146,16 +1146,22 @@ the median rather than at the median:
 - The flat card shipping profile caps at **3 oz**; the lot was declared at 4 and
   verify refused it.
 
-**Shipping: eBay Standard Envelope, and the lot MUST go flat.** Policy
-272052757012 is eSE at $1.29 with USPS Parcel at $4.99 as a buyer-paid upgrade.
-eSE is rated to 24 cards at 3 oz, quarter-inch thickness and a $20 max item
-price, so an 8-card lot at $17.00 clears every limit and eSE costs well under
-the $1.29 the buyer paid; Ground Advantage would be roughly $4.50 out of pocket.
-The constraint is the packing: sleeves and card stock in a 6x9, no toploaders,
-no bubble mailer, because USPS reclassifies a lumpy envelope as a package and
-bills the difference. That constraint was not stated when the lot was listed and
-should have been, since reading "eBay Standard Envelope" off the order without
-it looks like the wrong service was picked.
+**Shipping: the lot went out on the wrong policy.** 272052757012 is eBay
+Standard Envelope, $1.29, and it came off the single-card template without
+checking that an 8-card lot could physically ship that way. eSE's own limits
+allow it (24 cards, 3 oz, quarter inch, $20 max) but they require a FLAT
+envelope, and **Michael packs cards in toploaders, which do not fit one**. He
+shipped Ground Advantage instead and ate about $3.20, the gap between a ~$4.50
+mailer and the $1.29 the buyer paid.
+
+**The rule now, by listing shape rather than by price:**
+
+| listing | policy |
+|---|---|
+| single card | 272052757012 eBay Standard Envelope, one sleeved card is flat by default |
+| multi-card lot | **269110723012 Ground Advantage Calculated**, buyer pays the real cost |
+
+269110723012 is the same policy the sealed listings already use.
 
 **Not mapped in `ebay_listing_mappings`.** Pokemon singles have no catalog row,
 the same as the Naruto singles, so a sale will not auto-book.
