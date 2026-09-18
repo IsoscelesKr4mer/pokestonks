@@ -48,8 +48,24 @@ const LOT_CARDS = [
   'Pikachu_042_20of30', 'Pikachu_046_24of30', 'Promo_AlolanExeggutor_094', 'Promo_Lucario_095',
 ];
 
-// fill in as he sends them, e.g. { Zapdos_133of128_IR: 'file.JPEG' }
-const BACKS: Record<string, string> = {};
+// Backs arrived 2026-09-18. Pairing is by file sequence, because every Pokemon
+// back is the same picture and cannot be matched by content. Fronts were the
+// odd IMG numbers and backs the evens: every front n claims back n+1, exactly
+// one back is left over (IMG_4578), and its front IMG_4577 is the single gap in
+// his front sequence. Nothing is double-claimed and nothing else is orphaned,
+// which is the parity assertion the card-intake skill asks for.
+const BACKS: Record<string, string> = {
+  Zapdos_133of128_IR: '30thCelebration_Zapdos_133of128_IR_back.JPEG',
+  ArceusVSTAR_123of172: '30thCelebration_ArceusVSTAR_123of172_back.JPEG',
+  Pikachu_023_01of30: '30thCelebration_Pikachu_023_01of30_back.JPEG',
+  Pikachu_029_07of30: '30thCelebration_Pikachu_029_07of30_back.JPEG',
+  Pikachu_033_11of30: '30thCelebration_Pikachu_033_11of30_back.JPEG',
+  Pikachu_034_12of30: '30thCelebration_Pikachu_034_12of30_back.JPEG',
+  Pikachu_042_20of30: '30thCelebration_Pikachu_042_20of30_back.JPEG',
+  Pikachu_046_24of30: '30thCelebration_Pikachu_046_24of30_back.JPEG',
+  Promo_AlolanExeggutor_094: '30thCelebration_Promo_AlolanExeggutor_094_back.JPEG',
+  Promo_Lucario_095: '30thCelebration_Promo_Lucario_095_back.JPEG',
+};
 
 const JOBS: { id: string; label: string; files: string[] }[] = [
   {
@@ -105,9 +121,14 @@ async function eps(tok: string, path: string, name: string) {
 (async () => {
   const tok = await token();
   for (const job of JOBS) {
-    const files = [...job.files];
-    for (const [k, v] of Object.entries(BACKS)) {
-      if (files.some((f) => f.includes(k))) files.push(v);
+    // interleave: every card's back goes directly after its own front, so the
+    // gallery reads front, back, front, back rather than all fronts then all
+    // backs
+    const files: string[] = [];
+    for (const f of job.files) {
+      files.push(f);
+      const hit = Object.entries(BACKS).find(([k]) => f.includes(k));
+      if (hit) files.push(hit[1]);
     }
     const urls: string[] = [];
     for (const [i, f] of files.entries()) {
