@@ -1079,6 +1079,31 @@ Lot photos are **montages of the card fronts already shot**, built by
 build-naruto-lots-0828.ts. A grid of the actual 20 SRs evidences a complete set
 better than a stack photo and needs no new photography.
 
+---
+
+## Pokemon 30th Celebration Elite Trainer Box (listed 2026-09-17)
+
+**Item:** [168696938215](https://www.ebay.com/itm/168696938215) &middot; SKU `P30TH-ETB` &middot; qty 1
+**Title:** `Pokemon TCG 30th Anniversary Celebration Elite Trainer Box ETB Sealed In Hand` (77 chars)
+**Ask:** $159.99, Best Offer on, auto-decline $139.00 &middot; **Cost:** $55.00 (Zulu's Board Games, 2026-09-16)
+**Net at ask:** ~$135 &middot; **Profit:** ~$80
+**UPC:** `196214158801`, read off the box. Printed as EAN-13 `0 196214 158801`; leading zero dropped for a US listing, check digit verifies. Box code `10-10447-110` is the retail ETB, `-111` is the Pokemon Center exclusive.
+**Photos:** EPS, front then back, from `eBay_assets/iCloud Photos/30thCelebration_ETB_0{1,2}_*.JPEG`
+**Mapped:** `ebay_listing_mappings` 168696938215 -> `[{qty:1, catalogItemId:133869}]`
+
+**Why $159.99 and not more.** 127 live asks, floor $140, median $169.99, 25th
+percentile $159.99. Michael's read is that 30th Celebration was printed to
+oblivion with bad pull rates and will soften, so the point is to be near the
+front of the queue rather than to hold out for the median. $159.99 still nets
+~$135 against TradePost's $138 less $11 shipping, which is $127 in hand today.
+
+**The alternative he was weighing** was TradePost at $138. At his original
+$160 idea the eBay edge was only ~$8, which would not have justified the wait;
+the case only works because the market median is $170, not $160.
+
+**Not in this listing:** the two Pokemon Center 30th ETBs. Those comp at a $300
+median off 145 asks against a $66.41 cost and are still unlisted.
+
 ## How to keep this file current
 
 - New SKUs get their own section with title, body, photos, and the net/margin line.
