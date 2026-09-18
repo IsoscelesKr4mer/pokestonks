@@ -1104,6 +1104,55 @@ the case only works because the market median is $170, not $160.
 **Not in this listing:** the two Pokemon Center 30th ETBs. Those comp at a $300
 median off 145 asks against a $66.41 cost and are still unlisted.
 
+---
+
+## Pokemon 30th Celebration singles from the Tech Sticker rips (listed 2026-09-17)
+
+Ten cards out of two Tech Sticker Collections, in **three** listings rather than
+ten. The six Pikachu variations and the two box promos are $1-4 cards on eBay,
+and the $0.40 per-order floor plus an envelope each would have eaten most of
+that, so they ship as one themed lot. A buyer chasing the 30-card Pikachu subset
+wants several at once.
+
+| Item | Ask | Floor | Cat | Card value |
+|---|---|---|---|---|
+| [168697072160](https://www.ebay.com/itm/168697072160) Zapdos 133/128 Illustration Rare | $17.99 | $14.00 | 183454 | TCGplayer $21.38 |
+| [168697072332](https://www.ebay.com/itm/168697072332) Arceus VSTAR 123/172 Classic Collection | $10.99 | $8.50 | 183454 | TCGplayer $8.76 |
+| [168697072540](https://www.ebay.com/itm/168697072540) 6 Pikachu variations + 2 promos, 8 cards | $18.99 | $15.00 | 183455 | TCGplayer $10.04 |
+
+Best Offer on all three. Total ask $47.97 against $33.18 of box cost.
+
+**Priced off eBay asks, not TCGplayer market, because the two disagree and eBay
+is where these sell.** TCGplayer had the Arceus at $8.76 against an eBay median
+of $12.99, and the Pikachus at roughly $1.50 against $3.99. Michael's read is
+that the set softens from here, so each one sits between the 25th percentile and
+the median rather than at the median:
+
+- Zapdos: 199 asks, 25th $15.99, median $19.99
+- Arceus: 68 asks, 25th $9.99, median $12.99
+- Pikachu singles: 197 asks, 25th $2.99, median $3.99. Lot priced at
+  sum-of-parts on the 25th percentile, not below it.
+
+**Two Trading API notes.**
+
+- The auto-decline floor is `ListingDetails.MinimumBestOfferPrice`.
+  `BestOfferAutoDeclinePrice` is not in the schema; it is accepted, warned about
+  and then silently ignored, so a listing would have gone live with no floor.
+- Category **183455** (CCG Mixed Card Lots) takes a bare `ConditionID` and
+  rejects `ConditionDescriptors`; **183454** (CCG Individual Cards) refuses a
+  bare one and requires the `40001` descriptor. Both categories came from the
+  taxonomy API, not from memory.
+- The flat card shipping profile caps at **3 oz**; the lot was declared at 4 and
+  verify refused it.
+
+**Not mapped in `ebay_listing_mappings`.** Pokemon singles have no catalog row,
+the same as the Naruto singles, so a sale will not auto-book and has to be
+entered by hand.
+
+**Deliberately not listed:** the two Pokemon Center 30th ETBs. They comp at a
+$300 median off 145 asks against $66.41 cost, and Michael is keeping them long
+term.
+
 ## How to keep this file current
 
 - New SKUs get their own section with title, body, photos, and the net/margin line.
