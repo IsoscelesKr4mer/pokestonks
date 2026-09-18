@@ -1146,6 +1146,17 @@ the median rather than at the median:
 - The flat card shipping profile caps at **3 oz**; the lot was declared at 4 and
   verify refused it.
 
+**Shipping: eBay Standard Envelope, and the lot MUST go flat.** Policy
+272052757012 is eSE at $1.29 with USPS Parcel at $4.99 as a buyer-paid upgrade.
+eSE is rated to 24 cards at 3 oz, quarter-inch thickness and a $20 max item
+price, so an 8-card lot at $17.00 clears every limit and eSE costs well under
+the $1.29 the buyer paid; Ground Advantage would be roughly $4.50 out of pocket.
+The constraint is the packing: sleeves and card stock in a 6x9, no toploaders,
+no bubble mailer, because USPS reclassifies a lumpy envelope as a package and
+bills the difference. That constraint was not stated when the lot was listed and
+should have been, since reading "eBay Standard Envelope" off the order without
+it looks like the wrong service was picked.
+
 **Not mapped in `ebay_listing_mappings`.** Pokemon singles have no catalog row,
 the same as the Naruto singles, so a sale will not auto-book.
 
