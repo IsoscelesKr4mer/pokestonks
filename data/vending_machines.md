@@ -7,7 +7,7 @@ multiple, or nothing. Times can change; Michael updates them and I revise here.
 | Machine | Location | Drop times (minutes past the hour) | Last updated |
 |---|---|---|---|
 | Edmonds Safeway | Edmonds, WA (his main machine, "Safeway") | **:01-:02 and :31-:32, AS REPORTED 2026-09-03** (was :25/:55, confirmed twice) | 2026-09-03 |
-| Shoreline Fred Meyer | Shoreline, WA | **:08 and :38, AS REPORTED 2026-09-03** (was :26/:56, itself unverified) | 2026-09-03 |
+| Shoreline Fred Meyer | Shoreline, WA | **:14 and :44, AS REPORTED 2026-09-17** (was :08/:38, itself as-reported) | 2026-09-17 |
 | Shoreline Safeway | Shoreline, WA (further down Aurora, past Fred Meyer) | **:07 and :37** | 2026-08-13 |
 | Winco | Edmonds area, near the Safeway machine | :15 and :45 | 2026-07-12 |
 
@@ -33,6 +33,26 @@ His own log agrees. Every bundle that has ever appeared in `drop_log.csv`, bough
 **🔴 READ THE DROP LOG FOR AVAILABILITY, NOT THE PURCHASE TABLE.** I made this mistake twice in one message: I said Pitch Black was absent (it has 7 log appearances, all `seen`) and that Perfect Order had rotated out (24 sightings, latest 8/21). **A gap in purchases means he stopped buying it, not that the machine stopped stocking it.** White Flare (last seen 2026-07-20) and Black Bolt (last seen 2026-07-12) are genuinely gone — the drop log agrees there.
 
 **Practical rule: price a sighting against the roster, not against the catalog.** On 2026-08-26 I mis-heard a Mega Evolution booster PACK as a bundle, priced it as one, and told him he had passed up ~$22. Mega Evolution bundles are **not stocked in these machines at all**, and the pack was worth about $1.50 net over the $5.00 vending price. Leaving it was correct.
+
+### 🔄 SHORELINE FRED MEYER MOVED AGAIN, reported 2026-09-17. New marks **:14 / :44**.
+
+Michael, by voice: *"Fred Meyer changed to :44."* It came as the answer to a
+question that named the machine and quoted its old **:08 / :38**, so it is that
+machine and not the Lynnwood store he also shopped that week.
+
+He gave **:44 only**. The paired **:14** is inferred from the 30-minute cadence
+every machine in this file has held through every move, never from a reading, so
+treat :14 as the weaker half until he hits it.
+
+Same day he bought an Ascended Heroes bundle here at **16:44**, which is what
+surfaced the change: I logged that drop against the old :08/:38 and asked
+whether the machine had moved rather than quietly widening the marks.
+
+That is the **third** move on record for this machine (:15:30/:45:30 → :26/:56
+→ :08/:38 → :14/:44) and, at +6 minutes, the smallest. The Shoreline route
+pairing stays dead: Shoreline Safeway is :07/:37, so Fred Meyer at :14/:44 now
+runs 7 minutes *behind* it rather than the 8 minutes ahead the two-machine run
+needed.
 
 ### 🔄 BOTH MACHINES MOVED, reported 2026-09-03. Edmonds **:01-:02 / :31-:32**, Shoreline Fred Meyer **:08 / :38**.
 
