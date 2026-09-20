@@ -11,12 +11,32 @@
  * 19 of the 108 cards carry $260 of the $468 book. The other 89 average $2.56
  * and go in a separate mega you-pick, not 89 listings.
  *
- * THE THREE NUMBERED MOJOS ARE NOT HERE. Griffin Purple /250, Suarez Pink /199
- * and Skenes Blue /150 are held pending his call. The standing advice is to
- * hold them: their scarcity does not expire on release day, the audience
- * quadruples after it, and none of the three has a single comp anywhere, so
- * selling now means selling into the thinnest possible crowd at the lowest
- * interest. He was asked directly and everything else ships regardless.
+ * THE THREE NUMBERED MOJOS WENT UP ON 09-20, and the advice that had been
+ * holding them back was wrong.
+ *
+ * I had told him twice that these have no comp anywhere and that megas had not
+ * streeted, so selling pre-release meant selling into the thinnest possible
+ * crowd. Comping the TIER rather than the exact card killed that: there are
+ * 137-160 live asks on 2026 Bowman Chrome Pink, Blue and Purple Mojos right
+ * now, several of them titled "Mega Box". The mega parallels are already all
+ * over eBay. My own engine returned zero only because it required the exact
+ * player + colour + run-size triple, which really is rare; the price level
+ * around it never was.
+ *
+ * Priced off that tier and off each player's own other numbered parallels:
+ *   Griffin Purple Mojo /250, base #1 RC. Exact-card asks $34.99 and $38.04,
+ *     8 asks, median $35, 25th $29.                          -> $34.99
+ *   Skenes Blue Mojo /150, #60. His Aqua RayWave /199 asks $19.99 and his
+ *     Yellow /75 asks $39.99, so a /150 sits between them.   -> $29.99
+ *   Suarez Pink Mojo /199, BCP-180. His own Blue /150 asks $19.99 and his Blue
+ *     Wave /150 $15.00; prospect Pink Mojo /199 median $10.  -> $16.99
+ *
+ * Best Offer on all three: the exact-card comp is thin even where the tier is
+ * thick, so the median is an opinion and an offer is how it finds out.
+ *
+ * Skenes' serial is 53/150, confirmed at 4x. It had been recorded as "?53/150"
+ * with the first digit in doubt, which was never necessary: a card numbered out
+ * of 150 cannot exceed 150, so nothing can precede the 5 but a leading zero.
  *
  * Prices are the comp medians, which for the mega-exclusive parallels are
  * pre-release asks in a market with almost no supply. That IS the price right
@@ -56,8 +76,18 @@ type Job = {
 };
 
 const JOBS: Job[] = [
-  { i: 94, qty: 1, price: '78.00', asks: 25,
-    title: '2026 Bowman Chrome Sal Stewart Red Rookie RC Variation #48 Reds Mega' },
+  // --- the three numbered Mojos, added 2026-09-20 on his call: "Just list the
+  // numbered cards too idc just do what you think based on other factors."
+  // Priced off the tier, which turned out to exist after all. See the header.
+  { i: 59, qty: 1, price: '34.99', floor: '27.00', asks: 8,
+    title: '2026 Bowman Chrome Konnor Griffin Purple Mojo Refractor 167/250 #1 Pirates RC' },
+  { i: 95, qty: 1, price: '29.99', floor: '23.00', asks: 0,
+    title: '2026 Bowman Chrome Paul Skenes Blue Mojo Refractor 53/150 #60 Pirates Mega Box' },
+  { i: 36, qty: 1, price: '16.99', floor: '13.00', asks: 0,
+    title: '2026 Bowman Chrome Jaider Suarez Pink Mojo Refractor 180/199 BCP-180 1st Bowman' },
+  // --- Sal Stewart ENDED 09-20, he is keeping it. Spec kept for a one-command relist.
+  // { i: 94, qty: 1, price: '78.00', asks: 25,
+  //   title: '2026 Bowman Chrome Sal Stewart Red Rookie RC Variation #48 Reds Mega' },
   { i: 99, qty: 1, price: '14.99', asks: 8,
     title: '2026 Bowman Chrome JJ Wetherholt Mojo Refractor #52 Cardinals RC Mega Box' },
   { i: 60, extra: 101, qty: 2, price: '12.99', asks: 6,
@@ -85,6 +115,14 @@ const JOBS: Job[] = [
   { i: 42, qty: 1, price: '4.99', asks: 4,
     title: '2026 Bowman Chrome Louis Andujar BCP-198 Red Sox 1st Bowman Prospect' },
 ];
+
+// eBay refuses a second listing of an identical item, so a rerun of this script
+// fails every card already live. Pass ids to do just those:
+//   npx tsx scripts/list-bow3box-solo-0919.ts --apply --only 59,95,36
+const ONLY = (() => {
+  const k = process.argv.indexOf('--only');
+  return k > -1 ? new Set(process.argv[k + 1].split(',').map(Number)) : null;
+})();
 
 (async () => {
   const cards = JSON.parse(readFileSync('scripts/_bow3box_cards.json', 'utf8'));
@@ -114,6 +152,7 @@ const JOBS: Job[] = [
 
   const results: string[] = [];
   for (const job of JOBS) {
+    if (ONLY && !ONLY.has(job.i)) continue;
     const c = cards.find((x: any) => x.i === job.i);
     if (!c) throw new Error('card ' + job.i + ' missing');
     if (job.title.length > 80) throw new Error('title too long: ' + job.title);

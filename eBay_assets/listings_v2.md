@@ -1229,12 +1229,39 @@ fewer than four live asks, where the median is an opinion rather than a market.
 one is a SINGLE card and flat in a sleeve. Multi-card lots go on 269110723012
 Ground Advantage; that distinction was learned on the 8-card Pokemon lot.
 
-**HELD, pending his call: the three numbered Mojos.** Griffin Purple /250 (167/250),
-Suarez Pink /199 (180/199), Skenes Blue /150. None has a single comp anywhere.
-Standing advice is to hold: the scarcity does not expire on release day but the
-audience quadruples after it, so selling pre-release means selling into the
-thinnest crowd at the lowest interest. He was asked directly and everything else
-shipped regardless.
+### The three numbered Mojos, listed 2026-09-20 — and the advice holding them back was wrong
+
+| Item | Card | Ask | Floor |
+|---|---|---|---|
+| [168701981861](https://www.ebay.com/itm/168701981861) | Konnor Griffin Purple Mojo 167/250, base #1 RC | $34.99 | $27 |
+| [168701981881](https://www.ebay.com/itm/168701981881) | Paul Skenes Blue Mojo 53/150, #60 | $29.99 | $23 |
+| [168701981899](https://www.ebay.com/itm/168701981899) | Jaider Suarez Pink Mojo 180/199, BCP-180 1st Bowman | $16.99 | $13 |
+
+He overruled the hold: *"Just list the numbered cards too idc just do what you
+think based on other factors."* He was right to.
+
+**The error.** He was told twice that these have no comp anywhere and that megas
+had not streeted, so selling pre-release meant selling into an empty room. Both
+comp passes had only ever queried the EXACT card, player + colour + run size,
+which really does return zero. Comping the **tier** instead finds **137 to 160
+live asks** on 2026 Bowman Chrome Pink, Blue and Purple Mojos, several titled
+"Mega Box". The mega parallels were already all over eBay the whole time. A
+zero-ask result on a narrow query is not evidence of an empty market, and it was
+treated as though it were for three days.
+
+**Pricing, off the tier and off each player's own other numbered parallels:**
+
+- **Griffin** — exact-card asks of $34.99 and $38.04, 8 asks, median $35, 25th $29. Listed at the median.
+- **Skenes** — no exact comp, so bracketed by his own: Aqua RayWave /199 asks $19.99, Yellow /75 asks $39.99. A /150 sits between.
+- **Suarez** — his own Blue /150 asks $19.99 and Blue Wave /150 $15.00; prospect Pink Mojo /199 median is $10.
+
+Best Offer on all three: the tier is thick but each exact card is thin, so the
+number is still partly an opinion.
+
+**Skenes is 53/150.** Recorded as `?53/150` for three days with the first digit
+in doubt. That was never necessary: a card numbered out of 150 cannot exceed
+150, so nothing can precede the 5 but a leading zero. Confirmed at 4x and now in
+the listing title.
 
 **Not mapped in `ebay_listing_mappings`.** Sports singles have no `catalog_items`
 row (verified: zero non-sealed Bowman Chrome rows), same as the 09-10 hobby-box
