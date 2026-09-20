@@ -1179,6 +1179,59 @@ when Supabase comes back.
 $300 median off 145 asks against $66.41 cost, and Michael is keeping them long
 term.
 
+---
+
+## 2026 Bowman Chrome mega rip, the 14 solo cards (listed 2026-09-19)
+
+Michael, late on the 19th: *"I just realized you never listed my bowman chrome
+mega box cards and I'm losing my edge in the early release."* Catalogued and
+comped on 09-17 and then never listed. Megas street **09-23**, so the window was
+three days wide when this went up.
+
+19 of the 108 cards carry $260 of the $468 book. The other 89 average $2.56 and
+go in a separate mega you-pick rather than 89 listings.
+
+| Item | Card | Ask | Qty |
+|---|---|---|---|
+| [168701941091](https://www.ebay.com/itm/168701941091) | Sal Stewart Red Rookie RC Variation #48 | $78.00 | 1 |
+| [168701941106](https://www.ebay.com/itm/168701941106) | JJ Wetherholt Mojo #52 | $14.99 | 1 |
+| [168701941129](https://www.ebay.com/itm/168701941129) | Owen Ayers Mojo BCP-214 | $12.99 | **2** |
+| [168701941148](https://www.ebay.com/itm/168701941148) | Jaider Suarez Mojo BCP-180 | $11.99 | 1 |
+| [168701941168](https://www.ebay.com/itm/168701941168) | De Los Santos Lazer BCP-204 | $9.99 +BO | 1 |
+| [168701941261](https://www.ebay.com/itm/168701941261) | McGonigle IT-4 | $9.49 | 1 |
+| [168701941282](https://www.ebay.com/itm/168701941282) | Carson Benge Mojo #96 | $6.50 | 1 |
+| [168701941304](https://www.ebay.com/itm/168701941304) | Juan Rijo Mojo BCP-197 | $5.99 | 1 |
+| [168701941329](https://www.ebay.com/itm/168701941329) | Munetaka Murakami #76 | $5.99 | 1 |
+| [168701941351](https://www.ebay.com/itm/168701941351) | Dawvris Brito Mojo BCP-191 | $5.99 | 1 |
+| [168701941368](https://www.ebay.com/itm/168701941368) | Jac Caglianone IT-3 | $5.99 | 1 |
+| [168701941485](https://www.ebay.com/itm/168701941485) | Wandy Asigen BCP-152 | $5.99 | **2** |
+| [168701941568](https://www.ebay.com/itm/168701941568) | Ricky Moneys Mojo BCP-192 | $5.49 | 1 |
+| [168701941584](https://www.ebay.com/itm/168701941584) | Louis Andujar BCP-198 | $4.99 | 1 |
+
+**$203.36 of ask live.** All 14 verified with GetItem: Active, category 261328,
+front and back on every one. Duplicates went up as one listing at quantity 2
+rather than two listings competing with each other.
+
+**Priced AT comp, not under it.** For the Mojos and the Lazer that comp is a
+pre-release ask in a market with almost no supply, and there is nobody to
+undercut before Wednesday. Best Offer only on De Los Santos, the one card with
+fewer than four live asks, where the median is an opinion rather than a market.
+
+**Shipping 272052757012, eBay Standard Envelope.** Correct here because every
+one is a SINGLE card and flat in a sleeve. Multi-card lots go on 269110723012
+Ground Advantage; that distinction was learned on the 8-card Pokemon lot.
+
+**HELD, pending his call: the three numbered Mojos.** Griffin Purple /250 (167/250),
+Suarez Pink /199 (180/199), Skenes Blue /150. None has a single comp anywhere.
+Standing advice is to hold: the scarcity does not expire on release day but the
+audience quadruples after it, so selling pre-release means selling into the
+thinnest crowd at the lowest interest. He was asked directly and everything else
+shipped regardless.
+
+**Not mapped in `ebay_listing_mappings`.** Sports singles have no `catalog_items`
+row (verified: zero non-sealed Bowman Chrome rows), same as the 09-10 hobby-box
+cards, so sales do not auto-book.
+
 ## How to keep this file current
 
 - New SKUs get their own section with title, body, photos, and the net/margin line.
