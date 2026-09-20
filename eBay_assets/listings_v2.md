@@ -1193,7 +1193,7 @@ go in a separate mega you-pick rather than 89 listings.
 
 | Item | Card | Ask | Qty |
 |---|---|---|---|
-| [168701941091](https://www.ebay.com/itm/168701941091) | Sal Stewart Red Rookie RC Variation #48 | $78.00 | 1 |
+| ~~168701941091~~ | Sal Stewart Red Rookie RC Variation #48 | ~~$78.00~~ **ENDED 09-20, he is keeping it** | 1 |
 | [168701941106](https://www.ebay.com/itm/168701941106) | JJ Wetherholt Mojo #52 | $14.99 | 1 |
 | [168701941129](https://www.ebay.com/itm/168701941129) | Owen Ayers Mojo BCP-214 | $12.99 | **2** |
 | [168701941148](https://www.ebay.com/itm/168701941148) | Jaider Suarez Mojo BCP-180 | $11.99 | 1 |
@@ -1208,8 +1208,16 @@ go in a separate mega you-pick rather than 89 listings.
 | [168701941568](https://www.ebay.com/itm/168701941568) | Ricky Moneys Mojo BCP-192 | $5.49 | 1 |
 | [168701941584](https://www.ebay.com/itm/168701941584) | Louis Andujar BCP-198 | $4.99 | 1 |
 
-**$203.36 of ask live.** All 14 verified with GetItem: Active, category 261328,
-front and back on every one. Duplicates went up as one listing at quantity 2
+**$203.36 of ask went live; $125.36 across 13 after he pulled the Sal Stewart**
+the same night to keep it (ended with QuantitySold 0, so nothing was lost).
+All 14 were verified with GetItem when created: Active, category 261328,
+front and back on every one.
+
+Worth noting for when he revisits it: the Sal Stewart is the only card in the
+rip with a real market behind it, 25 live asks from $50 to $100, so unlike the
+numbered Mojos it is not a pre-release-window card and holding it costs nothing.
+Photos are in the EPS cache and the spec is in list-bow3box-solo-0919.ts, so
+relisting is one command. Duplicates went up as one listing at quantity 2
 rather than two listings competing with each other.
 
 **Priced AT comp, not under it.** For the Mojos and the Lazer that comp is a
