@@ -1267,6 +1267,54 @@ the listing title.
 row (verified: zero non-sealed Bowman Chrome rows), same as the 09-10 hobby-box
 cards, so sales do not auto-book.
 
+---
+
+## 30th Celebration ex boxes (listed 2026-09-21)
+
+*"Okay go ahead and list these with square center cropped images"* plus front and
+back of each box. He took the split: ex boxes to eBay, Knock Outs and Poster
+Collections to TradePost.
+
+| Item | Box | Ask | Qty | Floor | UPC |
+|---|---|---|---|---|---|
+| [168705237943](https://www.ebay.com/itm/168705237943) | Greninja ex Box | $57.99 | **5** | $53.00 | 196214158740 |
+| [168705237986](https://www.ebay.com/itm/168705237986) | Sylveon ex Box | $64.99 | **2** | $57.00 | 196214158733 |
+
+Cost $33.14 each. Two listings for seven boxes, multi-quantity, same shape as
+the DR sleeved lot. Verified with GetItem: Active, cat 261044, UPC set, 2 pics
+each, calculated shipping.
+
+**Priced off eBay asks, which undercut TCGplayer on the Greninja.** Live book:
+Greninja 132 asks, low $48, 25th $56.90, median $60.00 (TCGplayer said $63.19);
+Sylveon 133 asks, low $43, 25th $60.00, median $65.00. Greninja sits between the
+25th and the median because there are five to move into a deep book; Sylveon
+sits just under its median because there are two. That revision drops the real
+edge over TradePost on these seven from the $71 originally quoted to about $49.
+
+**THE BEST OFFER FLOORS ARE SET OFF TRADEPOST, NOT OFF THE ASK.** TradePost was
+the live alternative, so an accepted offer must never net less than they would
+have paid:
+
+- Greninja floor $53.00 nets $44.89 against TradePost's $44.87
+- Sylveon floor $57.00 nets $48.28 against TradePost's $40.99
+
+A $50 floor on the Greninja would have netted **$42.35** and quietly lost to the
+channel he turned down. Worth generalising: whenever a buylist quote is the
+alternative, the auto-decline floor belongs at `TradePost_net / 0.847`, not at a
+round number under the ask.
+
+**UPCs read off the back panels**, both printed as EAN-13 with a leading zero
+that is stripped for a US listing. Check digits verify. Box codes are
+`10-10463-122` Greninja and `10-10463-121` Sylveon.
+
+**Shipping 269110723012 Ground Advantage Calculated**, not the envelope profile:
+these are boxes. Declared 8x8x4 at 1 lb 4 oz, rounded up because the buyer pays.
+
+**Still to sell on TradePost:** 10 Knock Out Collections and 5 Poster
+Collections, $423.16 net for 15 units in 2 swipes. TradePost pays fairly on
+those two (the Knock Out is a wash against eBay and the Poster is 91% of
+market), which is why handing them over costs about $27.
+
 ## How to keep this file current
 
 - New SKUs get their own section with title, body, photos, and the net/margin line.
