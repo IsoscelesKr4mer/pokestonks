@@ -1277,8 +1277,8 @@ Collections to TradePost.
 
 | Item | Box | Ask | Qty | Floor | UPC |
 |---|---|---|---|---|---|
-| [168705237943](https://www.ebay.com/itm/168705237943) | Greninja ex Box | $57.99 | **5** | $53.00 | 196214158740 |
-| [168705237986](https://www.ebay.com/itm/168705237986) | Sylveon ex Box | $64.99 | **2** | $57.00 | 196214158733 |
+| ~~168705237943~~ | Greninja ex Box | ~~$57.99~~ **ENDED 09-21, went to TradePost** | 5 | - | 196214158740 |
+| [168705237986](https://www.ebay.com/itm/168705237986) | Sylveon ex Box | ~~$64.99~~ **$61.99** | **2** | $53.00 | 196214158733 |
 
 Cost $33.14 each. Two listings for seven boxes, multi-quantity, same shape as
 the DR sleeved lot. Verified with GetItem: Active, cat 261044, UPC set, 2 pics
@@ -1310,8 +1310,43 @@ that is stripped for a US listing. Check digits verify. Box codes are
 **Shipping 269110723012 Ground Advantage Calculated**, not the envelope profile:
 these are boxes. Declared 8x8x4 at 1 lb 4 oz, rounded up because the buyer pays.
 
-**Still to sell on TradePost:** 10 Knock Out Collections and 5 Poster
-Collections, $423.16 net for 15 units in 2 swipes. TradePost pays fairly on
+
+### Revised the same day off SOLD comps, which reversed the Greninja
+
+Michael pulled sold comps from the eBay app. Everything above had been priced
+off **asks**, because Marketplace Insights is not approved for this account and
+the Browse API only returns live listings. The two books disagree badly.
+
+| delivered | ask book | actually SOLD (US, box only) |
+|---|---|---|
+| Greninja | 107 asks, 85 free-ship, bottom **$50.00** | $45, $55, $56.90, $64.52 — median ~$56 |
+| Sylveon | 119 asks, 94 free-ship, bottom $54.99 | $62.99, $69.96, $70.38, $71.98 — median ~$70 |
+
+Nothing sold at the $50 ask floor; the single $45 sale was a zero-feedback
+seller.
+
+**Greninja ended and sent to TradePost.** Converting to net, eBay loses at every
+price anyone has actually paid:
+
+| | net | vs TradePost $44.87 |
+|---|---|---|
+| sold median ~$56 delivered | $37-38 | loses |
+| best sold $64.52 delivered | $44.72 | dead even |
+| the $67.49 it was listed at | $47.25 | above every sold comp, so it would not move |
+
+**Sylveon cut to $61.99** (floor $53.00). $71.49 delivered sits inside the proven
+band; nets $50.67 at ask and $42.99 at the floor, both clear of TradePost's
+$40.99. Break-even ask against TradePost is $50.66.
+
+**The error being corrected:** these boxes were first sent to eBay over
+TradePost by "$43 a box", computed from TCGplayer market $63.19. Achievable
+delivered was ~$56. Then revised to "$49" off eBay asks. Then the Greninja went
+back to TradePost entirely. TCGplayer market and eBay asks were BOTH wrong, in
+the same direction, and only sold comps settled it. Ask him for sold comps
+before pricing — see [[feedback_ask_book_floor_is_fantasy]].
+
+**Still to sell on TradePost:** 10 Knock Out Collections (label printed,
+$238.97 net), 5 Poster Collections, and now the 5 Greninjas ($224.35 net). TradePost pays fairly on
 those two (the Knock Out is a wash against eBay and the Poster is 91% of
 market), which is why handing them over costs about $27.
 
