@@ -20,9 +20,12 @@
  * ending the eBay listing the right call by more than it looked: the best price
  * anyone had actually paid on eBay netted $44.72.
  *
- * No insurance line appears on any of the three, so the $2.63 quoted on the
- * Knock Out screen was either declined or is billed separately; the payouts
- * reconcile exactly as sale total minus label without it.
+ * The label figures ALREADY INCLUDE INSURANCE. Michael, after these were
+ * booked: "The insurance is purchased and built into all those shipping costs."
+ * The $2.63 shown on the Knock Out screen is part of the $21.80, not an extra
+ * line, which is why the payouts reconcile as sale total minus label with no
+ * separate insurance row. **All three boxes are covered** — do not tell him to
+ * treat them as uninsured if one goes missing.
  */
 import { config } from 'dotenv';
 import postgres from 'postgres';
