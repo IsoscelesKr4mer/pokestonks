@@ -1350,6 +1350,40 @@ $238.97 net), 5 Poster Collections, and now the 5 Greninjas ($224.35 net). Trade
 those two (the Knock Out is a wash against eBay and the Poster is 91% of
 market), which is why handing them over costs about $27.
 
+
+---
+
+### One Piece DP-12 and the Lorcana Best Buddies bundles — both off TradePost, onto eBay (2026-09-24)
+
+**"these are not good trade posts candidates, lorcana buddy bundle not even on there and the one piece ask is $27 w/ $9 shipping. Post both to ebay now"**
+
+He checked the buylist himself and it lost on both counts: TradePost does not carry the Lorcana bundle at all, and its One Piece quote of $27 less the $9 label he pays is **$18 net** against roughly **$29 net** here. Listed the same night.
+
+| | item | qty | ask | floor | net at floor | cost | on hand |
+|---|---|---|---|---|---|---|---|
+| [168716433765](https://www.ebay.com/itm/168716433765) | One Piece Double Pack Set Vol. 12 (OP-17) | 1 | $34.99 | $26.00 | $22.02 | $14.35 (pu631) | 1 |
+| [168716433823](https://www.ebay.com/itm/168716433823) | Lorcana Best Buddies Bundle | 2 | $79.99 | $69.00 | $58.44 | $44.19 (pu632) | 2 |
+
+**The comp filter was the entire job.** Both products are being parted out on eBay, so the raw search is a different market from the sealed one:
+
+| | raw search says | sealed only |
+|---|---|---|
+| DP-12 | $9.75 low — loose DON!! promos | 55 asks, low $28.99, **median $40.52** |
+| Best Buddies | $25 low — binder-and-pin lots, no packs | 91 asks, low $71.50, **median $90.00** |
+
+Pricing either off the unfiltered median would have halved them. TCGplayer confirms the One Piece independently at **$37.65 market** (TCGCSV 68/24736/704757); the Lorcana bundle is a warehouse-club exclusive that **TCGplayer does not carry at all**, so catalog 135614 runs on `manual_market_cents`. Both medians are **asks, not sold comps** — Marketplace Insights is still unapproved ([[feedback_ask_book_floor_is_fantasy]]).
+
+**Floors are set off the alternative, not off the ask.** DP-12's $26 floor nets $22.02, comfortably above the $18 TradePost would have paid. Best Buddies has no buylist to lose to, so its floor just protects the margin: $69 nets $58.44 on a $44.19 basis, +$14.25 a bundle.
+
+**🔴 `AddFixedPriceItem` silently dropped the combined-shipping block.** `VerifyAddFixedPriceItem` accepted `<ShippingDetails><ApplyShippingDiscount>` with no warning at all, and `GetItem` afterwards read `applied=false, profile=0`. On a qty-2 listing that means a buyer taking both pays **two full labels** — the exact thing that cost a sale on the Sylveon boxes. `ReviseFixedPriceItem` with the same block took immediately (`applied=true, profile=1423939012`), and eBay again remapped the shipping policy to the auto-created `276170586012`, keeping calculated USPS and 1-day handling. **Add does not accept it; Revise does. Always read it back with `GetItem`.** ([[reference_combined_shipping_is_settable]], [[reference_ebay_publish_verify_trading_api]])
+
+UPCs read off the back panels and check-digit verified: DP-12 `810199502014` (UPC-A), Best Buddies `4050368901576` (EAN-13, into the **UPC** field per [[reference_ebay_gtin_goes_in_upc_field]]). Category 261044 for both, `Game` aspect `One Piece CCG` / `Disney Lorcana TCG`. Photos are his own, EPS-hosted, front then back. Both mapped at **qty 1 per listing unit**.
+
+**Open: the declared weights are estimates, not scale readings.** 8x8x4 at 12 oz for the One Piece is safe; the Lorcana box has never been measured and is declared 14x11x4 at 3 lb, deliberately generous because the buyer pays calculated. Tighten both when he weighs them.
+
+
+---
+
 ## How to keep this file current
 
 - New SKUs get their own section with title, body, photos, and the net/margin line.
