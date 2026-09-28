@@ -174,7 +174,7 @@ const ONLY = (() => {
       + (c.rc ? '<p>Carries the <strong>RC</strong> rookie badge.</p>' : '')
       + (parallel.includes('Mojo') || parallel.includes('Lazer')
         ? '<p>Mega box exclusive parallel. Pulled from a 2026 Bowman Chrome mega box.</p>' : '')
-      + '<p>Pulled and sleeved straight away, never played. Photos are of the actual card, front and back.</p>'
+      + '<p>Pulled and sleeved straight away. Photos are of the actual card, front and back.</p>'
       + '<p>Ships within 1 business day.</p>'
       + '<p>Smoke-free home. Buy with confidence, check my feedback. Thanks for looking.</p>';
 

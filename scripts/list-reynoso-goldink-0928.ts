@@ -145,7 +145,7 @@ async function eps(tok: string, path: string, name: string) {
     + ' <em>Baseball America</em>&#39;s Bonus Board. Trained at Cacon Baseball Academy in'
     + ' the Dominican. Scouting comps to Aramis Ram&iacute;rez. 2026 will be his first'
     + ' professional season.</p>'
-    + '<p>Pulled from a break and sleeved straight away, never played. Photos are of the'
+    + '<p>Pulled from a break and sleeved straight away. Photos are of the'
     + ' actual card, front and back.</p>'
     + '<p>Ships within 1 business day.</p>'
     + '<p>Smoke-free home. Buy with confidence, check my feedback. Thanks for looking.</p>';
