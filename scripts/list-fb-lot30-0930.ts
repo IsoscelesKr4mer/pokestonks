@@ -162,13 +162,16 @@ async function eps(tok: string, path: string, name: string) {
   const row = ([n, p, t]: [string, string, string]) =>
     '<li><strong>' + esc(n) + '</strong> &ndash; ' + esc(p) + ', ' + esc(t) + '</li>';
   const desc = '<p><strong>2026 Bowman Football &mdash; 30 card paper base lot.</strong> All pulled'
-    + ' from a mega box and sleeved straight away.</p>'
+    + ' from a 2026 Bowman Football mega box.</p>'
     + '<p><strong>Every card is listed below by number.</strong> No duplicates, no filler.</p>'
     + '<p><strong>NFL Base (18)</strong></p><ul>' + NFL.map(row).join('') + '</ul>'
     + '<p><strong>Bowman Prospects (12)</strong></p><ul>' + BPP.map(row).join('') + '</ul>'
     + '<p>Paper base only &mdash; no parallels, inserts, autographs or numbered cards in this lot.</p>'
-    + '<p>Photos show a selection of the actual cards. Ships within 1 business day in a'
-    + ' team bag and top loader inside a bubble mailer.</p>'
+    // NO PACKAGING CLAIMS. [[feedback_listing_shipping_assumptions]] says only
+    // "Ships within 1 business day", and the first version of this broke that
+    // AND got it wrong: "team bag and top loader" -> "they come ini a team bag
+    // not sleeved".
+    + '<p>Photos show the actual cards. Ships within 1 business day.</p>'
     + '<p>Smoke-free home. Buy with confidence, check my feedback. Thanks for looking.</p>';
 
   const specifics: [string, string][] = [
