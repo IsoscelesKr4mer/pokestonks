@@ -9,17 +9,18 @@
  * whole lot and also and auction for the green /99 separately. Ending Sunday at
  * 6:00pm or another time you think is good."
  *
- * TIMING: 10 days, scheduled, closing SUNDAY 2026-10-11 at 6:00pm Pacific.
- * He asked for a Sunday 6pm close and the nearest one, 10-04, is unreachable -
- * it is already Tuesday night for him, and a 5-day would have had to start at
- * 6pm Tuesday, five hours ago. The choice was a 3-day closing 10-04 or a 10-day
- * closing 10-11 on the same Sunday-evening slot. **Ten days, because an auction
- * runs on accumulated watchers** and three days is thin on a product that only
- * released today with no comps behind it. `ScheduleTime` costs $0.10
- * ([[reference_ebay_auction_creation]]).
+ * TIMING: 5 days, STARTING IMMEDIATELY, closing Sunday 2026-10-04 around
+ * 11:30pm Pacific. His reasoning and it is better than the first plan:
+ * "I want these to start now so they end before other 7 day auctions from
+ * release day tomorrow." Sellers opening 7-day auctions on the 10-01 release
+ * day all close 10-08, so closing 10-04 puts these in front of buyers while
+ * they are still the only ones available.
  *
- *   start  2026-10-02T01:00:00Z  = Thu 10-01 18:00 PDT
- *   end    2026-10-12T01:00:00Z  = Sun 10-11 18:00 PDT
+ * The cost is the closing HOUR. Starting now means ~11:30pm Pacific, which is
+ * 2:30am Eastern, and snipers on the east coast are asleep. Hitting Sunday
+ * 6:00pm Pacific would mean scheduling a 3-day to start Thursday 6pm and
+ * giving up ~42 hours of visibility. He chose exposure and beating the wave;
+ * the hour is the trade.
  *
  * PAYMENT POLICY MUST BE 273540269012. The usual 269110704012 sets
  * immediatePay, which eBay refuses on an auction with no Buy It Now (21917141).
@@ -38,12 +39,15 @@
  * comparable at all - his 2025 Bowman U cards sit at $6-10 and the only 2026
  * numbered ask is a /50 Gold at $65.
  *
- * THE PARALLEL NAME ON THE SELLERS IS DELIBERATELY NOT "MOJO". The card says
- * Bowman Chrome U, Mega Prospects, MP-16, and shows 67/99 in gold foil; it does
- * not name its finish, and the green's texture is visibly different from the
- * eleven mojos. [[reference_read_cards_from_fanthrough_video]] and the
- * card-intake skill both say to record the colour plus the serial rather than
- * invent a Topps parallel name, so the title says "Green 67/99".
+ * THE GREEN IS A MOJO, CONFIRMED TWICE. The card does not name its own finish,
+ * so the first version said only "Green 67/99" rather than invent a Topps
+ * parallel name. He then said "i know it's a mojo" and sent the odds sheet,
+ * which lists **Mega Prospects Green Mojo at 1:928 packs** - that is where the
+ * name and the pull rate in the description both come from.
+ *
+ * The same sheet killed a claim of mine: Mojo runs through Chrome NFL Base,
+ * Chrome Rookie and Chrome Prospects at 1:3, so it is not "the mega box
+ * exclusive finish" and that line is gone from the lot.
  *
  * Every name and number below was read off the backs and then confirmed against
  * the 2026 Bowman Football checklist.
@@ -56,8 +60,12 @@ config({ path: '.env.local' });
 
 const APPLY = process.argv.includes('--apply');
 const DIR = 'eBay_assets/iCloud Photos/';
-const SCHEDULE = '2026-10-02T01:00:00.000Z';   // Thu 10-01 18:00 PDT
-const DURATION = 'Days_10';                    // -> Sun 10-11 18:00 PDT
+// START NOW, not scheduled: "I want these to start now so they end before
+// other 7 day auctions from release day tomorrow". A 7-day opened on the
+// 10-01 release day closes 10-08, so a 5-day opened tonight closes Sunday
+// 10-04 and is gone four days before that wave lands.
+const SCHEDULE = '';                           // immediate
+const DURATION = 'Days_5';                     // -> Sun 10-04 ~23:30 PDT
 const PAY_AUCTION = '273540269012';            // no immediate pay
 const RETURN_POLICY = '269110705012';
 const SHIP_CALC = '269110723012';
@@ -101,16 +109,17 @@ const JOBS: Job[] = [
   {
     key: 'mojolot', start: '0.99', cat: '261329', cond: '1000',
     title: '2026 Bowman Chrome Football Mojo Refractor Lot 11 Nabers Waddle Skattebo RC',
-    photos: ['Bowman26FB_MojoLot11_00_grid.jpg', 'Bowman26FB_MojoLot11_01_nabers.jpg',
-      'Bowman26FB_MojoLot11_02_waddle.jpg', 'Bowman26FB_MojoLot11_03_skattebo.jpg'],
+    photos: ['Bowman26FB_MojoLot11_00_grid.jpg',
+      ...['01_nabers','02_waddle','03_skattebo','04_tate','05_klubnik','06_randall',
+          '07_hoover','08_surace','09_desir','10_minicucci','11_chudzinski']
+        .map((n) => 'Bowman26FB_MojoFront_' + n + '.jpg')],
     desc: '<p><strong>2026 Bowman Chrome Football &mdash; 11 Mojo Refractors</strong>, every'
       + ' one pulled from a single mega box.</p>'
       + '<p><strong>Every card listed by number, no duplicates:</strong></p><ul>'
       + LOT.map(([n, p, t]) => '<li><strong>' + esc(n) + '</strong> &ndash; ' + esc(p)
         + ', ' + esc(t) + '</li>').join('')
       + '</ul>'
-      + '<p>Mojo Refractor parallels, the mega box exclusive finish. No duplicates and'
-      + ' nothing filler &mdash; this is the full Mojo run out of the box.</p>'
+      + '<p>No duplicates and nothing filler &mdash; this is the full Mojo run out of one box.</p>'
       + TAIL,
     specifics: [
       ['Sport', 'Football'], ['League', 'National Football League (NFL)'],
@@ -124,16 +133,17 @@ const JOBS: Job[] = [
   },
   {
     key: 'sellers', start: '0.99', cat: '261328', cond: '4000',
-    title: '2026 Bowman Chrome U LaNorris Sellers Mega Prospects Green 67/99 South Carolina',
+    title: '2026 Bowman Chrome U LaNorris Sellers Mega Prospects Green Mojo Refractor 67/99',
     photos: ['Bowman26FBU_Sellers_GreenMP16_01_front.jpg',
       'Bowman26FBU_Sellers_GreenMP16_02_serial.jpg',
       'Bowman26FBU_Sellers_GreenMP16_03_back.jpg'],
     desc: '<p><strong>2026 Bowman Chrome U &mdash; Mega Prospects &mdash; LaNorris Sellers</strong>,'
       + ' card <strong>MP-16</strong>, South Carolina QB.</p>'
-      + '<p><strong>Green parallel, serial numbered 67/99</strong> in gold foil on the front.</p>'
+      + '<p><strong>Green Mojo Refractor, serial numbered 67/99</strong> in gold foil on the front.</p>'
       + '<ul><li>Hand numbered <strong>67/99</strong></li>'
       + '<li>Mega Prospects insert, MP-16</li>'
       + '<li>South Carolina Gamecocks, quarterback</li></ul>'
+      + '<p><strong>Topps lists the Mega Prospects Green Mojo at odds of 1:928 packs.</strong></p>'
       + '<p>Pulled from a 2026 Bowman Football mega box. Closeup of the serial number is'
       + ' included in the photos.</p>'
       + TAIL,
@@ -141,7 +151,7 @@ const JOBS: Job[] = [
       ['Sport', 'Football'], ['League', 'NCAA'], ['Type', 'Sports Trading Card'],
       ['Set', '2026 Bowman Chrome U'], ['Season', '2026'], ['Manufacturer', 'Topps'],
       ['Player/Athlete', 'LaNorris Sellers'], ['Team', 'South Carolina Gamecocks'],
-      ['Card Number', 'MP-16'], ['Parallel/Variety', 'Green'],
+      ['Card Number', 'MP-16'], ['Parallel/Variety', 'Green Mojo Refractor'],
       ['Features', 'Serial Numbered'], ['Grade', 'Ungraded'], ['Graded', 'No'],
       ['Vintage', 'No'], ['Autographed', 'No'], ['Language', 'English'],
       ['Card Condition', 'Near Mint or Better'], ['Card Size', 'Standard'],
@@ -217,7 +227,7 @@ async function eps(tok: string, path: string, name: string) {
       + '<ListingType>Chinese</ListingType>'
       + '<StartPrice>' + job.start + '</StartPrice><Quantity>1</Quantity>'
       + '<ListingDuration>' + DURATION + '</ListingDuration>'
-      + '<ScheduleTime>' + SCHEDULE + '</ScheduleTime>'
+      + (SCHEDULE ? '<ScheduleTime>' + SCHEDULE + '</ScheduleTime>' : '')
       + '<Country>US</Country><Currency>USD</Currency><Location>Edmonds, Washington</Location><PostalCode>98026</PostalCode>'
       + '<DispatchTimeMax>1</DispatchTimeMax>'
       + '<SellerProfiles><SellerShippingProfile><ShippingProfileID>' + SHIP_CALC + '</ShippingProfileID></SellerShippingProfile>'
@@ -235,7 +245,7 @@ async function eps(tok: string, path: string, name: string) {
     const v = await call('VerifyAddItem', item);
     const ok = !/<Ack>Failure</.test(v);
     console.log('\n' + (ok ? 'OK  ' : 'FAIL') + '  ' + job.key + '  open $' + job.start
-      + '  ' + DURATION + '  starts ' + SCHEDULE.slice(0, 16)
+      + '  ' + DURATION + '  starts ' + (SCHEDULE.slice(0, 16) || 'now')
       + '  title ' + job.title.length + '  pics ' + pics.length);
     for (const m of v.matchAll(/<LongMessage>([^<]*)</g)) console.log('   - ' + m[1].slice(0, 190));
     if (!APPLY || !ok) continue;
