@@ -1384,6 +1384,37 @@ UPCs read off the back panels and check-digit verified: DP-12 `810199502014` (UP
 
 ---
 
+
+---
+
+### The 30-card Bowman Football base lot, built entirely from a video (2026-09-30)
+
+**Item [168743317632](https://www.ebay.com/itm/168743317632), $24.99, Best Offer floor $18.00, category 261329 Trading Card Lots.**
+
+Title (78): `2026 Bowman Football 30 Card Lot Bowers Nabers Parsons Gibbs Purdy Mayfield RC`
+
+**"What I'm testing is if you can watch this video and create a lot for all the cards I fanned through without actually taking individual photos."** It works, and this listing is the proof: every card identified, every number sourced, eight photos, and not one card photographed.
+
+**Method** ([[reference_read_cards_from_fanthrough_video]]): full-resolution frames, crop the nameplate band generously because the card drifts, upscale and tile the strips, read the sheets, then cross-check every name against the product checklist PDF — which is where the card numbers come from, since the backs are never shown.
+
+**The sampling rate is the whole trap.** At 1 fps the video yielded 29 and he said 30. He was right: **#115 Kaytron Allen sits at t=16.5s**, between two samples — t=16 is Malachi Fields, t=17 is Nik McMillan. Half-second offsets found him. **Sample at 2 fps, and do not stop until the count matches the number he gives you.** A lot listing built on the short count would have misdescribed the contents.
+
+| | |
+|---|---|
+| contents | 18 NFL base, 12 Bowman Prospects, all listed by number in the description |
+| headline names | Bowers, Nabers, Parsons, Gibbs, Purdy, Mayfield, Evans, Waddle, Adams, Penix, Shedeur, Bryce Young |
+| photos | 8 stills from `IMG_0155.MOV`, the slower and sharper of his two clips |
+| excluded | the LaNorris Sellers Mega Prospect insert — not base, comps on its own |
+
+**🔴 Category 261329 rejects the singles condition shape.** `ConditionID 4000` plus a `ConditionDescriptor`, which category 261328 *requires*, fails here with *"The provided condition id is invalid for the selected primary category id."* Trading Card Lots accepts **only 1000/New or 3000/Used, and no descriptors** — the same split as the Pokémon 183454 vs 183455 pair.
+
+**The price is not a comp and the script says so.** The product released the same day, so a filtered lot search returned 1 and 3 results, neither comparable. $24.99 is built from the parts, roughly thirty paper base at a dollar each with the usual bulk discount against sum-of-parts. Revisit once real lots appear.
+
+**Nothing was added to the vault.** The box is already accounted for as rip#33, and plain base singles do not earn rows ([[feedback_which_cards_enter_vault]]).
+
+
+---
+
 ## How to keep this file current
 
 - New SKUs get their own section with title, body, photos, and the net/margin line.
