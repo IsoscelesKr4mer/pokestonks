@@ -9,18 +9,19 @@
  * whole lot and also and auction for the green /99 separately. Ending Sunday at
  * 6:00pm or another time you think is good."
  *
- * TIMING: 5 days, STARTING IMMEDIATELY, closing Sunday 2026-10-04 around
- * 11:30pm Pacific. His reasoning and it is better than the first plan:
- * "I want these to start now so they end before other 7 day auctions from
- * release day tomorrow." Sellers opening 7-day auctions on the 10-01 release
- * day all close 10-08, so closing 10-04 puts these in front of buyers while
- * they are still the only ones available.
+ * TIMING: scheduled Thu 10-01 18:00 PDT, 3 days, closing SUNDAY 2026-10-04 at
+ * 6:00pm Pacific.
  *
- * The cost is the closing HOUR. Starting now means ~11:30pm Pacific, which is
- * 2:30am Eastern, and snipers on the east coast are asleep. Hitting Sunday
- * 6:00pm Pacific would mean scheduling a 3-day to start Thursday 6pm and
- * giving up ~42 hours of visibility. He chose exposure and beating the wave;
- * the hour is the trade.
+ * Both of his constraints are satisfiable at once and I had wrongly presented
+ * them as a trade: "you can't end it at a specific time? Ending at 11:29PT is
+ * retardo." **`ScheduleTime` sets the close as precisely as the start**, since
+ * eBay's durations are fixed - start plus duration fixes the end to the minute.
+ * Starting immediately was what forced the 11:29pm close, not any limitation.
+ *
+ * Landing Sunday 18:00 PT needs a start of Thu 18:00 PT with Days_3, which also
+ * clears the 10-08 release-day 7-day wave by four days. The only real cost is
+ * about 42 hours of pre-start invisibility, and a prime Sunday-evening close is
+ * worth more than that on a $0.99 no-reserve.
  *
  * PAYMENT POLICY MUST BE 273540269012. The usual 269110704012 sets
  * immediatePay, which eBay refuses on an auction with no Buy It Now (21917141).
@@ -60,12 +61,12 @@ config({ path: '.env.local' });
 
 const APPLY = process.argv.includes('--apply');
 const DIR = 'eBay_assets/iCloud Photos/';
-// START NOW, not scheduled: "I want these to start now so they end before
-// other 7 day auctions from release day tomorrow". A 7-day opened on the
-// 10-01 release day closes 10-08, so a 5-day opened tonight closes Sunday
-// 10-04 and is gone four days before that wave lands.
-const SCHEDULE = '';                           // immediate
-const DURATION = 'Days_5';                     // -> Sun 10-04 ~23:30 PDT
+// Scheduled so the CLOSE lands where it should. eBay durations are fixed
+// (1/3/5/7/10 days), so start time plus duration fixes the end exactly:
+// Thu 18:00 PT + 3 days = SUNDAY 10-04 18:00 PT, the prime auction window,
+// and still four days clear of the 10-08 release-day 7-day wave.
+const SCHEDULE = '2026-10-02T01:00:00.000Z';   // Thu 10-01 18:00 PDT
+const DURATION = 'Days_3';                     // -> Sun 10-04 18:00 PDT
 const PAY_AUCTION = '273540269012';            // no immediate pay
 const RETURN_POLICY = '269110705012';
 const SHIP_CALC = '269110723012';
