@@ -257,8 +257,22 @@ The resolution, which he endorsed:
 - **The application never calls a model.** Model work is written as a job row.
 - **The always-on agent session drains the queue.** It already runs all day as his
   Discord agent. This is what he meant by "that's why I have you".
+- **The app pings the Discord channel when it enqueues work**, which is what wakes
+  the agent. Michael's suggestion, and it is the right trigger. The app posts to a
+  channel webhook on enqueue ("batch 14 queued, 62 photos, 2026 Bowman Chrome
+  Mega"); that message lands in the channel the agent already watches; the agent
+  claims the job and drains it. This turns a polling design into a push design and
+  takes ingest latency from "whenever the session next looks" to "about as fast as
+  a message arrives".
 - The API-key worker option is **dropped from the design**, not left as a future
   switch.
+
+**The ping is a trigger, not a transport.** The job itself lives in the database,
+never in the Discord message. A lost, duplicated or out-of-order ping must never
+lose work, so the queue stays the source of truth and the agent also sweeps for
+unclaimed jobs on startup. Jobs are claimed atomically so a double ping cannot
+cause a double scan, and a ping that arrives while no session is alive is simply
+picked up by the next startup sweep.
 
 Reading happens inside the agent session, on whatever model that session runs
 (currently Claude Opus 5). Note that this rules out the API-side cost levers:
@@ -268,7 +282,8 @@ still passed as context per batch, for accuracy rather than for pricing.
 
 **Consequences, accepted:**
 
-- Ingest is not instant. Minutes to hours, depending on when the session picks it up.
+- Ingest is not instant, but with the enqueue ping it is usually prompt rather
+  than hours. Worst case is a session being down, which the startup sweep covers.
 - "Standalone" has a boundary. Browsing, filtering, editing, pricing, listing and
   publishing all work with nothing running. **Reading new cards needs the session.**
 - **The real budget is session throughput, not dollars.** Michael pays nothing per
