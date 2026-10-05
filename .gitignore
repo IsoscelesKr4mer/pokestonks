@@ -87,3 +87,8 @@ docs/references/
 # and these blocked 9 commits from pushing on 2026-08-16. Keep them local.
 VM_Videos/
 _bowman_cache.json
+
+# Card photos off the phone: 2.2 GB, 1,104 files, and some .MOV over GitHub's
+# 100 MB per-file limit. Source images belong in Supabase storage, not git
+# history, and listing photos are hosted by eBay EPS anyway.
+eBay_assets/card drop/

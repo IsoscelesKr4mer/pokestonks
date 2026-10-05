@@ -1117,7 +1117,7 @@ wants several at once.
 
 | Item | Ask | Floor | Cat | Card value |
 |---|---|---|---|---|
-| [168697072160](https://www.ebay.com/itm/168697072160) Zapdos 133/128 Illustration Rare | $17.99 | $14.00 | 183454 | TCGplayer $21.38 |
+| [168697072160](https://www.ebay.com/itm/168697072160) Zapdos 133/128 Illustration Rare | ~~$17.99~~ **$9.49** | ~~$14.00~~ **$7.99** | 183454 | TCGplayer $21.38 |
 | [168697072332](https://www.ebay.com/itm/168697072332) Arceus VSTAR 123/172 Classic Collection | $10.99 | $8.50 | 183454 | TCGplayer $8.76 |
 | [168697072540](https://www.ebay.com/itm/168697072540) 6 Pikachu variations + 2 promos, 8 cards | ~~$18.99~~ **SOLD $17.00** | $15.00 | 183455 | TCGplayer $10.04 |
 
@@ -1133,6 +1133,27 @@ the median rather than at the median:
 - Arceus: 68 asks, 25th $9.99, median $12.99
 - Pikachu singles: 197 asks, 25th $2.99, median $3.99. Lot priced at
   sum-of-parts on the 25th percentile, not below it.
+
+**2026-10-05: the Zapdos was cut $17.99 -> $9.49, floor $14.00 -> $7.99.** Michael
+flagged it ("my zapdos is overpriced now i think") and he was right by a mile. The
+set softened exactly as he predicted, only harder:
+
+| | 2026-09-17 | 2026-10-05 |
+|---|---|---|
+| 25th | $15.99 | $8.49 |
+| median | $19.99 | $9.99 |
+| 75th | - | $11.99 |
+
+At $17.99 he was the **3rd most expensive of 189 live asks (99th percentile)**, and
+the $14.00 auto-decline floor sat above 180 of them, so Best Offer could not work
+either. 17 days up, 2 watchers, 0 offers. $9.49 puts him 41st percentile, 78
+sellers cheaper.
+
+**Measure RANK, not percentile of your own price.** "How many sellers are cheaper
+than me" is the number that predicts a sale; a median in isolation does not.
+
+The Arceus was left alone deliberately: $10.99 against a current median of $11.99
+and a 25th of $9.99, still sitting where it was put.
 
 **Two Trading API notes.**
 

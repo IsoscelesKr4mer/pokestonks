@@ -1,0 +1,558 @@
+<title>Plugged Inn Refund Kit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+
+<style>
+  :root{
+    --paper:#faf8f5;
+    --surface:#fffefc;
+    --ink:#16181d;
+    --ink-soft:#5f6168;
+    --ink-faint:#8b8d94;
+    --rule:#e2ddd4;
+    --rule-firm:#cdc6ba;
+    --accent:#9a5b1f;
+    --accent-wash:#f5e9da;
+    --flag:#a8321f;
+    --flag-wash:#f8e7e3;
+    --ok:#2f6b4a;
+    --ok-wash:#e4efe8;
+    --shadow:0 1px 2px rgba(22,24,29,.06);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#15161a;
+      --surface:#1d1f24;
+      --ink:#eceae6;
+      --ink-soft:#a6a8b0;
+      --ink-faint:#7c7e87;
+      --rule:#2e3138;
+      --rule-firm:#3d414a;
+      --accent:#d79a4e;
+      --accent-wash:#2e2619;
+      --flag:#e2705c;
+      --flag-wash:#33201c;
+      --ok:#6fb48d;
+      --ok-wash:#1b2a22;
+      --shadow:0 1px 2px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#15161a;
+    --surface:#1d1f24;
+    --ink:#eceae6;
+    --ink-soft:#a6a8b0;
+    --ink-faint:#7c7e87;
+    --rule:#2e3138;
+    --rule-firm:#3d414a;
+    --accent:#d79a4e;
+    --accent-wash:#2e2619;
+    --flag:#e2705c;
+    --flag-wash:#33201c;
+    --ok:#6fb48d;
+    --ok-wash:#1b2a22;
+    --shadow:0 1px 2px rgba(0,0,0,.4);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+    font-size:15px;
+    line-height:1.6;
+    margin:0;
+  }
+  .wrap{max-width:720px;margin:0 auto;padding-inline:20px;padding-block:0 72px}
+
+  /* ---- masthead ---- */
+  header.mast{padding-block:40px 28px;border-bottom:2px solid var(--ink)}
+  .eyebrow{
+    font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--accent);font-weight:600;margin:0 0 10px
+  }
+  h1{
+    font-family:Spectral,Georgia,serif;font-weight:600;
+    font-size:clamp(28px,6.5vw,40px);line-height:1.1;margin:0 0 12px;
+    text-wrap:balance;letter-spacing:-.01em
+  }
+  .standfirst{font-size:16px;color:var(--ink-soft);margin:0;max-width:60ch}
+
+  /* ---- the number ---- */
+  .ledger{
+    margin-block:28px;border:1px solid var(--rule-firm);background:var(--surface);
+    box-shadow:var(--shadow)
+  }
+  .ledger-head{
+    padding:12px 18px;border-bottom:1px solid var(--rule);
+    font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--ink-faint);font-weight:600
+  }
+  .ledger-rows{padding:6px 18px 14px}
+  .lrow{
+    display:flex;justify-content:space-between;gap:16px;align-items:baseline;
+    padding-block:9px;border-bottom:1px solid var(--rule);
+    font-variant-numeric:tabular-nums
+  }
+  .lrow:last-child{border-bottom:none}
+  .lrow .lbl{color:var(--ink-soft);font-size:14px}
+  .lrow .val{font-family:"IBM Plex Mono",monospace;font-size:15px}
+  .lrow.total{border-top:2px solid var(--ink);margin-top:4px;padding-top:12px}
+  .lrow.total .lbl{color:var(--ink);font-weight:600;font-size:15px}
+  .lrow.total .val{font-size:22px;font-weight:500;color:var(--accent)}
+
+  /* ---- sections ---- */
+  section{margin-block:44px}
+  h2{
+    font-family:Spectral,Georgia,serif;font-weight:600;font-size:23px;
+    margin:0 0 6px;line-height:1.25;text-wrap:balance
+  }
+  h3{
+    font-size:13px;letter-spacing:.08em;text-transform:uppercase;
+    font-weight:600;color:var(--ink-faint);margin:28px 0 10px
+  }
+  p{margin:0 0 14px;max-width:66ch}
+  .lede{color:var(--ink-soft);margin-bottom:22px;max-width:62ch}
+  a{color:var(--accent)}
+
+  /* ---- numbered steps (real sequence) ---- */
+  .step{display:flex;gap:16px;margin-block:30px;align-items:flex-start}
+  .step-n{
+    flex:0 0 auto;width:30px;height:30px;border-radius:50%;
+    border:1.5px solid var(--ink);display:grid;place-items:center;
+    font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:500;
+    margin-top:2px
+  }
+  .step-body{min-width:0;flex:1}
+  .step-body > :last-child{margin-bottom:0}
+  .step h2{font-size:20px;margin-bottom:8px}
+
+  /* ---- paste blocks ---- */
+  .paste{
+    border:1px solid var(--rule-firm);background:var(--surface);
+    margin-block:16px;box-shadow:var(--shadow)
+  }
+  .paste-bar{
+    display:flex;justify-content:space-between;align-items:center;gap:12px;
+    padding:9px 14px;border-bottom:1px solid var(--rule);background:var(--paper)
+  }
+  .paste-tag{
+    font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink-faint);font-weight:600
+  }
+  .copy{
+    font-family:inherit;font-size:12px;font-weight:600;cursor:pointer;
+    border:1px solid var(--rule-firm);background:var(--surface);color:var(--ink);
+    padding:5px 11px;border-radius:3px;white-space:nowrap
+  }
+  .copy:hover{border-color:var(--accent);color:var(--accent)}
+  .copy:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+  .copy.done{color:var(--ok);border-color:var(--ok)}
+  .paste pre{
+    margin:0;padding:14px;overflow-x:auto;
+    font-family:"IBM Plex Mono",monospace;font-size:12.5px;line-height:1.65;
+    white-space:pre-wrap;word-break:break-word
+  }
+
+  /* ---- fill-in slot ---- */
+  .slot{
+    background:var(--accent-wash);color:var(--accent);
+    border-bottom:1.5px dotted var(--accent);
+    padding:0 3px;font-weight:500;border-radius:2px
+  }
+
+  /* ---- callouts ---- */
+  .note{
+    border-left:3px solid var(--rule-firm);padding:2px 0 2px 16px;
+    margin-block:18px;color:var(--ink-soft)
+  }
+  .note.warn{border-left-color:var(--flag)}
+  .note.warn strong{color:var(--flag)}
+  .note.good{border-left-color:var(--ok)}
+  .note.good strong{color:var(--ok)}
+  .note > :last-child{margin-bottom:0}
+  .note strong{color:var(--ink)}
+
+  /* ---- evidence ---- */
+  .quote{
+    border:1px solid var(--rule);background:var(--surface);
+    padding:14px 16px;margin-block:12px;box-shadow:var(--shadow)
+  }
+  .quote .meta{
+    font-family:"IBM Plex Mono",monospace;font-size:11.5px;
+    color:var(--ink-faint);margin-bottom:7px;letter-spacing:.01em
+  }
+  .quote .said{
+    font-family:Spectral,Georgia,serif;font-size:16px;line-height:1.5;
+    font-style:italic;margin:0;color:var(--ink)
+  }
+
+  /* ---- checklist ---- */
+  .check{list-style:none;padding:0;margin:0}
+  .check li{
+    display:flex;gap:12px;align-items:flex-start;
+    padding-block:11px;border-bottom:1px solid var(--rule)
+  }
+  .check li:last-child{border-bottom:none}
+  .check input{
+    margin:4px 0 0;width:17px;height:17px;flex:0 0 auto;
+    accent-color:var(--accent);cursor:pointer
+  }
+  .check label{cursor:pointer;flex:1;min-width:0}
+  .check input:checked + label{color:var(--ink-faint);text-decoration:line-through}
+
+  /* ---- need-from-you list ---- */
+  .need{
+    counter-reset:n;list-style:none;padding:0;margin:0;
+    border:1px solid var(--flag);background:var(--flag-wash)
+  }
+  .need li{
+    counter-increment:n;padding:13px 16px 13px 46px;position:relative;
+    border-bottom:1px solid var(--rule)
+  }
+  .need li:last-child{border-bottom:none}
+  .need li::before{
+    content:counter(n);position:absolute;left:16px;top:13px;
+    font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;
+    color:var(--flag)
+  }
+  .need strong{display:block;margin-bottom:2px}
+  .need .why{font-size:13.5px;color:var(--ink-soft)}
+
+  table{border-collapse:collapse;width:100%;font-size:14px}
+  .tscroll{overflow-x:auto;margin-block:16px}
+  th,td{text-align:left;padding:10px 12px;border-bottom:1px solid var(--rule);vertical-align:top}
+  th{
+    font-size:11px;letter-spacing:.09em;text-transform:uppercase;
+    color:var(--ink-faint);font-weight:600;border-bottom:1.5px solid var(--rule-firm)
+  }
+
+  footer{
+    margin-top:56px;padding-top:22px;border-top:2px solid var(--ink);
+    font-size:13px;color:var(--ink-faint)
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="wrap">
+
+  <header class="mast">
+    <p class="eyebrow">Prepared for Mario Sanelli &middot; 2 October 2026</p>
+    <h1>Getting your Plugged&nbsp;Inn money back</h1>
+    <p class="standfirst">Michael ran this exact process on 1 October and had his $250 refunded the same evening, before the Plugged Inn team had even opened his ticket. Your case is stronger than his, because Plugged Inn's head of ACO already announced the problem in public chat and named you while doing it. Here is the whole thing, in order.</p>
+  </header>
+
+  <div class="ledger">
+    <div class="ledger-head">What you are actually owed</div>
+    <div class="ledger-rows">
+      <div class="lrow"><span class="lbl">VIP: Top Tier Access, invoice pay_DIZb8qbIc9AJIO, 18 Sept 2026</span><span class="val">$638.13</span></div>
+      <div class="lrow"><span class="lbl">Less: partial refund already issued 18 Sept</span><span class="val">&minus;$190.00</span></div>
+      <div class="lrow total"><span class="lbl">Ask for exactly this</span><span class="val">$448.13</span></div>
+    </div>
+  </div>
+
+  <div class="note warn">
+    <p><strong>Do not ask for $638.13.</strong> Whop's own invoice shows $190.00 was already returned to you on 18 September. Ask for the full $638.13 and the reviewer sees someone trying to collect twice, and your credibility is gone before they read a word. $448.13 is what you are out. Quote the invoice number and they can verify it in seconds.</p>
+    <p>One check first: if that $190 was a credit for upgrading from a lower tier, the math above is right. If it was for something unrelated, adjust the number before you send anything.</p>
+  </div>
+
+  <section>
+    <h2>They already said it, in public, with your name on it</h2>
+    <p class="lede">On 29 September at 4:01 PM, Pixz was explaining to another member why that member's Target accounts had stopped working. In the middle of it he wrote:</p>
+
+    <div class="quote">
+      <div class="meta">Pixz, head of ACO &middot; 29 Sept, 4:01 PM &middot; main chat</div>
+      <p class="said">"I think ur accounts are all locked &hellip; I can't login &hellip; maybe not all &hellip; Just most. <strong>I already had this issue with @grandmasterflex007 and all his accounts were deleted</strong>"</p>
+    </div>
+
+    <p>You asked in that same thread whether yours were fine now. He said <em>"Yes since u replaced."</em> Then he gave the cause without being asked: <em>"Yeah it not good to make all under one ip too fast &hellip; gotta do it gradually."</em></p>
+
+    <p>So the operator told the entire server, naming you, that running the service deleted every Target account you had &mdash; and the remedy on offer was that you rebuild them and carry on. Then it happened a second time with the suspension.</p>
+
+    <p>That is not "this sometimes happens to people." It is documented, attributed and self-diagnosed. Michael's argument was that the service failed to deliver; yours is that it <em>destroyed the thing it requires in order to work</em>, and they said so themselves. Lead with it. Everything else is support.</p>
+
+    <h3>The part that will be used against you</h3>
+    <p>You bought <strong>lifetime</strong> access, so expect: <em>"it's lifetime, you still have it, there's nothing to refund."</em> The answer is short and you should have it ready:</p>
+    <div class="note">
+      <p>Lifetime access to a service you cannot use is not worth anything. The service requires a working Target account. Running it is what got your Target account suspended. The product removed the thing it needs in order to function.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>What only you can supply</h2>
+    <p class="lede">Michael's letter worked because every single line in it could be checked and held up. These three facts are yours and nobody else has them. Fill them in honestly, and do not round anything up.</p>
+    <ol class="need">
+      <li><strong>The date your Target account was suspended</strong><span class="why">Exact day. This is the second incident, separate from the deletions Pixz described on 29 September.</span></li>
+      <li><strong>What Target actually said</strong><span class="why">Their wording matters. "Unusual activity", "suspicious orders", a policy citation &mdash; quote it rather than paraphrasing. If you still have the email, attach it.</span></li>
+      <li><strong>The date and item of your one successful checkout</strong><span class="why">Including whether it was cancelled, flagged, or delivered. Say which.</span></li>
+    </ol>
+    <div class="note warn">
+      <p><strong>Nothing invented, ever.</strong> The merchant has the checkout logs and Target has the account history. One checkable thing that turns out to be wrong and the other five true things stop mattering. If you are unsure about a detail, leave it out rather than guess at it.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>The evidence you already have</h2>
+    <p class="lede">These are from Plugged Inn's own public chat, during the two weeks you were paying. You do not have to find them &mdash; they are quoted in the letter below. They matter because they are the operator describing the exact thing that happened to you.</p>
+
+    <h3>You were not the only one losing accounts</h3>
+    <div class="quote">
+      <div class="meta">mikeyb17 &middot; 30 Sept, 10:56 AM</div>
+      <p class="said">"I would like to know if my accounts are setup properly so they don't get locked again"</p>
+    </div>
+    <div class="quote">
+      <div class="meta">dmbcubfan7866 &middot; 23 Sept, 3:04 PM</div>
+      <p class="said">"I see one of my accounts is under review and needs to be appealed to get reinstated"</p>
+    </div>
+    <p>These matter because they stop the merchant reframing your deletion as something you did wrong. It is a recurring, known consequence of how the service operates.</p>
+
+    <h3>Your own words, in their server</h3>
+    <div class="quote">
+      <div class="meta">grandmasterflex007 &middot; 17 Sept, 5:46 PM</div>
+      <p class="said">"First timer here. I can't tell you how much I hate targets checkout. Literally the reason I joined the other day was so I could stop getting boned"</p>
+    </div>
+    <div class="quote">
+      <div class="meta">grandmasterflex007 &middot; 30 Sept, 10:33 AM</div>
+      <p class="said">"Thank god I went manual"</p>
+    </div>
+    <p>Thirteen days apart. You paid $638.13 to stop checking out by hand, and ended up checking out by hand with fewer Target accounts than you started with. Put both in &mdash; they are unarguable, because you wrote them.</p>
+
+    <h3>On the service not working at all during your paid period</h3>
+    <div class="quote">
+      <div class="meta">Pixz &middot; 16 Sept, ~3:08 AM, during the 30th Celebration drop</div>
+      <p class="said">"wake up to all my shit crashed &hellip; it crashed through the most important part"</p>
+    </div>
+    <div class="quote">
+      <div class="meta">Pixz &middot; 18 Sept, 10:04 AM</div>
+      <p class="said">"It's all bot issues there's a reason all of us are not cooking going from thousands of checkouts to a sadge 50-100 max &hellip; Every 15-20 accounts I got 1 - 2 c.o."</p>
+    </div>
+    <div class="quote">
+      <div class="meta">Pixz &middot; 1 Oct, 2:52 AM, after the largest Target drop of the month</div>
+      <p class="said">"looks like all other providers missed out too"</p>
+    </div>
+    <div class="quote">
+      <div class="meta">Pixz &middot; 1 Oct, 2:59 AM, asked whether the ACO runs continuously</div>
+      <p class="said">"No that would degrade performance heavily"</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Step one &mdash; file with Whop first</h2>
+    <div class="step">
+      <div class="step-n">1</div>
+      <div class="step-body">
+        <h2>Whop, not the Discord ticket</h2>
+        <p>This is the order that worked. Whop refunded Michael within the hour, on their own, before Plugged Inn had read anything. Whop is the merchant of record and they settle these themselves &mdash; it is not a request that gets forwarded to the seller for approval.</p>
+        <p>Go to Whop &rarr; your profile &rarr; manage subscriptions &rarr; request a refund on the Plugged Inn purchase. Paste the short version into the reason box and attach the long letter as a file if the form allows it.</p>
+
+        <div class="paste">
+          <div class="paste-bar"><span class="paste-tag">Whop reason box</span><button class="copy" type="button">Copy</button></div>
+<pre>Requesting a refund of $448.13 on invoice pay_DIZb8qbIc9AJIO, purchased 18 September 2026 ($638.13 paid, $190.00 already refunded the same day). Full detail attached.
+
+Running this service deleted all of my Target accounts. Plugged Inn's head of ACO stated this publicly in their main chat on 29 September, naming me: "I already had this issue with @grandmasterflex007 and all his accounts were deleted." I am grandmasterflex007. He gave the cause in the same thread: "it not good to make all under one ip too fast." Those accounts were set up the way their own guides instruct.
+
+The remedy offered was that I rebuild every account and continue. On [ DATE ] it happened again - my one successful checkout was flagged and the account suspended. Target's notice said: "[ QUOTE ]".
+
+The service requires working Target accounts to function. Operating it is what destroyed mine. I am left with lifetime access to something I have no way to use.</pre>
+        </div>
+
+        <div class="note good">
+          <p><strong>Keep the receipt.</strong> Screenshot the request after you submit it. If this ever reaches a card dispute, proof of the date you asked is exactly what your bank wants.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Step two &mdash; then the Discord ticket</h2>
+    <div class="step">
+      <div class="step-n">2</div>
+      <div class="step-body">
+        <h2>Open a ticket, post four messages, stop</h2>
+        <p>Go to <strong>#&#128233;&#65372;create-support-ticket</strong>. Post the opener, then the three blocks below, in order. Then stop typing. Do not bump it, do not DM stins or Pixz, do not post about it in general chat.</p>
+
+        <div class="paste">
+          <div class="paste-bar"><span class="paste-tag">Message 1 &mdash; opener</span><button class="copy" type="button">Copy</button></div>
+<pre>Hi - I'd like to request a refund of $448.13 on my VIP Top Tier purchase from 18 September (invoice pay_DIZb8qbIc9AJIO, $638.13 paid less the $190.00 already refunded). I've also submitted a refund request through Whop today. Full detail below.</pre>
+        </div>
+
+        <div class="paste">
+          <div class="paste-bar"><span class="paste-tag">Message 2 &mdash; the core claim</span><button class="copy" type="button">Copy</button></div>
+<pre>I'm not asking because I got unlucky on a lottery. I'm asking because running this service destroyed the Target accounts it depends on, twice, and your own head of ACO confirmed the first one publicly, by name, in your main chat.
+
+1. Your staff announced in public chat that this service deleted all my Target accounts.
+
+On 29 September at 4:01 PM, Pixz was explaining to another member why that member's Target accounts had stopped working. He wrote:
+
+"I think ur accounts are all locked ... I can't login ... maybe not all ... Just most. I already had this issue with @grandmasterflex007 and all his accounts were deleted."
+
+I am grandmasterflex007. That is your head of ACO telling the server, by name, that operating this service deleted every Target account I had.
+
+I replied in that same thread asking whether mine were all right now. His answer: "Yes since u replaced." The remedy on offer was that I rebuild every account from scratch and keep going.
+
+He then gave the cause, unprompted: "Yeah it not good to make all under one ip too fast ... gotta do it gradually." Those accounts were created and operated the way your own guides instruct. The failure is a property of how the service runs, not something I did to it.
+
+On [ DATE ] it happened again. My one successful Target checkout was flagged and the account was suspended. Target's notice said: "[ QUOTE TARGET'S EXACT WORDING ]".
+
+So this is not a freak result. It happened, you acknowledged it publicly, you told me to replace the accounts and continue, and then it happened again.</pre>
+        </div>
+
+        <div class="paste">
+          <div class="paste-bar"><span class="paste-tag">Message 3 &mdash; the service itself</span><button class="copy" type="button">Copy</button></div>
+<pre>2. I bought this specifically to stop losing at Target. Two weeks later I had no Target accounts and was back to doing it by hand.
+
+I joined on 17 September. That evening I wrote in your chat: "First timer here. I can't tell you how much I hate targets checkout. Literally the reason I joined the other day was so I could stop getting boned." I upgraded to VIP Top Tier the next day for $638.13.
+
+By 30 September I was posting "Thank god I went manual."
+
+I paid $638.13 to stop checking out manually, and within two weeks I was checking out manually with fewer Target accounts than I started with.
+
+3. What I actually received.
+
+One successful checkout, [ ITEM ] on [ DATE ], which was flagged. That is the entire return on $638.13. I'm stating it plainly because you have the logs.
+
+4. Your own staff documented the service failing throughout my paid period.
+
+16 September, mid-drop, Pixz: "wake up to all my shit crashed" and "it crashed through the most important part."
+17 September: Costco ACO non-functional, members told to run manually.
+18 September, Pixz: "It's all bot issues there's a reason all of us are not cooking going from thousands of checkouts to a sadge 50-100 max... Every 15-20 accounts I got 1 - 2 c.o."
+23 September, Pixz: "if all of us are struggling it means there's something up."
+1 October, after Target dropped Ascended ETBs, Prismatic SPCs, 30th ETBs and First Partner 2 and 3 in a single night, Pixz: "looks like all other providers missed out too." Not one runner was active for the largest drop of the period.
+1 October, asked whether the ACO runs continuously: "No that would degrade performance heavily."
+
+The product is sold as auto checkout. In practice it's a person deciding whether to be awake, and on the biggest drop of the month I paid for, nobody was.</pre>
+        </div>
+
+        <div class="paste">
+          <div class="paste-bar"><span class="paste-tag">Message 4 &mdash; the ask</span><button class="copy" type="button">Copy</button></div>
+<pre>5. On "lifetime."
+
+I expect the response that lifetime access doesn't expire so there's nothing to refund.
+
+Lifetime access to a service I have no way to use is not worth anything. This service requires working Target accounts to do anything at all. Operating it is what got mine deleted the first time and suspended the second. The product removed the one thing it needs in order to function, and then offered me the option of rebuilding it and waiting for it to happen again.
+
+I'm not claiming you guaranteed hits. I'm claiming that running this service deleted all of my Target accounts, that your head of ACO said so publicly and named me, that the fix offered was to rebuild them and continue, that it then happened a second time, and that your staff confirmed the product was malfunctioning throughout the period I paid for.
+
+I'd like $448.13 refunded and the membership cancelled, and I'd appreciate a response within five business days.</pre>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Step three &mdash; say the right thing once</h2>
+    <div class="step">
+      <div class="step-n">3</div>
+      <div class="step-body">
+        <h2>The reply you will almost certainly get</h2>
+        <p>Some version of <em>"ACO is never guaranteed, it says so in the guides."</em> It is the standard response and it does not actually address anything you said. Do not re-argue the letter. Send this once, then let it sit.</p>
+
+        <div class="paste">
+          <div class="paste-bar"><span class="paste-tag">Your one reply</span><button class="copy" type="button">Copy</button></div>
+<pre>Understood, and I'm not disputing that. My claim isn't that I didn't hit. It's that running your service deleted all of my Target accounts - which Pixz stated publicly on 29 September, naming me - and that after I rebuilt them on his advice it happened again. The product is useless to me without the accounts it destroyed. I'd still like the refund.</pre>
+        </div>
+
+        <p>If they repeat themselves after that, the ticket has given you everything it is going to. Move on to escalation.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>If they stall or refuse</h2>
+    <div class="tscroll">
+      <table>
+        <thead><tr><th>When</th><th>Do this</th></tr></thead>
+        <tbody>
+          <tr><td>Day&nbsp;0</td><td>Whop refund request, then the Discord ticket. Screenshot both.</td></tr>
+          <tr><td>+5 business days</td><td>No real answer? One polite follow-up in the ticket. Nothing new, just ask for a status.</td></tr>
+          <tr><td>+7 days</td><td>Escalate to Whop support directly, referencing your original request date.</td></tr>
+          <tr><td>Anytime after</td><td>Card chargeback. You bought 18 September, so you have until roughly mid-January &mdash; Visa and Mastercard windows are typically 120 days. No rush.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="note">
+      <p>Expect to get removed from the server once a refund goes through. Pull anything out of there you still want first. A chargeback will definitely get you banned &mdash; which is a price, not a problem, if you are leaving anyway.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Rules of engagement</h2>
+    <ul class="check" id="rules">
+      <li><input type="checkbox" id="r1"><label for="r1"><strong>Stay boringly polite.</strong> The letter is strong because it is calm. Anyone who comes in hot gets dismissed as a crashout, and the merits stop mattering.</label></li>
+      <li><input type="checkbox" id="r2"><label for="r2"><strong>Never mention the service you moved to.</strong> Not in the ticket, not in chat, not to anyone. The moment it reads as "he found something cheaper," this stops being a refund claim and becomes buyer's remorse.</label></li>
+      <li><input type="checkbox" id="r3"><label for="r3"><strong>Say nothing in public chat.</strong> Anything you post there is free ammunition and costs you nothing to withhold.</label></li>
+      <li><input type="checkbox" id="r4"><label for="r4"><strong>Leave out the grievances.</strong> The Instagram giveaway farming, the constant upgrade spam &mdash; all real, all irrelevant. They turn a delivery-failure argument into a complaint list.</label></li>
+      <li><input type="checkbox" id="r5"><label for="r5"><strong>Disclose your one hit.</strong> They have the logs. Volunteering it is what makes the other claims credible.</label></li>
+      <li><input type="checkbox" id="r6"><label for="r6"><strong>Don't volunteer a partial.</strong> If they offer a prorate, that's your call. Offering one yourself concedes the service worked and you just left early.</label></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Before you send</h2>
+    <ul class="check" id="prep">
+      <li><input type="checkbox" id="p1"><label for="p1">Confirmed the $190 was an upgrade credit, so $448.13 is the right number</label></li>
+      <li><input type="checkbox" id="p2"><label for="p2">Filled in the suspension date everywhere it appears</label></li>
+      <li><input type="checkbox" id="p3"><label for="p3">Quoted Target's actual wording, not a paraphrase</label></li>
+      <li><input type="checkbox" id="p4"><label for="p4">Filled in the item and date of the one checkout</label></li>
+      <li><input type="checkbox" id="p5"><label for="p5">Searched for every remaining <span class="slot">[ bracket ]</span> and replaced it</label></li>
+      <li><input type="checkbox" id="p6"><label for="p6">Attached the Target suspension email, if you still have it</label></li>
+    </ul>
+    <div class="note warn">
+      <p><strong>That fifth one is the real risk.</strong> A letter that arrives with <span class="slot">[ DATE ]</span> still sitting in it tells the reader nobody checked it, and everything after that gets read with less patience. Search the text for an open bracket before you send anything.</p>
+    </div>
+  </section>
+
+  <footer>
+    Built from the Plugged Inn server export, 16 September to 1 October 2026, 17,482 messages. Every quotation above is verbatim from that record and can be checked against it. Figures are from Whop invoice pay_DIZb8qbIc9AJIO.
+  </footer>
+
+</div>
+
+<script>
+  // copy buttons
+  document.querySelectorAll(".paste").forEach(function(box){
+    var btn = box.querySelector(".copy");
+    var pre = box.querySelector("pre");
+    if(!btn || !pre) return;
+    btn.addEventListener("click", function(){
+      var text = pre.innerText;
+      var done = function(){
+        btn.textContent = "Copied";
+        btn.classList.add("done");
+        setTimeout(function(){ btn.textContent = "Copy"; btn.classList.remove("done"); }, 1800);
+      };
+      try{
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(text).then(done, function(){ fallback(text, done); });
+        } else { fallback(text, done); }
+      }catch(e){ fallback(text, done); }
+    });
+  });
+
+  function fallback(text, done){
+    try{
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly","");
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      done();
+    }catch(e){ /* clipboard unavailable; user can select manually */ }
+  }
+
+  // checklist progress, per-viewer convenience only
+  var boxes = document.querySelectorAll('.check input[type="checkbox"]');
+  boxes.forEach(function(cb){
+    try{
+      if(localStorage.getItem("pi-refund-" + cb.id) === "1") cb.checked = true;
+    }catch(e){}
+    cb.addEventListener("change", function(){
+      try{ localStorage.setItem("pi-refund-" + cb.id, cb.checked ? "1" : "0"); }catch(e){}
+    });
+  });
+</script>

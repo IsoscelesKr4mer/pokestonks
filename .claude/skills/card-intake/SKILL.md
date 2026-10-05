@@ -12,8 +12,11 @@ the same mistake was made more than once.
 
 Section 1 (the back marker) is verified on **2026 Topps Chrome only**. Michael's
 standing caution: *"this refractor rule probably only applies to topps chrome
-2026."* Treat it as unverified for any other product, including Bowman Chrome,
-Topps Finest, Sapphire and earlier Chrome years.
+2026."* Treat it as unverified for any other product, including Topps Finest,
+Sapphire and earlier Chrome years.
+
+**2026 Bowman Chrome has since been checked and it does NOT have the marker.**
+See section 1b for what to use there instead.
 
 For a product not on that list, do **not** assume the marker exists or sits in
 the same place. Find a control pair first: two copies of the same card number
@@ -117,6 +120,159 @@ The marker is small print. Do not squint at a full-frame photo. Crop the card's
 bounding box, take the top-right region, upscale 3x with LANCZOS, and read that.
 Guessing between base and Refractor has cost real money: four cards once went
 into a $1.99 dropdown as base when they were Refractors.
+
+## 1b. 2026 Bowman Chrome. The back marker DOES NOT EXIST here.
+
+Settled 2026-09-10 off a hobby box, with the control pair section 0 asks for.
+
+**There is no REFRACTOR word on a Bowman Chrome back.** The control: the Orange
+/25 and the Blue /150 out of that box are certainly Refractors, and neither back
+carries the word anywhere. Do not go looking for it and do not read its absence
+as "base". The call is made on the FRONT.
+
+**The front test is the border, not the picture.** Crop a strip of the card's
+outer border, blow it up, and look for a broad spectral sweep across the dark
+area. A refracting card bands orange/yellow/green; a base card stays flat
+neutral. Do this against known anchors from the same box rather than in the
+abstract, because a chrome card is a mirror and lighting alone will not fool a
+side-by-side. That box happened to yield Murakami #76 twice, once refracting and
+once not, which is what made the test trustworthy.
+
+**Read the serial before naming any colour.** Every numbered parallel prints it
+on the front, right side, just above the nameplate, on base cards and prospects
+alike. Scan all 60 fronts in one pass; do not assume an unnumbered-looking card
+is unnumbered. A prospect Refractor that looked plain turned out to be 460/499.
+
+### The 2026 ladder, measured off the cards
+
+| tier | run |
+|---|---|
+| Refractor | /499 (confirmed on a prospect; sellers list the base-set one as /499 too) |
+| Purple | /250 |
+| Blue | /150 |
+| Aqua | /125 |
+| Green | /99 |
+| Yellow | /75 |
+| Gold | /50 |
+| Orange | /25 |
+
+**That ladder is the HOBBY ladder. MEGA boxes have their OWN ladder**, and it is
+not a subset - it has run sizes the hobby ladder does not (/299, /199, /100, /15,
+/10, /5) and one parallel that is not even called "Mojo".
+
+### 2026 Bowman Chrome MEGA: Base / Prospect Mega Mojo ladder
+
+100 cards, skip-numbered. Odds are per PACK; at 6 packs per box, divide by 6 for
+per-box. Confirmed two ways - Michael supplied the checklistinsider ladder and
+every odds figure matches the Topps odds sheet already in the repo
+(`eBay_assets/Baseball Checklists/2026_Bowman_Chrome_Baseball_Odds.pdf`).
+
+| parallel | run | mega odds | per box |
+|---|---|---|---|
+| Fuchsia Mojo Refractor | /299 | 1:77 | 1 per 13 |
+| Purple Mojo Refractor | /250 | 1:92 | 1 per 15 |
+| Pink Mojo Refractor | /199 | 1:115 | 1 per 19 |
+| Blue Mojo Refractor | /150 | 1:153 | 1 per 26 |
+| Aqua Mojo Refractor | /125 | 1:183 | 1 per 31 |
+| **Steel Metal Refractor** | **/100** | 1:229 | 1 per 38 |
+| Green Mojo Refractor | /99 | 1:231 | 1 per 39 |
+| Yellow Mojo Refractor | /75 | 1:305 | 1 per 51 |
+| Gold Mojo Refractor | /50 | 1:458 | 1 per 76 |
+| Orange Mojo Refractor | /25 | 1:915 | 1 per 153 |
+| Black & White Mojo Refractor | /15 | 1:1,525 | 1 per 254 |
+| Black Refractor | /10 | 1:2,287 | 1 per 381 |
+| Red Mojo Refractor | /5 | 1:4,578 | 1 per 763 |
+| Rose Gold Mojo Refractor | 1/1 | 1:22,982 | 1 per 3,830 |
+
+**THE SERIAL NAMES THE PARALLEL. Use this table instead of guessing a colour.**
+A /100 mega card is a **Steel Metal Refractor** - note it is NOT "Steel Mojo", it is
+the one rung Topps names differently, which is exactly why eyeballing the colour
+failed. An Ethan Holliday BCP-209 at 095/100 read green-gold full-frame and
+blue-purple in a border crop; the number settled in one lookup what the photograph
+could not. Green is /99 and Steel is /100, one apart - so a colour guess here is a
+coin flip and the serial is certain.
+
+**Mega box configuration: 6 packs x 6 cards = 36.** Derived from his own six boxes
+against the odds sheet, three independent ways: Prospects Lazer Refractor is 1:3
+and he pulled exactly 2 per box in all six; Spring Breakout and It Came To The
+League are both 1:6 and he pulled exactly 1 of each per box. Use 6 packs to convert
+any mega pack-odds into per-box odds.
+
+**Measured mega distribution, identical across all six boxes:**
+10 Mojo / 2 Lazer / 2 inserts (1 SB + 1 IT) / 22 base. A box that does not land on
+that shape has a misread in it - and the odds back it up (Chrome Rookie Red RC
+Variation is 1:12 packs = 1 per 2 boxes, and he found 3 across 6).
+
+### True vs Shimmer vs the patterned ones
+
+The market calls the plain colour **"True Blue" / "True Orange"**, because Topps
+also prints Wave, Reptilian, Geometric, Pulsar, Speckle and **Shimmer** versions
+of the same colour at the same serial. They are different cards at different
+prices: Arquette's Orange Shimmer /25 had 3 asks at $122/$145/$150 while his
+True Orange /25 had 3 at $200/$299/$455.
+
+- **Shimmer exists only for Prospects and Prospect Autographs, never for base
+  cards.** So a numbered colour on a base card cannot be a Shimmer. That alone
+  settles half the cases.
+- Blown up, Shimmer is a streaked foil with bright metallic glints. True is dead
+  smooth flat colour. Crop a small patch of pure border and upscale with NEAREST
+  so the texture survives.
+
+### "1st Bowman" is a LOGO on the card, not the BCP- prefix
+
+**Never infer 1st Bowman from the card number.** The BCP subset holds both a
+player's first Bowman card and repeat prospects, and only the first carries the
+`1ST BOWMAN` logo. Out of 24 prospects in one hobby box, 17 had it and 7 did
+not. Read the logo, top right of the FRONT, for every prospect.
+
+Michael caught this after the fact: *"The Jesus made is not a 1st bowman you
+realize that right"*. He was right, and so were six others, including the box's
+most valuable card. "1st Bowman" had gone into the TITLE of a $145 Arquette and
+an $18 Bonemer, which would have been a false claim in a live listing.
+
+A player can have two prospect cards in the same year across the two products:
+Arquette is `BCP-40` in the May flagship Bowman, which IS his 1st Bowman, and
+`BCP-174` in September's Bowman Chrome, which is not. Those are different cards
+and must be comped separately, so never let a "1st Bowman" title in a search
+result stand in for the card in hand.
+
+It is worth getting right because Michael's read is that the 1st Bowmans are
+where the money is. But note what the numbers actually showed: a base 1st Bowman
+is cheap even for the best prospect in the sport (Jesus Made comps at $5). The
+money is in the 1st Bowman **autos and numbered parallels**, not the base.
+
+### Chrome Rookie Red RC Variation
+
+**The dollar figures below are from release week and have DECAYED. Re-comp, do
+not quote them.** Measured 2026-10-05, a month after release and with mega boxes
+flooding the market, a Jac Caglianone Red RC comps at **$8.10 median off 95 live
+asks** (p75 $11.17, field $1.99-$35) - not the $50-55 the September numbers show.
+The card is still the best thing in a typical mega box and still does not belong
+in a cheap Pick-Your-Player dropdown, but price it fresh every time.
+
+**A seller title is not a checklist.** Most eBay listings for that Caglianone
+call it **#75**. The official checklist says **79** in both the regular and mega
+PDFs, and the card in hand says 79. A dozen sellers agreeing does not outvote the
+checklist. Resolve the number before writing a listing title, or the title is
+wrong in the same way theirs are.
+
+**The numeric base set does not parse out of the checklist PDFs.**
+`scripts/parse-checklist.py` only matches letter-prefixed codes
+(`^[A-Z]{1,6}-\d`), so every plain-numeric base card reads as "absent". That
+absence is not evidence. To check a numeric card, pull the raw text instead:
+
+```python
+from pypdf import PdfReader
+txt = "\n".join((p.extract_text() or "") for p in PdfReader(pdf).pages)
+# then grep for the surname; the line reads "79 Jac Caglianone Kansas City Royals Rookie"
+```
+
+A rookie whose **MLB shield inside the RC badge is RED instead of navy** is the
+`Chrome Rookie Red RC Variation`, 1:4 packs. It refracts, which makes it read as
+a Refractor, and it carries no serial, which makes it read as base. It is
+neither, and it is worth real money: Murakami #76 base is $7 and the Red RC is
+$50; Messick #3 base is $3 and the Red RC is $55. Check the shield colour on
+every rookie in the box, comparing against the other rookies in the same drop.
 
 ## 2. Numbered parallels
 
@@ -299,7 +455,7 @@ Three traps, all hit while writing this filter:
 
 | trap | what happens |
 |---|---|
-| excluding a bare colour word | "Blue Jays", "Red Sox", "White Sox" are **teams**. Only exclude a colour bound to `fractor`/`refractor`. |
+| excluding a bare colour word | "Blue Jays", "Red Sox", "White Sox" are **teams**. Only exclude a colour bound to `fractor`/`refractor`. **Re-broken and re-fixed 2026-10-05**: a bare `red` in `comp-bow3box-0917.ts` matched "Reds" and gave Alfredo Duno ZERO comps off 154 live listings. Bind every colour to a parallel word; a documented trap is not a fixed trap. |
 | then excluding the RWB cards themselves | Red White & Blue **is** a colour parallel. It must be exempt from the colour rule, or Schneemann drops to zero comps. |
 | `\b` before the slash in a serial | A serial is written `/50` *and* `054/150`. Requiring a word boundary before the slash matches neither, and lost every Valera Gold /50 comp. |
 
