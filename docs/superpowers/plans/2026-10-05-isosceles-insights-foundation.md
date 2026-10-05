@@ -1819,10 +1819,16 @@ export async function loadChecklistForProduct(
         .returning({ id: parallels.id })
     : [];
 
-  await db
-    .update(products)
-    .set({ checklistLoadedAt: new Date(), updatedAt: new Date() })
-    .where(eq(products.id, productId));
+  // Set each timestamp only when that kind of content actually landed. Two of the
+  // registry's sources are ODDS sheets with no card rows; stamping them
+  // checklistLoadedAt would mark a product "checklist loaded" while holding zero
+  // cards, which would open the ingest gate on a product that has no checklist.
+  // That is the one thing the spec forbids, and it would also contradict Task 12's
+  // own test that a loaded timestamp with zero entries is not ready.
+  const stamp: Partial<typeof products.$inferInsert> = { updatedAt: new Date() };
+  if (entryRows.length > 0) stamp.checklistLoadedAt = new Date();
+  if (parallelRows.length > 0) stamp.oddsLoadedAt = new Date();
+  await db.update(products).set(stamp).where(eq(products.id, productId));
 
   return {
     entriesInserted: inserted.length,
@@ -1845,130 +1851,334 @@ git commit -m "feat(products): checklist loading and the verification hard gate"
 
 ---
 
-### Task 11: Seed the twelve existing checklist files
+### Task 11: Product registry and canonical checklist seeding
+
+**Scope changed mid-execution.** Michael on 2026-10-05: "We can wipe those checklists
+and start from scratch on them it's a bit of a hodge podge." Before acting on that I
+measured what the twelve files actually cover, by grouping his 832 cards with the
+insert parentheticals collapsed to their underlying product:
+
+```
+390 (389 listed)  2026 Topps Chrome
+279 ( 68 listed)  2026 Bowman Chrome      [incl. Prospects 24, Prospect Autos 1]
+ 64 ( 63 listed)  2026 Topps Finest
+ 47 ( 44 listed)  2026 Bowman
+ 17 (  0 listed)  2024 Bowman Chrome Sapphire
+~35               long tail: Sapphire 2020-2026, odd singles 2021-2025
+```
+
+The twelve files already cover the top four products, **780 of 832 cards**. The
+problem is therefore not missing content. It is that the same product appears twice
+in different formats, and that **Sapphire has no checklist on disk at all** across
+six years, which is the worst possible gap because the Sapphire colour ladder changes
+every year and a wrong ladder misprices a card.
+
+So this task does not wipe anything. It builds a **registry with one canonical source
+per product**, deduped, and fetches the missing Sapphire checklists. The twelve
+original files stay as Task 6 and Task 7 test fixtures regardless.
 
 **Files:**
-- Create: `scripts/seed-checklists.ts`, `data/checklist-sources.json`
-- Test: `tests/unit/products/seed-manifest.test.ts`
+- Create: `data/product-registry.json`
+- Create: `scripts/fetch-checklists.ts`
+- Create: `scripts/seed-checklists.ts`
+- Create: `data/checklists/` (the canonical cache, committed)
+- Modify: `package.json` (add the `fetch:checklists` script)
+- Test: `tests/unit/products/registry.test.ts`
 
 **Interfaces:**
 - Consumes: `parseChecklistFile` (Task 7), `createProduct` and `loadChecklistForProduct` (Task 10)
-- Produces: `type ChecklistSource = { file: string; year: number; brand: string; productName: string; format: string | null; sport: string; kind: 'checklist' | 'odds' }` and `CHECKLIST_SOURCES: ChecklistSource[]`
+- Produces:
+  - `type RegistrySource = { kind: 'local'; file: string } | { kind: 'fetch'; url: string; note: string }`
+  - `type RegistryEntry = { slug: string; year: number; brand: string; productName: string; format: string | null; sport: string; cardsOwned: number; checklist: RegistrySource; odds: RegistrySource | null }`
 
-- [ ] **Step 1: Write `data/checklist-sources.json`**
+**Two stages by design.** `fetch:checklists` resolves every source into
+`data/checklists/` and stops. `seed:checklists` reads only `data/checklists/` and
+never touches the network. Seeding therefore stays deterministic and re-runnable, and
+a website that changes or disappears can never fail a seed.
 
-The twelve real files, mapped to the product each describes.
+- [ ] **Step 1: Write `data/product-registry.json`**
+
+`slug` is the canonical filename stem inside `data/checklists/`. `cardsOwned` is the
+measured count, recorded so a later reader can see why each product earned its place.
 
 ```json
 [
-  { "file": "2026_Bowman_Chrome_Baseball_Checklist.pdf", "year": 2026, "brand": "Bowman", "productName": "Bowman Chrome", "format": "Hobby", "sport": "Baseball", "kind": "checklist" },
-  { "file": "2026_Bowman_Chrome_Baseball_Checklist_1_mega.pdf", "year": 2026, "brand": "Bowman", "productName": "Bowman Chrome", "format": "Mega", "sport": "Baseball", "kind": "checklist" },
-  { "file": "2026_Bowman_Chrome_Baseball_Odds.pdf", "year": 2026, "brand": "Bowman", "productName": "Bowman Chrome", "format": "Hobby", "sport": "Baseball", "kind": "odds" },
-  { "file": "2026_Bowman_Baseball_Checklist.pdf", "year": 2026, "brand": "Bowman", "productName": "Bowman", "format": "Hobby", "sport": "Baseball", "kind": "checklist" },
-  { "file": "2026 Bowman Baseball Checklist – Ma.txt", "year": 2026, "brand": "Bowman", "productName": "Bowman", "format": "Hobby", "sport": "Baseball", "kind": "checklist" },
-  { "file": "2026-Bowman-Chrome-Mega-Box-Baseball-Checklist-Downloads-Checklist-Insider-Excel-spreadsheet.xlsx", "year": 2026, "brand": "Bowman", "productName": "Bowman Chrome", "format": "Mega", "sport": "Baseball", "kind": "checklist" },
-  { "file": "2026_Topps_Chrome_Baseball_Checklist_Final_7.22.pdf", "year": 2026, "brand": "Topps", "productName": "Topps Chrome", "format": "Hobby", "sport": "Baseball", "kind": "checklist" },
-  { "file": "2026 Topps Chrome Baseball Checklist.txt", "year": 2026, "brand": "Topps", "productName": "Topps Chrome", "format": "Hobby", "sport": "Baseball", "kind": "checklist" },
-  { "file": "2026_Topps_Chrome_Logofractor_Checklist.pdf", "year": 2026, "brand": "Topps", "productName": "Topps Chrome Logofractor", "format": null, "sport": "Baseball", "kind": "checklist" },
-  { "file": "2026 Topps Finest Baseball Checklist.txt", "year": 2026, "brand": "Topps", "productName": "Topps Finest", "format": "Hobby", "sport": "Baseball", "kind": "checklist" },
-  { "file": "2026_Bowman_Football_Checklist.pdf", "year": 2026, "brand": "Bowman", "productName": "Bowman Football", "format": "Hobby", "sport": "Football", "kind": "checklist" },
-  { "file": "2026_Topps_Bowman_Football_Odds.pdf", "year": 2026, "brand": "Bowman", "productName": "Bowman Football", "format": "Hobby", "sport": "Football", "kind": "odds" }
+  { "slug": "2026-topps-chrome", "year": 2026, "brand": "Topps", "productName": "Topps Chrome", "format": "Hobby", "sport": "Baseball", "cardsOwned": 390,
+    "checklist": { "kind": "local", "file": "2026 Topps Chrome Baseball Checklist.txt" }, "odds": null },
+  { "slug": "2026-bowman-chrome", "year": 2026, "brand": "Bowman", "productName": "Bowman Chrome", "format": "Hobby", "sport": "Baseball", "cardsOwned": 279,
+    "checklist": { "kind": "local", "file": "2026_Bowman_Chrome_Baseball_Checklist.pdf" },
+    "odds": { "kind": "local", "file": "2026_Bowman_Chrome_Baseball_Odds.pdf" } },
+  { "slug": "2026-bowman-chrome-mega", "year": 2026, "brand": "Bowman", "productName": "Bowman Chrome", "format": "Mega", "sport": "Baseball", "cardsOwned": 0,
+    "checklist": { "kind": "local", "file": "2026_Bowman_Chrome_Baseball_Checklist_1_mega.pdf" }, "odds": null },
+  { "slug": "2026-topps-finest", "year": 2026, "brand": "Topps", "productName": "Topps Finest", "format": "Hobby", "sport": "Baseball", "cardsOwned": 64,
+    "checklist": { "kind": "local", "file": "2026 Topps Finest Baseball Checklist.txt" }, "odds": null },
+  { "slug": "2026-bowman", "year": 2026, "brand": "Bowman", "productName": "Bowman", "format": "Hobby", "sport": "Baseball", "cardsOwned": 47,
+    "checklist": { "kind": "local", "file": "2026 Bowman Baseball Checklist \u2013 Ma.txt" }, "odds": null },
+  { "slug": "2026-bowman-football", "year": 2026, "brand": "Bowman", "productName": "Bowman Football", "format": "Hobby", "sport": "Football", "cardsOwned": 0,
+    "checklist": { "kind": "local", "file": "2026_Bowman_Football_Checklist.pdf" },
+    "odds": { "kind": "local", "file": "2026_Topps_Bowman_Football_Odds.pdf" } },
+
+  { "slug": "2024-bowman-chrome-sapphire", "year": 2024, "brand": "Bowman", "productName": "Bowman Chrome Sapphire", "format": "Hobby", "sport": "Baseball", "cardsOwned": 17,
+    "checklist": { "kind": "fetch", "url": "https://www.checklistinsider.com/2024-bowman-chrome-sapphire-baseball", "note": "base 100 + prospects 100; ladder Yellow /75, Gold /50, Orange /25, Black /10, Red /5, Padparadscha 1/1" }, "odds": null },
+  { "slug": "2023-bowman-chrome-sapphire", "year": 2023, "brand": "Bowman", "productName": "Bowman Chrome Sapphire", "format": "Hobby", "sport": "Baseball", "cardsOwned": 4,
+    "checklist": { "kind": "fetch", "url": "https://www.checklistinsider.com/2023-bowman-chrome-sapphire-baseball", "note": "ladder differs from 2024, never reuse another year's" }, "odds": null },
+  { "slug": "2023-bowman-draft-sapphire", "year": 2023, "brand": "Bowman", "productName": "Bowman Draft Sapphire", "format": "Hobby", "sport": "Baseball", "cardsOwned": 4,
+    "checklist": { "kind": "fetch", "url": "https://www.checklistinsider.com/2023-bowman-draft-sapphire-baseball", "note": "" }, "odds": null },
+  { "slug": "2022-bowman-chrome-sapphire", "year": 2022, "brand": "Bowman", "productName": "Bowman Chrome Sapphire", "format": "Hobby", "sport": "Baseball", "cardsOwned": 3,
+    "checklist": { "kind": "fetch", "url": "https://www.checklistinsider.com/2022-bowman-chrome-sapphire-baseball", "note": "" }, "odds": null },
+  { "slug": "2026-bowman-chrome-sapphire", "year": 2026, "brand": "Bowman", "productName": "Bowman Chrome Sapphire", "format": "Hobby", "sport": "Baseball", "cardsOwned": 3,
+    "checklist": { "kind": "fetch", "url": "https://www.checklistinsider.com/2026-bowman-chrome-sapphire-baseball", "note": "may be unreleased; a 404 is an expected outcome, not a failure" }, "odds": null },
+  { "slug": "2025-bowman-chrome-sapphire", "year": 2025, "brand": "Bowman", "productName": "Bowman Chrome Sapphire", "format": "Hobby", "sport": "Baseball", "cardsOwned": 2,
+    "checklist": { "kind": "fetch", "url": "https://www.checklistinsider.com/2025-bowman-chrome-sapphire-baseball", "note": "" }, "odds": null },
+  { "slug": "2026-bowman-sapphire", "year": 2026, "brand": "Bowman", "productName": "Bowman Sapphire", "format": "Hobby", "sport": "Baseball", "cardsOwned": 2,
+    "checklist": { "kind": "fetch", "url": "https://www.checklistinsider.com/2026-bowman-sapphire-baseball", "note": "" }, "odds": null },
+  { "slug": "2020-bowman-chrome-sapphire", "year": 2020, "brand": "Bowman", "productName": "Bowman Chrome Sapphire", "format": "Hobby", "sport": "Baseball", "cardsOwned": 1,
+    "checklist": { "kind": "fetch", "url": "https://www.checklistinsider.com/2020-bowman-chrome-sapphire-baseball", "note": "" }, "odds": null },
+  { "slug": "2025-bowman-draft-sapphire", "year": 2025, "brand": "Bowman", "productName": "Bowman Draft Sapphire", "format": "Hobby", "sport": "Baseball", "cardsOwned": 1,
+    "checklist": { "kind": "fetch", "url": "https://www.checklistinsider.com/2025-bowman-draft-sapphire-baseball", "note": "" }, "odds": null },
+  { "slug": "2023-bowman-sapphire", "year": 2023, "brand": "Bowman", "productName": "Bowman Sapphire", "format": "Hobby", "sport": "Baseball", "cardsOwned": 1,
+    "checklist": { "kind": "fetch", "url": "https://www.checklistinsider.com/2023-bowman-sapphire-baseball", "note": "" }, "odds": null },
+  { "slug": "2022-topps-chrome-sapphire", "year": 2022, "brand": "Topps", "productName": "Topps Chrome Sapphire", "format": "Hobby", "sport": "Baseball", "cardsOwned": 1,
+    "checklist": { "kind": "fetch", "url": "https://www.checklistinsider.com/2022-topps-chrome-sapphire-baseball", "note": "" }, "odds": null }
 ]
 ```
+
+Note the `\u2013` escape in the 2026 Bowman filename. That is a real en dash in the
+filename on disk and it must survive byte for byte.
+
+**Deliberately excluded, and this is not an oversight.** The remaining long tail of
+single-card products (2021 and 2022 Topps Chrome, 2023 to 2025 Bowman Chrome, 2024
+Bowman Sterling, 2025 Topps Chrome Platinum Anniversary, 2025 Bowman Draft Chrome,
+2023 Bowman Chrome Mega Box) is about 12 cards across 9 products. Registering them
+costs nine fetches to verify twelve cards. Those cards land `unverified` in the Plan 3
+backfill, which is the honest state the spec designed for, and any of them can be
+added later by appending one row.
 
 - [ ] **Step 2: Write the failing test**
 
 ```typescript
-// tests/unit/products/seed-manifest.test.ts
+// tests/unit/products/registry.test.ts
 import { describe, it, expect } from 'vitest';
-import { readdir } from 'node:fs/promises';
-import sources from '@/data/checklist-sources.json';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
+import registry from '@/data/product-registry.json';
 
-const SOURCE_DIR =
+const LOCAL_SOURCE_DIR =
   'C:/Users/Michael/Documents/Claude/Pokemon_Portfolio/eBay_assets/Baseball Checklists';
 
-describe('checklist source manifest', () => {
-  it('lists all twelve files', () => {
-    expect(sources).toHaveLength(12);
+describe('product registry', () => {
+  it('gives every entry a complete product identity', () => {
+    for (const e of registry) {
+      expect(e.slug).toMatch(/^[a-z0-9-]+$/);
+      expect(e.year).toBeGreaterThan(2000);
+      expect(e.brand).toBeTruthy();
+      expect(e.productName).toBeTruthy();
+      expect(e.sport).toBeTruthy();
+    }
   });
 
-  it('references only files that exist on disk', async () => {
-    const onDisk = new Set(await readdir(SOURCE_DIR));
-    const missing = sources.filter((s) => !onDisk.has(s.file));
+  it('has a unique slug per entry', () => {
+    const slugs = registry.map((e) => e.slug);
+    expect(new Set(slugs).size).toBe(slugs.length);
+  });
+
+  it('has a unique product identity per entry', () => {
+    const keys = registry.map(
+      (e) => `${e.year}|${e.brand}|${e.productName}|${e.format ?? ''}`
+    );
+    expect(new Set(keys).size).toBe(keys.length);
+  });
+
+  it('points every local source at a file that exists on disk', () => {
+    const missing = registry
+      .flatMap((e) => [e.checklist, e.odds])
+      .filter((s): s is { kind: 'local'; file: string } => s?.kind === 'local')
+      .filter((s) => !existsSync(join(LOCAL_SOURCE_DIR, s.file)));
     expect(missing.map((m) => m.file)).toEqual([]);
   });
 
-  it('gives every entry a product identity and a kind', () => {
-    for (const s of sources) {
-      expect(s.year).toBeGreaterThan(2000);
-      expect(s.brand).toBeTruthy();
-      expect(s.productName).toBeTruthy();
-      expect(['checklist', 'odds']).toContain(s.kind);
+  it('gives every fetch source an absolute https url', () => {
+    for (const e of registry) {
+      for (const s of [e.checklist, e.odds]) {
+        if (s && s.kind === 'fetch') expect(s.url).toMatch(/^https:\/\//);
+      }
     }
+  });
+
+  it('covers the four products holding the bulk of the collection', () => {
+    const bulk = registry.filter((e) => e.cardsOwned >= 47).map((e) => e.slug);
+    expect(bulk.sort()).toEqual([
+      '2026-bowman',
+      '2026-bowman-chrome',
+      '2026-topps-chrome',
+      '2026-topps-finest',
+    ]);
   });
 });
 ```
 
 - [ ] **Step 3: Run it to verify it fails, then passes**
 
-Run: `npx vitest run tests/unit/products/seed-manifest.test.ts`
-Expected: FAIL until `data/checklist-sources.json` exists, then PASS. If a filename in the manifest does not match disk exactly, fix the manifest to match disk. Do not rename the source files.
+Run: `npx vitest run tests/unit/products/registry.test.ts`
+Expected: FAIL until the JSON exists, then all 6 PASS. **If the local-file test fails,
+fix the registry to match disk exactly. Do not rename the source files.**
 
-- [ ] **Step 4: Write `scripts/seed-checklists.ts`**
+- [ ] **Step 4: Write `scripts/fetch-checklists.ts`**
+
+Network stage. Writes into `data/checklists/`, never touches the database.
 
 ```typescript
 import { config } from 'dotenv';
 config({ path: '.env.local' });
 
-import { readFile } from 'node:fs/promises';
+import { mkdir, writeFile, copyFile } from 'node:fs/promises';
+import { join, extname } from 'node:path';
+import registry from '@/data/product-registry.json';
+
+const LOCAL_SOURCE_DIR =
+  'C:/Users/Michael/Documents/Claude/Pokemon_Portfolio/eBay_assets/Baseball Checklists';
+const CACHE_DIR = 'data/checklists';
+
+async function fetchToCache(slug: string, suffix: string, url: string) {
+  const res = await fetch(url, {
+    headers: { 'user-agent': 'isosceles-insights/0.1 (personal collection tool)' },
+  });
+  if (!res.ok) {
+    console.log(`  unavailable ${slug}${suffix}: HTTP ${res.status} from ${url}`);
+    return false;
+  }
+  const body = await res.text();
+  await writeFile(join(CACHE_DIR, `${slug}${suffix}.html`), body, 'utf8');
+  console.log(`  fetched ${slug}${suffix}.html (${body.length} bytes)`);
+  return true;
+}
+
+async function main() {
+  await mkdir(CACHE_DIR, { recursive: true });
+  let fetched = 0;
+  let copied = 0;
+  let unavailable = 0;
+
+  for (const entry of registry) {
+    console.log(entry.slug);
+    const sources: Array<[string, typeof entry.checklist | null]> = [
+      ['', entry.checklist],
+      ['-odds', entry.odds],
+    ];
+    for (const [suffix, source] of sources) {
+      if (!source) continue;
+      if (source.kind === 'local') {
+        const ext = extname(source.file);
+        await copyFile(
+          join(LOCAL_SOURCE_DIR, source.file),
+          join(CACHE_DIR, `${entry.slug}${suffix}${ext}`)
+        );
+        console.log(`  copied ${entry.slug}${suffix}${ext}`);
+        copied++;
+      } else if (await fetchToCache(entry.slug, suffix, source.url)) {
+        fetched++;
+      } else {
+        unavailable++;
+      }
+    }
+  }
+
+  console.log(`\n${copied} copied, ${fetched} fetched, ${unavailable} unavailable`);
+  process.exit(0);
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});
+```
+
+- [ ] **Step 5: Add the script to `package.json`**
+
+```json
+"fetch:checklists": "tsx scripts/fetch-checklists.ts"
+```
+
+- [ ] **Step 6: Run the fetch and record what came back**
+
+Run: `npm run fetch:checklists`
+Expected: every `local` source copies. Some `fetch` sources may 404, which is reported
+as "unavailable" rather than crashing. **Record the actual output in the task notes.**
+A Sapphire year that 404s stays unseeded and its cards land unverified in Plan 3,
+which is the correct outcome, not a failure to fix here.
+
+- [ ] **Step 7: Write `scripts/seed-checklists.ts`**
+
+Database stage. Reads only `data/checklists/`, never the network.
+
+```typescript
+import { config } from 'dotenv';
+config({ path: '.env.local' });
+
+import { readFile, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import { and, eq } from 'drizzle-orm';
 import { db } from '@/lib/db/client';
 import { products } from '@/lib/db/schema/products';
 import { parseChecklistFile } from '@/core/checklist/parse';
 import { createProduct, loadChecklistForProduct } from '@/core/products/service';
-import sources from '@/data/checklist-sources.json';
+import registry from '@/data/product-registry.json';
 
-const SOURCE_DIR =
-  'C:/Users/Michael/Documents/Claude/Pokemon_Portfolio/eBay_assets/Baseball Checklists';
+const CACHE_DIR = 'data/checklists';
 
 const USER_ID = process.env.SEED_USER_ID;
 if (!USER_ID) throw new Error('SEED_USER_ID is not set');
 
-async function findOrCreateProduct(s: (typeof sources)[number]) {
+async function findOrCreateProduct(e: (typeof registry)[number]) {
   const existing = await db
     .select()
     .from(products)
     .where(
       and(
         eq(products.userId, USER_ID!),
-        eq(products.year, s.year),
-        eq(products.brand, s.brand),
-        eq(products.productName, s.productName)
+        eq(products.year, e.year),
+        eq(products.brand, e.brand),
+        eq(products.productName, e.productName)
       )
     );
   if (existing.length) return existing[0];
   return createProduct({
     userId: USER_ID!,
-    year: s.year,
-    brand: s.brand,
-    productName: s.productName,
-    format: s.format,
-    sport: s.sport,
+    year: e.year,
+    brand: e.brand,
+    productName: e.productName,
+    format: e.format,
+    sport: e.sport,
     category: 'sports',
   });
 }
 
 async function main() {
-  for (const source of sources) {
-    const product = await findOrCreateProduct(source);
-    const buffer = await readFile(join(SOURCE_DIR, source.file));
-    const parsed = await parseChecklistFile(buffer, source.file);
-    const result = await loadChecklistForProduct(product.id, parsed);
-    console.log(
-      `${source.file}: ${result.entriesInserted} entries, ` +
-        `${result.parallelsInserted} parallels -> product ${product.id}`
+  const cached = await readdir(CACHE_DIR);
+
+  for (const entry of registry) {
+    // Every cached file for this slug, checklist and odds alike. Both go through
+    // the same parser: a checklist contributes card rows, an odds sheet contributes
+    // parallels, and loadChecklistForProduct sets only the timestamp each earned.
+    const files = cached.filter(
+      (f) =>
+        f.startsWith(`${entry.slug}.`) || f.startsWith(`${entry.slug}-odds.`)
     );
+    if (files.length === 0) {
+      console.log(`${entry.slug}: no cached source, skipped`);
+      continue;
+    }
+
+    const product = await findOrCreateProduct(entry);
+    for (const file of files) {
+      const buffer = await readFile(join(CACHE_DIR, file));
+      const parsed = await parseChecklistFile(buffer, file);
+      const result = await loadChecklistForProduct(product.id, parsed);
+      console.log(
+        `${file}: ${result.entriesInserted} entries, ` +
+          `${result.parallelsInserted} parallels -> product ${product.id}`
+      );
+    }
   }
   process.exit(0);
 }
@@ -1979,16 +2189,26 @@ main().catch((err) => {
 });
 ```
 
-- [ ] **Step 5: Run the seed and record the real counts**
+- [ ] **Step 8: Run the seed and record the real counts**
 
 Run: `npm run seed:checklists`
-Expected: twelve lines of output, each with a nonzero entry count for `kind: checklist` rows. **If any checklist file yields zero entries, stop and fix the parser rather than accepting it.** Paste the actual output into the task notes so the numbers are on record.
+Expected: a nonzero entry count for every product whose cached source is a checklist.
+**If a checklist file yields zero entries, stop and fix the parser rather than
+accepting it.** Paste the actual output into the task notes so the numbers are on
+record.
 
-- [ ] **Step 6: Commit**
+Known risk, flag it rather than hacking around it: the Sapphire sources arrive as
+`.html`, and `extractText` (Task 6) supports pdf, txt and xlsx only, so it will throw
+`Unsupported checklist format: .html`. That is the correct behaviour for Task 6. If
+you hit it, **report it as a concern and leave the Sapphire products unseeded.**
+Whether to add an HTML adapter or source Sapphire differently is a decision for the
+plan owner, not a parser hack.
+
+- [ ] **Step 9: Commit**
 
 ```bash
-git add scripts/seed-checklists.ts data/checklist-sources.json tests/unit/products/seed-manifest.test.ts
-git commit -m "feat(products): seed the twelve existing checklist and odds files"
+git add data/product-registry.json data/checklists scripts/fetch-checklists.ts scripts/seed-checklists.ts package.json tests/unit/products/registry.test.ts
+git commit -m "feat(products): canonical product registry, fetch and seed"
 ```
 
 ---

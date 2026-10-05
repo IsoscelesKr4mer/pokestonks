@@ -126,3 +126,92 @@ Tonight a correctly-read "97" was typed into a staging array as "44" and only th
 collision check caught it. Wax Cache does not make that mistake. Whatever gets
 built must remove the human transcription step between reading a card and storing
 it, or it has not solved the actual problem.
+
+---
+
+## Measured evidence from the live app, 2026-10-05
+
+Michael sent screenshots of the Cards page calling it "totally broken" and "in
+complete disarray". He is right, and the numbers are specific. Every one of these
+is the same root cause: **no field means exactly one thing.**
+
+| what the UI says | what is actually true |
+|---|---|
+| **PC 112** | **53** are genuine PC, **59** are second copies held off sale from the mega rip. The 53 is the Mariners Sapphire core: 9x Felnin Celesten, 5x Colt Emerson, 4x Jonny Farmelo, 4x Kade Anderson, 3x Lazaro Montes, 3x Ricardo Cova, 3x Yorger Bautista, plus the rest |
+| **Photographed 263** | only **52** have an image. 211 render "NO PHOTO YET" |
+| **Needs Back 155** | **119 of them already have 2+ photo URLs.** The flag is wrong 77% of the time, and **0** of them are flagged for a reason their own notes support |
+
+**A correction worth recording, because it is the same disease.** The first pass
+at this table reported only **9** genuine PC keepers. That was measured by asking
+whether a row's `notes` literally contain the phrase "PC keeper" or "not for
+sale". Only 9 happen to be worded that way. Michael corrected it immediately:
+*"there are a lot more than 9 cards in the PC it's basically all the mariners
+sapphire + some."* He was right, the real number is **53**.
+
+So the analysis diagnosing "notes is prose that gets regex'd back out" was itself
+produced by regexing prose. **If the operator cannot reliably count the owner's
+own collection from this schema, the app certainly cannot.** "Is this mine?" has
+to be a column with a real answer, not a phrase someone hopes to find in a
+sentence. That single failure is the strongest argument in this document.
+
+Causes, field by field:
+
+- **`for_sale`** is doing three jobs: personal-collection flag, "second copy held
+  so it cannot be double-listed", and "not priced yet". The duplicate guard's
+  CHECK (`duplicate_of_id IS NULL OR for_sale = false`) *forces* every second copy
+  into the PC bucket. One night of cataloguing pushed 59 cards into "PC".
+- **`status`** describes the operator's workflow, not the data. `photographed`
+  means "a human read photos off disk", which is why 263 rows claim it and 52 have
+  an image.
+- **`needs_back_photo`** is written once at insert and never reconciled against
+  `photo_urls`.
+- **`notes`** holds team, box provenance, 1st Bowman, RC, serial and parallel
+  reasoning as prose, then gets regex'd back out.
+
+**Two inventory errors found the same evening, both now fixed:**
+- 8 Bowman Basketball Blasters sold on the Topps marketplace 2026-09-30 for
+  $336.72 and never booked, because the exit was off eBay so nothing synced.
+  Booked as sale 628, $55.22 profit on $265.20 of cost.
+- The six mega boxes ripped on 10-04 and 10-05 were never logged as rips, so
+  $331.62 of cost basis sat in sealed inventory for boxes that are now cardboard.
+  Held corrected 14 -> 8.
+
+## The ledger must survive, verbatim
+
+His first question on hearing "new app" was whether the record survives. It does,
+and the numbers as of 2026-10-05 are:
+
+```
+CARDS    832 rows | 514 listed | 54 sold ($460.29)
+         568 rows carry an ebay_item_id across 71 live listings
+SEALED   555 purchase lots | 548 sales rows | $29,425.95 revenue
+```
+
+The ledger lives in Postgres, not in the app, so a new front end does not threaten
+it. **The one thing migration must not break is the `ebay_item_id` / `ebay_sku`
+mapping on those 568 rows**, because that is what ties a physical card to a live
+listing and to the order that eventually sells it. Everything else can be
+restructured freely.
+
+## Requirements he added on 2026-10-05
+
+In his words, these are needs that "have evolved over time":
+
+1. **Keep a sealed wax section.** The pokestonks P&L job does not go away.
+2. **A catalogued overview of every card ingested**, not a list bolted onto a
+   sealed-product tracker.
+3. **An in-app ingest tool** like the Wax Cache video: photos in, both sides read,
+   fields filled, no terminal and no operator.
+4. **A Cards section that is feature rich and not an afterthought.**
+5. **Sort and filter by team, by set, by insert, and more.**
+
+**Point 5 is the one that forces a rewrite rather than a patch.** Today:
+- **team does not exist as a column.** It lives inside `notes` as prose.
+- **insert is encoded in the `set_name` string**, e.g.
+  `2026 Bowman Chrome (Spring Breakout insert)`, so filtering inserts means
+  string-matching a parenthetical.
+- **parallel is free text**, which is why normalising it has its own memory entry.
+
+You cannot sort by a field that does not exist. That is a data model problem, not
+a UI problem, and it is the clearest argument for building fresh rather than
+bolting filters onto this schema.
