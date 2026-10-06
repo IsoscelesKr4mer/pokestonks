@@ -1959,6 +1959,19 @@ git commit -m "feat(ingest): upload endpoint shared by both intake paths"
 display it and Vercel cannot convert it without libheif. The worker runs locally
 where `sharp` has what it needs, so the web app never has to.
 
+**Two runtime facts this script must carry, both found the hard way:**
+
+1. **`server-only` throws under plain `tsx`.** It only no-ops under the
+   `react-server` export condition, which Next's bundler sets and a bare node
+   process does not. `core/ingest/storage.ts` and `core/ingest/jobs.ts` both
+   import it, so the worker needs
+   `NODE_OPTIONS=--conditions=react-server`. The npm script below sets it via
+   `cross-env` so it works on Windows too. Install it with
+   `npm install -D cross-env` if it is not already present.
+2. **`@supabase/supabase-js` needs a global `WebSocket`,** which Node 20 does
+   not provide. Task 4 polyfills `ws` at the top of `storage.ts`, so this is
+   already handled; do not remove that polyfill.
+
 - [ ] **Step 1: Install sharp**
 
 ```bash
@@ -2118,7 +2131,7 @@ main().catch((err) => {
 - [ ] **Step 6: Add the script**
 
 ```json
-"worker": "tsx scripts/worker.ts"
+"worker": "cross-env NODE_OPTIONS=--conditions=react-server tsx scripts/worker.ts"
 ```
 
 - [ ] **Step 7: Run tests to verify they pass**
@@ -2264,7 +2277,7 @@ main().catch((err) => {
 - [ ] **Step 3: Add the script and document the variables**
 
 ```json
-"upload:drop": "tsx scripts/watch-card-drop.ts"
+"upload:drop": "cross-env NODE_OPTIONS=--conditions=react-server tsx scripts/watch-card-drop.ts"
 ```
 
 Append to `.env.local.example`:
