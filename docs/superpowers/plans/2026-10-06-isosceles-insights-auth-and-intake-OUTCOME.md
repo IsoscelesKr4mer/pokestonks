@@ -161,12 +161,11 @@ other real accounts share this Supabase project.
 5. **The caller-supplied user id is shape-checked, not existence-checked**, and
    `photos.user_id` has no foreign key. A stale but UUID-shaped id would land
    every row under a prefix no session queries, silently.
-6. **Which account the owner signs in as is unconfirmed.** `SEED_USER_ID`
-   resolves to `dixonm7@gmail.com`, which matches his git author email, but
-   `isosceleskr4mer@gmail.com` also exists and has signed in. Task 13 could not
-   verify this (no browser automation) and correctly refused to guess. **If it
-   is wrong, uploads succeed and the app looks empty with nothing explaining
-   why.** He has been asked.
+6. **RESOLVED 2026-10-06.** The owner confirmed he signs in with
+   `dixonm7@gmail.com`, which is the account `SEED_USER_ID` already points at
+   (`66200525-2237-4cc3-948f-aaafd3253d4b`). Uploads and his session agree, so
+   the silent-empty-app failure this item warned about cannot occur.
+
 7. **Nothing drains `scan` jobs yet.** Correct per the architecture, but there
    is no documented entry point for an agent session to claim one, and
    `countQueued` is exported and unused. The queue supports the pattern; nothing
