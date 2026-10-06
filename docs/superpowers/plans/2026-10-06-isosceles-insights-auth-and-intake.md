@@ -2181,6 +2181,12 @@ async function resolveUserId(request: Request): Promise<string | null> {
   const onBehalfOf = request.headers.get('x-ingest-user');
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   if (auth && serviceKey && auth === `Bearer ${serviceKey}` && onBehalfOf) {
+    // This value is CALLER SUPPLIED, unlike the session path, and it flows
+    // into storageKeyFor, which builds an object key by concatenation. Require
+    // a UUID so nothing but a real user id can ever reach a storage prefix.
+    if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(onBehalfOf)) {
+      return null;
+    }
     return onBehalfOf;
   }
 
@@ -2198,6 +2204,33 @@ and use it:
   const userId = await resolveUserId(request);
   if (!userId) return NextResponse.json({ error: 'Not signed in' }, { status: 401 });
 ```
+
+- [ ] **Step 1b: Add a test for the identifier guard**
+
+```typescript
+// tests/unit/ingest/resolve-user.test.ts
+import { describe, it, expect } from 'vitest';
+import { isValidUserId } from '@/app/api/upload/route';
+
+describe('isValidUserId', () => {
+  it('accepts a real uuid', () => {
+    expect(isValidUserId('66200525-2237-4cc3-948f-aaafd3253d4b')).toBe(true);
+  });
+
+  it('rejects anything that could escape a storage prefix', () => {
+    expect(isValidUserId('../../other-user')).toBe(false);
+    expect(isValidUserId('/absolute')).toBe(false);
+    expect(isValidUserId('')).toBe(false);
+  });
+
+  it('rejects a plausible but non-uuid identifier', () => {
+    expect(isValidUserId('admin')).toBe(false);
+  });
+});
+```
+
+Export the guard from the route as `isValidUserId` so it can be tested, and use
+it inside `resolveUserId`.
 
 - [ ] **Step 2: Write `scripts/watch-card-drop.ts`**
 
@@ -2323,6 +2356,11 @@ git commit -m "feat(ingest): local drop-folder uploader"
   - `getBatchPhotos(userId, batchId): Promise<PhotoWithUrl[]>`
   - `confirmPairing(userId, batchId, assignments): Promise<{ jobId: number }>`
   - `summariseBatch(input): { ready: boolean; label: string }`
+
+**Signed URLs expire.** `signedDerivativeUrl` defaults to one hour, and the owner
+may leave a pairing grid open longer than that on a big rip. Pass a longer window
+when building the grid, and if an image fails to load the page should offer a
+refresh rather than showing a broken thumbnail.
 
 **The confirm step is not optional.** The spec says so plainly, and Task 6 explains
 why: a run of fronts followed by a run of backs is indistinguishable from
