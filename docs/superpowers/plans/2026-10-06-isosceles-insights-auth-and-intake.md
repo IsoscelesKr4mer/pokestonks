@@ -2886,8 +2886,31 @@ which is correct.
 CARD_DROP_DIR="C:/Users/Michael/Documents/Claude/Isosceles_Insights/.probe" npm run upload:drop
 ```
 
-Expected: **0 accepted, 20 already known.** This is the content-hash guarantee. If
-it reports new photos, stop and report it.
+Expected: **0 accepted, 20 already known, and `batches: []`.** This is the
+content-hash guarantee. If it reports new photos, stop and report it.
+
+**Then confirm the re-run created nothing**, which is the other half of the
+guarantee. The folder watcher is designed to be run repeatedly, so an unchanged
+folder must not mint a phantom batch, a pointless job, or a notification:
+
+```bash
+npx tsx -e "
+async function main() {
+  const { config } = await import('dotenv');
+  config({ path: '.env.local' });
+  const postgres = (await import('postgres')).default;
+  const sql = postgres(process.env.DATABASE_URL_DIRECT || process.env.DATABASE_URL, { prepare: false });
+  const [c] = await sql\`SELECT (SELECT COUNT(*)::int FROM ingest_batches) batches, (SELECT COUNT(*)::int FROM ingest_jobs) jobs, (SELECT COUNT(*)::int FROM photos) photos\`;
+  console.log(c);
+  await sql.end();
+}
+main();
+"
+```
+
+Expected after the SECOND run: still exactly 1 batch, 1 job and 20 photos. **If
+the batch or job count went up, the duplicate guard is not working and that is a
+stop-and-report.**
 
 - [ ] **Step 4: Drain the queue**
 
