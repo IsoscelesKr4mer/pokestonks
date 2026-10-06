@@ -362,6 +362,8 @@ git commit -m "feat(checklist): split player and team using a closed MLB team se
 
 **The known bug this task fixes:** the Python version has no pattern for plain numeric base cards, so they never parse. That is added here.
 
+**Three more shapes, found by running the patterns over the five real checklist PDFs rather than reasoning about them.** All were silently dropped and all are now covered, for a measured zero code-shaped rows lost across 6,617 parsed rows: `91CB-1` (digit-leading numeric, 60 rows), `RA-CK C.J. Kayfus` (space-separated alpha whose player name starts with initials), and `91CA-CC Corbin Carroll` (digit-leading with an alpha suffix, 75 rows). The latter two are autograph cards, which the spec routes to manual review, so losing them is the worst case.
+
 **Files:**
 - Create: `core/checklist/rows.ts`, `core/checklist/types.ts`
 - Test: `tests/unit/checklist/rows.test.ts`
@@ -472,21 +474,37 @@ import type { ParsedRow } from './types';
 // code (BTP-11J, RVA-13M).
 const INSERT_NUMERIC = /^([A-Z]{1,6}-\d{1,3})\s*(.+)$/;
 
+// The 1991 Bowman insert prints a digit-leading code, 91CB-1 through 91CB-30.
+const INSERT_PREFIXED_NUMERIC = /^(\d{1,3}[A-Z]{1,5}-\d{1,3})\s*(.+)$/;
+
 // Alpha suffix is non-greedy and must be followed by Capital-then-lowercase,
 // which is where the player name starts.
 const INSERT_ALPHA = /^([A-Z]{1,6}-[A-Z]{1,5}?)\s*([A-Z][a-z].+)$/;
 
+// Space-separated alpha codes. INSERT_ALPHA anchors on [A-Z][a-z] to find where
+// a GLUED name begins, which breaks on initials (C.J. Kayfus, JJ Wetherholt,
+// AJ Smith-Shawver). When a space separates code from name there is no ambiguity
+// to resolve, so require the space and accept any capitalised name after it.
+// The optional \d{0,3} also covers the 1991 Bowman autograph subset, 91CA-CC.
+const INSERT_ALPHA_SPACED = /^(\d{0,3}[A-Z]{1,6}-[A-Z0-9]{1,6})\s+([A-Z].*)$/;
+
 // Plain numeric base cards. Absent from the Python parser, which is why base
-// sets never loaded. Requires whitespace so "100 Nick" does not swallow digits.
+// sets never loaded. The whitespace is REQUIRED and must not be loosened to \s*:
+// measured against the real PDFs, base rows are always spaced (155 and 674 of
+// them, zero glued), and \s* would match "91CB-1 Shohei Ohtani" as code "91".
 const BASE_NUMERIC = /^(\d{1,3})\s+([A-Z].*)$/;
 
 export function parseRow(line: string): ParsedRow | null {
   const trimmed = line.trim();
   if (!trimmed) return null;
 
+  // Order matters: INSERT_ALPHA_SPACED must follow the glued INSERT_ALPHA so
+  // glued rows keep resolving by the Capital-then-lowercase anchor.
   const match =
     INSERT_NUMERIC.exec(trimmed) ??
+    INSERT_PREFIXED_NUMERIC.exec(trimmed) ??
     INSERT_ALPHA.exec(trimmed) ??
+    INSERT_ALPHA_SPACED.exec(trimmed) ??
     BASE_NUMERIC.exec(trimmed);
   if (!match) return null;
 
