@@ -1705,13 +1705,20 @@ git commit -m "feat(ingest): discord enqueue ping, a doorbell not a transport"
 - Consumes: `hashBytes` and `uploadOriginal` (Task 4), `readCaptureTime` (Task 5), `enqueueJob` (Task 7), `notifyEnqueued` (Task 8), `requireUserId` (Task 2)
 - Produces:
   - `type IntakeFile = { filename: string; bytes: Buffer; originalPath?: string }`
-  - `type IntakeResult = { accepted: number; duplicates: number; batchId: number; jobId: number }`
+  - `type IntakeBatch = { batchId: number; jobId: number; label: string; photoCount: number }`
+  - `type IntakeResult = { accepted: number; duplicates: number; batches: IntakeBatch[] }`
   - `ingestFiles(userId: string, files: IntakeFile[]): Promise<IntakeResult>`
   - `extensionOf(filename: string): string`
   - `ACCEPTED_EXTENSIONS: readonly string[]`
 
 **Both intake paths land here.** The watched folder and the in-app bulk upload both
 post to this endpoint, so there is one code path and one set of rules.
+
+**One upload can produce several batches.** A drop folder routinely holds more than
+one sitting's photos, and the spec wants each session to become its own batch so
+that past rips reconstruct themselves. So this calls `groupByShotAt` from Task 5 and
+creates one batch, and one normalise job, per cluster. An upload of 160 photos
+spanning two evenings yields two batches, not one.
 
 - [ ] **Step 1: Write the failing test**
 
@@ -1764,7 +1771,7 @@ import { ingestBatches } from '@/lib/db/schema/ingestBatches';
 import { hashBytes } from './hash';
 import { uploadOriginal } from './storage';
 import { readCaptureTime } from './exif';
-import { labelForWindow } from './grouping';
+import { groupByShotAt, labelForWindow } from './grouping';
 import { enqueueJob } from './jobs';
 import { notifyEnqueued } from './notify';
 
@@ -1773,11 +1780,16 @@ import { notifyEnqueued } from './notify';
 export const ACCEPTED_EXTENSIONS = ['.heic', '.heif', '.jpg', '.png', '.webp'] as const;
 
 export type IntakeFile = { filename: string; bytes: Buffer; originalPath?: string };
+export type IntakeBatch = {
+  batchId: number;
+  jobId: number;
+  label: string;
+  photoCount: number;
+};
 export type IntakeResult = {
   accepted: number;
   duplicates: number;
-  batchId: number;
-  jobId: number;
+  batches: IntakeBatch[];
 };
 
 export function extensionOf(filename: string): string {
@@ -1804,53 +1816,75 @@ export async function ingestFiles(
     }))
   );
 
-  const times = prepared.map((p) => p.shotAt).filter((d): d is Date => d !== null);
-  const from = times.length ? new Date(Math.min(...times.map((d) => d.getTime()))) : null;
-  const to = times.length ? new Date(Math.max(...times.map((d) => d.getTime()))) : null;
-
-  const [batch] = await db
-    .insert(ingestBatches)
-    .values({ userId, label: labelForWindow(from, to), shotFrom: from, shotTo: to })
-    .returning();
+  // One upload can span several sittings. Each cluster becomes its own batch,
+  // which is what makes a past rip reconstruct itself from its photos.
+  const clusters = groupByShotAt(
+    prepared.map((p, index) => ({ id: index, shotAt: p.shotAt }))
+  );
 
   let accepted = 0;
   let duplicates = 0;
+  const batches: IntakeBatch[] = [];
 
-  for (const file of prepared) {
-    const storagePath = await uploadOriginal(
-      userId,
-      file.hash,
-      extensionOf(file.filename),
-      file.bytes
-    );
-    const inserted = await db
-      .insert(photos)
-      .values({
+  for (const cluster of clusters) {
+    const members = cluster.map((c) => prepared[c.id]);
+    const times = members.map((m) => m.shotAt).filter((d): d is Date => d !== null);
+    const from = times.length ? new Date(Math.min(...times.map((d) => d.getTime()))) : null;
+    const to = times.length ? new Date(Math.max(...times.map((d) => d.getTime()))) : null;
+
+    const [batch] = await db
+      .insert(ingestBatches)
+      .values({ userId, label: labelForWindow(from, to), shotFrom: from, shotTo: to })
+      .returning();
+
+    let batchAccepted = 0;
+    for (const file of members) {
+      const storagePath = await uploadOriginal(
         userId,
-        batchId: batch.id,
-        contentHash: file.hash,
-        originalPath: file.originalPath ?? null,
-        originalFilename: file.filename,
-        storagePath,
-        shotAt: file.shotAt,
-        bytes: file.bytes.length,
-      })
-      // Re-dropping the same folder is normal and must be a no-op, not an error.
-      .onConflictDoNothing()
-      .returning({ id: photos.id });
+        file.hash,
+        extensionOf(file.filename),
+        file.bytes
+      );
+      const inserted = await db
+        .insert(photos)
+        .values({
+          userId,
+          batchId: batch.id,
+          contentHash: file.hash,
+          originalPath: file.originalPath ?? null,
+          originalFilename: file.filename,
+          storagePath,
+          shotAt: file.shotAt,
+          bytes: file.bytes.length,
+        })
+        // Re-dropping the same folder is normal and must be a no-op, not an error.
+        .onConflictDoNothing()
+        .returning({ id: photos.id });
 
-    if (inserted.length > 0) accepted++;
-    else duplicates++;
+      if (inserted.length > 0) {
+        accepted++;
+        batchAccepted++;
+      } else {
+        duplicates++;
+      }
+    }
+
+    const job = await enqueueJob(userId, 'normalise', batch.id);
+    await notifyEnqueued({
+      batchLabel: batch.label ?? 'undated',
+      photoCount: batchAccepted,
+      jobType: 'normalise',
+    });
+
+    batches.push({
+      batchId: batch.id,
+      jobId: job.id,
+      label: batch.label ?? 'undated',
+      photoCount: batchAccepted,
+    });
   }
 
-  const job = await enqueueJob(userId, 'normalise', batch.id);
-  await notifyEnqueued({
-    batchLabel: batch.label ?? 'undated',
-    photoCount: accepted,
-    jobType: 'normalise',
-  });
-
-  return { accepted, duplicates, batchId: batch.id, jobId: job.id };
+  return { accepted, duplicates, batches };
 }
 ```
 
@@ -1916,7 +1950,7 @@ git commit -m "feat(ingest): upload endpoint shared by both intake paths"
 - Test: `tests/unit/ingest/normalise.test.ts`
 
 **Interfaces:**
-- Consumes: `claimNextJob`, `completeJob`, `failJob`, `sweepStaleClaims` (Task 7), `downloadObject`, `uploadDerivative` (Task 4), `groupByShotAt` (Task 5)
+- Consumes: `claimNextJob`, `completeJob`, `failJob`, `sweepStaleClaims` (Task 7), `downloadObject` and `uploadDerivative` (Task 4)
 - Produces:
   - `toDisplayJpeg(bytes: Buffer): Promise<{ jpeg: Buffer; width: number; height: number }>`
   - `normaliseBatch(batchId: number): Promise<{ converted: number; failed: number }>`
@@ -2211,7 +2245,8 @@ async function main() {
     accepted += body.accepted;
     duplicates += body.duplicates;
     console.log(
-      `  chunk ${i / BATCH_SIZE + 1}: ${body.accepted} accepted, ${body.duplicates} already known, batch ${body.batchId}`
+      `  chunk ${i / BATCH_SIZE + 1}: ${body.accepted} accepted, ${body.duplicates} already known, ` +
+        `${body.batches.length} batch(es): ${body.batches.map((b) => b.label).join(', ')}`
     );
   }
 
@@ -2756,7 +2791,9 @@ With `npm run dev` running:
 CARD_DROP_DIR="C:/Users/Michael/Documents/Claude/Isosceles_Insights/.probe" npm run upload:drop
 ```
 
-Expected: 20 accepted, 0 already known, and a batch id.
+Expected: 20 accepted, 0 already known, and at least one batch. If the 20 photos
+were shot in one sitting it is one batch; if they span a long gap it is several,
+which is correct.
 
 - [ ] **Step 3: Prove re-running is a no-op**
 
