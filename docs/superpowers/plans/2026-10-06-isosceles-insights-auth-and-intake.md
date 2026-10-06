@@ -1974,7 +1974,7 @@ git commit -m "feat(ingest): upload endpoint shared by both intake paths"
 display it and Vercel cannot convert it without libheif. The worker runs locally
 where `sharp` has what it needs, so the web app never has to.
 
-**Two runtime facts this script must carry, both found the hard way:**
+**Three runtime facts this script must carry, all found the hard way:**
 
 1. **`server-only` throws under plain `tsx`.** It only no-ops under the
    `react-server` export condition, which Next's bundler sets and a bare node
@@ -1986,6 +1986,13 @@ where `sharp` has what it needs, so the web app never has to.
 2. **`@supabase/supabase-js` needs a global `WebSocket`,** which Node 20 does
    not provide. Task 4 polyfills `ws` at the top of `storage.ts`, so this is
    already handled; do not remove that polyfill.
+3. **Calling `config()` from inside the script is too late.** tsx and esbuild
+   hoist every top-level `import` above other statements, so
+   `lib/db/client.ts`, which reads `DATABASE_URL` at import time, runs before
+   `config()` ever fires and the script dies with "DATABASE_URL is not set".
+   Load dotenv as a preload instead, which is why the npm scripts carry
+   `DOTENV_CONFIG_PATH=.env.local` and `-r dotenv/config`. The script itself
+   must NOT import dotenv.
 
 - [ ] **Step 1: Install sharp**
 
@@ -2269,10 +2276,10 @@ it inside `resolveUserId`.
 - [ ] **Step 2: Write `scripts/watch-card-drop.ts`**
 
 ```typescript
-import { config } from 'dotenv';
-config({ path: '.env.local' });
-
-import { readdir, readFile, stat } from 'node:fs/promises';
+// dotenv is loaded by the npm script as a preload, not imported here: tsx
+// hoists imports above statements, so an in-script config() runs too late for
+// anything that reads the environment at import time.
+import { readdir, readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
 const DROP_DIR =
@@ -2344,7 +2351,7 @@ main().catch((err) => {
 - [ ] **Step 3: Add the script and document the variables**
 
 ```json
-"upload:drop": "cross-env NODE_OPTIONS=--conditions=react-server tsx scripts/watch-card-drop.ts"
+"upload:drop": "cross-env NODE_OPTIONS=--conditions=react-server DOTENV_CONFIG_PATH=.env.local tsx -r dotenv/config scripts/watch-card-drop.ts"
 ```
 
 Append to `.env.local.example`:
