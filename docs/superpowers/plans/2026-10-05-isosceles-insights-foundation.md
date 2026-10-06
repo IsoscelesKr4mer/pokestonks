@@ -658,7 +658,50 @@ git commit -m "feat(checklist): section headers and prefix-authoritative insert 
 
 ### Task 5: Parallel and odds parser
 
-**Why:** the spec makes `parallels` a real table so parallel stops being free text, and the odds sheet is what lets Rip Recap claim "two Orange /25 in one box" and have it mean something. Real source lines look like `Orange Border /25 (Hobby - 1:965)` and `Platinum Border 1/1 (Hobby - 1:136,956; Jumbo - 1:38,552)`.
+**Why:** the spec makes `parallels` a real table so parallel stops being free text,
+and the odds sheet is what lets Rip Recap claim "two Orange /25 in one box" and have
+it mean something.
+
+**This task was rewritten before dispatch**, after the first version was run against
+the real files. The original design dropped the most important parallels in the
+product. Two rules were wrong:
+
+- It rejected any line starting `^[A-Z]{1,6}-` as a card code. That also rejects
+  **X-Fractor**, a real parallel.
+- It required a name of at least two words. That drops **Refractor**, **Orange**,
+  **Firefractor** and **Superfractor**, which are exactly the parallels that carry
+  the money.
+
+It also knew only one of the two shapes Topps actually publishes.
+
+**The two real shapes.**
+
+Format A, the parallels block inside a checklist:
+
+```
+X-Fractor (Hobby - 1:20)
+Refractor /499 (Hobby - 1:178; Jumbo - 1:60; Delight - 1:29)
+Orange /25 (Hobby - 1:643)
+Superfractor 1/1 (Hobby - 1:33,743)
+Green Border /99
+Red Refractor /5 Hobby - 1:77,608; Jumbo - 1:24,416
+```
+
+Format B, the standalone odds sheet, a table flattened by PDF extraction into a name
+followed by one odds column per configuration:
+
+```
+Base Cards 1:1 1:2 - 1:1 1:1
+Base Cards Refractor Parallel 1:20 1:32 - - -
+2026 MLB Spring Breakout Gold Refractor Parallel 1:1,281 1:2,076 - - -
+```
+
+Note the last one begins with a year, so a naive leading-digit guard throws away
+every Spring Breakout row.
+
+**Measured against the real files, the design below parses 560 of 565 candidate
+lines, and all 5 it rejects are prose ("All cards are /25 or fewer") that must be
+rejected.**
 
 **Files:**
 - Create: `core/checklist/odds.ts`
@@ -675,7 +718,7 @@ git commit -m "feat(checklist): section headers and prefix-authoritative insert 
 import { describe, it, expect } from 'vitest';
 import { parseParallelLine } from '@/core/checklist/odds';
 
-describe('parseParallelLine', () => {
+describe('parseParallelLine, checklist format', () => {
   it('parses a numbered parallel with single-format odds', () => {
     expect(parseParallelLine('Orange Border /25 (Hobby - 1:965)')).toEqual({
       name: 'Orange Border', printRun: 25, oddsText: 'Hobby - 1:965',
@@ -696,13 +739,17 @@ describe('parseParallelLine', () => {
     });
   });
 
+  it('reads a /1 as a print run of 1', () => {
+    expect(parseParallelLine('Superfractor /1 (Hobby - 1:33,743)')?.printRun).toBe(1);
+  });
+
   it('parses an unnumbered parallel', () => {
     expect(parseParallelLine('Bowman Logo Pattern Border (Hobby - 1:1,165)')).toEqual({
       name: 'Bowman Logo Pattern Border', printRun: null, oddsText: 'Hobby - 1:1,165',
     });
   });
 
-  it('parses a parallel with no odds given', () => {
+  it('parses a parallel with a print run and no odds', () => {
     expect(parseParallelLine('Green Border /99')).toEqual({
       name: 'Green Border', printRun: 99, oddsText: null,
     });
@@ -714,12 +761,81 @@ describe('parseParallelLine', () => {
     });
   });
 
+  it('parses odds that are not wrapped in parentheses', () => {
+    expect(
+      parseParallelLine('Red Refractor /5 Hobby - 1:77,608; Jumbo - 1:24,416')
+    ).toEqual({
+      name: 'Red Refractor', printRun: 5, oddsText: 'Hobby - 1:77,608; Jumbo - 1:24,416',
+    });
+  });
+
+  // The single-word names below are the ones the first design silently dropped.
+  it('parses the single-word Refractor', () => {
+    expect(parseParallelLine('Refractor /499 (Hobby - 1:178; Jumbo - 1:60)')).toEqual({
+      name: 'Refractor', printRun: 499, oddsText: 'Hobby - 1:178; Jumbo - 1:60',
+    });
+  });
+
+  it('parses X-Fractor, whose name looks like a card code', () => {
+    expect(parseParallelLine('X-Fractor (Hobby - 1:20)')).toEqual({
+      name: 'X-Fractor', printRun: null, oddsText: 'Hobby - 1:20',
+    });
+  });
+
+  it('parses the single-word Superfractor', () => {
+    expect(parseParallelLine('Superfractor 1/1 (Hobby - 1:33,743)')?.name).toBe(
+      'Superfractor'
+    );
+  });
+});
+
+describe('parseParallelLine, odds-sheet table format', () => {
+  it('splits a tabular row into name and odds columns', () => {
+    expect(parseParallelLine('Base Cards Refractor Parallel 1:20 1:32 - - -')).toEqual({
+      name: 'Base Cards Refractor Parallel', printRun: null, oddsText: '1:20 1:32 - - -',
+    });
+  });
+
+  it('parses a tabular row whose name begins with a year', () => {
+    expect(
+      parseParallelLine('2026 MLB Spring Breakout Gold Refractor Parallel 1:1,281 1:2,076 - - -')
+    ).toEqual({
+      name: '2026 MLB Spring Breakout Gold Refractor Parallel',
+      printRun: null,
+      oddsText: '1:1,281 1:2,076 - - -',
+    });
+  });
+
+  it('handles a tabular row with a dash in every other column', () => {
+    expect(parseParallelLine('Base Cards Pulsar Refractor Parallel 1:23 - - - -')).toEqual({
+      name: 'Base Cards Pulsar Refractor Parallel', printRun: null, oddsText: '1:23 - - - -',
+    });
+  });
+});
+
+describe('parseParallelLine rejects what is not a parallel', () => {
   it('returns null for a card row', () => {
     expect(parseParallelLine('1 Aaron Judge, New York Yankees')).toBeNull();
   });
 
   it('returns null for a bare heading', () => {
     expect(parseParallelLine('Parallels')).toBeNull();
+  });
+
+  it('returns null for a set heading', () => {
+    expect(parseParallelLine('Base Set')).toBeNull();
+  });
+
+  it('returns null for a card-count line', () => {
+    expect(parseParallelLine('100 cards')).toBeNull();
+  });
+
+  it('returns null for prose that merely mentions a print run', () => {
+    expect(parseParallelLine('All cards are /25 or fewer')).toBeNull();
+  });
+
+  it('returns null for an empty line', () => {
+    expect(parseParallelLine('   ')).toBeNull();
   });
 });
 ```
@@ -734,39 +850,73 @@ Expected: FAIL, module not found.
 ```typescript
 import type { ParsedParallel } from './types';
 
-const ODDS_BLOCK = /\(([^)]*\d:\d[^)]*)\)\s*$/;
-const PRINT_RUN = /\s(?:\/(\d{1,6})|1\/1)\s*$/;
+/** Format A: odds in a trailing parenthetical, "(Hobby - 1:965)". */
+const ODDS_PAREN = /\(([^)]*\d:\d[^)]*)\)\s*$/;
+
+/** Format A variant: the same odds with no parentheses around them. */
+const ODDS_TRAILING =
+  /\s((?:Hobby|Jumbo|Value|Delight|Retail|Mega|Blaster|HTA)\s*-\s*\d[\d,:]*.*)$/;
+
+/**
+ * Format B: a flattened odds-sheet table row, "<name> 1:20 1:32 - - -".
+ * The name is everything before the first odds column, and the columns are
+ * either a ratio or a dash for a configuration the parallel is not in.
+ */
+const TABULAR = /^(.+?)\s+((?:1:[\d,]+|-)(?:\s+(?:1:[\d,]+|-))*)\s*$/;
+
+/** A trailing print run, "/499", or a one-of-one written "1/1" or "/1". */
+const PRINT_RUN = /\s(?:\/(\d{1,6})|(1)\/1)\s*$/;
+
+/**
+ * A card row, "1 Aaron Judge". Deliberately NOT a bare leading digit: real
+ * parallel names begin with a year, as in "2026 MLB Spring Breakout Gold
+ * Refractor Parallel", and a bare leading-digit guard throws all of those away.
+ */
+const CARD_ROW = /^\d{1,3}\s/;
 
 /** Topps prints an en dash inside odds. Normalise so stored text is consistent. */
-function normaliseDashes(input: string): string {
+function normalise(input: string): string {
   return input.replace(/[\u2013\u2014]/g, '-').replace(/\s+/g, ' ').trim();
 }
 
 export function parseParallelLine(line: string): ParsedParallel | null {
-  const trimmed = normaliseDashes(line);
-  if (!trimmed) return null;
-
-  // A card row starts with a code or a number. A parallel never does.
-  if (/^\d/.test(trimmed) || /^[A-Z]{1,6}-/.test(trimmed)) return null;
+  const trimmed = normalise(line);
+  if (!trimmed || CARD_ROW.test(trimmed)) return null;
 
   let working = trimmed;
   let oddsText: string | null = null;
 
-  const oddsMatch = ODDS_BLOCK.exec(working);
-  if (oddsMatch) {
-    oddsText = normaliseDashes(oddsMatch[1]);
-    working = working.slice(0, oddsMatch.index).trim();
+  const paren = ODDS_PAREN.exec(working);
+  if (paren) {
+    oddsText = normalise(paren[1]);
+    working = working.slice(0, paren.index).trim();
+  } else {
+    const trailing = ODDS_TRAILING.exec(working);
+    if (trailing) {
+      oddsText = normalise(trailing[1]);
+      working = working.slice(0, trailing.index).trim();
+    } else {
+      const table = TABULAR.exec(working);
+      if (table && /1:\d/.test(table[2])) {
+        oddsText = normalise(table[2]);
+        working = table[1].trim();
+      }
+    }
   }
 
   let printRun: number | null = null;
-  const runMatch = PRINT_RUN.exec(working);
-  if (runMatch) {
-    printRun = runMatch[1] ? Number(runMatch[1]) : 1;
-    working = working.slice(0, runMatch.index).trim();
+  const run = PRINT_RUN.exec(working);
+  if (run) {
+    printRun = Number(run[1] ?? run[2]);
+    working = working.slice(0, run.index).trim();
   }
 
-  // Needs at least two words to be a parallel name, which excludes "Parallels".
-  if (!working || working.split(' ').length < 2) return null;
+  // A parallel must carry a print run or odds. This is what separates a real
+  // parallel from a heading such as "Parallels" or "Base Set", and it replaces
+  // a word-count heuristic that silently dropped Refractor, Orange and
+  // Superfractor. Prose like "All cards are /25 or fewer" fails too, because
+  // its print run is mid-sentence rather than trailing.
+  if (!working || (printRun === null && oddsText === null)) return null;
 
   return { name: working, printRun, oddsText };
 }
@@ -775,9 +925,42 @@ export function parseParallelLine(line: string): ParsedParallel | null {
 - [ ] **Step 4: Run tests to verify they pass**
 
 Run: `npx vitest run tests/unit/checklist/odds.test.ts`
-Expected: all 8 PASS.
+Expected: all 20 PASS.
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 5: Verify against the real files, not just the tests**
+
+This parser was designed against real output and must be checked against it. From
+the repo root:
+
+```bash
+npx tsx -e "
+import { parseParallelLine } from './core/checklist/odds';
+import { extractText } from './core/checklist/extract';
+import { readFile } from 'node:fs/promises';
+const DIR = 'C:/Users/Michael/Documents/Claude/Pokemon_Portfolio/eBay_assets/Baseball Checklists';
+for (const f of ['2026 Bowman Baseball Checklist – Ma.txt', '2026_Bowman_Chrome_Baseball_Odds.pdf']) {
+  const text = await extractText(await readFile(DIR + '/' + f), f);
+  let ok = 0; const bad: string[] = [];
+  for (const raw of text.split('\n')) {
+    const l = raw.trim();
+    if (!l || !(/\/\d/.test(l) || /\d:\d/.test(l))) continue;
+    if (parseParallelLine(l)) ok++; else bad.push(l.slice(0, 70));
+  }
+  console.log(f, '-> parsed', ok, '| unparsed', bad.length);
+  bad.slice(0, 6).forEach((b) => console.log('    ', b));
+}
+"
+```
+
+Expected: roughly 255 parsed from the TXT and 305 from the odds PDF, and **every
+unparsed line should be prose of the form "All cards are /NN or fewer"**. If
+anything else is unparsed, report it as a concern with the line quoted. Do not
+loosen the parser to swallow prose.
+
+Note this step depends on Task 6's `extractText`, so run it after Task 6 lands if
+`extract.ts` does not exist yet, and say so in your report.
+
+- [ ] **Step 6: Commit**
 
 ```bash
 git add core/checklist/odds.ts tests/unit/checklist/odds.test.ts
@@ -911,18 +1094,71 @@ git commit -m "feat(checklist): extract text from pdf, txt and xlsx sources"
 
 ### Task 7: Parse orchestration over a whole document
 
+**This task was revised before dispatch**, after simulating the original design over
+the real files. It worked on PDFs and silently mangled TXT sources.
+
+**The two source shapes have different heading conventions.**
+
+A PDF or XLSX checklist prints headings in capitals, which `isSectionHeader` already
+recognises:
+
+```
+BOWMAN CHROME PROSPECTS
+BCP-151Slater de BrunTampa Bay Rays
+```
+
+A TXT checklist prints them in title case, and `isSectionHeader` rejects every one of
+them. Its reliable signal is the card-count line that always follows a heading:
+
+```
+Base Set
+100 cards
+Parallels
+Refractor /499 (Hobby - 1:178)
+1 Aaron Judge, New York Yankees
+```
+
+**Measured consequence of missing that.** With all-caps detection alone, the Bowman
+TXT collapses into a single section holding 882 rows, and **329 legitimate rows are
+discarded as duplicates**, because every subset restarts its numbering at 1 and the
+dedupe key is heading plus card number. Adding the lookahead rule gives 26 sections
+and 1188 rows, recovering 306 of them.
+
+That rule also cross-validates the two sources: the Topps Chrome TXT then yields
+1571 rows against the Topps Chrome PDF's 1574, parsed by completely different
+adapters. It further confirms TXT is the better source, since it carries 342
+parallel definitions that the PDF checklist does not contain at all.
+
 **Files:**
 - Create: `core/checklist/parse.ts`
+- Modify: `core/checklist/sections.ts` (add and export `isCountLine`)
 - Test: `tests/unit/checklist/parse.test.ts`
 
 **Interfaces:**
 - Consumes: `parseRow` (Task 3), `isSectionHeader` (Task 4), `parseParallelLine` (Task 5), `extractText` (Task 6)
 - Produces:
+  - `isCountLine(line: string): boolean` from `core/checklist/sections.ts`
   - `type ParseResult = { sections: ParsedSection[]; parallels: ParsedParallel[]; totalRows: number }`
   - `parseChecklistText(text: string): ParseResult`
   - `parseChecklistFile(buffer: Buffer, filename: string): Promise<ParseResult>`
 
-- [ ] **Step 1: Write the failing test**
+- [ ] **Step 1: Add `isCountLine` to `core/checklist/sections.ts`**
+
+Keep `isSectionHeader` a pure single-line test. The lookahead belongs in `parse.ts`,
+which is the only place that has the surrounding lines.
+
+```typescript
+/**
+ * The card-count line that follows a heading in a TXT checklist, "100 cards".
+ * TXT headings are title case, so isSectionHeader cannot see them; this is the
+ * signal that the PRECEDING line was a heading.
+ */
+export function isCountLine(line: string): boolean {
+  return /^\d{1,4}\s+cards?$/i.test(line.trim());
+}
+```
+
+- [ ] **Step 2: Write the failing test**
 
 ```typescript
 // tests/unit/checklist/parse.test.ts
@@ -934,7 +1170,7 @@ import { parseChecklistText, parseChecklistFile } from '@/core/checklist/parse';
 const fixture = (name: string) =>
   resolve(__dirname, '../../fixtures/checklists', name);
 
-describe('parseChecklistText', () => {
+describe('parseChecklistText, capitalised headings', () => {
   it('groups rows under the preceding section header', () => {
     const result = parseChecklistText(
       [
@@ -973,32 +1209,107 @@ describe('parseChecklistText', () => {
     );
     expect(result.totalRows).toBe(1);
   });
+
+  it('allows the same card number in two different sections', () => {
+    // Every subset restarts numbering at 1. Deduping globally would destroy them.
+    const result = parseChecklistText(
+      [
+        'BASE CARDS',
+        '1 Aaron Judge, New York Yankees',
+        'STARS OF FUTURE',
+        '1 Roman Anthony, Boston Red Sox',
+      ].join('\n')
+    );
+    expect(result.totalRows).toBe(2);
+    expect(result.sections).toHaveLength(2);
+  });
 });
 
-describe('parseChecklistFile', () => {
+describe('parseChecklistText, title-case TXT headings', () => {
+  it('treats a line followed by a card-count line as a heading', () => {
+    const result = parseChecklistText(
+      [
+        'Base Set',
+        '100 cards',
+        '1 Aaron Judge, New York Yankees',
+        'Chrome Prospects',
+        '150 cards',
+        '1 Konnor Griffin, Pittsburgh Pirates',
+      ].join('\n')
+    );
+    expect(result.sections.map((s) => s.heading)).toEqual(['Base Set', 'Chrome Prospects']);
+    expect(result.totalRows).toBe(2);
+  });
+
+  it('accepts the singular "1 card" form', () => {
+    const result = parseChecklistText(
+      ['Superfractor Set', '1 card', '1 Aaron Judge, New York Yankees'].join('\n')
+    );
+    expect(result.sections[0].heading).toBe('Superfractor Set');
+  });
+
+  it('does not treat retailer noise as a heading', () => {
+    const result = parseChecklistText(
+      [
+        'Base Set',
+        '100 cards',
+        '1 Aaron Judge, New York Yankees',
+        'Shop for Base Set on eBay',
+        '2 Mookie Betts, Los Angeles Dodgers',
+      ].join('\n')
+    );
+    expect(result.sections).toHaveLength(1);
+    expect(result.totalRows).toBe(2);
+  });
+
+  it('keeps a title-case heading distinct from the rows under it', () => {
+    const result = parseChecklistText(
+      ['Chrome Rookie Autographs', '13 cards', 'CRA-CK C.J. Kayfus Cleveland Guardians'].join('\n')
+    );
+    expect(result.sections[0].heading).toBe('Chrome Rookie Autographs');
+    expect(result.sections[0].rows[0].code).toBe('CRA-CK');
+  });
+});
+
+describe('parseChecklistFile over real files', () => {
   it('parses the real Bowman base TXT checklist end to end', async () => {
     const buf = await readFile(fixture('bowman-base.txt'));
     const result = await parseChecklistFile(buf, 'bowman-base.txt');
-    expect(result.totalRows).toBeGreaterThan(50);
-    expect(result.parallels.length).toBeGreaterThan(5);
+    // Measured: 26 sections, 1188 rows, 255 parallels.
+    expect(result.sections.length).toBeGreaterThan(20);
+    expect(result.totalRows).toBeGreaterThan(1100);
+    expect(result.parallels.length).toBeGreaterThan(200);
     const judge = result.sections
       .flatMap((s) => s.rows)
       .find((r) => r.player === 'Aaron Judge');
     expect(judge?.team).toBe('New York Yankees');
   });
+
+  it('parses the real Bowman Chrome PDF checklist end to end', async () => {
+    const buf = await readFile(fixture('2026_Bowman_Chrome_Baseball_Checklist.pdf'));
+    const result = await parseChecklistFile(buf, '2026_Bowman_Chrome_Baseball_Checklist.pdf');
+    // Measured: 32 sections, 1199 rows.
+    expect(result.sections.length).toBeGreaterThan(25);
+    expect(result.totalRows).toBeGreaterThan(1100);
+    // Every row from a PDF must still resolve a team, which is what caught the
+    // trademark-glyph bug.
+    const rows = result.sections.flatMap((s) => s.rows);
+    const withTeam = rows.filter((r) => r.team !== null).length;
+    expect(withTeam / rows.length).toBeGreaterThan(0.98);
+  });
 });
 ```
 
-- [ ] **Step 2: Run it to verify it fails**
+- [ ] **Step 3: Run it to verify it fails**
 
 Run: `npx vitest run tests/unit/checklist/parse.test.ts`
 Expected: FAIL, module not found.
 
-- [ ] **Step 3: Implement `core/checklist/parse.ts`**
+- [ ] **Step 4: Implement `core/checklist/parse.ts`**
 
 ```typescript
 import { parseRow } from './rows';
-import { isSectionHeader } from './sections';
+import { isSectionHeader, isCountLine } from './sections';
 import { parseParallelLine } from './odds';
 import { extractText } from './extract';
 import type { ParsedParallel, ParsedSection } from './types';
@@ -1012,8 +1323,15 @@ export type ParseResult = {
 const DEFAULT_SECTION = 'BASE';
 
 export function parseChecklistText(text: string): ParseResult {
+  const lines = text
+    .split('\n')
+    .map((l) => l.trim())
+    .filter(Boolean);
+
   const sections: ParsedSection[] = [];
   const parallels: ParsedParallel[] = [];
+  // Scoped to the section, because every subset restarts numbering at 1.
+  // A global dedupe would destroy hundreds of legitimate rows.
   const seenCodes = new Set<string>();
   let current: ParsedSection | null = null;
 
@@ -1023,9 +1341,8 @@ export function parseChecklistText(text: string): ParseResult {
     return section;
   };
 
-  for (const rawLine of text.split('\n')) {
-    const line = rawLine.trim();
-    if (!line) continue;
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
 
     const row = parseRow(line);
     if (row) {
@@ -1043,7 +1360,11 @@ export function parseChecklistText(text: string): ParseResult {
       continue;
     }
 
-    if (isSectionHeader(line)) current = open(line);
+    // Capitalised heading (PDF, XLSX), or a title-case heading identified by
+    // the card-count line that follows it (TXT).
+    if (isSectionHeader(line) || isCountLine(lines[i + 1] ?? '')) {
+      current = open(line);
+    }
   }
 
   return {
@@ -1061,15 +1382,62 @@ export async function parseChecklistFile(
 }
 ```
 
-- [ ] **Step 4: Run tests to verify they pass**
+- [ ] **Step 5: Run tests to verify they pass**
 
 Run: `npx vitest run tests/unit/checklist/parse.test.ts`
-Expected: all 5 PASS.
+Expected: all 11 PASS.
 
-- [ ] **Step 5: Commit**
+- [ ] **Step 6: Verify against every real file and record the numbers**
+
+The unit tests use loose bounds on purpose. Print the real figures so a regression
+is visible later. From the repo root:
 
 ```bash
-git add core/checklist/parse.ts tests/unit/checklist/parse.test.ts
+npx tsx -e "
+async function main() {
+  const { parseChecklistFile } = await import('./core/checklist/parse');
+  const { readFile } = await import('node:fs/promises');
+  const DIR = 'C:/Users/Michael/Documents/Claude/Pokemon_Portfolio/eBay_assets/Baseball Checklists';
+  const files = [
+    '2026_Bowman_Chrome_Baseball_Checklist.pdf',
+    '2026_Topps_Chrome_Baseball_Checklist_Final_7.22.pdf',
+    '2026 Bowman Baseball Checklist – Ma.txt',
+    '2026 Topps Chrome Baseball Checklist.txt',
+  ];
+  for (const f of files) {
+    const r = await parseChecklistFile(await readFile(DIR + '/' + f), f);
+    const rows = r.sections.flatMap((s) => s.rows);
+    const team = rows.filter((x) => x.team !== null).length;
+    console.log(f.slice(0, 46).padEnd(48), 'sections', String(r.sections.length).padStart(3),
+      '| rows', String(r.totalRows).padStart(5), '| parallels', String(r.parallels.length).padStart(4),
+      '| team', ((team / rows.length) * 100).toFixed(1) + '%');
+  }
+}
+main();
+"
+```
+
+Note the `main()` wrapper. Top-level `await` in a `.ts` file fails under tsx with
+"Top-level await is currently not supported with the cjs output format".
+
+Expected, measured before this task was written:
+
+```
+2026_Bowman_Chrome_Baseball_Checklist.pdf       sections  32 | rows  1199 | parallels    0 | team ~100%
+2026_Topps_Chrome_Baseball_Checklist_Final      sections  54 | rows  1574 | parallels    0 | team ~99%
+2026 Bowman Baseball Checklist – Ma.txt         sections  26 | rows  1188 | parallels  255 | team ~99%
+2026 Topps Chrome Baseball Checklist.txt        sections  53 | rows  1571 | parallels  342 | team ~99%
+```
+
+Report the actual numbers. **A materially lower section or row count means the
+heading detection regressed.** The TXT and PDF of the same product should agree
+closely: Topps Chrome gives 1571 from TXT against 1574 from PDF, parsed by entirely
+different adapters, which is the strongest single check in this task.
+
+- [ ] **Step 7: Commit**
+
+```bash
+git add core/checklist/parse.ts core/checklist/sections.ts tests/unit/checklist/parse.test.ts
 git commit -m "feat(checklist): orchestrate full-document parsing"
 ```
 
@@ -1694,13 +2062,25 @@ describe('verifyAgainstChecklist', () => {
     expect(result.ok).toBe(true);
   });
 
-  it('ignores a name suffix difference', () => {
+  it('ignores punctuation in a generational suffix', () => {
     const result = verifyAgainstChecklist(
       [entry({ cardNumber: '2', player: 'Vladimir Guerrero Jr.' })],
       true,
       { cardNumber: '2', player: 'Vladimir Guerrero Jr' }
     );
     expect(result.ok).toBe(true);
+  });
+
+  it('does NOT treat the father and the son as the same player', () => {
+    // Both appear in 2026 Bowman Chrome: the son on current cards, the father
+    // on Expos legends cards. Stripping the suffix would let a misread card
+    // number pass the gate against the wrong Guerrero.
+    const result = verifyAgainstChecklist(
+      [entry({ cardNumber: '2', player: 'Vladimir Guerrero' })],
+      true,
+      { cardNumber: '2', player: 'Vladimir Guerrero Jr.' }
+    );
+    expect(result).toMatchObject({ ok: false, reason: 'player_mismatch' });
   });
 });
 ```
@@ -1726,16 +2106,22 @@ export type VerificationResult =
     };
 
 /**
- * Normalise both sides before comparing. Accents, case, punctuation and name
- * suffixes all differ between a checklist and a scan, and comparing raw strings
- * produces false mismatches.
+ * Normalise both sides before comparing. Accents, case and punctuation all
+ * differ between a checklist and a scan, and comparing raw strings produces
+ * false mismatches: one product prints both "Jose Ramirez" and the accented
+ * form, and both spellings of "Edgar Martinez".
+ *
+ * It deliberately does NOT strip a generational suffix. Removing "Jr" would
+ * collapse "Vladimir Guerrero Jr." into "Vladimir Guerrero", and those are two
+ * different people who BOTH appear in 2026 Bowman Chrome: the son on current
+ * cards, the father on Expos legends cards. Stripping punctuation already
+ * makes "Jr." and "Jr" agree, which is the variation that actually occurs.
  */
 export function normalisePlayer(name: string): string {
   return name
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()
-    .replace(/\b(jr|sr|ii|iii|iv)\b\.?/g, '')
     .replace(/[^a-z0-9 ]/g, '')
     .replace(/\s+/g, ' ')
     .trim();
@@ -1808,7 +2194,12 @@ export async function loadChecklistForProduct(
       player: row.player,
       team: row.team,
       // The code prefix is authoritative over the section heading.
-      insertName: insertNameForCode(row.code) ?? section.heading,
+      // The section heading parsed from the official checklist wins. It comes
+      // from the same PDF as the row and is product specific, whereas the
+      // prefix map is global and hand maintained. Measured against the real
+      // PDFs, headings resolve every prefix correctly, including dozens the
+      // map does not carry (75D, WSCA, CHR, TCE, GPK, JCAR, IT, SB, AS).
+      insertName: section.heading ?? insertNameForCode(row.code),
       isRookie: row.isRookie,
       isFirstBowman: row.code.startsWith('BCP-'),
     }))
