@@ -1385,13 +1385,28 @@ git commit -m "feat(ingest): front and back pairing with a confidence signal"
   - `claimNextJob(type, workerId): Promise<IngestJob | null>`
   - `completeJob(jobId): Promise<void>`
   - `failJob(jobId, message): Promise<void>`
-  - `sweepStaleClaims(olderThanMinutes?): Promise<number>`
+  - `sweepStaleClaims(olderThanMinutes?): Promise<{ requeued: number; exhausted: number }>`
   - `countQueued(type): Promise<number>`
+  - `touchClaim(jobId: number): Promise<void>`
+  - `MAX_ATTEMPTS = 5`
 
 **Why the claim must be atomic:** the spec makes the Discord ping a doorbell, not a
 transport, and says plainly that a duplicated ping must never cause duplicate work.
 A read-then-write claim would allow two workers to take the same job. A single
 conditional `UPDATE ... WHERE status = 'queued'` cannot.
+
+**Two things the sweep must get right, both found by review.**
+
+A time-only sweep is not safe on its own. The worker converts up to 160 photos in a
+batch, which can exceed any fixed cutoff, and reclaiming a job from a worker that is
+still running is the one way this design can genuinely double-process. So the worker
+**heartbeats** by calling `touchClaim` as it goes, and the sweep only reclaims a
+claim that has gone quiet.
+
+A job that fails for a permanent reason, a corrupt file say, would otherwise be
+requeued by the sweep for ever. So `attempts` is capped: past `MAX_ATTEMPTS` the
+sweep marks the job `failed` instead of returning it to the queue, and
+`sweepStaleClaims` reports both counts so a stuck job is visible rather than silent.
 
 - [ ] **Step 1: Write the failing test**
 
@@ -2090,7 +2105,13 @@ import { config } from 'dotenv';
 config({ path: '.env.local' });
 
 import { hostname } from 'node:os';
-import { claimNextJob, completeJob, failJob, sweepStaleClaims } from '@/core/ingest/jobs';
+import {
+  claimNextJob,
+  completeJob,
+  failJob,
+  sweepStaleClaims,
+  touchClaim,
+} from '@/core/ingest/jobs';
 import { normaliseBatch } from '@/core/ingest/normalise';
 
 const WORKER_ID = `${hostname()}-${process.pid}`;
@@ -2098,8 +2119,9 @@ const WORKER_ID = `${hostname()}-${process.pid}`;
 async function main() {
   // The startup sweep the spec requires: a job claimed by a worker that died
   // must not be stranded for ever.
-  const swept = await sweepStaleClaims(30);
-  if (swept > 0) console.log(`returned ${swept} stale claim(s) to the queue`);
+  const { requeued, exhausted } = await sweepStaleClaims(30);
+  if (requeued > 0) console.log(`returned ${requeued} stale claim(s) to the queue`);
+  if (exhausted > 0) console.log(`marked ${exhausted} job(s) failed after too many attempts`);
 
   let drained = 0;
   for (;;) {
@@ -2108,7 +2130,19 @@ async function main() {
 
     console.log(`claimed job ${job.id}, batch ${job.batchId}`);
     try {
-      const { converted, failed } = await normaliseBatch(job.batchId);
+      // Heartbeat so the stale-claim sweep can tell a slow worker from a dead
+      // one. A 160-photo batch can outlast any fixed cutoff, and reclaiming a
+      // job from a live worker is the one way this design double-processes.
+      const beat = setInterval(() => {
+        void touchClaim(job.id);
+      }, 60_000);
+      let converted = 0;
+      let failed = 0;
+      try {
+        ({ converted, failed } = await normaliseBatch(job.batchId));
+      } finally {
+        clearInterval(beat);
+      }
       await completeJob(job.id);
       console.log(`  converted ${converted}, failed ${failed}`);
       drained++;
