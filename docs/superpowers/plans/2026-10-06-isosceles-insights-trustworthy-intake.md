@@ -240,10 +240,10 @@ Then count `baseball_cards`, `sales` and `purchases` and confirm 832 / 548 /
 
 - [ ] **Step 6: Run the tests, then break the index and watch it fail**
 
-All three pass. Then remove the `.where(...)` clause, regenerate nothing, just
-reason about it, and instead prove the guard by deleting the whole
-`pairSideUnique` entry from the schema and re-running the first test: it must
-go red. Restore.
+All three pass. Then prove the index is doing the work: drop it by hand
+against `iso_test` (`DROP INDEX iso_test.photos_batch_pair_side_unique`) and
+re-run the first test. It must go red. Recreate it with
+`npm run setup:test-schema`.
 
 - [ ] **Step 7: Commit**
 
@@ -967,8 +967,9 @@ not disturb them. Count the ledger.
 **Files:**
 - Modify: `core/checklist/types.ts`, `core/checklist/odds.ts`
 - Modify: `lib/db/schema/parallels.ts` + migration
-- Modify: `core/scan/parallel.ts`, `core/scan/route.ts` (the two inert checks)
-- Test: `tests/unit/checklist/odds.test.ts`, `tests/unit/scan/route.test.ts`
+- Modify: `core/scan/parallel.ts` (both inert checks live here, verified:
+  the serial cross-check at lines 119-129, the scarcity flag at line 142)
+- Test: `tests/unit/checklist/odds.test.ts`, `tests/unit/scan/parallel.test.ts`
 
 **Interfaces:**
 - Produces: `ParsedParallel` gains `printRunKnown: boolean`; `parallels` gains
@@ -1012,15 +1013,19 @@ and is now honestly labelled as such.
 
 - [ ] **Step 4: Re-arm the two checks that went inert**
 
-Find the two safety checks in `core/scan/parallel.ts` and `core/scan/route.ts`
-that treat `printRun === null` as "unnumbered". Both must now branch on
-`printRunKnown`:
+Both checks are in `core/scan/parallel.ts` and both treat `printRun === null`
+as "unnumbered". Both must now branch on `printRunKnown`:
 
-- The **serial cross-check** compares a read serial against the parallel's
-  print run. With `printRunKnown: false` it cannot run, and the card routes to
-  review rather than passing a check that never executed.
-- The **scarcity flag** (`SCARCE_DUPLICATE_PRINT_RUN_THRESHOLD = 99`) must not
-  treat an unknown run as not-scarce.
+- The **serial cross-check** (lines 119-129) compares a read serial against
+  the parallel's print run. Line 129's comment already names the
+  `match.printRun === null` case "no evidence", which is correct for a
+  genuinely unnumbered parallel and wrong for an unread one: with
+  `printRunKnown: false` the card routes to review rather than passing a
+  check that never executed.
+- The **scarcity flag** (line 142,
+  `match.printRun !== null && match.printRun <= SCARCE_DUPLICATE_PRINT_RUN_THRESHOLD`)
+  currently evaluates to false for an unknown run, which asserts "not scarce"
+  on no evidence at all. It must not.
 
 Write a test for each that fails if the branch is removed. These two checks
 were inert for a whole plan; a replacement that is also inert is worse than
