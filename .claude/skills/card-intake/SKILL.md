@@ -15,8 +15,15 @@ standing caution: *"this refractor rule probably only applies to topps chrome
 2026."* Treat it as unverified for any other product, including Topps Finest,
 Sapphire and earlier Chrome years.
 
-**2026 Bowman Chrome has since been checked and it does NOT have the marker.**
-See section 1b for what to use there instead.
+**2026 Bowman Chrome has since been checked and it DOES have the marker**, on
+the plain Refractor only, in the same spot. Corrected 2026-10-07 after two live
+cards contradicted the earlier note. See section 1b.
+
+**A control pair only proves what its own two cards show.** The Bowman Chrome
+error came from a control pair of two COLOURED parallels, neither of which can
+carry the word on any product. When you build a control pair, one of the two
+must be the plain undesigned Refractor, or the pair cannot answer the question
+you are asking it.
 
 For a product not on that list, do **not** assume the marker exists or sits in
 the same place. Find a control pair first: two copies of the same card number
@@ -121,14 +128,30 @@ bounding box, take the top-right region, upscale 3x with LANCZOS, and read that.
 Guessing between base and Refractor has cost real money: four cards once went
 into a $1.99 dropdown as base when they were Refractors.
 
-## 1b. 2026 Bowman Chrome. The back marker DOES NOT EXIST here.
+## 1b. 2026 Bowman Chrome. The back marker DOES exist, on the plain Refractor only.
 
-Settled 2026-09-10 off a hobby box, with the control pair section 0 asks for.
+**Corrected 2026-10-07.** This section used to say the word did not exist on a
+Bowman Chrome back at all. It does. Two cards read that night, a Chrome Prospect
+Autograph (CPA-AG, 278/499) and a base card (#26, 040/499), both print
+`REFRACTOR` on the back in the same place Topps Chrome does: top right, under
+`@TOPPS`, beside the team logo.
 
-**There is no REFRACTOR word on a Bowman Chrome back.** The control: the Orange
-/25 and the Blue /150 out of that box are certainly Refractors, and neither back
-carries the word anywhere. Do not go looking for it and do not read its absence
-as "base". The call is made on the FRONT.
+The earlier reading was not wrong about its own evidence, it generalised from
+the wrong control. That pair was the Orange /25 and the Blue /150, which are
+*named colour* parallels. **The rule is the same one as section 1, on both
+products:** the word `REFRACTOR` appears only on the UNDESIGNED, UNCOLOURED
+base Refractor. Every named parallel carries its colour or its pattern instead
+and never carries the word. A control pair of two coloured parallels can
+therefore never show it, which is exactly what happened.
+
+So, on 2026 Bowman Chrome:
+
+| what the back says | what it means |
+|---|---|
+| `REFRACTOR` | plain Refractor, /499, and you are done |
+| nothing | a named parallel OR a base card. **Go to the front.** |
+
+Absence still narrows nothing on its own. Read the serial, then the border.
 
 **The front test is the border, not the picture.** Crop a strip of the card's
 outer border, blow it up, and look for a broad spectral sweep across the dark
@@ -273,6 +296,38 @@ a Refractor, and it carries no serial, which makes it read as base. It is
 neither, and it is worth real money: Murakami #76 base is $7 and the Red RC is
 $50; Messick #3 base is $3 and the Red RC is $55. Check the shield colour on
 every rookie in the box, comparing against the other rookies in the same drop.
+
+## 1c. Topps NOW Road to Opening Day
+
+Read off a real card 2026-10-07 (Noah Cameron, A-NC, green 98/99 auto).
+
+**It is a Topps NOW product, and that is the part that gets missed.** The front
+prints `ROAD TO OPENING DAY` large and the `Topps NOW` logo small, so the
+instinct is to call the set "Road to Opening Day". The checklist is filed under
+the full name **2026 Topps NOW Road to Opening Day**, and the short name finds
+nothing anywhere. The BACK settles it: it says "a 2026 Topps NOW - Road to
+Opening Day" in so many words.
+
+- Spring training product, Cactus League logo on the back.
+- Card numbers: plain numerics for the base run, `A-XX` for autographs
+  (initials, so Noah Cameron is `A-NC`), `DA-` for dual autographs.
+- 559 checklist rows: 300 base, 194 Base Gold Foil Parallels, 56 Autographs,
+  9 Dual Autographs.
+- **Foil ladder, which is NOT the Bowman ladder**, so do not reuse that table:
+
+| parallel | run |
+|---|---|
+| Aqua Foil | /199 |
+| Blue Foil | /150 |
+| Green Foil | /99 |
+| Gold Foil | /50 |
+| Orange Foil | /25 |
+| Black Foil | /10 |
+| Red Foil | /5 |
+| FoilFractor | 1/1 |
+
+The serial names the parallel here too. A green card at 98/99 is a Green Foil,
+and nothing else on the ladder is /99.
 
 ## 2. Numbered parallels
 
