@@ -687,6 +687,12 @@ This is a UI task and a unit test of the grid proves very little. Instead:
 
 1. `npm run build` must be clean.
 2. Upload a small real batch with a deliberate stray photo in the middle.
+   His originals are in
+   `C:/Users/Michael/Documents/Claude/Pokemon_Portfolio/eBay_assets/card drop`
+   (1,104 files). **Do not reorder, rename or move anything in that folder.**
+   Copy six or eight of them plus one obvious non-card into a staging
+   directory and point `CARD_DROP_DIR` at that, which is what the environment
+   variable exists for. Run the dev server and `npm run upload:drop`.
 3. Exclude the stray, confirm, and then **query the database directly** and
    show the resulting `(id, side, pair_index, excluded)` rows in your report.
 4. Run `npm run scan:next` and show that the brief's pairs match what you
