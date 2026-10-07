@@ -989,33 +989,84 @@ for 826 parallel rows across an entire plan with nothing noticing.
 ### Task 7: Extract text from HTML
 
 **Files:**
-- Modify: `core/checklist/extract.ts`
+- Modify: `core/checklist/extract.ts` (add `fromHtml`)
+- Modify: `core/checklist/odds.ts` (one regex, see below)
+- Modify: `data/product-registry.json`
 - Modify: `package.json` (add `cheerio`)
-- Test: `tests/unit/checklist/extract.test.ts`
+- Test: `tests/unit/checklist/extract.test.ts`, `tests/unit/checklist/odds.test.ts`
 
 **Interfaces:**
 - Produces: `extractText` accepts `.html` and `.htm`.
 
 `extractText` already dispatches on extension to `fromPdf`, `fromXlsx` and a
 plain UTF-8 read, and everything downstream is line-based. So HTML support is
-one more branch that flattens the document to the same line shape, and no
-parser below it changes at all.
+one more branch that flattens the document to the same line shape, and the
+section and row parsers below it do not change at all.
 
-- [ ] **Step 1: Probe the real source first, before writing any parser**
+**The probe is already done. Do not redo it; verify it.**
 
-Fetch `https://www.baseball.cards/checklists/2026-bowman-chrome-baseball/` and
-save it to `data/checklists/`. Then **look at the markup** and record in your
-report: is the checklist a `<table>`, a `<ul>`, or paragraphs? Where does the
-print run appear relative to the parallel name?
+The controller fetched both pages and read the markup. Here is what is
+actually there, measured, so you write the parser against facts rather than a
+guess. Re-fetch and confirm these numbers before trusting them; if the pages
+have changed, say so and work from what you find.
 
-Do not write the extractor before you have looked. Plan 3's print-run
-diagnosis was wrong precisely because it was made from the parser's shape
-rather than the source's.
+**`https://www.baseball.cards/checklists/2026-bowman-chrome-baseball/`**
+(1.58 MB, HTTP 200). **Tabular.** 7 `<table>`, 1378 `<tr>`, 581 print-run
+tokens. Card rows look like:
 
-- [ ] **Step 2: Write the failing test from the real markup**
+```
+Card # | Player            | Team               | Section | Find this card
+1      | Konnor Griffin RC | Pittsburgh Pirates | Base    | Find on eBay
+CPA-YM | Yadier Munoz      | Chicago Cubs       | Chrome Prospect Autographs Gold Ink Variation | Find on eBay
+```
 
-Paste a genuine 20-line excerpt of the fetched page into the test as a fixture
-(not invented markup), and assert the lines `extractText` produces.
+and, in a separate table, the parallels, which is what this task is for:
+
+```
+Refractor                  | /499 | All formats     | See listings
+Pulsar Refractor           | /399 | Hobby           | See listings
+Purple Geometric Refractor | /250 | Breaker Delight | See listings
+Aqua RayWave Refractor     | /199 | All formats     | See listings
+```
+
+**`https://www.degreegrading.com/checklists/2026-bowman-football/`**
+(908 KB, HTTP 200). **Not tabular at all.** 0 `<table>`, 2705 `<li>`, 440 of
+them carrying a print run, in the plain shape the existing parser already
+handles:
+
+```
+Yellow /275
+Pink /250
+Aqua /199
+Blue /150
+Green /99
+Purple /75
+Gold /50
+```
+
+**So the two sources need different handling, and this plan originally
+assumed `<tr>` for both. That was wrong.**
+
+- Football needs nothing but "emit each `<li>` as a line". `parseParallelLine`
+  already matches `Yellow /275` today.
+- Baseball Chrome needs the trailing cells gone. Flattened naively the row
+  reads `Refractor /499 All formats See listings`, and `PRINT_RUN` in
+  `core/checklist/odds.ts` is anchored at end of string, so it matches
+  nothing at all.
+
+- [ ] **Step 1: Re-fetch both pages and confirm the shape above**
+
+Use the same browser user agent `fetch-checklists.ts` sends. Report the byte
+counts and element counts you get. If they differ materially from the figures
+above, stop and report rather than parsing something you have not looked at.
+
+- [ ] **Step 2: Write the failing tests from the real markup**
+
+Paste a genuine excerpt of each fetched page in as a fixture, not invented
+markup. Two fixtures: one `<tr>` block from baseball.cards including the
+parallels table, one `<li>` block from degreegrading.com. Assert the lines
+`extractText` produces, and assert that `parseChecklistText` over those lines
+yields the parallels with their print runs.
 
 - [ ] **Step 3: Implement `fromHtml`**
 
@@ -1023,45 +1074,105 @@ Paste a genuine 20-line excerpt of the fetched page into the test as a fixture
 async function fromHtml(buffer: Buffer, filename: string): Promise<string> {
   try {
     const $ = cheerio.load(buffer.toString('utf8'));
-    $('script, style, nav, header, footer').remove();
+    $('script, style, nav, header, footer, noscript').remove();
     const lines: string[] = [];
-    // A table row must flatten to one line with its cells space-joined, the
-    // same shape fromXlsx already produces, because core/checklist/odds.ts's
-    // TABULAR pattern reads exactly that: "<name> 1:20 1:32 - - -".
+
+    // A table row flattens to one space-joined line, the same shape fromXlsx
+    // already produces, so core/checklist/odds.ts's TABULAR pattern keeps
+    // working. Cells whose entire content is a link are navigation, not
+    // data: on baseball.cards they are "Find on eBay" and "See listings",
+    // one per row, and left in they sit after the print run and defeat
+    // PRINT_RUN's end-of-string anchor.
     $('tr').each((_, el) => {
-      const cells = $(el).find('th, td').map((__, c) => $(c).text().trim()).get();
-      if (cells.some(Boolean)) lines.push(cells.join(' '));
+      const cells = $(el)
+        .find('th, td')
+        .map((__, c) => {
+          const cell = $(c);
+          const linkText = cell.find('a').text();
+          const isLinkOnly =
+            cell.find('a').length > 0 &&
+            cell.text().replace(linkText, '').trim() === '';
+          return isLinkOnly ? '' : cell.text().trim();
+        })
+        .get()
+        .filter(Boolean);
+      if (cells.length) lines.push(cells.join(' '));
     });
-    ...
+
+    // List items carry the parallels on degreegrading.com, one per <li>, in
+    // the plain "<name> /<run>" shape the line parser already reads.
+    $('li').each((_, el) => {
+      const text = $(el).clone().children('ul, ol').remove().end().text().trim();
+      if (text) lines.push(text.replace(/\s+/g, ' '));
+    });
+
+    return normaliseNewlines(lines.join('\n'));
   } catch (cause) {
     throw new Error(`Failed to extract text from HTML "${filename}"`, { cause });
   }
 }
 ```
 
-Finish it against what Step 1 actually found. If the page is not tabular, the
-`<tr>` branch is dead code and must not be written.
+The `<li>` handler strips nested lists before taking text, or a top-level nav
+item swallows every child and emits one enormous line. Both pages have nested
+navigation.
 
-- [ ] **Step 4: Point the registry at the HTML sources**
+- [ ] **Step 4: One change to `parseParallelLine`, and keep it narrow**
 
-In `data/product-registry.json`, change the Bowman Chrome and Bowman Football
-`checklist` sources to `{ kind: 'fetch', url: ..., note: ... }`. The `note`
-says why: the PDF carries no print runs.
+After the link cells are dropped, a baseball.cards parallel row reads
+`Refractor /499 All formats`. The print run is no longer trailing, so extend
+`PRINT_RUN` to allow a known **format phrase** after it:
 
-- [ ] **Step 5: Fetch, re-seed those two products only, and measure**
+```ts
+/**
+ * The format column on baseball.cards' parallels table, which sits after the
+ * print run: "Purple Geometric Refractor /250 Breaker Delight". These are
+ * pack configurations, not part of the parallel's name, and they are the same
+ * vocabulary ODDS_TRAILING above already enumerates for the odds case. An
+ * explicit list rather than a wildcard, deliberately: anything after a print
+ * run that is NOT one of these is part of a name we have misread, and it
+ * should fail to match rather than be silently discarded.
+ */
+const FORMAT_TAIL =
+  '(?:\\s+(?:All formats|Breaker Delight|Hobby|Jumbo|Value|Delight|Retail|Mega|Blaster|HTA))?';
+const PRINT_RUN = new RegExp(`\\s(?:\\/(\\d{1,6})|(1)\\/1)${FORMAT_TAIL}\\s*$`, 'i');
+```
+
+**Test the narrowness, not only the happy path.** `Refractor /499 All formats`
+parses to name `Refractor`, run 499. `Gold Rainbow /50 Something Else` must
+**not** match, because that trailing text is unaccounted for and quietly
+dropping it would invent a parallel name. Then remove `All formats` from the
+`FORMAT_TAIL` list and watch the first test go red.
+
+- [ ] **Step 5: Point the registry at the HTML sources**
+
+In `data/product-registry.json`, change `2026-bowman-chrome` and
+`2026-bowman-football`'s `checklist` to
+`{ "kind": "fetch", "url": "...", "note": "..." }`, where the note says why:
+the PDF carries no print runs at all and this page carries 581 and 440.
+
+**Keep the PDFs in the registry if the shape allows it.** The HTML pages are
+third-party and can change or vanish; the PDFs are on his disk and are the
+only copy of the card rows that is not someone else's website. If the registry
+shape does not allow two checklist sources per product, say so and pick the
+HTML, but say it rather than silently dropping his local file.
+
+- [ ] **Step 6: Fetch, re-seed those two products only, and measure**
 
 ```bash
-npx tsx -r dotenv/config scripts/fetch-checklists.ts
-npx tsx -r dotenv/config scripts/seed-checklists.ts <slug>
+npm run fetch:checklists
+npm run seed:checklists -- <slug>
 ```
 
 Report before and after for both products: entry count, null-team count, and
 `print_run IS NOT NULL` count. The print-run counts are the point:
-**0 of 305 and 0 of 521 before.** Report what they are after, and if either is
-still zero, say so plainly rather than reporting the task done.
+**0 of 305 on Bowman Chrome and 0 of 521 on Bowman Football before.** Report
+what they are after, and if either is still zero, say so plainly rather than
+reporting the task done.
 
 Also report the other four products' counts, unchanged, as evidence you did
-not disturb them. Count the ledger.
+not disturb them. Count the ledger: 832 `baseball_cards`, 548 `sales`, 632
+`purchases`.
 
 **One more thing to measure, found by the controller after this plan was
 written:** product **50 (Bowman Chrome Mega, 410 checklist entries) has no
@@ -1071,25 +1182,30 @@ card, which is a silent form of exactly what this phase exists to fix, and it
 was invisible because every print-run count was reported per existing parallel
 row.
 
-The controller has already diagnosed the cause, so do not spend the task
-re-deriving it: in `data/product-registry.json`, `2026-bowman-chrome-mega` has
-`odds: null`, and its checklist PDF
-(`2026_Bowman_Chrome_Baseball_Checklist_1_mega.pdf`) carries no parallel
-section. Of the six seeded products, the three with a `.txt` checklist get
-their parallels from the checklist itself, the two with a PDF checklist plus a
-PDF odds file get them from the odds file, and the mega has neither. So the
-product that is missing parallels is exactly the one with no source for them.
+The cause is already diagnosed, so do not spend the task re-deriving it: in
+`data/product-registry.json`, `2026-bowman-chrome-mega` has `odds: null`, and
+its checklist PDF (`2026_Bowman_Chrome_Baseball_Checklist_1_mega.pdf`) carries
+no parallel section. Of the six seeded products, the three with a `.txt`
+checklist get their parallels from the checklist itself, the two with a PDF
+checklist plus a PDF odds file get them from the odds file, and the mega has
+neither. So the product missing parallels is exactly the one with no source
+for them.
 
-What to do about it is a judgement call, and it is yours to make and record:
-either add a mega odds source to the registry, or recognise that Bowman Chrome
-Mega is a configuration of Bowman Chrome rather than a separate set and have it
-share product 49's parallels. **Do not invent a parallel list.** If neither is
+What to do about it is a judgement call, yours to make and record: either add
+a mega source to the registry (baseball.cards has a mega page too, and this
+task is adding HTML support anyway), or recognise that Bowman Chrome Mega is a
+configuration of Bowman Chrome rather than a separate set and have it share
+product 49's parallels. **Do not invent a parallel list.** If neither is
 cheap, say so and leave product 50 documented as unscannable for parallels;
 naming the problem is the deliverable, fixing it is optional.
 
-- [ ] **Step 6: Commit**
+- [ ] **Step 7: Commit**
 
----
+```bash
+git add core/checklist package.json package-lock.json data/product-registry.json tests
+git commit -m "feat(checklist): read checklists from HTML sources that carry print runs"
+```
+
 
 ### Task 8: `printRun` stops meaning two things
 
