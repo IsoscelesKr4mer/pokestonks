@@ -822,6 +822,55 @@ git commit -m "feat(scan): gate each card against its own product's checklist"
 
 ---
 
+### Task 5b: The review path uses the card's own product
+
+**Added during execution, not in the original plan.** Reading
+`core/review/items.ts` to dispatch Task 5 showed the review path is more
+exposed to Task 2's change than this plan accounted for.
+
+**Files:**
+- Modify: `core/review/items.ts`
+- Test: `tests/unit/review/items.test.ts` (or whatever the repo's review test
+  file is actually called; use the existing one)
+
+**The defect this closes.** A batch can now carry a null `productId`.
+`decideReviewItem` reads `batch.productId` and returns
+`{ ok: false, reason: 'no-product' }` when it is null, so once Task 6 lets
+Michael confirm a batch without choosing a product, **every review item from
+that batch becomes undecidable**. `getReviewItemForOwner` has the same
+dependency: checklist, parallels and insert candidates all come from
+`batch.productId`, so the Correct form would open with an empty parallel
+dropdown and no insert candidates.
+
+The existing tests do not catch this because every one of them seeds a batch
+that has a product.
+
+**The change.**
+
+1. `StoredScanned` gains `productId?: number | null`. Task 5 writes it; older
+   rows do not have it, which is why it is optional.
+2. Everywhere the review path resolves a product, it prefers the card's own:
+
+```ts
+// The card's own product wins over the batch's hint. A batch is a sitting
+// and can hold three sets; the hint is only a default. `?? batch.productId`
+// covers every review item written before Task 5 existed, which carry no
+// productId of their own and whose batch always had one.
+const effectiveProductId = stored.productId ?? batch.productId;
+```
+
+3. The `no-product` refusal fires only when BOTH are null, and its message
+   says what to do: `This card's set is not recorded and the batch has no
+   product either. Add the set, then scan this batch again.`
+
+**Steps:** write a failing test that a review item whose `scanned.productId`
+names a product decides correctly on a batch with a null `productId`; watch it
+fail; implement; watch it pass; falsify by forcing `effectiveProductId` to
+`batch.productId` always and confirm that test reds while the pre-Task-5
+fallback tests stay green; commit.
+
+---
+
 ### Task 6: The confirm screen asks what it actually needs
 
 **Files:**
