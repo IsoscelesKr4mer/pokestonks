@@ -1228,9 +1228,36 @@ git commit -m "feat(checklist): read checklists from HTML sources that carry pri
   `printRun: null, printRunKnown: false`.
 
 The signal is per **source**, not per line: a source with zero print runs
-anywhere tells you nothing about any of its parallels. So this is decided in
-`parseChecklistText`, which sees the whole document, not in `parseParallelLine`,
-which sees one line.
+anywhere tells you nothing about any of its parallels, while a source with
+runs on its siblings is positively telling you this one is unnumbered.
+
+**Which decides where the field is set, and this matters.**
+`parseParallelLine` sees one line and cannot know the document-level answer,
+so it must NOT return `printRunKnown`. Keep its return type as it is (name,
+printRun, oddsText) and have `parseChecklistText`, which sees the whole
+document, stamp the field on every parallel after the scan:
+
+```ts
+// One pass decides it for the whole document. A source with no print run
+// anywhere is a source that does not carry them, and every parallel from it
+// is "we do not know"; a source with even one is telling us the rest are
+// genuinely unnumbered. Deciding this per line would mark every unnumbered
+// parallel in a good source as unknown, which is the opposite of the point.
+const anyPrintRun = parallels.some((p) => p.printRun !== null);
+const stamped = parallels.map((p) => ({ ...p, printRunKnown: anyPrintRun }));
+```
+
+Putting a meaningless `printRunKnown` on `parseParallelLine`'s return and
+overwriting it later would be a field that lies for the length of one
+function call, which is how `printRun === null` came to mean two things in
+the first place.
+
+**The schema facts you need, already checked:** `lib/db/schema/parallels.ts`
+has `printRun: integer('print_run')` and a unique constraint
+`parallels_product_name_run_unique` on `(productId, name, printRun)` with
+`nullsNotDistinct()`. Adding a column does not touch that constraint, and it
+must not: two parallels with the same name and the same null run are still
+the same parallel regardless of whether we know why the run is null.
 
 - [ ] **Step 2: Write the failing tests**
 
