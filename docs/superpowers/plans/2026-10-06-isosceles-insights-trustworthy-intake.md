@@ -976,6 +976,16 @@ still zero, say so plainly rather than reporting the task done.
 Also report the other four products' counts, unchanged, as evidence you did
 not disturb them. Count the ledger.
 
+**One more thing to measure, found by the controller after this plan was
+written:** product **50 (Bowman Chrome Mega, 410 checklist entries) has no
+rows in `parallels` at all.** It is absent from the table, not merely missing
+print runs. A product with zero parallels can never resolve a parallel on any
+card, which is a silent form of exactly what this phase exists to fix, and it
+was invisible because every print-run count was reported per existing parallel
+row. Report why: no odds source in the registry, a parse that yielded nothing,
+or a seed that skipped it. Fixing it may be out of this task's scope, but
+diagnosing it is not.
+
 - [ ] **Step 6: Commit**
 
 ---
