@@ -64,7 +64,7 @@ not evidence.
 
 **Phase A, stored grouping**
 - Modify `lib/db/schema/photos.ts` — add `pairIndex`, `excluded`
-- Create `lib/db/migrations/0014_*.sql` — generated, read before applying
+- Create `drizzle/0014_*.sql` — generated, read before applying
 - Modify `core/ingest/pairing.ts` — `pairPhotos` gains a stored-grouping branch
 - Modify `core/ingest/batches.ts` — `batchPairsFor`, `confirmPairing`, the
   assignment type
@@ -126,7 +126,7 @@ instead of re-deriving it.
 
 **Files:**
 - Modify: `lib/db/schema/photos.ts`
-- Create: `lib/db/migrations/0014_*.sql` (generated)
+- Create: `drizzle/0014_*.sql` (generated)
 - Test: `tests/unit/db/photos.test.ts`
 
 **Interfaces:**
@@ -207,10 +207,16 @@ it('allows an excluded photo to sit alongside a real pair', async () => {
 });
 ```
 
-The second and third tests are the ones that matter: a unique index written
-without the partial `WHERE` passes the first test and fails both of these, and
-making every batch's second photo uninsertable would have been discovered in
-production rather than here.
+**Correction, made after Task 1 shipped and a reviewer checked the premise.**
+The paragraph that used to sit here claimed test 2 would fail without the
+partial `WHERE`. It would not. Postgres never treats two nulls as equal in a
+unique index unless it is declared `NULLS NOT DISTINCT`, and this one is not,
+so two unconfirmed photos could never collide with or without
+`pair_index IS NOT NULL`. **Test 3 is the one doing real work**, on the
+`excluded = false` half, which is the half that is actually about
+correctness. The `IS NOT NULL` half earns its place by keeping the index off
+every unconfirmed row (a rip is up to 160 of them), not by preventing a
+conflict. The shipped code carries this corrected reasoning in its comments.
 
 - [ ] **Step 3: Run it and watch it fail**
 
