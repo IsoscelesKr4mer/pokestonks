@@ -723,62 +723,87 @@ that says the checklist is wrong, not a looser gate.
 - Test: `tests/unit/review/candidates.test.ts`
 
 **Interfaces:**
-- Produces: `candidatesFor(userId, itemId, cardNumber)` returning
-  `{ cardNumber: string; productId: number; candidates: ChecklistCandidate[] } | null`,
-  where `ChecklistCandidate` is
-  `{ id: number; productId: number; cardNumber: string; insertName: string | null; player: string }`.
+- Consumes: `getReviewItemForOwner`'s existing scoped lookup and its
+  `insertCandidates: string[]` field, already rendered by the Correct form.
+- Produces: `candidatesFor(userId, itemId, cardNumber): Promise<{ insertCandidates: string[] } | null>`.
   Null means the item is not this user's, indistinguishable from not existing.
-  `productId` is on each candidate as well as the envelope so the scoping test
-  in Step 1 can assert it per row rather than trusting the query it is
-  testing.
 
-- [ ] **Step 1: Write the failing tests**
+**Match the shape that already exists.** `ReviewItemDetail.insertCandidates`
+is a plain `string[]` of insert names, computed once from the scanned card
+number and player, and `decision-form.tsx` renders the selector only when
+`insertCandidates.length > 1`. Return the same `string[]` so the refetch is a
+drop-in replacement for the server-rendered value rather than a second,
+differently shaped source of the same thing. Do not invent an object shape
+with ids; the form does not use one and the hard gate resolves by name.
+
+- [ ] **Step 1: Write the failing tests, scoping first**
 
 ```ts
 it('returns the candidates for a corrected number, not the scanned one', async () => {
-  // Item scanned #1; checklist has one entry at #1 and three at #150.
+  // The item was scanned as #1. The checklist has one entry at #1 and three
+  // inserts at #150 for the same player.
   const out = await candidatesFor(userId, itemId, '150');
-  expect(out?.candidates).toHaveLength(3);
+  expect(out?.insertCandidates).toHaveLength(3);
 });
 
-it('returns null for another user\'s item', async () => {
+it('returns null for an item that is not his', async () => {
   expect(await candidatesFor(otherUserId, itemId, '1')).toBeNull();
 });
 
-it('scopes candidates to the item\'s own product', async () => {
-  // A second product has four entries at #150. They must not appear.
+it('never returns another product\u2019s inserts', async () => {
+  // A second product also has entries at #150 for the same player, under an
+  // insert name that exists nowhere on this item's product.
   const out = await candidatesFor(userId, itemId, '150');
-  expect(out?.candidates.every((c) => c.productId === itemProductId)).toBe(true);
+  expect(out?.insertCandidates).not.toContain('Other Product Exclusive');
+});
+
+it('returns an empty list rather than null for a number with no entries', async () => {
+  // Nothing at #9999. The form must render no selector, and the page must
+  // not treat this as "item not found".
+  const out = await candidatesFor(userId, itemId, '9999');
+  expect(out).toEqual({ insertCandidates: [] });
 });
 ```
 
-The third is the one to break deliberately: remove the product predicate and
-watch it go red. A candidate list leaking another product's inserts is how the
-wrong insert gets picked in a UI that looks correct.
+The third is the one to break: delete the `productId` predicate and watch it
+go red. A candidate list that leaks another product's inserts is how the wrong
+insert gets chosen through a UI that looks entirely correct.
+
+The fourth matters because `null` and `[]` mean different things here, and
+conflating them turns a legitimate "no such number" into a 404 on an item the
+owner is looking at.
 
 - [ ] **Step 2: Implement `candidatesFor`**
 
-Reuse the existing scoped item lookup in `core/review/items.ts` (the one
-`getReviewItemForOwner` uses) so "not yours" collapses into "not found" the way
-every other path in this file already does. Then query `checklistEntries`
-filtered by the item's `productId` and the passed `cardNumber`, ordered by
-`insertName`.
+Reuse the scoped lookup `getReviewItemForOwner` already uses, so "not yours"
+collapses into "not found" by construction rather than by a filter applied
+after a broader read, which is the property its own comment calls out. Then
+query `checklistEntries` filtered by that item's `productId`, the passed
+`cardNumber` and the item's scanned player, ordered by `insertName`, and map
+to names. That is the same query `getReviewItemForOwner` runs for its own
+`insertCandidates`; extract it so there is one copy rather than two that agree
+by coincidence. Plan 3 spent a whole fix round collapsing four such copies of
+the pair mapping.
 
 - [ ] **Step 3: The route**
 
 `GET /api/review/[itemId]/candidates?cardNumber=...`. 401 when not signed in,
 404 when `candidatesFor` returns null, 400 for a missing or empty
-`cardNumber`. Never echo the raw error.
+`cardNumber`. Never echo the raw error; log it and return a fixed message, the
+way `/api/batches/[batchId]/confirm` already does.
 
 - [ ] **Step 4: Wire the form**
 
-In `decision-form.tsx`, when the card-number input changes and the value
-differs from the item's original, fetch the candidates (debounced, 300ms) and
-replace the insert selector's options. While in flight, disable Correct rather
-than letting it submit against a stale list. On a fetch failure, show
+In `decision-form.tsx`, the card-number input currently sits beside a selector
+populated once from the server. When the input's value changes and differs
+from the item's original number, fetch the candidates (debounced, 300ms) and
+replace the options.
+
+While a fetch is in flight, **disable Correct.** On a fetch failure, show
 `'Could not load the inserts for that number. Try again.'` and keep Correct
-disabled: silently submitting against the previous number's candidates is the
-bug this task exists to prevent.
+disabled. Submitting against the previous number's candidate list is the exact
+bug this task exists to prevent, so failing closed is the whole point.
+
 
 - [ ] **Step 5: Run, break the product predicate, restore**
 
