@@ -1422,9 +1422,18 @@ plan.** This is the inspection surface and nothing more.
 
 **Interfaces:**
 - Produces: `listCards(userId, opts)` returning
-  `{ rows: CardRow[]; total: number }` where `CardRow` carries id, player,
-  cardNumber, insertName, productLabel, parallelName, serialNumber,
-  isAutograph, isMemorabilia, quantity, verification, frontPhotoUrl.
+  `{ rows: CardRow[]; total: number }` where `CardRow` carries `id`,
+  `player`, `cardNumber`, `insertName`, `team`, `isRookie`, `isFirstBowman`,
+  `productLabel`, `parallelName`, `serialNumber`, `isAutograph`,
+  `isMemorabilia`, `quantity`, `verification`, `frontPhotoUrl`.
+  `opts` is `{ limit?: number; offset?: number }`.
+
+Every one of those maps to a real column, checked: `player`, `cardNumber`,
+`insertName`, `team`, `isRookie` and `isFirstBowman` come off the joined
+`checklist_entries` row and cost nothing extra; `productLabel` is
+`formatProductDisplayName` (`core/products/displayName.ts`), the same helper
+the confirm screen and the review page already use, so a product reads
+identically everywhere.
 
 **The trap in this task, read it before writing anything.**
 `card_photos.url` is **not a URL.** It is a Supabase Storage key, and its own
@@ -1521,6 +1530,9 @@ there: the catalogue is the screen he leaves open.
 A table, not a gallery. Rows are denser and this screen exists to be scanned
 for wrongness, not admired. Columns: thumbnail, player, number, insert,
 parallel, serial, flags, quantity, product.
+
+Flags are `RC`, `1st Bowman`, `AUTO`, `MEM`, rendered as small badges. They
+are on the row already and they are what he looks for first in a rip.
 
 Render a `verification` badge and a quantity badge when `quantity > 1`: a
 quantity above 1 is the copy-identity bump and is the single most useful thing
