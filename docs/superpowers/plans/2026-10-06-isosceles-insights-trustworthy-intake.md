@@ -982,9 +982,23 @@ rows in `parallels` at all.** It is absent from the table, not merely missing
 print runs. A product with zero parallels can never resolve a parallel on any
 card, which is a silent form of exactly what this phase exists to fix, and it
 was invisible because every print-run count was reported per existing parallel
-row. Report why: no odds source in the registry, a parse that yielded nothing,
-or a seed that skipped it. Fixing it may be out of this task's scope, but
-diagnosing it is not.
+row.
+
+The controller has already diagnosed the cause, so do not spend the task
+re-deriving it: in `data/product-registry.json`, `2026-bowman-chrome-mega` has
+`odds: null`, and its checklist PDF
+(`2026_Bowman_Chrome_Baseball_Checklist_1_mega.pdf`) carries no parallel
+section. Of the six seeded products, the three with a `.txt` checklist get
+their parallels from the checklist itself, the two with a PDF checklist plus a
+PDF odds file get them from the odds file, and the mega has neither. So the
+product that is missing parallels is exactly the one with no source for them.
+
+What to do about it is a judgement call, and it is yours to make and record:
+either add a mega odds source to the registry, or recognise that Bowman Chrome
+Mega is a configuration of Bowman Chrome rather than a separate set and have it
+share product 49's parallels. **Do not invent a parallel list.** If neither is
+cheap, say so and leave product 50 documented as unscannable for parallels;
+naming the problem is the deliverable, fixing it is optional.
 
 - [ ] **Step 6: Commit**
 
