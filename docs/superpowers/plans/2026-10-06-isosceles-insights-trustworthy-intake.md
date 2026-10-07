@@ -1577,104 +1577,151 @@ scoping, add it deliberately and say so.
 
 ---
 
-### Task 7c: adding a product is one command, not a JSON edit
+### Task 7c: adding a product is a screen in the app
 
 **Files:**
 - Create: `core/checklist/source-url.ts`
-- Create: `scripts/add-product.ts`
-- Modify: `core/products/registry-types.ts` (the default source kind)
-- Test: `tests/unit/checklist/source-url.test.ts`
+- Create: `core/products/create.ts`
+- Create: `app/products/new/page.tsx`, `app/products/new/new-product-form.tsx`
+- Create: `app/api/products/preview/route.ts`
+- Modify: `lib/db/schema/products.ts` + a generated migration
+- Modify: `scripts/fetch-checklists.ts`, `scripts/seed-checklists.ts`
+- Test: `tests/unit/checklist/source-url.test.ts`, `tests/unit/products/create.test.ts`, `tests/unit/api/product-preview.test.ts`
 
-**Michael's instruction, and it is a standing one rather than a task:**
+**Michael's two instructions, which arrived together:**
 
 > "That should be the standard going forward for new products that get
 > introduced as well so there should be a mechanism for that"
+>
+> "I assume that will be part of the ux of the app"
 
-Task 7b standardises the eleven products he owns today on one source. This
-makes that the **default for every product he adds later**, so the standard
-holds without anyone remembering it.
+Yes, and the second one changes the shape of the first rather than just
+relocating it.
 
-**What is wrong with today's flow.** Adding a product means hand-editing
-`data/product-registry.json` with a slug, a year, a brand, a product name, a
-sport and a source, then running a fetch, then running a seed that silently
-does every product. Nothing checks the URL resolves, nothing checks the page
-parses, and nothing tells you the result until rows appear in the database.
-Every one of those gaps caused a real problem tonight.
+**Why this is not "put the CLI behind a button".** The registry lives in
+`data/product-registry.json`, a file on disk, and the fetched pages are
+cached to `data/checklists/`. **The app runs on Vercel, where the filesystem
+is read only and both of those are build artifacts.** A server action cannot
+write either. So making this a screen means the registry stops being a file
+and becomes rows in the `products` table, which is where it should have been
+once a product is something the owner creates rather than something a
+developer configures.
 
-- [ ] **Step 1: Derive the source URL, and verify rather than trust it**
+That is a real change and it is the right one. The `products` table already
+carries year, brand, productName, format and sport; it is missing only where
+the checklist comes from.
 
-checklistinsider's slugs follow a pattern, measured against the pages that
-actually exist:
+- [ ] **Step 1: The product carries its own source**
 
-```
-2026-topps-chrome-baseball          2026 + Topps Chrome + baseball
-2026-bowman-chrome-baseball         2026 + Bowman Chrome + baseball
-2026-topps-finest-baseball          2026 + Topps Finest + baseball
-2026-bowman-baseball                2026 + Bowman + baseball
-2026-bowman-football                2026 + Bowman + football
-2026-bowman-chrome-mega-box-baseball  does NOT follow it
-```
+Add to `lib/db/schema/products.ts`:
 
-So: `checklistInsiderUrl({ year, brand, productName, sport })` lowercases,
-strips punctuation and joins on hyphens, **and the mega box proves a
-derivation alone is not enough.** The registry keeps an optional explicit
-`url` that wins when present.
-
-**The rule that matters: a derived URL is a guess until it returns 200.**
-Never write a derived URL into the registry without fetching it first. A
-registry entry pointing at a 404 is a product that silently never seeds,
-which is exactly the state the five Sapphire products sat in.
-
-Tests: each row of the table above derives correctly; the mega box's
-derivation is **wrong**, which the test asserts explicitly so nobody later
-mistakes the pattern for complete; punctuation and case are handled.
-
-- [ ] **Step 2: One command to add a product**
-
-```bash
-npm run add:product -- --year 2026 --brand Bowman --name "Bowman Chrome" --sport baseball
-npm run add:product -- --year 2026 --brand Bowman --name "Bowman Chrome" --sport baseball --url https://...
+```ts
+/**
+ * Where this product's checklist comes from. Null means it was created
+ * before sources were recorded, or by a bootstrap seed. The registry JSON
+ * file was the source of truth until a product became something the owner
+ * creates in the app, at which point a file on a read-only Vercel
+ * filesystem could no longer hold it.
+ */
+checklistUrl: text('checklist_url'),
 ```
 
-It must, in this order, and stop at the first failure:
+Migration gate: generate, **read the SQL**, confirm it touches only
+`products`, migrate, `npm run setup:test-schema`, then count the ledger.
+**Never run `drizzle-kit push`.** 832 `baseball_cards`, 548 `sales`, 632
+`purchases`.
 
-1. Derive the URL, or take `--url`.
-2. **Fetch it with a browser user agent and check for 200.** On a 404, print
-   the derived URL, say the pattern did not fit this product, and tell the
-   owner to pass `--url`. Do not write anything.
-3. **Parse it and print what came out**: row count, how many carry a team,
-   parallel count, how many carry a print run, and the first three rows
-   verbatim.
-4. **Stop there unless `--apply` is passed.** The default is a dry run that
-   shows him what he is about to get. This is the step that would have caught
-   tonight's damage before it reached the database rather than after.
-5. With `--apply`: write the registry entry, save the page to the cache, and
-   seed **only that product**.
+Backfill the eleven existing products' `checklistUrl` from the registry, so
+the file is no longer needed to know where a checklist came from.
 
-**Refuse to add a product whose slug already exists**, and say which one it
-collides with. Two registry entries sharing a slug means the seeder's file
-glob reads both pages into whichever product it finds first, which is the
-mechanism behind tonight's doubled checklists.
+- [ ] **Step 2: Derive the URL, and never trust a derivation**
 
-- [ ] **Step 3: Make the standard the default**
+`checklistInsiderUrl({ year, brand, productName, format, sport })`. Measured
+against pages that exist:
 
-A registry entry with no explicit source means "derive a checklistinsider URL
-from my year, brand, name and sport". Document that in
-`core/products/registry-types.ts` where someone adding an entry by hand will
-read it.
+```
+2026-topps-chrome-baseball            derives
+2026-bowman-chrome-baseball           derives
+2026-topps-finest-baseball            derives
+2026-bowman-baseball                  derives
+2026-bowman-football                  derives
+2026-bowman-chrome-mega-box-baseball  does NOT derive
+```
 
-- [ ] **Step 4: Prove it end to end on a product he does not own**
+The mega box is the proof that a pattern is a guess: its product name is
+"Bowman Chrome" with format "Mega", and no amount of slugifying produces
+`mega-box`. **Write a test that asserts the mega box derivation is wrong**,
+so a later reader does not mistake the pattern for complete.
 
-Pick a real 2026 product absent from the registry, run the command without
-`--apply`, and paste the output into your report. Then run it with `--apply`,
-show the product's counts, and **remove it again**: delete the registry
-entry, the cached page and the seeded rows, and show the database back to
-eleven products with their Task 7b counts intact.
+- [ ] **Step 3: Preview before write, which is the whole point**
 
-Ledger before and after: **832 `baseball_cards`, 548 `sales`, 632
-`purchases`**. **Never run `drizzle-kit push`**, and no migration is needed.
+`POST /api/products/preview` takes the form fields or an explicit url,
+fetches the page **with a browser user agent**, parses it, and returns counts
+plus the first three rows. **It writes nothing.**
 
-- [ ] **Step 5: Commit**
+It must distinguish three outcomes in its response, because they need
+different words on screen:
+
+- the URL did not resolve, so ask for an explicit one
+- it resolved but parsed to nothing recognisable, so this is not a checklist
+  page
+- it parsed, here is what you will get
+
+This is the step that would have caught tonight's corruption before the
+database rather than after, and on a screen it costs the owner one glance.
+
+- [ ] **Step 4: The screen**
+
+`/products/new`: year, brand, product name, format, sport, and an optional
+URL override. A **Preview** button, then a summary he can read before
+committing:
+
+```
+2,371 rows, 2,104 with teams, 108 parallels, 51 with print runs
+  1 Shohei Ohtani - Los Angeles Dodgers
+  2 Aaron Judge - New York Yankees
+  3 Bobby Witt Jr. - Kansas City Royals
+```
+
+and only then **Add product**, which creates the product and loads the
+checklist in **one transaction**. A product that exists with no checklist is
+the state the five Sapphire products sat in and it is worth making
+unreachable.
+
+Link it from `/products`, whose empty state currently says "Run the checklist
+seed to load them", which will no longer be true.
+
+- [ ] **Step 5: Refuse the two things that bit us tonight**
+
+- **A duplicate product.** `products_identity_unique` already covers
+  `(userId, year, brand, productName, format)`. Catch the violation and say
+  which product it collides with, rather than surfacing a constraint name.
+- **A second source for a product that already has a checklist.** Loading a
+  second page into a populated product is what doubled two checklists
+  tonight. Re-loading must replace, not append, and the screen must say which
+  it is doing.
+
+Test both. Break each and name which test caught it.
+
+- [ ] **Step 6: The scripts read the database, not the file**
+
+`fetch-checklists.ts` and `seed-checklists.ts` read products and their
+`checklistUrl` from the database. The JSON file is reduced to a bootstrap for
+an empty database, or deleted if nothing needs it; **say which you chose.**
+
+While you are there: `seed-checklists.ts` ignores any slug argument and seeds
+every product. That cost a cleanup tonight. Either make the argument work or
+remove it so it cannot mislead.
+
+- [ ] **Step 7: Prove it end to end, then undo it**
+
+Add a real 2026 product he does not own, through the screen, in a browser if
+one is available and through the route handler if not. **Say which.** Paste
+the preview output and the resulting counts. Then remove it and show the
+database back to eleven products with their Task 7b counts intact, and the
+ledger unchanged.
+
+- [ ] **Step 8: Commit**
 
 ---
 
