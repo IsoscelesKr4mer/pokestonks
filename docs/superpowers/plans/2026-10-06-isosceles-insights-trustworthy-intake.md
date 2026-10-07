@@ -587,6 +587,30 @@ trips:
 and the excluded set as one plain `inArray` update to
 `{ excluded: true, pairIndex: null, side: 'unknown' }`.
 
+**This CASE construction is verified, not proposed.** The controller built it
+against the real schema and ran `.toSQL()`: it generates valid parameterised
+SQL, with the side strings and pair indexes as bound parameters rather than
+interpolated text.
+
+Two things about it that are load-bearing:
+
+- **The `ELSE ${photos.side} END` and `ELSE ${photos.pairIndex} END` are not
+  just there to preserve values for rows the CASE misses** (the `inArray`
+  already guarantees there are none). They give Postgres a concretely typed
+  expression to unify the branches against. Every `WHEN ... THEN ...` value is
+  an untyped bind parameter, and `pair_index` is `integer` while `side` is
+  `text`; the column reference in the ELSE is what pins each CASE's type.
+  Drop the ELSE and you are relying on assignment-context inference.
+- **Order the two statements graded-first, excluded-second.** Task 1's partial
+  unique index covers `(batch_id, pair_index, side) WHERE pair_index IS NOT
+  NULL AND excluded = false`, and these are two separate statements with no
+  transaction around them. On a first confirm every `pair_index` is NULL
+  beforehand, so the index covers nothing until the graded write lands and
+  there is no transient violation either way. That safety comes from
+  `confirmPairing` refusing an already-confirmed batch, not from the ordering,
+  so if a re-confirm path is ever added this becomes a real hazard. Leave a
+  comment saying so.
+
 Fix the ping: `pairCount: sides.size`.
 
 - [ ] **Step 5: Update the route's validator**
