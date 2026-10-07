@@ -796,69 +796,108 @@ git commit -m "feat(review): recompute insert candidates when the number changes
 **Files:**
 - Modify: `core/review/items.ts`
 - Modify: `app/review/[itemId]/decision-form.tsx`
+- Modify: `app/review/page.tsx`
 - Modify: `app/api/review/[itemId]/route.ts`
+- Modify: `lib/db/schema/reviewItems.ts` + a generated migration (the status
+  CHECK **and** the partial unique index, see below)
+- Modify: `scripts/scan-commit.ts` (the `onConflictDoNothing` arbiter)
 - Test: `tests/unit/review/items.test.ts`
 
 **Interfaces:**
-- Produces: a fourth decision, `'checklist-problem'`, setting
-  `review_items.status = 'checklist_problem'`.
+- Consumes: Task 5's candidate work in the same two files; run 5 before 6.
+- Produces: `flagChecklistProblem(userId, itemId, note): Promise<ReviewDecisionOutcome>`,
+  a fourth sibling of the existing `acceptReviewItem`, `correctReviewItem` and
+  `rejectReviewItem`. It sets `review_items.status = 'checklist_problem'`.
 
-The existing status CHECK constraint lists the allowed values. Widening it
-needs a migration: generate, read, confirm it touches only `review_items`,
-apply, `setup:test-schema`, count the ledger.
+**Match the module's existing shape, do not invent a new one.**
+`core/review/items.ts` exposes three separate exported functions, not one
+`decide({ kind })` dispatcher, and every outcome is
+`{ ok: true, ... } | { ok: false; reason: ...; message: string }` with a
+**human-readable `message` on every refusal.** So assert with `toMatchObject`,
+never `toEqual`, or the `message` field fails every refusal test. The reason
+strings below must match whatever vocabulary the module already uses
+(`'not-found'`, `'already-decided'`, `'invalid-input'` are all live); add a
+new reason only where none fits.
+
+`reviewItems.status`'s CHECK constraint lists the allowed values and has to be
+widened. That needs a migration: generate, **read the SQL**, confirm it touches
+only `review_items`, apply, `npm run setup:test-schema`, count the ledger.
 
 - [ ] **Step 1: Decide what it does, and does not do**
 
 It **does not** commit a card and it **does not** loosen the gate. It parks
-the item in a state that is not pending, not rejected, and carries the owner's
-note, so the card is not lost and the queue is not blocked. The product's
-checklist is what needs fixing, and that is a re-seed, not a card decision.
+the item in a state that is neither pending nor rejected and carries the
+owner's note, so the card is not thrown away and the queue is not blocked. The
+product's checklist is what needs fixing, and that is a re-seed, not a card
+decision.
 
 - [ ] **Step 2: Write the failing tests**
 
 ```ts
 it('parks the item without committing a card', async () => {
   const before = await countCards(userId);
-  const r = await decide(userId, itemId, {
-    kind: 'checklist-problem',
-    note: 'Checklist has Guerrero Jr. as Guerrero.',
-  });
+  const r = await flagChecklistProblem(
+    userId, itemId, 'Checklist has Guerrero Jr. as Guerrero.'
+  );
   expect(r.ok).toBe(true);
   expect(await countCards(userId)).toBe(before);
-  expect((await getReviewItemForOwner(userId, itemId))?.status)
-    .toBe('checklist_problem');
+  const item = await getReviewItemForOwner(userId, itemId);
+  expect(item?.status).toBe('checklist_problem');
+  expect(item?.decisionNote).toContain('Guerrero');
 });
 
 it('requires a note', async () => {
-  const r = await decide(userId, itemId, { kind: 'checklist-problem', note: '' });
-  expect(r).toEqual({ ok: false, reason: 'note-required' });
+  const r = await flagChecklistProblem(userId, itemId, '   ');
+  expect(r).toMatchObject({ ok: false, reason: 'invalid-input' });
 });
 
 it('is refused on an already-decided item', async () => {
-  await decide(userId, itemId, { kind: 'reject' });
-  const r = await decide(userId, itemId, {
-    kind: 'checklist-problem',
-    note: 'too late',
-  });
-  expect(r).toEqual({ ok: false, reason: 'already-decided' });
+  await rejectReviewItem(userId, itemId, null);
+  const r = await flagChecklistProblem(userId, itemId, 'too late');
+  expect(r).toMatchObject({ ok: false, reason: 'already-decided' });
 });
 
 it('is refused for another user, and changes nothing', async () => {
-  const r = await decide(otherUserId, itemId, {
-    kind: 'checklist-problem',
-    note: 'not mine',
-  });
-  expect(r).toEqual({ ok: false, reason: 'not-found' });
+  const r = await flagChecklistProblem(otherUserId, itemId, 'not mine');
+  expect(r).toMatchObject({ ok: false, reason: 'not-found' });
   expect((await getReviewItemForOwner(userId, itemId))?.status).toBe('pending');
+});
+
+it('refuses an invalid status at the database, not just in code', async () => {
+  // The widened CHECK must still reject something. A CHECK that accepts
+  // anything is the same as no CHECK, and this repo has already shipped one
+  // constraint nobody had watched fire.
+  await expect(
+    db.update(reviewItems).set({ status: 'nonsense' }).where(eq(reviewItems.id, itemId))
+  ).rejects.toThrow(/review_items_status_valid/);
 });
 ```
 
-Use whatever `decide`'s existing refusal vocabulary already is rather than the
-reason strings above if they differ; the point is that these two paths refuse,
-not the exact words.
-
 A note is required because the only value of this state is telling a future
-re-seed what was wrong.
+re-seed what was wrong. Whitespace does not count as a note.
+
+**The interaction you must not miss, and it is not in the schema file's own
+comment because the status did not exist when that comment was written.**
+`review_items_batch_pair_unique` is a partial index scoped
+`WHERE status <> 'rejected'`. Its comment explains the reasoning precisely:
+`rejected` is the only status that may let a fresh attempt at the same pair
+through, because every other status means a card already exists or is about
+to. **`checklist_problem` belongs on the `rejected` side of that line**, and
+for the same reason: no card was written, the owner is waiting on a re-seed,
+and when he re-seeds and re-scans he must get a fresh pending item rather than
+silently nothing. Leave the predicate as it is and a parked item blocks its own
+re-scan forever, which is the exact bug plan 3's item 5 fixed for rejections.
+
+So widen the index to `WHERE status NOT IN ('rejected', 'checklist_problem')`
+in the same migration, **and** update `scripts/scan-commit.ts`'s
+`onConflictDoNothing` arbiter `where` to the identical predicate. The schema
+comment says why that second half is mandatory: name a different predicate and
+Postgres has no unique constraint left to infer a conflict target from.
+
+Test it both ways: a parked item followed by a re-scan of the same batch
+produces a fresh pending item, and an `accepted` item followed by a re-scan
+still produces none.
+
 
 - [ ] **Step 3: Implement, including the status CHECK migration**
 
