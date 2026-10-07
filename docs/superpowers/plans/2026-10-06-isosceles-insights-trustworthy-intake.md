@@ -1560,6 +1560,15 @@ and the answer has to be one click away or the inspection does not happen.
 ## Explicitly not this plan
 
 - The backfill itself. That is plan 5 and it gets a dry run and a diff first.
+  **Carry one requirement into it in his own words:** *"Make sure that you
+  have my sales from eBay as well so that we arent relisting old cards that
+  already sold when we do the port over."* The schema can already hold it:
+  `card_sales` carries `ebay_order_id`, `card_listings` carries
+  `ebay_item_id`, `ebay_sku` and a `status`. What does not exist yet is
+  anything that stops a sold card being offered again, and the spec's ledger
+  says 54 of the 832 are already sold and 568 carry a live `ebay_item_id`.
+  Plan 5 owns both halves: carrying the mapping across, and making "already
+  sold" a state the listing path cannot ignore.
 - Filters, saved views, badges beyond verification and quantity, comps, price
   history. Spec section 6, a later plan.
 - eBay listing. Plan 7.
