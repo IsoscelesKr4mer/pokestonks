@@ -114,8 +114,52 @@ Michael uploads photos from his phone with no agent session running anywhere,
 and they convert. He can see them converting while it happens. Nobody starts
 a loop.
 
-## Open
+## Measured, not assumed
 
-**The function timeout, and therefore the limit.** It depends on the Vercel
-plan and has to be read rather than assumed. The limit is then set from the
-measured per-photo conversion time with a wide margin, not from a guess.
+**Per-photo cost, end to end** (download the original from Storage, convert,
+upload the derivative), over four real photos on 2026-10-07:
+
+| | download | convert | upload | total |
+|---|---|---|---|---|
+| mean | ~610ms | ~254ms | ~326ms | **1190ms** |
+| worst | 961ms | 271ms | 437ms | **1499ms** |
+
+**Conversion is the small part.** Only about 250ms of each 1.2s is `sharp`;
+the rest is network I/O to Supabase, which should be FASTER from Vercel than
+from a laptop on home broadband. These were 1.9 to 2.7MB JPEGs. A HEIC
+original costs more to decode, and none are in the database today to measure,
+which is the argument for a time budget rather than a photo count.
+
+**The plan is Hobby**, checked rather than assumed, and it constrains the
+design in two ways that matter:
+
+1. **Cron on Hobby runs at most once per DAY.** It cannot be the mechanism
+   that gets a batch converted; it can only be a backstop that catches
+   something stranded within 24 hours. The spec above treated a frequent cron
+   as half the design, and on this plan that is not available.
+2. **Function timeout is 60s**, which two routes already use via
+   `maxDuration = 60`.
+
+## Revised design, for Hobby
+
+**The drain self-chains.** A drain converts until its time budget is spent,
+then returns `more: true` if work remains, and the caller fires another. This
+replaces the frequent cron entirely and self-tunes to whatever a photo
+actually costs, HEIC or JPEG, fast network or slow. A fixed photo count would
+have to be tuned for the worst case and would waste the budget in the common
+one.
+
+**Authorised by a session OR the cron secret.** `after()` inside the upload
+route would spend the upload's own 60s budget on conversion, so the trigger
+moves to the browser: the upload form calls `/api/jobs/drain` once the upload
+returns. That needs no secret in the browser, because a signed-in owner
+draining his OWN jobs is legitimate. The same endpoint accepts a
+`CRON_SECRET` bearer for the daily backstop.
+
+A session-authorised drain must only claim that user's jobs. `claimNextJob`
+already takes a userId for exactly this reason.
+
+**The manual control stops being a nicety.** With no frequent sweeper, a
+visible "convert now" on the batch, and the converting state beside it, are
+how a stalled batch gets unstuck. On Pro they would be convenience; on Hobby
+they are the recovery path.
