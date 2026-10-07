@@ -703,8 +703,24 @@ function mergeDown(slotIndex: number) { ... }   // disabled unless this slot
                                                 // slot exists and has no back
 ```
 
-Excluding the **front** of a slot that has a back promotes the back to front.
-Excluding the only photo removes the slot.
+**The exact semantics, because this task ships without automated tests and a
+reviewer needs something to check against.** Work through every one of these:
+
+| Action | Case | Result |
+|---|---|---|
+| Exclude | the back of a two-photo slot | slot keeps its front, back becomes null |
+| Exclude | the front of a two-photo slot | the back is **promoted to front**, slot has no back |
+| Exclude | the only photo in a slot | the slot disappears; every slot after it shifts up |
+| Put back | a photo from the Not cards strip | it becomes **its own new slot, appended last**, never re-inserted where it came from. Position is the owner's to restore with merge; guessing it is how the offset bug comes back. |
+| Split | a two-photo slot | two slots, in the same order, each with a front and no back |
+| Split | a one-photo slot | disabled |
+| Merge | this slot and the next, both single | one slot: this photo front, the next photo back |
+| Merge | either slot already has a back | disabled |
+| Merge | the last slot | disabled, there is no next |
+| Swap | a one-photo slot | disabled, as today |
+
+`pairIndex` is the slot's position after every edit, so it stays dense and
+ordered by construction. Nothing recomputes it from capture time again.
 
 - [ ] **Step 3: Build the payload**
 
