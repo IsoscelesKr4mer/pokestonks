@@ -1138,11 +1138,36 @@ const FORMAT_TAIL =
 const PRINT_RUN = new RegExp(`\\s(?:\\/(\\d{1,6})|(1)\\/1)${FORMAT_TAIL}\\s*$`, 'i');
 ```
 
-**Test the narrowness, not only the happy path.** `Refractor /499 All formats`
-parses to name `Refractor`, run 499. `Gold Rainbow /50 Something Else` must
-**not** match, because that trailing text is unaccounted for and quietly
-dropping it would invent a parallel name. Then remove `All formats` from the
-`FORMAT_TAIL` list and watch the first test go red.
+**This regex is already verified against the real strings**, so it is not a
+suggestion to refine; it is a result to reproduce. Controller's run:
+
+```
+run=499  name="Refractor"                   | Refractor /499 All formats
+run=399  name="Pulsar Refractor"            | Pulsar Refractor /399 Hobby
+run=250  name="Purple Geometric Refractor"  | Purple Geometric Refractor /250 Breaker Delight
+run=275  name="Yellow"                      | Yellow /275
+run=1    name="SuperFractor"                | SuperFractor 1/1
+run=99   name="Mega Refractor"              | Mega Refractor /99 Mega
+NO MATCH | Gold Rainbow /50 Something Else
+NO MATCH | All cards are /25 or fewer
+NO MATCH | Refractor
+```
+
+Turn every one of those nine lines into a test case. The last three are the
+ones that matter:
+
+- `Gold Rainbow /50 Something Else` must not match, because that trailing text
+  is unaccounted for and quietly dropping it would invent a parallel name.
+- `All cards are /25 or fewer` is prose with a mid-sentence run, and the
+  existing parser already refuses it. Do not break that.
+- `Refractor` alone has neither a run nor odds, and is correctly not a
+  parallel on its own.
+
+And `Mega Refractor /99 Mega` is the case that proves the tail is stripped
+from the end rather than the name: the name keeps its own leading `Mega`.
+
+Then remove `All formats` from the `FORMAT_TAIL` list and watch the first
+test go red.
 
 - [ ] **Step 5: Point the registry at the HTML sources**
 
