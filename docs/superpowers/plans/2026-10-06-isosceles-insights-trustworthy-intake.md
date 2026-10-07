@@ -431,6 +431,17 @@ git commit -m "feat(ingest): read the stored pair grouping instead of guessing"
   `{ photoId: number; side: 'front' | 'back'; pairIndex: number } | { photoId: number; excluded: true }`.
   Task 4's grid builds this payload.
 
+**A name collision worth understanding before you start, not a bug.**
+`review_items.pair_index` already exists and means the same thing: which pair
+of a batch a row refers to. Until now the two agreed only because both were
+derived from the same positional walk over the same ordered query. After this
+task they agree because `photos.pair_index` is the stored answer and
+`batchPairsFor` returns pairs in its order, so the index a review item carries
+is the index of the pair the owner actually approved. Do not try to unify the
+columns or add a foreign key between them; they live on different tables with
+different lifetimes. Just do not confuse them while editing
+`scripts/scan-commit.ts`, which handles both.
+
 - [ ] **Step 1: Widen the type**
 
 In `core/ingest/batches.ts`:
