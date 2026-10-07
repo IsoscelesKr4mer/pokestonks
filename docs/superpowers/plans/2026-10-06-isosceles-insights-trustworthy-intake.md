@@ -1428,6 +1428,166 @@ git commit -m "feat(checklist): read checklists from HTML sources that carry pri
 ```
 
 
+### Task 7b: a source declares what it contributes, and parallels merge
+
+**Files:**
+- Modify: `core/products/registry-types.ts`, `data/product-registry.json`
+- Modify: `scripts/seed-checklists.ts`
+- Modify: `lib/db/schema/parallels.ts` + a generated migration
+- Modify: `core/products/service.ts` (`loadChecklistForProduct`)
+- Test: `tests/unit/products/service.test.ts`, `tests/unit/checklist/*`
+
+**Why this exists. Task 7 shipped working code and broke the data, and the
+fault is in the plan, not the implementation.**
+
+Task 7 was told to point the `checklist` registry slot at an HTML page. It
+did. The seeder globs **every** cached file for a slug, the PDF was still
+there, so both were parsed into the same product. Measured on the owner's
+live database before it was rolled back:
+
+| product | entries | null team | parallels | with print run |
+|---|---|---|---|---|
+| 49 before | 1199 | 0 | 305 | 0 |
+| 49 after | **1940** | **741** | **360** | 55 |
+| 53 before | 2121 | 0 | 521 | 0 |
+| 53 after | **4243** | **2117** | **590** | 69 |
+
+Three distinct faults, and the print runs that were the point of the task
+arrived alongside all of them:
+
+1. **Card rows doubled.** Every card now existed twice, once correct from the
+   PDF and once degraded from the HTML.
+2. **The degraded copies have no team**, because that page's table ends in a
+   Section column rather than the team name. Product 53's null-team count
+   went from 0 to 2117, silently undoing the football fix from earlier the
+   same evening.
+3. **Parallels duplicated rather than merged.** This is the subtle one and it
+   is a schema fault, not a parser fault. `parallels_product_name_run_unique`
+   is on `(productId, name, printRun)` with `nullsNotDistinct()`. So an
+   unnumbered `Refractor` from the PDF and a `Refractor` with run 499 from
+   the HTML are **two rows**, not one row enriched with the run it was
+   missing. That is why 49 gained 55 parallels at exactly the moment it
+   gained 55 print runs.
+
+Rolled back by wiping both products and re-seeding from the PDFs; all six
+products verified back to their exact prior counts, ledger unchanged
+throughout. Task 7's extractor, its `FORMAT_TAIL` regex and its 18 tests are
+**kept**: they are correct and they are what makes this task possible.
+
+**The lesson, worth stating because it generalises.** The plan assumed a
+product has one checklist source. It has several, each contributing different
+things: the PDF has the card rows and the teams, the HTML has the print runs,
+the odds sheet has the odds. Asking "which file is the checklist" is the wrong
+question. The right one is "what does this source contribute".
+
+- [ ] **Step 1: A source declares what it contributes**
+
+In `core/products/registry-types.ts`:
+
+```ts
+export type RegistrySource = (
+  | { kind: 'local'; file: string }
+  | { kind: 'fetch'; url: string; note: string }
+) & {
+  /**
+   * What the seeder should take from this file. Defaults to 'both', which is
+   * every source that existed before HTML support: a PDF or txt checklist
+   * carries rows, an odds sheet carries parallels, and each simply yields
+   * nothing for the half it does not have.
+   *
+   * HTML is what forces the distinction. baseball.cards carries BOTH a card
+   * table and a parallels table, and its card table is strictly worse than
+   * the PDF's: it ends in a Section column rather than the team, so every row
+   * parses with a null team. Taking rows from it doubled two products and
+   * erased their teams. It must contribute 'parallels' only.
+   */
+  contributes?: 'rows' | 'parallels' | 'both';
+};
+```
+
+- [ ] **Step 2: The seeder honours it**
+
+`loadChecklistForProduct(productId, parsed, contributes)` skips writing entry
+rows when `contributes` is `'parallels'`, and skips parallels when it is
+`'rows'`. The seeder reads the field off whichever registry source produced
+the file it is about to parse.
+
+**Test the skip, do not assume it.** Seed a parallels-only source over a
+product that already has rows and assert the row count is **unchanged** and
+the parallel count rose. Then flip `contributes` to `'both'` and watch the row
+count move, which proves the test is reading the predicate and not the shape
+of the fixture.
+
+- [ ] **Step 3: A parallel's identity is its name, not its print run**
+
+This needs a migration. `parallels_product_name_run_unique` becomes
+`parallels_product_name_unique` on `(productId, name)`, and the insert becomes
+an upsert that **fills in** `printRun` and `oddsText` when the incoming row
+has a value and the stored row does not.
+
+```ts
+// A print run is an attribute of a parallel, not part of its identity. Two
+// rows named "Refractor" under one product are the same parallel whatever
+// either one's print_run says; one source knows the run and another knows
+// the odds, and the point of seeding several sources is that the union is
+// better than any one of them. Keyed on the run, the second source silently
+// minted a rival row instead of completing the first.
+.onConflictDoUpdate({
+  target: [parallels.productId, parallels.name],
+  set: {
+    printRun: sql`COALESCE(${parallels.printRun}, excluded.print_run)`,
+    oddsText: sql`COALESCE(${parallels.oddsText}, excluded.odds_text)`,
+  },
+})
+```
+
+**COALESCE in that order, deliberately: first value wins, a later source only
+fills gaps.** A source must never overwrite a run another source already
+established, because then the result depends on seeding order. If two sources
+genuinely disagree on a print run, that is a data question for the owner, not
+something to resolve silently by whoever ran last.
+
+**Before generating the migration, check for existing duplicates**, because
+the new unique index will refuse to build if any product has two parallels
+sharing a name. Query for them, report what you find, and if there are any,
+say so and stop rather than deleting rows to make an index fit.
+
+**The migration gate.** Never run `drizzle-kit push`. Generate, **read the
+SQL**, confirm it touches only `parallels`, migrate, then
+`npm run setup:test-schema`. The owner's live Pokemon P&L ledger shares this
+database: 832 `baseball_cards`, 548 `sales`, 632 `purchases`. Count all three
+after.
+
+- [ ] **Step 4: Point the registry at both sources**
+
+`2026-bowman-chrome` and `2026-bowman-football` keep their PDF as the
+`checklist`, and gain the HTML page as an **additional** source contributing
+parallels only. The registry shape currently allows one `checklist` and one
+`odds`; both of these products already use their `odds` slot for a PDF, so
+either widen the shape to a list or add a third slot. **Say which you chose
+and why.** Do not drop the odds PDF to make room, it carries the odds the
+HTML does not.
+
+- [ ] **Step 5: Re-seed and prove the exact numbers**
+
+The target is unambiguous, because the pre-Task-7 state is known:
+
+| product | entries | null team | parallels | with print run |
+|---|---|---|---|---|
+| 49 | 1199, unchanged | 0, unchanged | 305, unchanged | **0 to non-zero** |
+| 53 | 2121, unchanged | 0, unchanged | 521, unchanged | **0 to non-zero** |
+
+Entries, null-team and parallel **counts must not move at all**. Only
+`with print run` may rise. If any other number moves, the merge is not
+merging and you must stop and report rather than proceeding.
+
+Report all six products, the four untouched ones being the evidence. Report
+the ledger.
+
+- [ ] **Step 6: Commit**
+
+---
+
 ### Task 8: `printRun` stops meaning two things
 
 **Files:**
