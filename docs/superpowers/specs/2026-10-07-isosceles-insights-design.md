@@ -5,15 +5,36 @@ pulls, and the app verifies each card against a printed checklist before it
 enters his catalogue. He then prices and lists the good ones. He is the only
 user.
 
-**The job this interface does, and it is not the obvious one.** Collectr and
-every other collection app is a **gallery**: big images, grids, your stuff
-looking good. This one is an **inspection bench**. The cards list exists to be
-scanned for things that are wrong. The review queue exists to catch what the
-scanner misread. He is about to point it at roughly 2,800 photographs and the
-only question that matters is whether he can spot a bad row quickly.
+**The job this interface does. Corrected after showing him the first pass.**
 
-So: density over decoration, and anything that makes a wrong row harder to
-notice is a bug, not a style.
+The original version of this section argued the app is an **inspection bench**
+and explicitly **not** a gallery. He read the first screens and said:
+
+> "This still looks more like a spreadsheet than a polished app is that the
+> look you're going for?"
+
+and then:
+
+> "It's an inspection tool but also a showcase tool. Want to be able to view by
+> team, set, player, etc."
+
+**He is right and the original framing was half wrong.** It is both, and they
+are different jobs needing different views:
+
+- **Inspection.** Rows. He is about to point this at roughly 2,800
+  photographs and the only question is whether he can spot a bad one quickly.
+  Density, alignment, a straight column edge so a wrong value shows as a jog.
+- **Showcase.** A grid. He wants to look at what he owns and show people. This
+  is not decoration, it is a second real use.
+
+**What I got wrong, and it is worth recording because the reasoning sounded
+good.** I argued "it is a tool, therefore restraint", and used that to leave
+out the single strongest asset the app has: **his card photographs**. The data
+has them, the pipeline stores them, and the first cards list did not show
+them. A tool can be dense *and* designed. Restraint is not absence.
+
+So: density over decoration in rows, photographs leading in both views, and
+nothing that makes a wrong row harder to notice.
 
 **Two contexts, both real.** A phone, one-handed, at a vending machine, added
 to his home screen and running without browser chrome. And a desktop, at a
@@ -172,9 +193,39 @@ text or marked decorative. No meaning carried by colour alone: a flagged row
 says why in words as well. Contrast meets AA against `paper` and against the
 dark surface.
 
+## The grid view, and how scarcity reads there
+
+Approved from a mock, 2026-10-07: *"that looks cool"*.
+
+**Scarcity is a ring around the card, not a label.** A numbered parallel draws
+its ladder colour as a hairline ring on the photograph, and the scarcest rungs
+add a faint outer glow in the same colour: a SuperFractor 1/1 in gold, a Red
+Mojo /5 in red, Orange /25 and Aqua /199 in theirs. A base card gets no ring at
+all and sits quiet.
+
+This is the showcase doing something a table cannot: **you can see what is good
+in a group of forty without reading a word.** It also fixes a defect in the
+first pass, where the 1/1 rendered in the most muted grey on the screen, so the
+best card looked like the least important.
+
+**Grouping is the browse.** The grid groups by team by default, and set, player
+and parallel use the same control, which is his *"view by team, set, player"*.
+Numbered only, Rookies and Needs a look are one tap each. Group headings carry
+a count.
+
+A card needing attention gets a small dot on the photograph rather than a
+colour wash, so a flagged card is findable in the grid without the grid
+becoming a traffic light.
+
+**Reference mocks**, approved, with real photographs:
+`.superpowers/sdd/2026-10-06-isosceles-insights-trustworthy-intake/design-mocks/`
+holds `cards-mock.html` (light rows), `cards-dark.html` (dark rows with
+facets), `cards-grid.html` (the showcase) and a PNG of each.
+
 ## What this is not
 
-Not a gallery. Not a dashboard with stat cards. No rounded card grid, no soft
-drop shadows, no gradient washes, no numbered step markers, no middle-dot meta
-strings. The hobby is full of chrome and rainbow foil; the tool that inspects
-it should be matte.
+Not a dashboard with stat cards. No numbered step markers, no middle-dot meta
+strings, no gradient washes as decoration. The hobby is full of chrome and
+rainbow foil; the surface that holds it should be matte, so the only colour on
+screen comes from the cards themselves and from the two states that need
+attention.
