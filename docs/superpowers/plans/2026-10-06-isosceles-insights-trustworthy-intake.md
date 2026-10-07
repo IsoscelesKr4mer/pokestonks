@@ -1068,32 +1068,95 @@ plan.** This is the inspection surface and nothing more.
   cardNumber, insertName, productLabel, parallelName, serialNumber,
   isAutograph, isMemorabilia, quantity, verification, frontPhotoUrl.
 
+**The trap in this task, read it before writing anything.**
+`card_photos.url` is **not a URL.** It is a Supabase Storage key, and its own
+column comment says so: "the first page that displays a committed card's photo
+needs to sign this key, not treat it as one already." Meanwhile
+`PhotoWithUrl.url` in `core/ingest/batches.ts` **is** an already-signed URL.
+Two live meanings of `url` in one repo, and this task is the first code to
+touch both. Put the signed value on a differently named field
+(`frontPhotoUrl`) so the ambiguity stops here rather than spreading into the
+catalogue.
+
 - [ ] **Step 1: Write the failing tests, scoping first**
 
 ```ts
-it('returns only this user\'s cards', async () => { ... });
-
-it('joins the checklist entry for player and number', async () => { ... });
-
-it('paginates by row', async () => {
-  // Default limit 200. Not 50: the owner's first backfill batch is a whole
-  // rip and he is checking it, not browsing it.
+it('returns only this users cards', async () => {
+  await seedCard({ userId });
+  await seedCard({ userId: otherUserId });
+  const { rows, total } = await listCards(userId, {});
+  expect(rows).toHaveLength(1);
+  expect(total).toBe(1);
 });
 
-it('orders newest first', async () => { ... });
+it('joins the checklist entry for player, number and insert', async () => {
+  const entry = await seedEntry({
+    productId, cardNumber: '150', player: 'Paul Skenes', insertName: 'Base Set',
+  });
+  await seedCard({ userId, productId, checklistEntryId: entry.id });
+  const { rows } = await listCards(userId, {});
+  expect(rows[0]).toMatchObject({
+    player: 'Paul Skenes', cardNumber: '150', insertName: 'Base Set',
+  });
+});
+
+it('signs the front photo key rather than returning it raw', async () => {
+  const card = await seedCard({ userId });
+  await seedCardPhoto({ cardId: card.id, side: 'front', url: 'derivatives/abc.jpg' });
+  const { rows } = await listCards(userId, {});
+  expect(rows[0].frontPhotoUrl).not.toBe('derivatives/abc.jpg');
+  expect(rows[0].frontPhotoUrl).toMatch(/^https?:/);
+});
+
+it('returns one row per card even with a front, a back and a detail shot', async () => {
+  // The join to card_photos must not multiply rows. This is the bug a naive
+  // leftJoin produces and on screen it looks exactly like a duplicate commit,
+  // which is the one thing this page exists to let him spot.
+  const card = await seedCard({ userId });
+  for (const side of ['front', 'back', 'detail'] as const) {
+    await seedCardPhoto({ cardId: card.id, side, url: `k-${side}` });
+  }
+  const { rows } = await listCards(userId, {});
+  expect(rows).toHaveLength(1);
+});
+
+it('paginates by row and reports the unpaginated total', async () => {
+  // Default limit 200. Not 50: his first backfill batch is a whole rip and he
+  // is checking it, not browsing it.
+  for (let i = 0; i < 5; i++) await seedCard({ userId });
+  const { rows, total } = await listCards(userId, { limit: 2 });
+  expect(rows).toHaveLength(2);
+  expect(total).toBe(5);
+});
+
+it('orders newest first', async () => {
+  const a = await seedCard({ userId });
+  const b = await seedCard({ userId });
+  const { rows } = await listCards(userId, {});
+  expect(rows.map((r) => r.id)).toEqual([b.id, a.id]);
+});
 ```
 
-The scoping test is the one to break: delete the `userId` predicate and watch
-it fail. There is **no row level security in this database** (zero of fifteen
-migrations contain a policy), so every scoping guarantee in this app is
-application-level and a missed predicate has no backstop.
+Two of these must be broken deliberately. **Delete the `userId` predicate** and
+watch the first fail: there is **no row level security in this database**, zero
+migrations carry a policy, so every scoping guarantee is application-level and
+a missed predicate has no backstop in a project five other accounts can sign
+into. **Then change the photo lookup** to a plain `leftJoin` on `cardPhotos`
+with no side filter and watch the fourth fail.
 
 - [ ] **Step 2: Implement the query**
 
-One query with joins to `checklistEntries`, `products` and `parallels`. Do not
-N+1 the photos: join `cardPhotos` for the front and sign one URL per row, the
-same `photoDisplayUrl` the pairing grid uses, which already swallows a signing
-failure rather than 500ing the page.
+One query, joins to `checklistEntries`, `products` and `parallels`. For the
+photo, do **not** `leftJoin cardPhotos` directly: a card with three photos
+comes back as three rows. Use a correlated subquery for the single front key,
+and read `qualified()` in `core/ingest/batches.ts` and the comment above it
+first: a bare column inside a selected `sql` template loses its table in a
+single-table select, and this repo has already shipped that exact bug twice.
+
+Sign the keys after the query, in one `Promise.all`, with the same
+`photoDisplayUrl` the pairing grid uses. It already swallows a signing failure
+and returns null instead of 500ing the page, which matters more here than
+there: the catalogue is the screen he leaves open.
 
 - [ ] **Step 3: The page**
 
@@ -1122,10 +1185,53 @@ Empty state: `'No cards yet. Confirm a batch and run a scan.'`
 - Create: `core/cards/detail.ts`, `app/cards/[cardId]/page.tsx`
 - Test: `tests/unit/cards/detail.test.ts`
 
+**Interfaces:**
+- Consumes: Task 9's `photoDisplayUrl` usage and `CardRow` field naming, so
+  `frontPhotoUrl` means the same thing on both screens.
+- Produces: `cardDetail(userId, cardId)` returning
+  `CardDetail | null`, where `CardDetail` is every column on `cards`, the
+  joined player/number/insert/team, `parallelName`, `frontPhotoUrl`,
+  `backPhotoUrl`, and `provenance: { batchId, batchLabel, productLabel,
+  committedAt, reviewDecision: string | null }`. Null means not his,
+  indistinguishable from missing.
+
 - [ ] **Step 1: Write the failing tests**
 
-Scoping (another user's card is `notFound`, indistinguishable from missing),
-both photo sides resolve, and the provenance fields come back.
+```ts
+it('returns null for a card that is not his, the same as for a missing one', async () => {
+  const card = await seedCard({ userId });
+  expect(await cardDetail(otherUserId, card.id)).toBeNull();
+  expect(await cardDetail(otherUserId, 999999)).toBeNull();
+});
+
+it('signs both sides', async () => {
+  const card = await seedCard({ userId });
+  await seedCardPhoto({ cardId: card.id, side: 'front', url: 'k-front' });
+  await seedCardPhoto({ cardId: card.id, side: 'back', url: 'k-back' });
+  const d = await cardDetail(userId, card.id);
+  expect(d?.frontPhotoUrl).toMatch(/^https?:/);
+  expect(d?.backPhotoUrl).toMatch(/^https?:/);
+});
+
+it('carries provenance: the batch, the product and the review decision', async () => {
+  const d = await cardDetail(userId, cardId);
+  expect(d?.provenance).toMatchObject({
+    batchId,
+    batchLabel: '10-04 Bowman mega',
+    productLabel: expect.any(String),
+  });
+});
+
+it('returns a card with no photos rather than throwing', async () => {
+  // A card committed before its photos landed must still be inspectable:
+  // this page is where he goes when a row looks wrong.
+  const card = await seedCard({ userId });
+  const d = await cardDetail(userId, card.id);
+  expect(d?.frontPhotoUrl).toBeNull();
+});
+```
+
+Break the `userId` predicate and watch the first fail.
 
 - [ ] **Step 2: Implement**
 
