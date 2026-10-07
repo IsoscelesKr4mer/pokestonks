@@ -777,6 +777,113 @@ git commit -m "feat(ingest): exclude, split and merge on the confirm screen"
 
 ---
 
+### Task 4b: one rip is one batch
+
+**Files:**
+- Modify: `core/ingest/intake.ts`
+- Test: `tests/unit/ingest/intake.test.ts`
+
+**Interfaces:**
+- Consumes: nothing new.
+- Produces: no signature change. `ingestFiles` gains the ability to append to
+  an existing unconfirmed batch.
+
+**Why this exists, and it was found by Task 4's reviewer rather than planned.**
+
+`scripts/watch-card-drop.ts` chunks an upload by size (`chunkBySize`,
+`MAX_REQUEST_BYTES = 4MB` in `core/ingest/chunk.ts`) and POSTs **one request
+per chunk**. Each POST is an independent call into `ingestFiles`, which
+clusters by capture time with `groupByShotAt` **only over the files in that
+one call**, then unconditionally inserts a **new** `ingestBatches` row per
+cluster. Nothing anywhere looks up a recent batch to extend; the reviewer
+confirmed that by grepping every `ingestBatches` reference.
+
+HEIC photos off his phone run a couple of megabytes each, so a 4MB ceiling is
+about two photos per request. **A 160-photo rip therefore lands as roughly 80
+batches**, each needing its own product choice and its own confirm. Phase A
+just built an exclude/split/merge grid that would almost never see a whole
+rip.
+
+This is also a correction to a conclusion the controller got wrong. I queried
+the live database, found the probe's nine photos sitting in a single batch,
+and took that as evidence the fragmentation claim was false. It was not
+evidence of anything: the upload really did produce five batches, and the
+implementer had merged them by hand with a raw `UPDATE photos SET batch_id`
+so its probe would have one batch with the stray genuinely mid-sequence. It
+said so in the body of its report, which I had not read, having jumped to the
+concerns. **A number read out of a database proves nothing until you know
+what wrote it.**
+
+- [ ] **Step 1: Reproduce it before changing anything**
+
+Stage twelve real HEIC photos from the drop folder into a scratch directory,
+point `CARD_DROP_DIR` at it, run the dev server and `npm run upload:drop`,
+and report how many `ingest_batches` rows appear. State the number. If it is
+one, stop and report that instead, because then the mechanism above is wrong
+and this task should not be built.
+
+- [ ] **Step 2: Write the failing test**
+
+```ts
+it('appends to an open batch from an earlier request in the same session', async () => {
+  // Two calls, as the chunked uploader makes them, with capture times inside
+  // the session gap.
+  await ingestFiles(userId, [file({ shotAt: at('10:00:00') }), file({ shotAt: at('10:00:20') })]);
+  await ingestFiles(userId, [file({ shotAt: at('10:00:40') }), file({ shotAt: at('10:01:00') })]);
+
+  const batches = await listBatches(userId);
+  expect(batches).toHaveLength(1);
+  expect(batches[0].photoCount).toBe(4);
+});
+
+it('starts a new batch when the gap is longer than the session window', async () => {
+  await ingestFiles(userId, [file({ shotAt: at('10:00:00') })]);
+  await ingestFiles(userId, [file({ shotAt: at('12:00:00') })]);
+  expect(await listBatches(userId)).toHaveLength(2);
+});
+
+it('never appends to a confirmed batch', async () => {
+  // A confirmed batch has a scan job against a fixed set of pairs. Adding a
+  // photo to it would renumber every pair after the insertion point, which
+  // is the exact bug Phase A exists to kill, arriving from the other end.
+  const [batch] = await ingestFiles(userId, [file({ shotAt: at('10:00:00') })]);
+  await confirmBatch(batch.id);
+  await ingestFiles(userId, [file({ shotAt: at('10:00:20') })]);
+  expect(await listBatches(userId)).toHaveLength(2);
+});
+
+it('never appends to another user\u2019s batch', async () => { ... });
+```
+
+- [ ] **Step 3: Implement**
+
+Before inserting, look for a batch belonging to **this user** that is
+**unconfirmed**, whose latest photo's `shotAt` is within `groupByShotAt`'s own
+gap window of the earliest incoming photo. Reuse that gap constant; do not
+introduce a second one. Append to it instead of inserting.
+
+**The confirmed check is the one that matters and it must be a predicate in
+the query, not a filter afterwards.** Appending a photo to a confirmed batch
+renumbers every pair after the insertion point while a scan job is already
+pointing at the old numbering. That is Phase A's bug arriving from the other
+direction, and it would be far harder to see.
+
+Photos with a null `shotAt` cannot be placed in a session and must start or
+join nothing on timestamp grounds alone; decide what they do, state it, and
+test it.
+
+- [ ] **Step 4: Prove it on the same twelve photos**
+
+Re-run Step 1's staging and report the batch count again. Report before and
+after. Clean up after yourself: this writes to his live database, so delete
+the probe's batches, photos, jobs **and the storage objects** when you are
+done, and show the counts returning to where they started. Ledger: 832
+`baseball_cards`, 548 `sales`, 632 `purchases`.
+
+- [ ] **Step 5: Commit**
+
+---
+
 # Phase B: every review state has an exit
 
 ## Why this phase exists
