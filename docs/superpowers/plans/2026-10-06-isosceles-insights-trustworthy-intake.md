@@ -1428,147 +1428,152 @@ git commit -m "feat(checklist): read checklists from HTML sources that carry pri
 ```
 
 
-### Task 7b: one structured source per product
+### Task 7b: one checklist source for every product
 
 **Files:**
-- Create: `core/checklist/html.ts`
-- Modify: `core/checklist/parse.ts` (dispatch structured HTML before the line parser)
+- Create: `core/checklist/checklistinsider.ts`
+- Modify: `core/checklist/parse.ts` (dispatch the structured parser first)
 - Modify: `data/product-registry.json`
-- Test: `tests/unit/checklist/html.test.ts`
+- Test: `tests/unit/checklist/checklistinsider.test.ts`
 
 **Interfaces:**
-- Produces: `parseStructuredHtml(html: string): ParseResult | null`. Null means
-  this page is not a shape we recognise, and the caller falls back to the
-  existing line-based path rather than guessing.
+- Produces: `parseChecklistInsider(html: string): ParseResult | null`. Null
+  means the page is not this shape, and the caller falls through to the
+  existing line parser so nothing that works today breaks.
 
-**This replaces an earlier Task 7b that merged several sources per product.
-Michael called that wrong and he is right.** Merging sources is what corrupted
-two checklists tonight: the plan told Task 7 to point the `checklist` slot at
-an HTML page while the PDF stayed cached, the seeder parsed both into one
-product, card rows doubled, teams vanished on the duplicates and parallels
-split in two rather than merging. His instruction: **one standardised source
-per product.** That removes the entire class of bug rather than managing it.
+**Michael's instruction, and it settles a mess rather than patching one:**
 
-**And one source already carries everything, which the earlier design missed
-because it only ever looked at the parallels table.** baseball.cards' card
-table is clean columns:
+> "The checklists seem inconsistent I think we need to set a standardized
+> checklist from a single source"
+
+He is right. Tonight's corruption came from merging sources: the plan pointed
+one product's `checklist` slot at an HTML page while its PDF stayed cached,
+the seeder parsed both, card rows doubled, teams vanished on the duplicates
+and parallels split instead of merging. One source per product removes that
+class of bug instead of managing it.
+
+**Then he said DYOR, so the research is done and the answer is better than
+expected: `checklistinsider.com` covers every product he owns, in one
+format.** Verified by HTTP status and by parsing the real pages:
+
+| product | page | rows carrying a team | print runs |
+|---|---|---|---|
+| 48 Topps Chrome | `2026-topps-chrome-baseball` | 2371 | 279 |
+| 49 Bowman Chrome | `2026-bowman-chrome-baseball` | 2117 | 187 |
+| 50 Bowman Chrome Mega | `2026-bowman-chrome-mega-box-baseball` | 800 | 59 |
+| 53 Bowman Football | `2026-bowman-football` | 4038 | 444 |
+| 51 Topps Finest | `2026-topps-finest-baseball` | 200 OK | to measure |
+| 52 Bowman | `2026-bowman-baseball` | 200 OK | to measure |
+| 54 to 58 Sapphire | already in the registry | 200 OK | to measure |
+
+Its rows carry the team behind an **explicit delimiter**, with the rookie
+flag inline:
 
 ```
-Card # | Player            | Team                | Section
-1      | Konnor Griffin RC | Pittsburgh Pirates  | Base
-2      | Mookie Betts      | Los Angeles Dodgers | Base
+1 Konnor Griffin - Pittsburgh Pirates RC
+2 Michael Wilson - Arizona Cardinals
+8 Lamar Jackson - Baltimore Ravens
 ```
 
-Measured: **1,378 table rows, 1,345 card-shaped, 1,259 carrying a team**,
-plus a separate parallels table with 581 print-run tokens. Card number,
-player, **team** and insert set, all as their own fields.
+and its parallels carry the print run **and** the odds, in the parenthetical
+shape `core/checklist/odds.ts`'s `ODDS_PAREN` already handles:
 
-**This is strictly better than the PDFs**, and the reason is worth
-understanding. The PDF has no print runs at all and does not carry the team as
-a separate field, which is why `core/checklist/teams.ts` exists: an evening
-went into hand-building MLB teams, 32 NFL franchises and 88 colleges so a
-splitter could guess where a player's name ends and his team begins.
-**A columnar source makes that heuristic unnecessary.** The page already knows.
+```
+Yellow /275 (1:354 Hobby; 1:283 FDI; 1:71 Breaker; 1:134 Jumbo; 1:425 Blaster)
+Platinum 1/1 (1:93,809 Hobby; 1:75,019 FDI; ...)
+```
 
-Coverage, checked by HTTP status:
+**Three things this makes true that were not true before.**
 
-| product | baseball.cards page |
-|---|---|
-| 48 Topps Chrome | `2026-topps-chrome-baseball` 200 |
-| 49 Bowman Chrome | `2026-bowman-chrome-baseball` 200 |
-| 51 Topps Finest | `2026-topps-finest-baseball` 200 |
-| 52 Bowman | `2026-bowman-baseball` 200 |
-| 50 Bowman Chrome Mega | 404 |
-| 53 Bowman Football | 404, it is a baseball site |
+1. **`core/checklist/teams.ts` becomes unnecessary.** An evening went into
+   hand-building MLB franchises, 32 NFL teams and 88 colleges so a splitter
+   could guess where a player's name ended and his team began. A source with
+   a delimiter does not guess. Do not delete it in this task, but report
+   which products still depend on it.
+2. **The mega box gets a checklist source at last**, which is why product 50
+   has had zero parallels all along.
+3. **The five Sapphire products become seedable.** They have always pointed
+   at this site; the parser is what was missing.
 
-**This task is the four with a 200 and nothing else.** Products 50 and 53 keep
-their PDFs untouched; their answer is a question for Michael that he is
-considering, and guessing it is how tonight's damage happened.
+**And it answers the mega question from his own data.** Bowman Chrome Mega is
+**not** the same checklist as Bowman Chrome: it carries mega-exclusive
+sections (`MEGA BOX CHROME PROSPECTS`, `MEGA BOX BASE CHROME CARDS`,
+`BOWMAN GPK`, `MEGA BOX 2026 MLB SPRING BREAKOUT`) and **19 card numbers that
+do not exist in the hobby product at all**. It keeps its own source. Do not
+point it at Bowman Chrome's.
 
-- [ ] **Step 1: Parse the structure, do not flatten it**
+- [ ] **Step 1: Parse the structure, do not flatten it to prose**
 
-The existing HTML support flattens a table row to a space-joined line and
-hands it to a parser written for prose out of a PDF. That is what threw the
-team away: the line parser expects a row to end in a team and this one ends in
-a Section, so every row came back with a null team.
+The existing HTML support joins a page into lines and hands them to a parser
+written for text out of a PDF. That is what threw teams away last time.
 
-**A structured source deserves a structured parser.** `core/checklist/html.ts`
-reads the DOM and emits `ParseResult` directly, with no line round trip:
+`core/checklist/checklistinsider.ts` reads the DOM and emits `ParseResult`
+directly:
 
-- Find each `<table>`, read its `<th>` headers, and classify it: a table whose
-  headers include `Card #` and `Player` is card rows; one whose second column
-  is a print run is parallels. **Classify by header, never by position**, so a
-  page that adds a column does not silently shift every field by one.
-- Map header name to column index, then read each row by index. `Card #` to
-  `code`, `Player` to `player`, `Team` to `team`, `Section` to the insert
-  name.
-- Return null if no table has recognisable headers, so `parseChecklistFile`
-  falls through to the existing path and nothing that works today breaks.
+- Text lives in `<div>` blocks split on `<br>`. Split on the `<br>` boundary,
+  strip tags per piece, and keep the order.
+- A **card row** is `<code> <player> - <team>`, optionally ending `RC`. Split
+  on the **first** ` - ` only: player names contain hyphens and so do team
+  names, and splitting on the last would eat the team.
+- A **parallel** is a name, a print run and a parenthetical of odds. Feed it
+  to the existing `parseParallelLine`; do not write a second one.
+- Section headings give the insert name, as they do today.
+- Return **null** if nothing on the page matches the row shape, so an
+  unrelated page falls through rather than seeding junk. The five Sapphire
+  pages previously produced rows with a player named `Parallels`; that must
+  not be possible.
 
-`RC` and rookie detection should reuse whatever `core/checklist/rows.ts`
-already does rather than a second rule.
+- [ ] **Step 2: Tests, from a real saved page**
 
-- [ ] **Step 2: Tests, from the real fixture**
+Save a genuine excerpt as a fixture, not invented markup. Assert:
 
-`tests/fixtures/checklists/baseball-cards-excerpt.html` already exists, saved
-from the live page. Use it. Assert:
+- `1 Konnor Griffin - Pittsburgh Pirates RC` yields code `1`, player
+  `Konnor Griffin`, team `Pittsburgh Pirates`, rookie true.
+- A player with a hyphen in his name keeps it, and the team is still right.
+  Find a real one in the data; if there is none, say so rather than inventing
+  a fixture.
+- `Yellow /275 (1:354 Hobby; ...)` yields name `Yellow`, run 275, odds text
+  preserved.
+- A page with no card rows yields null, **not** an empty-but-successful
+  result. Break this by returning a result unconditionally and watch the
+  Sapphire-junk test go red.
+- A section heading becomes the insert name rather than `BASE`.
 
-- A base row yields all four fields, team included: `Konnor Griffin RC`,
-  `Pittsburgh Pirates`, insert `Base`, rookie true.
-- An insert row carries its own section as the insert name, not `BASE`.
-- The parallels table yields names and print runs.
-- A table whose headers are unrecognised yields null rather than garbage.
-- **The column-order guard:** take the fixture, swap two header columns, and
-  assert the fields follow the headers rather than the positions. This is the
-  test that proves Step 1's classification is real. Break it by reading
-  column 2 as the player unconditionally and watch it go red.
+- [ ] **Step 3: Registry, one source each, and delete the old cached files**
 
-- [ ] **Step 3: Registry, one source each**
+Every product points at its checklistinsider page and nothing else. **Delete
+the superseded PDFs, txt and html from `data/checklists/`**, because the
+seeder globs every file for a slug and that glob is exactly how two sources
+landed in one product. Do not rely on the registry alone.
 
-Four products get `{ kind: 'fetch', url: <baseball.cards page> }` as their
-**only** source. Delete their `odds` entry if the page supersedes it, and say
-in your report what each product lost and gained by the swap.
+- [ ] **Step 4: Re-seed everything, and expect the numbers to move**
 
-**The cached PDFs and txt files for those four must be deleted from
-`data/checklists/`**, because the seeder globs every file for a slug and that
-glob is exactly how two sources ended up in one product. Do not rely on the
-registry alone to keep the old file out.
+The source changed for every product, so "identical" is the wrong test.
+Report the full eleven-product before and after table and account for each
+delta. The binding conditions:
 
-- [ ] **Step 4: Re-seed, and expect the numbers to move**
-
-Unlike the previous attempt, **the counts legitimately change here**, because
-the source changed. So the acceptance test is not "identical", it is
-"explained":
-
-- **`null_team` must not rise for any product**, and should fall. Product 48
-  is at 17, product 51 at 25, product 52 at 4. If any rises, stop.
-- **`print_run` must go above zero** on product 49, which is at 0 of 305.
-- **Entry counts will differ from the PDF's.** Report the delta per product
-  and account for it. A plausible delta is a few percent; **a doubling means
-  two sources are being read and you must stop**, which is precisely what
-  happened last time.
-- **Run a duplicate-identity check**: group by `(product_id, insert_name,
-  card_number)` and report any group with more than one row. There should be
-  none, and the unique constraint should make it impossible, but say you
-  checked.
-- Products 50 and 53 must be **byte identical**: 410 / 0 / 0 / 0 and
-  2121 / 0 / 521 / 0. They are the control.
-- Products 54 to 58 stay at zero. The Sapphire pages parse to junk like a
-  player named `Parallels`.
+- **`null_team` must fall, and must not rise anywhere.** Current: product 48
+  has 17, 51 has 25, 52 has 4, and 49, 50 and 53 have 0.
+- **`print_run` must leave zero on products 49, 50 and 53**, currently 0 of
+  305, 0 of 0 and 0 of 521.
+- **Products 54 to 58 must either seed real cards or stay at zero.** Junk
+  rows like a player named `Parallels` are a failure, not a partial success.
+- **A doubling of any entry count is a stop condition**, since that is the
+  exact signature of two sources being read for one product.
+- Run a duplicate-identity check on `(product_id, insert_name, card_number)`
+  and report any group with more than one row.
 
 **The database gate.** The owner's live Pokemon P&L ledger shares this
 Postgres: **832 `baseball_cards`, 548 `sales`, 632 `purchases`**. Count all
-three before and after. **Never run `drizzle-kit push`**, and this task needs
-no migration.
+three before and after. **Never run `drizzle-kit push`.** No migration is
+needed.
 
-- [ ] **Step 5: Report what `teams.ts` is still for**
+**Before the live re-seed, prove it on one product.** Seed a single product,
+check its numbers against the table above, and only then run the rest. The
+seeder currently ignores a slug argument and does every product; if you need
+scoping, add it deliberately and say so.
 
-If every seeded product now comes from a columnar source, the team splitter is
-dead code for those products. **Do not delete it in this task**: products 50
-and 53 still come from PDFs and still need it. Say in your report which
-products still depend on it, so the next plan knows whether it can go.
-
-- [ ] **Step 6: Commit**
+- [ ] **Step 5: Commit**
 
 ---
 
