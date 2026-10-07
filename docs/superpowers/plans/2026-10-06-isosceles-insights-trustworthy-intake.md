@@ -382,25 +382,46 @@ and the helper below:
 ```ts
 function fromStoredGrouping<T extends Pairable>(live: T[]): Pair<T>[] {
   const byIndex = new Map<number, T[]>();
+  // A null pairIndex inside a confirmed batch is a data fault. It cannot
+  // happen today (a batch is confirmed in one transaction) but if it ever
+  // does, every such photo must still reach the grid and the brief.
+  const orphans: T[] = [];
+
   for (const photo of live) {
-    // A null pairIndex inside a confirmed batch is a data fault, not a
-    // photo to silently drop: give it its own pair so it stays visible
-    // rather than vanishing from the grid and the brief alike.
-    const key = photo.pairIndex ?? -1;
-    const bucket = byIndex.get(key);
+    if (photo.pairIndex === null) {
+      orphans.push(photo);
+      continue;
+    }
+    const bucket = byIndex.get(photo.pairIndex);
     if (bucket) bucket.push(photo);
-    else byIndex.set(key, [photo]);
+    else byIndex.set(photo.pairIndex, [photo]);
   }
 
-  return [...byIndex.entries()]
+  const pairs = [...byIndex.entries()]
     .sort(([a], [b]) => a - b)
     .map(([, group]) => {
       const front = group.find((p) => p.side === 'front') ?? group[0];
       const back = group.find((p) => p !== front) ?? null;
       return { front, back };
     });
+
+  // Each orphan becomes its own single-photo pair. Bucketing them all under
+  // one shared key and picking a front and a back out of it surfaces only
+  // the first two and silently drops the rest. Pairing them with each other
+  // is worse than a singleton: it fabricates a card out of two photographs
+  // that nothing says belong together, and the back is what carries the
+  // parallel marker.
+  for (const orphan of orphans) pairs.push({ front: orphan, back: null });
+
+  return pairs;
 }
 ```
+
+**That shared-key version is what this plan originally prescribed and it was
+wrong**, caught by Task 2's review and fixed in commit `099bb34`. Left here
+corrected rather than silently replaced, because the failure is worth
+recognising: five live photos with three orphans returned four pairs, and the
+fifth photo vanished with no exclusion flag and no trace.
 
 - [ ] **Step 4: Fix the call sites**
 
