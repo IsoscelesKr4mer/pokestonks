@@ -834,10 +834,28 @@ it('requires a note', async () => {
   expect(r).toEqual({ ok: false, reason: 'note-required' });
 });
 
-it('is refused on an already-decided item', async () => { ... });
+it('is refused on an already-decided item', async () => {
+  await decide(userId, itemId, { kind: 'reject' });
+  const r = await decide(userId, itemId, {
+    kind: 'checklist-problem',
+    note: 'too late',
+  });
+  expect(r).toEqual({ ok: false, reason: 'already-decided' });
+});
 
-it('is refused for another user', async () => { ... });
+it('is refused for another user, and changes nothing', async () => {
+  const r = await decide(otherUserId, itemId, {
+    kind: 'checklist-problem',
+    note: 'not mine',
+  });
+  expect(r).toEqual({ ok: false, reason: 'not-found' });
+  expect((await getReviewItemForOwner(userId, itemId))?.status).toBe('pending');
+});
 ```
+
+Use whatever `decide`'s existing refusal vocabulary already is rather than the
+reason strings above if they differ; the point is that these two paths refuse,
+not the exact words.
 
 A note is required because the only value of this state is telling a future
 re-seed what was wrong.
