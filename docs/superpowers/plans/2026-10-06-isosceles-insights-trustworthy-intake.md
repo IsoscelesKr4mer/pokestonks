@@ -1577,6 +1577,107 @@ scoping, add it deliberately and say so.
 
 ---
 
+### Task 7c: adding a product is one command, not a JSON edit
+
+**Files:**
+- Create: `core/checklist/source-url.ts`
+- Create: `scripts/add-product.ts`
+- Modify: `core/products/registry-types.ts` (the default source kind)
+- Test: `tests/unit/checklist/source-url.test.ts`
+
+**Michael's instruction, and it is a standing one rather than a task:**
+
+> "That should be the standard going forward for new products that get
+> introduced as well so there should be a mechanism for that"
+
+Task 7b standardises the eleven products he owns today on one source. This
+makes that the **default for every product he adds later**, so the standard
+holds without anyone remembering it.
+
+**What is wrong with today's flow.** Adding a product means hand-editing
+`data/product-registry.json` with a slug, a year, a brand, a product name, a
+sport and a source, then running a fetch, then running a seed that silently
+does every product. Nothing checks the URL resolves, nothing checks the page
+parses, and nothing tells you the result until rows appear in the database.
+Every one of those gaps caused a real problem tonight.
+
+- [ ] **Step 1: Derive the source URL, and verify rather than trust it**
+
+checklistinsider's slugs follow a pattern, measured against the pages that
+actually exist:
+
+```
+2026-topps-chrome-baseball          2026 + Topps Chrome + baseball
+2026-bowman-chrome-baseball         2026 + Bowman Chrome + baseball
+2026-topps-finest-baseball          2026 + Topps Finest + baseball
+2026-bowman-baseball                2026 + Bowman + baseball
+2026-bowman-football                2026 + Bowman + football
+2026-bowman-chrome-mega-box-baseball  does NOT follow it
+```
+
+So: `checklistInsiderUrl({ year, brand, productName, sport })` lowercases,
+strips punctuation and joins on hyphens, **and the mega box proves a
+derivation alone is not enough.** The registry keeps an optional explicit
+`url` that wins when present.
+
+**The rule that matters: a derived URL is a guess until it returns 200.**
+Never write a derived URL into the registry without fetching it first. A
+registry entry pointing at a 404 is a product that silently never seeds,
+which is exactly the state the five Sapphire products sat in.
+
+Tests: each row of the table above derives correctly; the mega box's
+derivation is **wrong**, which the test asserts explicitly so nobody later
+mistakes the pattern for complete; punctuation and case are handled.
+
+- [ ] **Step 2: One command to add a product**
+
+```bash
+npm run add:product -- --year 2026 --brand Bowman --name "Bowman Chrome" --sport baseball
+npm run add:product -- --year 2026 --brand Bowman --name "Bowman Chrome" --sport baseball --url https://...
+```
+
+It must, in this order, and stop at the first failure:
+
+1. Derive the URL, or take `--url`.
+2. **Fetch it with a browser user agent and check for 200.** On a 404, print
+   the derived URL, say the pattern did not fit this product, and tell the
+   owner to pass `--url`. Do not write anything.
+3. **Parse it and print what came out**: row count, how many carry a team,
+   parallel count, how many carry a print run, and the first three rows
+   verbatim.
+4. **Stop there unless `--apply` is passed.** The default is a dry run that
+   shows him what he is about to get. This is the step that would have caught
+   tonight's damage before it reached the database rather than after.
+5. With `--apply`: write the registry entry, save the page to the cache, and
+   seed **only that product**.
+
+**Refuse to add a product whose slug already exists**, and say which one it
+collides with. Two registry entries sharing a slug means the seeder's file
+glob reads both pages into whichever product it finds first, which is the
+mechanism behind tonight's doubled checklists.
+
+- [ ] **Step 3: Make the standard the default**
+
+A registry entry with no explicit source means "derive a checklistinsider URL
+from my year, brand, name and sport". Document that in
+`core/products/registry-types.ts` where someone adding an entry by hand will
+read it.
+
+- [ ] **Step 4: Prove it end to end on a product he does not own**
+
+Pick a real 2026 product absent from the registry, run the command without
+`--apply`, and paste the output into your report. Then run it with `--apply`,
+show the product's counts, and **remove it again**: delete the registry
+entry, the cached page and the seeded rows, and show the database back to
+eleven products with their Task 7b counts intact.
+
+Ledger before and after: **832 `baseball_cards`, 548 `sales`, 632
+`purchases`**. **Never run `drizzle-kit push`**, and no migration is needed.
+
+- [ ] **Step 5: Commit**
+
+---
+
 ### Task 8: `printRun` stops meaning two things
 
 **Files:**
