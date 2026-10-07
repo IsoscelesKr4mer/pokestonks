@@ -189,6 +189,20 @@ it('refuses two fronts in the same pair of the same batch', async () => {
     insertPhoto({ batchId, userId, side: 'front', pairIndex: 0 })
   ).rejects.toThrow(/photos_batch_pair_side_unique/);
 });
+```
+
+**Every constraint-name assertion in this plan is written wrong, deliberately
+left visible.** `.rejects.toThrow(/constraint_name/)` does NOT see the
+constraint name on this stack: drizzle wraps every error in
+`DrizzleQueryError`, whose own `.message` is only `"Failed query: ..."`, and
+the real Postgres text is on `.cause`. Task 1 hit this and corrected it; I
+failed to propagate the correction, and Task 6's implementer hit the same
+snippet and caught it again, this time proving it properly by reverting the
+CHECK to accept anything and confirming the literal assertion would still
+have passed. **Use this repo's existing `causeMessage` helper**, the pattern
+in `tests/unit/db/review-items.test.ts`. A correction made in one task is not
+made until it is propagated to every task that copied the pattern.
+```ts
 
 it('allows many unconfirmed photos, which all have a null pair index', async () => {
   const batchId = await seedBatch(userId);
@@ -1087,6 +1101,20 @@ it('refuses an invalid status at the database, not just in code', async () => {
     db.update(reviewItems).set({ status: 'nonsense' }).where(eq(reviewItems.id, itemId))
   ).rejects.toThrow(/review_items_status_valid/);
 });
+```
+
+**Every constraint-name assertion in this plan is written wrong, deliberately
+left visible.** `.rejects.toThrow(/constraint_name/)` does NOT see the
+constraint name on this stack: drizzle wraps every error in
+`DrizzleQueryError`, whose own `.message` is only `"Failed query: ..."`, and
+the real Postgres text is on `.cause`. Task 1 hit this and corrected it; I
+failed to propagate the correction, and Task 6's implementer hit the same
+snippet and caught it again, this time proving it properly by reverting the
+CHECK to accept anything and confirming the literal assertion would still
+have passed. **Use this repo's existing `causeMessage` helper**, the pattern
+in `tests/unit/db/review-items.test.ts`. A correction made in one task is not
+made until it is propagated to every task that copied the pattern.
+```ts
 ```
 
 A note is required because the only value of this state is telling a future
