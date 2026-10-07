@@ -14,10 +14,15 @@
  *   - A number from here is a second opinion, never the only source behind a
  *     price. Cross-check anything that would change a decision against the
  *     SportsCardsPro public page or his own recorded sales.
- *   - Card Ladder's own coverage is strongest on graded cards. Raw modern
- *     micro-parallels are exactly where any guide is thinnest, and that is
- *     most of what he pulls, so expect misses rather than treating one as a
- *     bug.
+ *   - COVERAGE, measured 2026-10-06, not guessed. Raw IS tracked and carries
+ *     a "Raw" condition alongside the PSA/BGS grades, so the graded-only
+ *     worry was wrong. The real limit is RECENCY: "2026 Topps Chrome",
+ *     "2025 Topps Chrome Aaron Judge" and "2026 Bowman Chrome Konnor
+ *     Griffin" all return nothing, while a bare "Aaron Judge" returns 198
+ *     hits topping out at 2017 and 2013. Card Ladder tracks cards with a
+ *     sustained sales history, which current-year product does not have
+ *     yet. So this is useless for pricing a fresh rip and genuinely good
+ *     for older holdings.
  *
  * BUDGET. The free tier is 200 credits a month and 5 requests a minute. Every
  * endpoint costs at least one credit, so this script makes the fewest calls
@@ -40,6 +45,15 @@ let lastCall = 0;
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
+/**
+ * parse.bot wraps every successful payload in `{ status, data }` and returns
+ * errors as `{ error: { status, kind, message }, status_code }`. Verified
+ * against the live endpoint; the marketplace page documents only the inner
+ * shape, so reading `cards` off the top level silently yields undefined and
+ * looks exactly like "no results".
+ */
+type Envelope<T> = { status: string; data: T };
+
 async function call<T>(path: string, credits: number): Promise<T> {
   const wait = THROTTLE_MS - (Date.now() - lastCall);
   if (lastCall && wait > 0) await sleep(wait);
@@ -51,14 +65,16 @@ async function call<T>(path: string, credits: number): Promise<T> {
   if (res.status === 401) throw new Error('parse.bot rejected the key. Check PARSEBOT_API_KEY.');
   if (res.status === 429) throw new Error('Rate limited or out of credits. Free tier is 5/min, 200/month.');
   if (!res.ok) throw new Error(`parse.bot ${res.status} on ${path}: ${(await res.text()).slice(0, 300)}`);
-  return res.json() as Promise<T>;
+
+  const body = (await res.json()) as Envelope<T>;
+  return body.data;
 }
 
 type Card = {
   id: string | number;
   label: string;
   player: string;
-  year: number | string;
+  year: string;
   set: string;
   number: string;
   variation: string | null;
@@ -125,7 +141,7 @@ async function main() {
     process.exit(1);
   }
 
-  const search = await call<{ cards: Card[]; total_hits: number }>(
+  const search = await call<{ cards: Card[]; total_hits?: number }>(
     `search_cards?query=${encodeURIComponent(query)}&limit=10`,
     1
   );
