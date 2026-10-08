@@ -51,15 +51,19 @@ valuedAt: timestamp('valued_at', { withTimezone: true }),
 isFirstBowman: boolean('is_first_bowman'),
 ```
 
-`checklist_entries.is_first_bowman` is DROPPED. It is a property of a printed
-card, not of a checklist row shared by every copy, and its value there was
-derived from `code.startsWith('BCP-')`, which the card-intake skill forbids in
-capitals because it already put a false claim in the title of a $145 listing.
+**`checklist_entries.is_first_bowman` is NOT dropped in this task.** It is
+dropped in Task 4, after nothing reads it any more.
+
+Pre-flight scan finding, corrected before any task ran: dropping it here would
+break `tsc` immediately, because `core/products/service.ts` writes it and
+`core/cards/list.ts` and `core/cards/detail.ts` both read it, and those are
+Tasks 2 and 3. A schema change that cannot compile on its own commit is a
+schema change whose task boundary is wrong. **Add first, drop last.**
 
 - [ ] **Step 1:** write a test asserting the new columns exist and that `cards.is_first_bowman` is nullable while `cards.quantity` (a control) is not. Use the repo's existing schema-test approach; do not invent one.
 - [ ] **Step 2:** run it, watch it fail.
 - [ ] **Step 3:** edit the schema files. Then `npm run db:generate`.
-- [ ] **Step 4: READ THE GENERATED SQL BEFORE RUNNING IT.** Paste it into your report. It must contain exactly: two `ADD COLUMN` on `cards`, one `ADD COLUMN` on `cards` for `is_first_bowman`, and one `DROP COLUMN` on `checklist_entries`. **If it contains anything else, especially a DROP or ALTER on a column this plan does not name, STOP and report rather than running it.** There is no staging database.
+- [ ] **Step 4: READ THE GENERATED SQL BEFORE RUNNING IT.** Paste it into your report. It must contain exactly THREE `ADD COLUMN` statements on `cards` and nothing else. **No DROP of anything. If the generated SQL contains a DROP, an ALTER on a column this task does not name, or touches any table other than `cards`, STOP and report rather than running it.** There is no staging database and this runs against the real one.
 - [ ] **Step 5:** `npm run db:migrate`, then re-run the test.
 - [ ] **Step 6:** commit the schema change and the generated SQL together.
 
@@ -100,15 +104,35 @@ Add the value to the card detail page where it exists, with its `valuedAt` date 
 
 ---
 
-### Task 4: Backfill nothing, and prove it
+### Task 4: Drop the old column, and backfill nothing
 
-**Files:** a one-off script, plus a check.
+**Files:** `lib/db/schema/checklistEntries.ts`, a generated migration, plus a check.
 
-The 9,126 existing `checklist_entries` rows lose their derived flag with the column. The ~3 existing `cards` rows get `is_first_bowman = NULL`, which is correct: nobody has looked at them through this lens.
+Runs LAST, when Tasks 2 and 3 have removed every reader and writer of
+`checklist_entries.is_first_bowman`. Before generating anything, prove that:
 
-**Do not backfill from the old derivation.** Carrying its output forward would launder a guess into the record, which is the whole problem.
+```bash
+grep -rn "isFirstBowman\|is_first_bowman" --include=*.ts --include=*.tsx . | grep -v node_modules
+```
 
-- [ ] Verify after the migration: `cards` rows all have `is_first_bowman IS NULL`, and `checklist_entries` no longer has the column. Report the counts.
+Every surviving hit must be about `cards`, the scan contract, or a test. **If
+anything still reads it off a checklist entry, stop: the drop is premature.**
+
+Then remove it from the schema file, `npm run db:generate`, **read the SQL**
+(it must be exactly one `DROP COLUMN` on `checklist_entries` and nothing
+else), and `npm run db:migrate`.
+
+Dropping it is safe in a way worth stating: its value was
+`code.startsWith('BCP-')`, so it is recomputable from `card_number` in one
+statement if anyone ever wants it back. Nothing is lost that was not already
+derivable, which is precisely the complaint against it.
+
+**Do not backfill `cards.is_first_bowman` from the old derivation.** Carrying
+its output forward would launder a guess into the record, which is the entire
+defect. Existing cards stay NULL: nobody has looked at them through this lens.
+
+- [ ] Verify afterwards: every `cards` row has `is_first_bowman IS NULL`, and
+  `checklist_entries` no longer has the column. Report both counts.
 
 ## Acceptance
 
@@ -116,6 +140,6 @@ A scan reads a 1ST BOWMAN logo off a front and the card carries it. A scan that 
 
 ## Self-Review
 
-**The risk is Task 1**, and it is a real one: `db:migrate` runs against the production database with no staging. That is why Step 4 requires reading the generated SQL and stopping on anything unexpected, rather than trusting `drizzle-kit` to have generated what was intended.
+**The risk is Tasks 1 and 4**, the two that touch the production database with no staging. That is why Step 4 requires reading the generated SQL and stopping on anything unexpected, rather than trusting `drizzle-kit` to have generated what was intended.
 
 **Deliberately out of scope:** where per-card values come from. The scan supplies them when it can; a comp source is a separate question with no settled answer (130 Point is behind bot protection, Card Ladder is untested for current-year product). This plan builds the place to put the number.
