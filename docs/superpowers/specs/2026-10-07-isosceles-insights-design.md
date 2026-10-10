@@ -229,3 +229,85 @@ strings, no gradient washes as decoration. The hobby is full of chrome and
 rainbow foil; the surface that holds it should be matte, so the only colour on
 screen comes from the cards themselves and from the two states that need
 attention.
+
+---
+
+# Addendum, 2026-10-09: controls and motion
+
+Added after the design above shipped and he looked at it. Michael, on the
+/cards header: *"this section is way too busy and the formatting is terrible.
+This is what im talking about with the design. The site could also use some
+animations or something to bring it to live."*
+
+## A control's shape is a claim about the choice
+
+Fourteen controls sat in three rows above the cards, every one a pill: five
+scope buttons under an ALL CAPS "SHOWING", four dropdowns, four flags, a
+search box, a sort and an export. All the same shape, so nothing about the
+layout said which were exclusive, which were toggles, or which mattered.
+
+Three rules come out of fixing it, and they apply to every screen:
+
+1. **Mutually exclusive choices are ONE segmented control, not N pills.** One
+   track, one knob, and the knob slides. Five loose pills never said that
+   picking one un-picks the rest. `app/components/Segmented.tsx` measures the
+   active button rather than using equal columns, because the labels have very
+   different widths. `ParamSegmented` drives one query parameter from a server
+   page, and /listings, /sales and /cards all use it.
+2. **Controls he uses occasionally go in a drawer behind one button carrying
+   the active count.** Eight refinements were costing two permanent rows above
+   the thing he came to look at. Resting state on /cards went from fourteen
+   controls on three rows to six on two.
+3. **Whatever is actually filtering gets a removable chip.** An active filter
+   visible only as a highlighted pill somewhere in a field of pills is how a
+   screen ends up quietly filtered.
+
+**Never print the count of a dropdown's own options.** "Set 10", "Player 319"
+are facts about the menu. The replacement, "All 35 teams", was worse: it reads
+as a claim about baseball, and he answered *"35 teams? That's obviously
+wrong."* The label is "All teams".
+
+**Headings are words, not the enum spelled with spaces.** /backlog rendered
+`reason.replace(/[-_]/g, ' ')` and showed "no card number", "unknown
+parallel". A heading says what the group is and what it wants.
+
+## Motion: four movements, and deliberately no fifth
+
+Everything that moves answers something he did. The one exception is a single
+reveal when a streamed block lands.
+
+| movement | what it answers |
+|---|---|
+| `iso-sweep`, a hairline across the top of the window | a filter is round-tripping to the server |
+| the same hairline under a nav link or tab | that page is loading |
+| the filter drawer, on `grid-template-rows` | he opened it |
+| the segmented knob | he changed the scope |
+| `iso-rise`, once per streamed block | the block arrived |
+
+**Why the hairline exists at all**: every filter on /cards is a real
+navigation against a `force-dynamic` page, and half a second of nothing looks
+exactly like a tap that did not register. The bar eases to 92% and stops,
+because a bar that reaches 100% before the page arrives is a lie told twice.
+
+**What is deliberately absent**: no fade-and-slide on every section, no
+per-card stagger, no hover lift on everything. Those are the house style of a
+template. The one hover movement in the grid is the photograph pushing in
+slightly, and it earns its place because the tile IS the photograph and there
+is no other affordance saying it can be opened.
+
+`prefers-reduced-motion` kills all of it, and every state is legible without
+any of it.
+
+## One drawing per object, held by a test
+
+`Stat` reached nine copies before a scanning test pinned it to one file. The
+same thing had happened to the card tile: /cards drew it with a scarcity ring,
+a needs-a-look dot and a value, the home screen drew a bordered box with none
+of those, and the rip recap drew a third. `tests/unit/design/one-stat.test.ts`
+now holds both to a single definition, and it found the third tile the moment
+it was written.
+
+A shared component is typed against **its own narrow row type**, not against
+the richest caller's. Typing the tile against `CardRow` is exactly what pushed
+the rip recap into writing its own: a rip's cards are a different query with a
+different shape.
