@@ -329,44 +329,51 @@ Opening Day" in so many words.
 The serial names the parallel here too. A green card at 98/99 is a Green Foil,
 and nothing else on the ladder is /99.
 
-## 1c. Cracked ice is an ATOMIC REFRACTOR. Sapphire is a different thing.
+## 1c. Sapphire vs Atomic Refractor. Settle it on the YEAR, not the sparkle.
 
-Settled 2026-10-11 by Michael, on a 2019 Bowman Draft George Kirby I had
-parked as Sapphire: *"The Kirby was before sapphire and is an atomic
-refractor."*
+Both finishes are "cracked ice": an angular shattered-glass pattern. On
+2026-10-11 I got this wrong in BOTH directions inside one hour, so the
+procedure below is the one that survives, not the eyeball rule.
 
-Both of those are separate facts and both matter.
+**What actually failed.** First I filed a 2019 Bowman Draft George Kirby as
+Sapphire. Michael: *"The Kirby was before sapphire and is an atomic
+refractor."* I then "learned" that rainbow facets mean Atomic, and promptly
+moved a Bryce Miller and an Emerson Hancock OUT of Sapphire on that basis.
+Both were Sapphire. Michael: *"No the Bryce miller was sapphire"*, *"The
+Emerson Hancock also sapphire"*.
 
-**THE FACET COLOUR IS THE TELL:**
+**A Sapphire card still throws rainbow highlights.** Sapphire stock is
+chrome, so gold, green and magenta glints appear in its facets, especially
+where a flash hits. "I can see rainbow" is NOT evidence of an Atomic
+Refractor. That inference is what cost two cards.
 
-| what the facets look like | what it is |
-|---|---|
-| BLUE shards on a BLUE card - border, background and every facet | **Sapphire Edition** |
-| GOLD / ORANGE / GREEN rainbow shards over an ordinary white or team-coloured design | **Atomic Refractor** |
+### The procedure
 
-A Sapphire card is blue *everywhere*. An Atomic Refractor is a normal chrome
-card with a shattered-glass pattern refracting rainbow over it. Both read as
-"cracked ice" at a glance, and that glance is what got two cards filed under
-the wrong product in one batch.
+1. **Date the card and ask whether a Sapphire edition of THAT product line
+   existed that year.** This is the step that actually decides it.
+   **Sapphire began as a standalone product line in 2020** (Michael's own
+   words). A 2019 cracked-ice card therefore cannot be Sapphire, whatever it
+   looks like - which is exactly how the Kirby was settled, and it was
+   settled on the date, not the sparkle.
+2. **Each product line gets its own Sapphire edition**, so "is there a
+   Sapphire that year" must be asked about Bowman, Bowman Chrome, Bowman
+   Draft and Topps Chrome separately. See the memory note on there being
+   more than one Sapphire release per year.
+3. **Only then compare**, and only against a CONTROL from a product you have
+   already confirmed. Dominant blue across the border and background reads
+   Sapphire; an ordinary white or team-coloured border with the shatter laid
+   over it reads Atomic. Treat this as a tie-breaker after step 1, never as
+   the primary test.
+4. **When the year allows both and the control is not conclusive, ASK.**
+   Michael has the card in his hand. One short question beats a third wrong
+   guess, and two wrong guesses is what this section is made of.
 
-Get a control pair before calling either: put the card next to one you have
-already confirmed is Sapphire. Side by side it takes one look; in isolation
-it is a coin flip. A thumbnail grid of every card you labelled Sapphire is
-enough to catch an impostor, because the colour survives downscaling.
+### The meta-lesson, which cost more than the cards
 
-**A coloured Sapphire rung is still Sapphire.** Gold, Green, Orange and
-Yellow Sapphire cards are not blue, and they are not Atomic Refractors
-either: they are a *uniform* colour across the whole card, where an Atomic
-refracts several colours at once.
-
-**Check the YEAR before you reach for Sapphire at all.** The Sapphire
-editions do not go back forever, and a product that did not exist cannot be
-the answer:
-
-- **Bowman Draft Sapphire** starts in **2021**. A 2019 or 2020 Bowman Draft
-  cracked-ice card is an Atomic Refractor, full stop.
-- Every Bowman product line gets its own Sapphire edition in a given year.
-  See the memory note on there being more than one Sapphire release per year.
+When a correction teaches a rule, do not immediately sweep the rule across
+everything nearby. The over-correction moved a card that had been RIGHT into
+a wrong product. Apply a new rule to the case that taught it, then re-derive
+the others one at a time from evidence.
 
 ## 2. Numbered parallels
 
