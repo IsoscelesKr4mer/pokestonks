@@ -329,6 +329,45 @@ Opening Day" in so many words.
 The serial names the parallel here too. A green card at 98/99 is a Green Foil,
 and nothing else on the ladder is /99.
 
+## 1c. Cracked ice is an ATOMIC REFRACTOR. Sapphire is a different thing.
+
+Settled 2026-10-11 by Michael, on a 2019 Bowman Draft George Kirby I had
+parked as Sapphire: *"The Kirby was before sapphire and is an atomic
+refractor."*
+
+Both of those are separate facts and both matter.
+
+**THE FACET COLOUR IS THE TELL:**
+
+| what the facets look like | what it is |
+|---|---|
+| BLUE shards on a BLUE card - border, background and every facet | **Sapphire Edition** |
+| GOLD / ORANGE / GREEN rainbow shards over an ordinary white or team-coloured design | **Atomic Refractor** |
+
+A Sapphire card is blue *everywhere*. An Atomic Refractor is a normal chrome
+card with a shattered-glass pattern refracting rainbow over it. Both read as
+"cracked ice" at a glance, and that glance is what got two cards filed under
+the wrong product in one batch.
+
+Get a control pair before calling either: put the card next to one you have
+already confirmed is Sapphire. Side by side it takes one look; in isolation
+it is a coin flip. A thumbnail grid of every card you labelled Sapphire is
+enough to catch an impostor, because the colour survives downscaling.
+
+**A coloured Sapphire rung is still Sapphire.** Gold, Green, Orange and
+Yellow Sapphire cards are not blue, and they are not Atomic Refractors
+either: they are a *uniform* colour across the whole card, where an Atomic
+refracts several colours at once.
+
+**Check the YEAR before you reach for Sapphire at all.** The Sapphire
+editions do not go back forever, and a product that did not exist cannot be
+the answer:
+
+- **Bowman Draft Sapphire** starts in **2021**. A 2019 or 2020 Bowman Draft
+  cracked-ice card is an Atomic Refractor, full stop.
+- Every Bowman product line gets its own Sapphire edition in a given year.
+  See the memory note on there being more than one Sapphire release per year.
+
 ## 2. Numbered parallels
 
 The serial (`026/199`) is printed on the **front**, usually lower-left, and is
