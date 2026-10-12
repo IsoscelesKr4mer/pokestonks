@@ -2617,3 +2617,56 @@ Shape copied from the NBA mega listing that already works: category 261332 Seale
 - Mapped in `ebay_listing_mappings` at **qty 1 per listing unit**, which is the trap from [[reference_ebay_sync_mapping_qty]]: the title says Mega Box, not a multi-box lot, so one unit is one box.
 
 **Open: 3 boxes stay back to rip.** They are not listed and must not be. Held reads 10 until these sell.
+
+---
+
+### Mega Evolution: Ascended Heroes Tech Sticker Collection, Charmander (drafted 2026-10-12)
+
+- **⚪ DRAFT, NOT PUBLISHED.** Built and ready; waiting on his word.
+- **SKU:** `AH-TECHSTICKER-CHARM` · **category 183456** (CCG Sealed Packs) · condition **NEW** · location `edmonds-wa`
+- **Catalog:** item **70**, tcgplayer 666908 · **Cost $22.13/unit** (purchase lot 643, Target Online, 2026-10-12, tax in)
+- **Held: 2.** Nothing else of this item is listed or sold, so the whole position is in this one listing.
+- **UPC `196214141278`**, read off the barcode on the back photo. Item number 10-10314-120.
+
+**Title (80):** `Pokemon Mega Evolution Ascended Heroes Tech Sticker Collection Charmander Sealed`
+
+**Photos** (hosted, `ebay-listings` bucket):
+1. `AscendedHeroes_TechSticker_Charmander_01_front.jpg` — full front, leads
+2. `AscendedHeroes_TechSticker_Charmander_02_back.jpg` — back, contents panel + UPC
+
+**Body:**
+```
+New, factory-sealed Pokemon TCG Mega Evolution: Ascended Heroes Tech Sticker Collection, Charmander version.
+
+Includes 1 foil Charmander promo card (020/217), 1 tech sticker sheet featuring Charmander and Mega Charizard Y, and 3 Mega Evolution: Ascended Heroes booster packs.
+
+Smoke-free home. Ships within 1 business day.
+
+Buy with confidence, check my feedback. Thanks for looking.
+```
+
+**Contents are quoted off the back panel, not recalled.** The package itself names Mega Charizard Y for the Charmander version and Mega Gengar for the Gastly one, so that name is sourced rather than invented ([[feedback_no_fabricated_product_specifics]]). Promo number 020/217 ASC is legible on the front photo.
+
+**🔴 I drafted this at $34.99 with a damage disclosure and that was wrong.** The top hang-tab row on the backing card has a split paper layer, so I treated it as condition damage, wrote a disclosure line, shot two closeups and took $4 off. Michael: *"This is just how these texh stickers are they all get shipped like that idc."* **It is how the product ships, not damage to his copy.** Disclosure line removed, crease photos pulled from the listing, price moved to market.
+
+The tell was in my own comp data and I read past it: the clean-filtered ask floor sat at $33.81-$35.00 with 74 sellers in the band, which is what a *normal* copy of this product looks like, not a discounted one. **When a "defect" appears on a whole product line, the first question is whether it is a defect at all** — check a handful of other sellers' photos before pricing a discount into it.
+
+**Price $38.99.** Anchors, all measured 2026-10-12:
+
+| | |
+|---|---|
+| TCGplayer market (pokestonks, refreshed today) | **$38.52** |
+| clean single-unit eBay asks, 74 kept of 306 raw | 25th **$38.00**, median **$44.95**, 75th $50.00 |
+| break-even ask | $26.13 |
+| net at $38.99 | **$33.02 → +$10.89/unit, 49%** |
+| both units | **+$21.78** |
+
+**The raw ask board reads $45-50 and that is wrong by construction.** Unfiltered, the median is $44.95 only because 2-packs, box-plus-tin bundles and whole cases sit in the same search. Excluding every multi-unit title gives a clean single-unit field: 25th $38.00, median $44.95. $38.99 sits just above TCGplayer market and around the 30th percentile of asks, which is priced to move on an in-print product Target still ships.
+
+**Shape: one listing, qty 2, priced per unit.** He said "list on ebay", not "lot", so the default multi-quantity read applies rather than the bundled-lot read from [[feedback_lot_means_one_listing]]. Mapping is therefore **qty 1 per listing unit** ([[reference_ebay_sync_mapping_qty]]).
+
+**Shipping: 269110723012 Ground Advantage Calculated, buyer pays, no free shipping** ([[feedback_never_offer_free_shipping]]). Returns 269110705012 (none), payment 269110704012. 8x8x4 at **1 lb declared, NOT weighed** — the blister is certainly under 10 oz packed, and 256 cu in is nowhere near the 1,728 dimensional-weight line, so padding is free to him and safe. Still worth 30 seconds on the scale ([[reference_shipping_package_specs]]). `packageType` omitted ([[reference_ebay_package_type_gotcha]]).
+
+**Aspects:** Game `Pokémon TCG` (accented é, required) · Set `Mega Evolution: Ascended Heroes` (SINGLE, free text) · Configuration `Pack` (SELECTION_ONLY, exactly this) · Character `Charmander`, `Charizard` · Manufacturer `The Pokémon Company` · Year Manufactured `2026` · Age Level `6+` · Language `English` · Card Size `Standard` · Material `Card Stock` · Features `Sealed` · Type `Collection` · Number of Packs `3` · Vintage `No` · Autographed `No` · Brand `Pokémon` + MPN `Does Not Apply`.
+
+**Publish path: `scripts/publish-ah-techsticker.ts`, direct to `api.ebay.com`, no MCP.** I told him the dead ebay MCP meant nothing could be published tonight. **That was wrong** — `bulk-list-ebay.ts` has always read the eBay creds straight out of `~/.claude.json` and called the REST API with plain fetch, so the MCP is a convenience, not the pipeline. Verifying a publish still wants Trading `GetItem` ([[reference_ebay_publish_verify_trading_api]]).

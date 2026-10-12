@@ -92,3 +92,9 @@ _bowman_cache.json
 # 100 MB per-file limit. Source images belong in Supabase storage, not git
 # history, and listing photos are hosted by eBay EPS anyway.
 eBay_assets/card drop/
+
+# Archived originals off the phone: 3.2 GB and growing, uppercase .JPEG so the
+# *.jpeg rule above misses them, which left the whole folder showing as
+# untracked and one `git add -A` away from a 3 GB commit. Same reasoning as
+# "card drop" above: source images live in Supabase, listing photos on eBay EPS.
+eBay_assets/_originals/
