@@ -51,6 +51,11 @@ const DESCRIPTION = [
   '<p>Buy with confidence, check my feedback. Thanks for looking.</p>',
 ].join('');
 
+// His CombinedItemWeight calculated profile. Bundles multiple units of a
+// multi-quantity listing into one package by total weight, so two blisters
+// ship on one label instead of two.
+const COMBINED_SHIPPING_PROFILE = '1423939012';
+
 const POLICIES = {
   fulfillmentPolicyId: '269110723012', // Ground Advantage calculated, buyer pays
   paymentPolicyId: '269110704012',
@@ -223,6 +228,50 @@ async function main() {
   if (!pub.listingId) throw new Error(`publish failed ${pubR.status}: ${JSON.stringify(pub)}`);
   console.log(`LIVE: https://www.ebay.com/itm/${pub.listingId}`);
 
+  // 3b) Combined shipping, so a buyer taking both units pays ONE label.
+  // The Add/publish path silently drops this - it does not even warn, and
+  // GetItem then reads ApplyShippingDiscount=false. Only Revise takes it.
+  const trading = async (name: string, body: string) =>
+    (
+      await fetch('https://api.ebay.com/ws/api.dll', {
+        method: 'POST',
+        headers: {
+          'X-EBAY-API-CALL-NAME': name,
+          'X-EBAY-API-SITEID': '0',
+          'X-EBAY-API-COMPATIBILITY-LEVEL': '1193',
+          'X-EBAY-API-IAF-TOKEN': tok,
+          'Content-Type': 'text/xml',
+        },
+        body:
+          `<?xml version="1.0" encoding="utf-8"?><${name}Request xmlns="urn:ebay:apis:eBLBaseComponents">` +
+          '<ErrorLanguage>en_US</ErrorLanguage><WarningLevel>High</WarningLevel>' +
+          body +
+          `</${name}Request>`,
+      })
+    ).text();
+
+  await trading(
+    'ReviseFixedPriceItem',
+    `<Item><ItemID>${pub.listingId}</ItemID><ShippingDetails>` +
+      '<ApplyShippingDiscount>true</ApplyShippingDiscount>' +
+      `<ShippingDiscountProfileID>${COMBINED_SHIPPING_PROFILE}</ShippingDiscountProfileID>` +
+      '</ShippingDetails></Item>',
+  );
+
+  // Verify off Trading GetItem, never the Inventory API, which lies about
+  // its own publishes.
+  const g = await trading('GetItem', `<ItemID>${pub.listingId}</ItemID><DetailLevel>ReturnAll</DetailLevel>`);
+  const gg = (t: string) => g.match(new RegExp(`<${t}[^>]*>([^<]*)<`))?.[1] ?? '-';
+  const combined = gg('ApplyShippingDiscount');
+  console.log(
+    `  verified: ${gg('ListingStatus')}  $${gg('CurrentPrice')}  qty ${gg('Quantity')}` +
+      `  UPC ${gg('UPC')}  hidden=${gg('HideFromSearch')}  combined=${combined}`,
+  );
+  if (combined !== 'true') {
+    console.error('  !! combined shipping did NOT stick. A buyer taking both pays two labels.');
+    console.error('     Re-run the ReviseFixedPriceItem above and re-read GetItem before leaving it.');
+  }
+
   // 4) map it, qty is PER listing unit
   await sql`
     INSERT INTO ebay_listing_mappings (user_id, ebay_item_id, mappings)
@@ -232,9 +281,6 @@ async function main() {
       ${sql.json([{ qty: 1, catalogItemId: CATALOG_ITEM_ID }])}
     )`;
   console.log('mapped at qty 1 per listing unit');
-
-  console.log('\nVerify with Trading GetItem before trusting this: the Inventory API');
-  console.log('lies about its own publishes. Want ListingStatus Active + HideFromSearch false.');
 
   await sql.end();
 }
