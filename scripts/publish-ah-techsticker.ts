@@ -25,7 +25,12 @@ const APPLY = process.argv.includes('--apply');
 const SKU = 'AH-TECHSTICKER-CHARM';
 const CATALOG_ITEM_ID = 70;
 const QTY = 2;
-const PRICE = '38.99';
+// Repriced 2026-10-14 before publishing. The draft sat two days waiting on
+// his word and the market softened underneath it: TCGplayer $38.52 -> $36.55,
+// the 25th-percentile clean ask $38.00 -> $36.99, median $44.95 -> $42.00.
+// $38.99 would now be above both market and the 25th percentile on a product
+// Target is still shipping. $36.99 sits at the 25th and just above market.
+const PRICE = '36.99';
 const COST_CENTS = 2213;
 const UPC = '196214141278';
 const CATEGORY = '183456'; // CCG Sealed Packs
