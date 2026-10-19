@@ -391,6 +391,53 @@ than inventing a Topps product name.
 typo. eBay keyword search cannot settle a spelling question, it just matches
 whatever you typed.
 
+### THE SERIAL NAMES THE PARALLEL, AND THE APP ALREADY HOLDS THE LADDER
+
+**Do not guess a rung from the colour, and do not reconstruct a ladder from
+this file.** Every product's rungs are in the `parallels` table with their
+print runs. One query answers it:
+
+```sql
+SELECT name, print_run, odds_text FROM parallels
+ WHERE product_id = <pid> ORDER BY print_run NULLS FIRST;
+```
+
+Worked on 2026-10-18, and none of the three was guessable:
+
+| serial | product | answer |
+|---|---|---|
+| `084/399` | 2026 Bowman Chrome | **Pulsar Refractor** /399, 1:23 Hobby |
+| `38/75` | 2025 Bowman Chrome Sapphire | **Yellow Sapphire** /75 |
+| `124/199` | 2025 Bowman Chrome Sapphire | **no rung at all** - that ladder runs /99 to /1, so /199 is the BASE autograph's own print run and there is no colour to name |
+
+That last row is the one worth remembering: **a serial that matches no rung
+usually means the base card is itself numbered**, not that you have found a
+new colour. Check the ladder before inventing one.
+
+### The woven maze texture is Mojo
+
+Confirmed on baseball 2026-10-18, not only on football. A border filled with
+a fine interlocking maze or basket weave that shifts colour is a **Mojo
+Refractor**: Gregory Pio BCP-176, Cole Young #25 in yellow, Colt Emerson
+SB-13 in the Spring Breakout design all carried it. An unnumbered one is the
+base Mojo (2 per pack Mega); a coloured one still needs its serial to name
+the rung.
+
+### A CHECKLIST'S NUMBER IS NOT ALWAYS THE CARD'S NUMBER
+
+**2020 Bowman Draft, measured off six cards.** The chrome cards print
+`BD-61`, `BD-66 REFRACTOR`, `BD-88 REFRACTOR` on the back. The checklist
+splits the same players into `BD-n (Base Paper Set)` and `BDC-n (Base Chrome
+Set)`, so the C is the checklist site's own disambiguation and appears
+nowhere on the card.
+
+Matching on the printed number alone would have filed fourteen chrome
+refractors into the paper set. **When a product has both a paper and a chrome
+base and the card prints only one number, decide by the FINISH, not the
+code**: REFRACTOR on the back, a Bowman Chrome roundel on the front and a
+chrome mirror finish mean the chrome entry, whatever letter the number
+carries.
+
 ## 3. Inserts: the code prefix decides the set
 
 The insert code in `card_number` is the **authority** on `set_name`. Never file
