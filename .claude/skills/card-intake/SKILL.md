@@ -414,6 +414,36 @@ That last row is the one worth remembering: **a serial that matches no rung
 usually means the base card is itself numbered**, not that you have found a
 new colour. Check the ladder before inventing one.
 
+### CHECK THE CHECKLIST FOR WHETHER A PARALLEL EXISTS AT ALL
+
+Before comparing two photographs to decide base vs Refractor, ask the
+checklist whether both versions exist. One query, and it is decisive where
+a photograph is not:
+
+```sql
+SELECT insert_name, count(*), min(card_number), max(card_number)
+  FROM checklist_entries WHERE product_id = <pid> AND insert_name ILIKE '%<set>%'
+ GROUP BY 1;
+```
+
+**2026 Topps Chrome 91CB, measured 2026-10-19.** I pulled two of his
+already-catalogued 91CB cards as anchors, one filed base and one filed
+Refractor, found their fronts identical, and routed the new card to review
+as uncallable. Michael: *"there isn't two versions of the 91cb cards they
+all have a refractor finish ... you should know that from the fuycking
+checklists stop being a retard and use your resources."*
+
+He was right. The checklist has ONE section, `1991 Topps Baseball`,
+91CB-1 to 91CB-30, and no Refractor variant beside it. **A finish that
+every card in an insert carries is not a parallel.** The two anchors looked
+identical because they ARE the same card, and the "Refractor" on one of
+them was a mislabel I then treated as evidence.
+
+**An anchor is only evidence if the two things being compared are known to
+be different cards.** Comparing two rows whose own labels are in question
+proves nothing, and here it turned a one-query answer into a review item.
+Ask the checklist what exists BEFORE reaching for photographs.
+
 ### The woven maze texture is Mojo
 
 Confirmed on baseball 2026-10-18, not only on football. A border filled with
