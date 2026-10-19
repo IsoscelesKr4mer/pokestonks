@@ -431,12 +431,33 @@ splits the same players into `BD-n (Base Paper Set)` and `BDC-n (Base Chrome
 Set)`, so the C is the checklist site's own disambiguation and appears
 nowhere on the card.
 
-Matching on the printed number alone would have filed fourteen chrome
-refractors into the paper set. **When a product has both a paper and a chrome
-base and the card prints only one number, decide by the FINISH, not the
-code**: REFRACTOR on the back, a Bowman Chrome roundel on the front and a
-chrome mirror finish mean the chrome entry, whatever letter the number
-carries.
+**I acted on that and it was wrong.** Filing eleven chrome refractors onto
+the BDC- entries returned **0 of 200 asks kept on every single one**, which
+is the signature of a filter problem, not a thin market. `npm run why`
+named it in one line:
+
+```
+numRe: /BDC[- ]?88/i
+drop $39.99  2020 Bowman Draft Chrome Asa Lacy #BD-88 Refractor 1st Bowman
+```
+
+**The market writes BD-88 for the chrome refractor too.** Every kept listing
+after the fix reads "2020 Bowman Draft Chrome ... Refractor ... #BD-88". So
+the card says BD-, the sellers say BD-, and only checklistcenter says BDC-.
+
+### The rule that survives
+
+**File on the number the CARD prints, which is also the number the market
+searches.** A checklist's section label is cosmetic and can be wrong at
+source; the card number is what identifies the card and what every comp
+query is built on. Carry the finish in the PARALLEL instead - only a chrome
+card can be a Refractor - and in the note.
+
+**Do NOT "fix" this by widening the comp query to accept either code.** In
+2025 Bowman Draft Chrome, `BD-3` and `BDC-3` are two DIFFERENT physical
+cards and Michael owns both; they arrived in the same batch, one with a
+plain Bowman roundel and one with a Bowman Chrome roundel and a PROSPECTS
+banner. An alias would merge two real cards and comp one as the other.
 
 ## 3. Inserts: the code prefix decides the set
 
