@@ -563,6 +563,43 @@ card and created one, and it had to be deleted and folded back.
 So: when the physical count exceeds the row count, **ask, or record it as a note
 on the existing row**. Do not create a row to close the gap.
 
+### Say the count at intake: `quantity` on the scan result
+
+Added 2026-10-19, because the pipeline used to COUNT PHOTO PAIRS. One pair in,
+one card out, and the other nine copies existed nowhere.
+
+`result.json` now takes an optional `quantity` per card. Absent or null means
+one, so nothing already written changes.
+
+```json
+{ "pairIndex": 0, "cardNumber": "25", "player": "Cole Young",
+  "parallelName": "Mojo Refractor", "serialNumber": null, "quantity": 10 }
+```
+
+It sets the row's quantity AND the `card_rip_sources` count, so a box that
+yielded ten of one cheap parallel reads as ten on the rip page instead of one.
+
+**Only for cards whose copies are interchangeable.** An unnumbered base,
+Refractor, X-Fractor or Mojo has nothing separating copy three from copy nine,
+and a dropdown buyer cannot tell either. Michael, 2026-10-19: *"i just took a
+photo of one and for these cheap cards i think that will be the strategy so i
+dont ahve to take 1000s of photos"*.
+
+**A quantity above 1 on a serialled card is a parse ERROR, not a warning.**
+28/150 and 104/150 are different cards, they comp differently, and only one of
+them can be the one that ships. Same for autographs and anything slabbed: one
+row per copy.
+
+**Condition is not an objection.** He ships Excellent to Near Mint and culls a
+dinged corner rather than disclosing it, so every copy in a pile has already
+passed one bar and the exemplar photograph represents them honestly. See
+[[reference_condition_standard_ex_to_nm]].
+
+**What it costs:** the count stops being provable from the photographs. A
+recount becomes a physical recount, not a query. That is the right trade at a
+dollar fifty a card and the wrong one anywhere else, which is the other reason
+the serial check is hard rather than advisory.
+
 ## 6. When unsure, stop
 
 If a parallel cannot be settled from the photos, insert with
