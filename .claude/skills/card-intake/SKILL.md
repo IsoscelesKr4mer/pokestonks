@@ -297,6 +297,30 @@ neither, and it is worth real money: Murakami #76 base is $7 and the Red RC is
 $50; Messick #3 base is $3 and the Red RC is $55. Check the shield colour on
 every rookie in the box, comparing against the other rookies in the same drop.
 
+## 1b-ii. 2026 Topps Update Series: the faceted foil is Diamante
+
+A card whose border and photo are broken into large angular facets, like
+crumpled foil, is a **Diamante Foil**. Confirmed by Michael with the card in
+hand, 2026-10-20, on JR Ritchie US282: *"it's just normal diamante"*.
+
+The hesitation worth not repeating: this product also lists an unnumbered
+**Silver Crackle**, and "crackle" sounds like it could describe the same
+shattered look. It does not win on a plain silver faceted card. Call the
+facets Diamante.
+
+**Diamante runs a full colour ladder and the serial names the rung**: Red
+/5, Black /10, Orange /25, Gold /50, Green /99, plus unnumbered Pink
+Diamante Foil and plain Diamante Foil. So read the serial first as always;
+only an unnumbered one is the plain or pink version, and pink is obvious.
+The market writes it exactly that way - "2026 Topps Update Series Pink
+Diamante Foil #US55" - so the name is also the search term.
+
+**Rainbow Foil is a different thing and not faceted**: a smooth spectral
+sheen over the whole card with no pattern in it. Separate the two by
+whether the foil has facets, and separate Rainbow Foil from the logo-pattern
+parallel by cropping a flat area of border at 4x and looking for a repeating
+Topps logo. Matte base cards from the same batch make the control.
+
 ## 1c. Topps NOW Road to Opening Day
 
 Read off a real card 2026-10-07 (Noah Cameron, A-NC, green 98/99 auto).
