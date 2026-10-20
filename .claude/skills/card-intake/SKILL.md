@@ -353,7 +353,22 @@ Opening Day" in so many words.
 The serial names the parallel here too. A green card at 98/99 is a Green Foil,
 and nothing else on the ladder is /99.
 
-## 1c. Sapphire vs Atomic Refractor. Settle it on the YEAR, not the sparkle.
+## 1c. Sapphire vs Atomic Refractor. NOT settled by the year.
+
+> **Corrected 2026-10-20. The year test below is WRONG and cost a third
+> wrong call on the same card.** This section used to open "Settle it on
+> the YEAR" and claim Sapphire began in 2020, so a 2019 cracked-ice card
+> could not be Sapphire. **2019 Bowman Draft Sapphire Edition exists**: an
+> online-only Topps release from December 2019, $35 a box, the same 200
+> card BDC- checklist, chrome stock, no autographs, and a ladder from Blue
+> /99 down to a 1/1 Padparadscha. Beckett and Cardboard Connection both
+> carry it, and Cardboard Connection describes its look in so many words as
+> similar to Atomic Refractors and Panini Cracked Ice.
+>
+> So "it is 2019, therefore not Sapphire" is not a test. Read steps 2 to 4
+> and skip step 1. Before using a year to rule a product out, check that the
+> product did not ship that year, per
+> [[reference_one_sapphire_release_per_year_is_wrong]].
 
 Both finishes are "cracked ice": an angular shattered-glass pattern. On
 2026-10-11 I got this wrong in BOTH directions inside one hour, so the
@@ -375,10 +390,12 @@ Refractor. That inference is what cost two cards.
 
 1. **Date the card and ask whether a Sapphire edition of THAT product line
    existed that year.** This is the step that actually decides it.
-   **Sapphire began as a standalone product line in 2020** (Michael's own
-   words). A 2019 cracked-ice card therefore cannot be Sapphire, whatever it
-   looks like - which is exactly how the Kirby was settled, and it was
-   settled on the date, not the sparkle.
+   ~~**Sapphire began as a standalone product line in 2020.** A 2019
+   cracked-ice card therefore cannot be Sapphire.~~ **STRUCK OUT, see the
+   box above.** Bowman Draft Sapphire shipped in December 2019, so this
+   step ruled out the right answer on the card it was written about.
+   Dating the card still matters, but only to know which products that
+   year could hold it, never to rule Sapphire out by itself.
 2. **Each product line gets its own Sapphire edition**, so "is there a
    Sapphire that year" must be asked about Bowman, Bowman Chrome, Bowman
    Draft and Topps Chrome separately. See the memory note on there being
@@ -391,6 +408,48 @@ Refractor. That inference is what cost two cards.
 4. **When the year allows both and the control is not conclusive, ASK.**
    Michael has the card in his hand. One short question beats a third wrong
    guess, and two wrong guesses is what this section is made of.
+
+### Ask the PRICE TABLE whether a parallel exists, not a checklist site
+
+**Do this first. It is free, local, and it is the step that was missing.**
+
+On 2026-10-20 I told Michael his Kirby could not be an Atomic because the
+2019 Bowman Draft Chrome parallel list does not contain one. I checked
+baseballcardpedia, Beckett and Cardboard Connection. **All three omit it,
+and all three are incomplete.** He answered *"Everyone in eBay is calling
+this exact card atomic"* and he was right.
+
+The answer was already on this machine. Isosceles caches each set's
+sportscardspro table under `.cache/pricing/<slug>.json`, and it had the row:
+
+```
+George Kirby [Atomic Refractor] #BDC-115   ungraded $1.62   printRun null
+```
+
+```python
+import json, collections
+d = json.load(open('.cache/pricing/baseball-cards-2019-bowman-draft-chrome.json', encoding='utf8'))
+[r for r in d if 'kirby' in (r['player'] or '').lower()]          # one card, every parallel
+collections.Counter((r['parallel'] or 'BASE') for r in d)          # the whole set's ladder
+```
+
+Why it beats a checklist article: it is what the market actually prices,
+it carries `printRun` per parallel, and it is the same table the comp
+pipeline reads, so a parallel the table does not know is also a parallel
+that cannot be comped.
+
+**Read the counts, not just the names.** A real parallel covers the whole
+set. In that table every genuine rung had ~200 cards and the Atomic row
+had **1**, sitting among one-card rows like `No Helmet`, `Tipping Cap` and
+`Blue Jersey`, which are photo variations rather than parallels. A
+one-card row means the market uses the word for this card; it does not by
+itself prove Topps printed a parallel by that name. Say which of the two
+you have established.
+
+**"Not on the list" is a claim about the LIST.** One source that omits a
+thing is not evidence the thing is absent, and three sources copying each
+other are still one source. See
+[[feedback_check_the_source_before_declaring_data_missing]].
 
 ### The meta-lesson, which cost more than the cards
 
