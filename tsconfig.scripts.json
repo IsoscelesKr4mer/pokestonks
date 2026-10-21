@@ -4,7 +4,16 @@
     "noEmit": true,
     "types": [
       "node"
-    ]
+    ],
+    "paths": {
+      "@/*": [
+        "./*"
+      ],
+      "server-only": [
+        "./scripts/_shims/server-only.ts"
+      ]
+    },
+    "baseUrl": "."
   },
   "include": [
     "scripts/**/*.ts"
