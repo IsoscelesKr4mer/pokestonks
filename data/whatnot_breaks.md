@@ -1,5 +1,11 @@
 # Whatnot breaks Michael and his circle have bought into
 
+> **Three different breaks are recorded here and they are easy to confuse.**
+> On 2026-10-23 he asked for "Kyle's spots" and I gave him the Galaxy list,
+> then the Disney Sapphire list, and both were wrong: he meant the Lorcana
+> break in the video he had just dropped. **Ask which break, or open the
+> video, before answering.**
+
 Written 2026-10-23 because he asked for Kyle's spots and the answer existed
 **only in a Discord message from 2026-10-18**. Recovering it meant scanning a
 616 MB session transcript. Discord history caps at 100 messages per fetch with
@@ -129,3 +135,63 @@ already paid for was cancelled out from under him by `kes935`. Same category,
 same day, roughly four times the money, and no fuss from him about any of it.
 Useful if that seller ever tries to paint him as a difficult buyer. See the
 refund kit built for that dispute.
+
+---
+
+## Disney Lorcana "Minted in Magic" / Platinum, read 2026-10-23
+
+Source: `eBay_assets/card drop/ScreenRecording_10-22-2026 20-47-46_1.mp4`,
+95 seconds of him scrolling the sold list. Character-spot format, ~$90 to
+$375 a spot.
+
+### Kyle's 18 spots, $2,999, average $167
+
+| paid | spot |
+|---|---|
+| $235 | Meeko |
+| $230 | Pinocchio (Minted in Magic) |
+| $207 | Wendy Darling |
+| $204 | Angel (Minted in Magic) |
+| $204 | Elsa (Platinum) (Minted in Magic) |
+| $180 | Captain Barbossa |
+| $170 | Embarrassment |
+| $165 | Lizzie McGuire |
+| $165 | Olaf |
+| $160 | Cheshire Cat |
+| $152 | Minnie Mouse (Platinum) (Minted in Magic) |
+| $147 | Lily Houghton |
+| $135 | Bolt |
+| $135 | Hamm |
+| $135 | Elizabeth Swann |
+| $127 | Lady (Lady & The Tramp) |
+| $124 | Raya |
+| $124 | Goofy (Platinum) (Minted in Magic) |
+
+Flat, for matching against the rip:
+
+> Meeko, Pinocchio, Wendy Darling, Angel, Elsa, Captain Barbossa,
+> Embarrassment, Lizzie McGuire, Olaf, Cheshire Cat, Minnie Mouse,
+> Lily Houghton, Bolt, Hamm, Elizabeth Swann, Lady, Raya, Goofy
+
+Five are the premium versions: Pinocchio, Angel, Elsa, Minnie Mouse and
+Goofy are Platinum and/or Minted in Magic.
+
+Same buying pattern as the other two breaks: broad, nothing silly at the
+top, and he takes volume rather than the single marquee name.
+
+### HOW TO READ ONE OF THESE VIDEOS, because the obvious way loses rows
+
+Stitching the scroll into one tall image by phase-correlating consecutive
+frames **dropped 10 of the 18 rows** at the seams, and the stitched strip
+looks perfectly plausible while doing it. Bolt, Wendy Darling, Lady, Raya
+and Goofy were all missing and nothing about the output said so.
+
+**What works:** pull full-resolution frames every 2 seconds with ffmpeg,
+crop to the username column only, and tile ten frames side by side. The
+whole 95 seconds fits in two images that way, a row only has to be legible
+in one frame to be caught, and the overlap between frames is obvious
+enough to see that nothing fell between them. Go back for the character
+name and price only on the frames where the username appears.
+
+There is no OCR installed on this machine, so all of this is read by eye;
+the tiling is what makes that affordable.
