@@ -46,6 +46,18 @@ const DISABLED: Record<string, string> = {
   // sales from March 2026 ($56-$75), a different product. ci135079 is left
   // unpriced rather than seeded with a wrong number.
   '2025-26 Topps Chrome Update Basketball Value Box': 'basketball-cards-2025-topps-chrome/value-box',
+  // SportsCardsPro has no motorsport page for this at all: on 2026-10-23 all six
+  // plausible console slugs (formula-1-cards-, racing-cards-, f1-cards-, with and
+  // without the series in the name) returned no #price_data block. The product
+  // only released 2026-10-15, so this is the scraper having nothing yet rather
+  // than a thin market. The slug below is a GUESS and has never resolved; check
+  // it before trusting it.
+  //
+  // ci135619 is marked $110.00 from the live eBay ask book instead (97 single-box
+  // asks on 2026-10-23: floor $105, median $135.99). Marked near the floor, not
+  // the median, because an ask is what nobody has paid yet. Replace with a real
+  // comp as soon as one exists. See scripts/comp-f1-mega-1023.ts.
+  '2026 Topps Chrome Formula 1 Mega Box': 'formula-1-cards-2026-topps-chrome/mega-box',
 };
 
 async function main() {
