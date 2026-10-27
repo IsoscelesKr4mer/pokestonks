@@ -2689,6 +2689,43 @@ The tell was in my own comp data and I read past it: the clean-filtered ask floo
 
 Scripts: `scripts/list-f1-mega-1023.ts` (publish), `scripts/reprice-f1-mega-1026.ts` (the cut, with a GetItem read-back).
 
+**2026-10-27, "why am i getting no views on my F1".** Diagnosed with
+`scripts/diagnose-listing-views.ts 168812159614 "2026 topps chrome formula 1 mega box"`.
+Nothing is wrong with the listing: Active, right category, all 14 item
+specifics set with both required aspects present, UPC on it, 71-char title,
+and it comes back at position 3 on a search for its own exact title, so it is
+indexed and searchable.
+
+It is buried, not broken. **Best Match position 327 of 452** live listings for
+the query a buyer actually types. Delivered to a New York ZIP he is
+**$133.55** ($124.99 + $8.56 calculated), with **99 mega boxes delivered
+cheaper**, the field floor at **$112.00 delivered**, and a dense cluster
+$112-120. Nobody pages to 327.
+
+Two readings that were WRONG on the first pass and are corrected here:
+- The field is NOT all free shipping. Only **57 of 330** ship free; the rest
+  charge like he does. The first pass omitted the buyer-ZIP header, which
+  makes Browse report $0.00 for every calculated listing. Shipping is not the
+  problem and the model does not change.
+- The listing is NOT missing item specifics. `DetailLevel ReturnAll` alone
+  does not return them; `IncludeItemSpecifics` does.
+
+Levers, in order of effect per unit of effort, none applied without his word:
+1. **Price.** At $109.99 the delivered total is ~$118.55, which lands around
+   15th on the mega ladder instead of 130th. Net ~$92.32 on a $77.37 basis,
+   so still **+$14.95/box, +$119.60 across all 8**. At $114.99 it is
+   +$19.22/box but moves him far less. Per [[feedback_never_offer_free_shipping]]
+   the item price moves, never the shipping model.
+2. **Photos.** Two on a $125 box. Six or more is free and feeds Best Match.
+3. **Best Offer ladder is now stale and would be broken by a cut.**
+   Auto-accept is $120.00; any ask below that makes it meaningless. Re-cut it
+   in the same change, not after.
+
+Not measurable from here: real impressions, views and CTR. The refresh token
+carries only `sell.inventory`, so the Analytics traffic report 403s. Granting
+`sell.analytics.readonly` once would make every future "no views" question
+answerable from his actual numbers instead of inferred from the public field.
+
 ---
 
 ## 2026 Topps Holiday Football singles - 5 listings - LIVE 2026-10-26
