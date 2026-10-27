@@ -451,6 +451,42 @@ thing is not evidence the thing is absent, and three sources copying each
 other are still one source. See
 [[feedback_check_the_source_before_declaring_data_missing]].
 
+### A table can only answer about its OWN product
+
+**2026-10-26. Same family of mistake, third time, and this one overruled
+Michael.** He said his Cole Young RA-CY 123/199 was *"Topps chrome sapphire
+rc auto"*. It was filed as a 2026 Topps Chrome **Aqua Refractor** on three
+checks, and all three were bad:
+
+| the check | why it was worthless |
+|---|---|
+| "no 2026 Topps Chrome Sapphire product exists" | it does, released 2026-08-26 |
+| "RA-CY is in exactly one checklist" | Sapphire reuses the flagship's `RA-` + initials numbering, so RA-CY names a Cole Young auto in BOTH |
+| "no rung in the table is named Sapphire" | the table read was `2026-topps-chrome-rookie-autograph`, the FLAGSHIP insert. A flagship table cannot hold another product's parallels. **The check could only ever return the answer it returned.** |
+
+The Sapphire console exists and has him in it:
+`baseball-cards-2026-topps-chrome-sapphire-autograph` →
+`Cole Young #RA-CY /199 [RC]  $60.76`.
+
+**The trap is that the two ladders COLLIDE at the serial.** Flagship
+Chrome's /199 rung is Aqua Refractor; Sapphire's base auto is /199. A
+serial that normally names a parallel names nothing until the product is
+settled. So:
+
+1. **Establish the PRODUCT before reading any ladder.** A serial, a card
+   number and a price table all mean something different per product.
+2. A "no such parallel" result is only evidence if the table you read
+   belongs to the product you are ruling out. Check the slug you actually
+   fetched, by name, before quoting its silence.
+3. `.cache/pricing/_consoles.json` holds all ~16,000 slugs. Grep it for the
+   product before concluding the product does not exist:
+   `[s for s in slugs if 'sapphire' in s and '2026' in s]`.
+4. Michael naming a product at intake is data. Disagreeing with him needs a
+   source about THAT product, not three facts about a neighbouring one.
+
+See [[feedback_vacuous_integrity_check]]: a check that cannot fail is not a
+check.
+
 ### The meta-lesson, which cost more than the cards
 
 When a correction teaches a rule, do not immediately sweep the rule across
