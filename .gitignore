@@ -98,3 +98,6 @@ eBay_assets/card drop/
 # untracked and one `git add -A` away from a 3 GB commit. Same reasoning as
 # "card drop" above: source images live in Supabase, listing photos on eBay EPS.
 eBay_assets/_originals/
+
+# one-off debug scratch scripts
+scripts/_tmp-*
