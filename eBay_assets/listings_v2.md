@@ -2672,3 +2672,41 @@ The tell was in my own comp data and I read past it: the clean-filtered ask floo
 **Aspects:** Game `Pokémon TCG` (accented é, required) · Set `Mega Evolution: Ascended Heroes` (SINGLE, free text) · Configuration `Pack` (SELECTION_ONLY, exactly this) · Character `Charmander`, `Charizard` · Manufacturer `The Pokémon Company` · Year Manufactured `2026` · Age Level `6+` · Language `English` · Card Size `Standard` · Material `Card Stock` · Features `Sealed` · Type `Collection` · Number of Packs `3` · Vintage `No` · Autographed `No` · Brand `Pokémon` + MPN `Does Not Apply`.
 
 **Publish path: `scripts/publish-ah-techsticker.ts`, direct to `api.ebay.com`, no MCP.** I told him the dead ebay MCP meant nothing could be published tonight. **That was wrong** — `bulk-list-ebay.ts` has always read the eBay creds straight out of `~/.claude.json` and called the REST API with plain fetch, so the MCP is a convenience, not the pipeline. Verifying a publish still wants Trading `GetItem` ([[reference_ebay_publish_verify_trading_api]]).
+
+---
+
+## 2026 Topps Chrome Formula 1 Mega Box - item 168812159614 - LIVE
+
+**Title:** 2026 Topps Chrome Formula 1 F1 Mega Box Sealed 6 Packs 42 Cards IN HAND
+**Shape:** one listing, **qty 8**, priced per box. Best Offer on, auto-accept $120.00, auto-decline $112.00.
+**Price path:** listed 2026-10-23 at **$129.99** -> **$124.99** on 2026-10-26 at his instruction ("Reprice my f1 to 124.99 as well"). 0 sold at the old price.
+**Cost basis:** $77.37/box, Target Northgate, lot 650, catalog 135619.
+**UPC 887521162826**, recovered by check-digit maths from a box whose number-system digit was not printed: 3X + 76 = 0 mod 10 gives X = 8 uniquely ([[feedback_listing_preflight_upc]]).
+**Category 261332.** Sport `Auto Racing`, League `Formula 1`, Manufacturer and Set are SINGLE/REQUIRED/FREE_TEXT.
+**Shipping 276170586012** (Ground Advantage calculated, 1 business day) with **CombinedItemWeight profile 1423939012** forced on by a ReviseFixedPriceItem after the publish, because the Add call drops it silently. Buyer pays, no free shipping.
+
+**Note on the Best Offer ladder after the cut.** Auto-accept stayed at $120.00, so it now sits $4.99 under the ask instead of $9.99 under. Offers have to come much closer to full price before they clear by themselves. Left alone deliberately: he asked for a price change, and what he will accept is a separate decision.
+
+Scripts: `scripts/list-f1-mega-1023.ts` (publish), `scripts/reprice-f1-mega-1026.ts` (the cut, with a GetItem read-back).
+
+---
+
+## 2026 Topps Holiday Football singles - 5 listings - LIVE 2026-10-26
+
+Isosceles cards, not sealed stock, so the system of record is `card_listings` in Isosceles Insights. Logged here because they are live on the same eBay account.
+
+| item | card | ask | shipping |
+|---|---|---|---|
+| 168818832806 | #29 CeeDee Lamb Holiday Spirit Variation SSP (1:250) | $29.99 | Ground Advantage flat 278442909012 |
+| 168818833192 | #28 Dak Prescott F**K CANCER wristband | $13.99 | eBay Standard Envelope 272052757012 |
+| 168818833302 | HE-14 Amon-Ra St. Brown Hidden Elf SP (1:40) | $10.99 | eBay Standard Envelope |
+| 168818833408 | #33 Cam Skattebo Holiday Back Variation (1:6) | $4.99 | eBay Standard Envelope |
+| 168818833581 | #18 Jahmyr Gibbs Holiday Back Variation (1:6) | $3.99 | eBay Standard Envelope |
+
+**Five singles and not a you-pick dropdown**, unlike the Bowman Football run: four of the five are a named variation buyers search for BY NAME, and a dropdown carries one title.
+
+**Every price is ASK-derived.** Football has no sportscardspro console (that sitemap is baseball), so there are no sold comps at all here. Four are the p25 ask rounded up to the next .99. The CeeDee was rounded UP instead, from an automated $18.00 that came off three asks, to $29.99: the only ask for that exact card is $31.99 and comparable Spirit Variations run $15-45. Re-cut all five once sales exist.
+
+**Titles claim only what the checklist supports.** 1:250 is written SSP, 1:40 is SP, and the two 1:6 Back Variations claim no scarcity at all even though other sellers write SP on them. The Prescott carries the wristband and the card number and makes no scarcity claim, because it IS the base card - the live field is full of sellers calling it an error, a misprint or an SP and it is none of those.
+
+Script: `Isosceles_Insights/scripts/list-holiday-football-1026.ts`.
