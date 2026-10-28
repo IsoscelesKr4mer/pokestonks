@@ -56,35 +56,48 @@ const NOTE =
   const [dupe] = await sql`select count(*)::int n from purchases
     where catalog_item_id = ${ITEM} and purchase_date = ${DATE} and deleted_at is null`;
   if (dupe.n) {
+    // Re-runnable on purpose: skip the insert, still print the holdings.
     console.log(`already logged: ${ci.name} on ${DATE}, ${dupe.n} lot(s). Nothing written.`);
-    await sql.end();
-    return;
+  } else {
+    const [r] = await sql`insert into purchases (user_id, catalog_item_id, purchase_date,
+        quantity, cost_cents, source, location, notes)
+      values (${USER}, ${ITEM}, ${DATE}, ${QUANTITY}, ${UNIT_CENTS},
+        'Fred Meyer', 'Shoreline, WA', ${NOTE})
+      returning id`;
+    console.log(
+      `pu#${r.id}  ${DATE}  x${QUANTITY} @ $${(UNIT_CENTS / 100).toFixed(2)}` +
+        `  = $${((QUANTITY * UNIT_CENTS) / 100).toFixed(2)}  ${ci.name}`
+    );
   }
 
-  const [r] = await sql`insert into purchases (user_id, catalog_item_id, purchase_date,
-      quantity, cost_cents, source, location, notes)
-    values (${USER}, ${ITEM}, ${DATE}, ${QUANTITY}, ${UNIT_CENTS},
-      'Fred Meyer', 'Shoreline, WA', ${NOTE})
-    returning id`;
-  console.log(
-    `pu#${r.id}  ${DATE}  x${QUANTITY} @ $${(UNIT_CENTS / 100).toFixed(2)}` +
-      `  = $${((QUANTITY * UNIT_CENTS) / 100).toFixed(2)}  ${ci.name}`
-  );
-
-  const lots = await sql`select p.id, p.purchase_date::text d, p.quantity, p.cost_cents, p.source
+  // HELD IS NOT SUM(quantity). The first version of this script printed one
+  // and called it held, which told him he had 8 when he had 7 and he caught
+  // it straight away: the 2026-09-16 Zulu's box sold on eBay two days later.
+  // Rips, decompositions and sales all come off, attributed per LOT.
+  // [[reference_pokestonks_held_qty]], [[feedback_adhoc_holdings_query_shape]]
+  const lots = await sql`select p.id, p.purchase_date::text d, p.quantity, p.cost_cents, p.source,
+      (select count(*)::int from rips r where r.source_purchase_id = p.id) rips,
+      (select count(*)::int from box_decompositions b where b.source_purchase_id = p.id) decomps,
+      coalesce((select sum(s.quantity)::int from sales s where s.purchase_id = p.id), 0) sold
     from purchases p where p.catalog_item_id = ${ITEM} and p.deleted_at is null
     order by p.purchase_date, p.id`;
-  let q = 0, basis = 0;
+  let bought = 0, held = 0, basis = 0;
   console.log('\nevery 30th Celebration ETB lot:');
   for (const l of lots) {
-    q += l.quantity; basis += l.quantity * l.cost_cents;
-    console.log(`  ${l.d}  x${l.quantity} @ $${(l.cost_cents / 100).toFixed(2)}  ${l.source}`);
+    const h = l.quantity - l.rips - l.decomps - l.sold;
+    bought += l.quantity;
+    held += h;
+    basis += h * l.cost_cents;
+    console.log(
+      `  ${l.d}  bought ${l.quantity} @ $${(l.cost_cents / 100).toFixed(2)}  ${l.source}` +
+        (h === l.quantity ? '' : `   -> ${h} left (${l.sold} sold, ${l.rips} ripped, ${l.decomps} broken up)`)
+    );
   }
   const [c] = await sql`select coalesce(manual_market_cents, last_market_cents) m
     from catalog_items where id = ${ITEM}`;
   console.log(
-    `\nheld ${q}, $${(basis / 100).toFixed(2)} in` +
-      (c.m ? `, $${((q * c.m) / 100).toFixed(2)} at the $${(c.m / 100).toFixed(2)} market` : '')
+    `\nbought ${bought}, held ${held}, $${(basis / 100).toFixed(2)} in on what is left` +
+      (c.m ? `, $${((held * c.m) / 100).toFixed(2)} at the $${(c.m / 100).toFixed(2)} market` : '')
   );
   await sql.end();
 })();
