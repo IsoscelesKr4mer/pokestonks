@@ -2726,6 +2726,42 @@ carries only `sell.inventory`, so the Analytics traffic report 403s. Granting
 `sell.analytics.readonly` once would make every future "no views" question
 answerable from his actual numbers instead of inferred from the public field.
 
+**2026-10-28, cut to $109.99.** A friend told him in another Discord "Better
+move em quick. Price dropping," and he asked whether that was true. Measured
+rather than assumed, same script and filters on both dates
+(`scripts/comp-f1-mega-1023.ts`):
+
+| | 2026-10-23 | 2026-10-28 |
+|---|---|---|
+| single-box asks | - | 104 |
+| floor | $105.00 | $108.99 |
+| median | $135.99 | $130.00 |
+
+So the middle softened about 4% in five days while the floor firmed. That is a
+two-week-old release coming off its launch spike, not a collapse, and on a
+$77.37 basis he cannot lose money at any price the field is near. The real
+problem was his own ask: $124.99 with **38 single boxes listed under him** and
+0 of 8 sold in five days. He said "do it" and lever 1 was applied by
+`scripts/reprice-f1-mega-1028.ts --apply`. Verified live at $109.99, qty 8.
+
+**The Best Offer ladder had to move with it, and eBay dictated how far.**
+Auto-accept $120.00 and auto-decline $112.00 both sat above the new ask. The
+first attempt set auto-accept equal to the ask, conceding nothing beyond the
+price he approved; eBay refused it: *"The Best Offer Auto Accept Price must be
+less than the Buy It Now price."* It is now **$104.99 accept / $99.99
+decline** - 4.5% under the ask, tighter than the 7.7% ladder he set himself
+($120.00 against $129.99), so it gives up less ground than his own choice.
+Anything between the two comes to him.
+
+Still open and NOT done: lever 2, the photos. Two on the listing, six is free
+and feeds Best Match. Needs shots from him or a pull from `eBay_assets/`.
+
+**No sold data newer than 2026-10-23 exists for this product anywhere free.**
+PriceCharting has no page for it, SportsCardsPro prints $1,285.00 for the box
+which is garbage, and Browse only exposes asks. The 10/23 sold median of
+$120.00 item (+~$8 shipping, n=38) came off a screenshot he sent, and that is
+still the only way to refresh it. Ask him for one before claiming a trend.
+
 ---
 
 ## 2026 Topps Holiday Football singles - 5 listings - LIVE 2026-10-26
