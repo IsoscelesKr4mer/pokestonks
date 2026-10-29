@@ -2794,6 +2794,38 @@ No sale row was ever booked in pokestonks for this order (the sync had not
 reached it), so held qty on catalog item 135619 never moved and there was
 nothing to unwind.
 
+### 2026-10-29, later: Best Offer OFF. Buy It Now only.
+
+Michael (voice): *"I'm getting a million offers and I'm sick of it. Take offers
+off. No offers. Buy it now only for the F1 boxes. That's my typical policy. I
+noticed that when I turned off offers, people just buy it."* Done, verified:
+**$109.99, 8 available, no offer button.** The 10-28 ladder is gone with it.
+
+**Three offers had to be declined first, and they were bulk bids**, which is
+worth recording because a count alone hides it:
+
+| offer | per box | qty | buyer |
+|---|---|---|---|
+| 269788663 | $102.00 | **7** | marve_4496 (OR) |
+| 269799744 | $100.00 | **6** | hu_954507 (DE) |
+| 269801195 | $100.00 | **3** | methmutawu-0 (OR) |
+
+All three were under the ask, and the 7-box one at $102 came to $714 against
+$769.93 at the ask for the same boxes, so his call costs about $50 of margin
+if they sell anyway - which they are. He was told the quantities after the
+fact so he can reopen it if he wants that buyer.
+
+**eBay would not throw the switch while offers were open:** *"Portions of this
+listing cannot be revised if the item has bid or active Best Offers."* Decline
+first, then disable; the order is forced. Also `BestOfferCount` read 13, which
+is lifetime offers RECEIVED, not open ones. Full mechanics in
+[[feedback_sealed_is_buy_it_now_only]].
+
+**The rest of the account was audited and NOT touched.** 38 of 89 live listings
+still take offers and every one is a single, not sealed. Six have live offers
+on them right now (the $249.99 Dalis auto pair has 3). Cards are a different
+question and he has not been asked it yet.
+
 ---
 
 ## 2026 Topps Holiday Football singles - 5 listings - LIVE 2026-10-26
