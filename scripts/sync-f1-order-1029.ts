@@ -1,10 +1,17 @@
 /**
- * Book the 4-box F1 mega order, eBay 14-15353-00252.
+ * Book an F1 mega order off eBay.
  *
- *   npx tsx scripts/sync-f1-order-1029.ts            # dry run
- *   npx tsx scripts/sync-f1-order-1029.ts --apply
+ *   npx tsx scripts/sync-f1-order-1029.ts --order 04-15372-93836 --qty 1
+ *   npx tsx scripts/sync-f1-order-1029.ts --order 04-15372-93836 --qty 1 --apply
  *
- * Michael, 2026-10-29: "4 F1 boxes sold".
+ * Michael, 2026-10-29: "4 F1 boxes sold", then two hours later "oh i osld
+ * another f1 box". The order id and the quantity I expect to find are
+ * arguments rather than constants because this listing is now selling often
+ * enough that a per-order copy of the script is a worse record than one
+ * script with the order named on the command line. `--qty` is not used to
+ * BOOK anything, only to assert against what the API returns: if eBay says a
+ * different number, the run stops rather than quietly booking the wrong
+ * count.
  *
  * Reads the order live from the Fulfillment API rather than taking the figures
  * from a screenshot or from me, then follows the same shape the app's own sync
@@ -33,10 +40,21 @@ import { homedir } from 'node:os';
 config({ path: '.env.local' });
 
 const APPLY = process.argv.includes('--apply');
-const ORDER_ID = '14-15353-00252';
+
+function arg(name: string): string | undefined {
+  const i = process.argv.indexOf('--' + name);
+  return i >= 0 ? process.argv[i + 1] : undefined;
+}
+
+const ORDER_ID = arg('order');
+const EXPECT_QTY = Number(arg('qty'));
+if (!ORDER_ID || !Number.isInteger(EXPECT_QTY) || EXPECT_QTY < 1) {
+  console.error('usage: --order <ebay order id> --qty <boxes> [--apply]');
+  process.exit(1);
+}
+
 const ITEM_ID = '168812159614';
 const CATALOG = 135619;
-const EXPECT_QTY = 4;
 const USER = '66200525-2237-4cc3-948f-aaafd3253d4b';
 
 function fk(o: any, k: string): string | undefined {

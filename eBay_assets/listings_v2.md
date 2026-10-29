@@ -2858,6 +2858,35 @@ Listing now reads 9 total / 5 sold = **4 available**, which matches the 4 boxes
 actually left (8 bought, 4 sold, and the cancelled one that still counts as
 sold forever).
 
+### 2026-10-29, three hours after offers came off: a fifth box
+
+Order **04-15372-93836**, 21:03:53Z, **1 x $109.99**, plus $8.29 buyer-paid
+shipping, $118.28 order total, eBay fee $15.44, buyer in **Randolph NJ**.
+$77.37 cost, so **+$17.18 realised**. Michael: *"oh i osld another f1 box"*.
+
+Booked with the same script, which now takes `--order` and `--qty` instead of
+carrying one order id as a constant. The listing sells often enough that a
+copy of the script per order is a worse record than one script with the order
+named on the command line. `--qty` books nothing; it is asserted against what
+the Fulfillment API returns, so a mismatch stops the run.
+
+**The fee rate moved the other way.** 13.05% of the order total here, against
+13.66% on the 4-box order three hours earlier and the 13.25% + $0.40 the
+pricing math assumes. Two orders, same listing, same day, 61 basis points
+apart. So the earlier flag was premature: this is not a rate change creeping
+up, it is a figure that varies per order, and the honest reading is that eBay's
+reported fee is not reproducible from the formula either way. Book the fee
+eBay reports and stop predicting it.
+
+**Shipping was undercollected on the 4-box order.** That buyer paid $6.92 for
+four boxes while this single-box buyer paid $8.29 for one. Four megas in an
+8.25 x 7.25 x 9 box with bubble wrap come to about 2 lb 12 oz, which bills as
+3 lb on Ground Advantage, and 3 lb to Oregon costs more than $6.92. The
+listing's declared weight is light. Worth fixing before the next multi-box
+order, since calculated shipping quotes the buyer off that number.
+
+Listing now reads 9 total / 6 sold = **3 available**, and the vault agrees: 3.
+
 ---
 
 ## 2026 Topps Holiday Football singles - 5 listings - LIVE 2026-10-26
