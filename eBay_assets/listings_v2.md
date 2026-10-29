@@ -2753,8 +2753,10 @@ decline** - 4.5% under the ask, tighter than the 7.7% ladder he set himself
 ($120.00 against $129.99), so it gives up less ground than his own choice.
 Anything between the two comes to him.
 
-Still open and NOT done: lever 2, the photos. Two on the listing, six is free
-and feeds Best Match. Needs shots from him or a pull from `eBay_assets/`.
+Lever 2, the photos: **CLOSED, not a lever.** Offered twice and declined
+2026-10-29 - *"2 photos is fine it's the front and box of the box"* (front and
+back). For a sealed box that is the whole product, every copy is identical, and
+more angles add nothing. Do not raise photo COUNT on sealed listings again.
 
 **No sold data newer than 2026-10-23 exists for this product anywhere free.**
 PriceCharting has no page for it, SportsCardsPro prints $1,285.00 for the box
