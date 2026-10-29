@@ -2835,6 +2835,29 @@ all six (Dalis, Arquette, Griffin, Stewart, Schlittler, 1991 Murakami) returned
 [[reference_bestoffercount_is_lifetime]]; `scripts/check-live-offers-1029.ts`
 is the only thing that answers the question.
 
+### 2026-10-29, two hours after offers came off: 4 boxes at full ask
+
+Order **14-15353-00252**, 17:51:30Z, **4 x $109.99 = $439.96**, plus $6.92
+buyer-paid shipping, $446.88 order total, eBay fee $61.06, buyer in **Damascus
+OR**. Booked by `scripts/sync-f1-order-1029.ts` with a row in
+`ebay_synced_orders` so the app's own sync cannot double it. $309.48 of cost
+against it, so **+$69.42 realised, $17.36 a box**.
+
+**This settles the Best Offer question.** Two of the three offers declined an
+hour earlier were Oregon buyers, one of them 7 boxes at $102. An Oregon buyer
+then paid full ask for four. On these four alone that is **$35.88 more than the
+best offer on the table**, so the policy did not cost the ~$50 it looked like
+it might. He said it himself: *"when I turned off offers, people just buy it."*
+
+**Fee ran 13.66% of the order total**, not the 13.25% + $0.40 we price against
+([[reference_ebay_fee_rate]]). $61.06 where the old formula predicts $59.61.
+One order is not a trend, but watch the next few: if it holds, the net-of-fees
+assumption behind every ask needs re-cutting.
+
+Listing now reads 9 total / 5 sold = **4 available**, which matches the 4 boxes
+actually left (8 bought, 4 sold, and the cancelled one that still counts as
+sold forever).
+
 ---
 
 ## 2026 Topps Holiday Football singles - 5 listings - LIVE 2026-10-26
