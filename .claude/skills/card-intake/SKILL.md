@@ -12,12 +12,21 @@ the same mistake was made more than once.
 
 Section 1 (the back marker) is verified on **2026 Topps Chrome only**. Michael's
 standing caution: *"this refractor rule probably only applies to topps chrome
-2026."* Treat it as unverified for any other product, including Topps Finest,
+2026."* Treat it as unverified for any product not listed below, including
 Sapphire and earlier Chrome years.
 
 **2026 Bowman Chrome has since been checked and it DOES have the marker**, on
 the plain Refractor only, in the same spot. Corrected 2026-10-07 after two live
 cards contradicted the earlier note. See section 1b.
+
+**2026 Topps Finest also has the marker, in a DIFFERENT PLACE**: the bottom of
+the back, not the top. The word at the top of a Finest back is the base-set
+tier and is not a parallel at all. Verified 2026-10-29 off 45 cards; see
+section 1b-iii before reading one.
+
+So the rule that generalises is not "the word lives under @TOPPS", it is **only
+the plain undesigned Refractor carries a word, and you have to find out where
+that product prints it.** Three products, three answers so far.
 
 **A control pair only proves what its own two cards show.** The Bowman Chrome
 error came from a control pair of two COLOURED parallels, neither of which can
@@ -320,6 +329,54 @@ sheen over the whole card with no pattern in it. Separate the two by
 whether the foil has facets, and separate Rainbow Foil from the logo-pattern
 parallel by cropping a flat area of border at 4x and looking for a repeating
 Topps logo. Matte base cards from the same batch make the control.
+
+## 1b-iii. 2026 Topps Finest. The word at the TOP is the TIER, not the parallel.
+
+Confirmed 2026-10-29 off 45 cards in one batch (Isosceles batch 5051). This
+product was listed as unverified in section 0; it is verified now.
+
+**The back prints TWO words in two places and they mean different things.**
+
+| where | what it says | what it means |
+|---|---|---|
+| top centre, under the card number | `COMMON` / `UNCOMMON` / `RARE` / `SUPER RARE` | the base-set **TIER**. Nothing to do with the parallel. |
+| bottom centre, **under the career line, above the Topps logo** | `REFRACTOR` | plain undesigned **Refractor** |
+
+Reading the top word as the parallel is the trap, and it is a worse trap than
+Chrome's because the top word is always there and always looks like an answer.
+Garrett Crochet #29 in that batch says `COMMON` at the top and is a Mini-Diamond
+Refractor; its own base twin, two pairs earlier, also says `COMMON`.
+
+**The tier is just the card number.** 350-card base set: Common #1-100,
+Uncommon #101-200, Rare #201-300, Super Rare #301-350. So the top word carries
+no information the number does not already give you, which is exactly why it
+must never be mistaken for the parallel.
+
+The catalogue's `insert_name` for these is the tier spelled out: `Base Common`,
+`Base Uncommon`, `Base Rare`. Not `Base`, which is what Topps Chrome uses.
+
+### Same rule as section 1: only the PLAIN Refractor carries the word
+
+Every named parallel shows its design instead and prints nothing at the
+bottom. Out of 45 backs, exactly one said `REFRACTOR`.
+
+| what the front shows | parallel |
+|---|---|
+| smooth rainbow sheen, no pattern | **Refractor** (unnumbered) and the back says so |
+| small angular diamond facets, crushed-gem mosaic | **Mini-Diamond Refractor**, MEGA exclusive |
+| checkerboard foil | **X-Fractor**, HOBBY exclusive |
+| swirling iridescence | **Oil Spill Refractor**, Hobby and FDI exclusive |
+| flat, no refraction at all | **base** |
+
+Mini-Diamond, X-Fractor and Oil Spill each have an unnumbered member plus a
+full colour ladder (Pink /250 down to Red /5). **Read the serial first**: a
+numbered one is named by its run, and only an unnumbered card is the plain
+member. Neither Crochet carried a serial on either face.
+
+Michael buys megas, so **Mini-Diamond is the parallel to expect**, and the
+catalogue already held 11 of them before this batch. X-Fractor and Oil Spill
+should not appear in his retail boxes at all; if one seems to, check the box
+it came from before writing it down.
 
 ## 1c. Topps NOW Road to Opening Day
 
