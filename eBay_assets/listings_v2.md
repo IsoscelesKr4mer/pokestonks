@@ -2887,6 +2887,45 @@ order, since calculated shipping quotes the buyer off that number.
 
 Listing now reads 9 total / 6 sold = **3 available**, and the vault agrees: 3.
 
+### 2026-10-29: a sixth box, and the price is wrong
+
+Order **09-15363-54896**, 22:23:54Z, 1 x $109.99, $117.57 total, fee $15.40,
+buyer in **Roy UT**. +$17.22. Michael: *"lol another f1 box sold... im
+thinking i raise the price on the last 2 these are selling like hot cakes"*.
+
+**Six boxes in four hours thirty-two minutes** (17:51 x4, 21:03 x1, 22:23 x1),
+all at full ask with Best Offer off.
+
+A third fee reading, and it lands with the other two: **13.10%** of the order
+total, against 13.05% and 13.66% earlier the same day on the same listing. The
+formula is not predictive; book what eBay reports.
+
+**He is right and the reason is not the one it looks like.** `comp-f1-mega-1023.ts`
+re-run against the live field: **114 single sealed mega box asks, low $104.99,
+median $130.00, high $299.99.** At $109.99 he is at the floor of the entire
+market. The boxes are not moving because demand found him, they are moving
+because nobody in hand is cheaper.
+
+**Recommended $129.99**, at the median. Per box that is $34.62 net against
+$17.22 today, because the eBay fee scales but the $77.37 cost does not:
+
+```
+$109.99 - $15.40 fee - $77.37 cost = $17.22
+$129.99 - $18.00 fee - $77.37 cost = $34.62
+```
+
+**On the last two units, velocity is worth nothing.** There is no stock to
+clear and no carrying cost, so the only variable left is price. Raising it
+also cannot cost him the watchers: eBay notifies watchers of price DROPS, not
+rises. Compare [[feedback_scarce_cards_are_not_priced_for_velocity]] - the same
+logic, arrived at from inventory depth rather than print run.
+
+**The real trade is restocking, not repricing.** pu650 came from Target Seattle
+Northgate at **$69.99 shelf, $77.37 with tax**. Six cleared in an afternoon. At
+$129.99 that is a 68% return on a box he can walk in and buy, so repricing two
+boxes is worth $35 and another eight is worth $280. Flagged to him as the
+bigger half of the answer.
+
 ---
 
 ## 2026 Topps Holiday Football singles - 5 listings - LIVE 2026-10-26
