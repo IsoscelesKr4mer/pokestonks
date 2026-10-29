@@ -2926,6 +2926,30 @@ $129.99 that is a 68% return on a box he can walk in and buy, so repricing two
 boxes is worth $35 and another eight is worth $280. Flagged to him as the
 bigger half of the answer.
 
+### 2026-10-29: APPLIED, $109.99 -> $129.99
+
+Michael: *"okay do it"*. `scripts/reprice-f1-1029.ts --apply`, verified live:
+
+```
+before   $109.99   total 9 / sold 7 / available 2
+after    $129.99   total 9 / sold 7 / available 2
+```
+
+**The revise sends StartPrice and nothing else.** Quantity is deliberately
+omitted: ReviseFixedPriceItem reads it as AVAILABLE while GetItem reports
+TOTAL, and sending the wrong one overshot this very listing by a box this
+morning. Omitting the field does not clear it, so price-only is the safe
+shape, and the read-back asserts available did not move as well as that the
+price did.
+
+The guard refuses unless eBay still reads $109.99 with exactly 2 available,
+so a seventh sale between the comp and the revise would have stopped the run
+rather than repriced a listing in a state nobody had reasoned about.
+
+Both boxes at $129.99 clear **$69.24** against $34.44 at the old ask. If they
+go quiet for a few days that is information rather than a problem; $119.99 is
+the fallback.
+
 ---
 
 ## 2026 Topps Holiday Football singles - 5 listings - LIVE 2026-10-26
