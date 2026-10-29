@@ -2762,6 +2762,36 @@ which is garbage, and Browse only exposes asks. The 10/23 sold median of
 $120.00 item (+~$8 shipping, n=38) came off a screenshot he sent, and that is
 still the only way to refresh it. Ask him for one before claiming a trend.
 
+### 2026-10-29: first sale at $109.99, cancelled by the buyer, qty restored
+
+**The cut worked.** Order `27-15326-47918` landed at 02:53:39Z, nineteen hours
+after the reprice, one box at $109.99, $116.18 total, shipping to Joint Base
+Lewis McChord WA. The buyer requested a cancel at 03:04:51 with reason
+`WRONG_SHIPPING_ADDRESS` and eBay completed it 43 seconds later at 03:05:34.
+The order now reads `cancelState CANCELED`, `orderPaymentStatus
+FULLY_REFUNDED`, `sellerActionsRequired []`, so nothing was outstanding on his
+side and the $15.58 fee goes back with the refund.
+
+Michael: *"Now I have 90+ votes and 5 watchers and people messaging me about
+the boxes so these gonna sell at this price but I need my quantity to go back
+to 8."* Restored by `scripts/restore-f1-qty-1029.ts --apply`, verified at **8
+available, $109.99, ladder untouched at $104.99 / $99.99**.
+
+**eBay does not restock a cancelled unit, and the Quantity field is
+asymmetric.** `GetItem` read `Quantity 8` / `QuantitySold 1`, i.e. 7 available.
+The first run sent 9 on the assumption that revise took the same total; eBay
+read it as AVAILABLE and the listing came back at 9 available. Sending 8 gave
+the right answer. `GetItem` Quantity is TOTAL, revise Quantity is AVAILABLE,
+same field name, two meanings - see
+[[reference_ebay_qty_change_procedure]]. `QuantitySold` now stays at 1 forever
+for a box that was never shipped, so raw `Quantity` reads 9 against 8 real
+boxes. That is expected, not an error, but any audit comparing this listing to
+held stock has to use available.
+
+No sale row was ever booked in pokestonks for this order (the sync had not
+reached it), so held qty on catalog item 135619 never moved and there was
+nothing to unwind.
+
 ---
 
 ## 2026 Topps Holiday Football singles - 5 listings - LIVE 2026-10-26
