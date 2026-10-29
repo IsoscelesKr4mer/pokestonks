@@ -2822,9 +2822,18 @@ is lifetime offers RECEIVED, not open ones. Full mechanics in
 [[feedback_sealed_is_buy_it_now_only]].
 
 **The rest of the account was audited and NOT touched.** 38 of 89 live listings
-still take offers and every one is a single, not sealed. Six have live offers
-on them right now (the $249.99 Dalis auto pair has 3). Cards are a different
+are offer-ENABLED and every one is a single, not sealed. Cards are a different
 question and he has not been asked it yet.
+
+**CORRECTION, same hour: I told him six of those had live offers on them. They
+had none.** The "offers" figure came from `BestOfferCount`, which is LIFETIME
+offers received - the very trap I had explained to him one message earlier
+about the F1 box's 13. He checked his app and said so: *"you said there's still
+offers on the Wilder Dallies card and there's not."* A `GetBestOffers` sweep of
+all six (Dalis, Arquette, Griffin, Stewart, Schlittler, 1991 Murakami) returned
+**0 open on every one**. His app was right. Mechanics and the fix in
+[[reference_bestoffercount_is_lifetime]]; `scripts/check-live-offers-1029.ts`
+is the only thing that answers the question.
 
 ---
 

@@ -144,9 +144,20 @@ async function main() {
   }
 
   const on = all.filter((i) => i.bo === 'true');
-  console.log(`${on.length} still take Best Offers.\n`);
+  console.log(
+    `${on.length} are offer-ENABLED. This says nothing about offers being open;\n` +
+      'run scripts/check-live-offers-1029.ts for that.\n'
+  );
   for (const i of on.sort((a, b) => Number(b.price) - Number(a.price))) {
-    console.log(`  ${i.id}  $${String(i.price).padStart(7)}  offers:${i.offers ?? '0'}  ${i.title}`);
+    // NOT "offers:". BestOfferCount is the LIFETIME number of offers received
+    // and says nothing about how many are open. Printing it under a bare
+    // "offers:" heading is how I came to tell him six listings had live offers
+    // when all six had none. Only GetBestOffers answers that, per listing -
+    // see scripts/check-live-offers-1029.ts.
+    console.log(
+      `  ${i.id}  $${String(i.price).padStart(7)}  ` +
+        `received-lifetime:${i.offers ?? '0'}  ${i.title}`
+    );
   }
   if (!on.length) console.log('  (none)');
 }
